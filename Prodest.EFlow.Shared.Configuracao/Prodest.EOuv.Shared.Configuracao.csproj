@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Prodest.EOuv.Infra.DAL\Prodest.EOuv.Infra.DAL.csproj" />
+    <ProjectReference Include="..\Prodest.EOuv.Infra.Service\Prodest.EOuv.Infra.Servico.csproj" />
+    <ProjectReference Include="..\Prodest.EOuv.UI.Apresentacao\Prodest.EOuv.UI.Apresentacao.csproj" />
+  </ItemGroup>
+</Project>

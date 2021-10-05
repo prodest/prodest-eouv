@@ -1,0 +1,47 @@
+﻿@model Prodest.EOuv.UI.Apresentacao.DespachoManifestacaoViewModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Novo Despacho</h1>
+    <p>Tela de Criar Novo Despacho</p>
+</div>
+
+<p>
+    <a asp-action="ObterListaDadosSelecionaveisManifestacao">Obter Lista de Dados Selecionáveis</a>
+</p>
+<br/>
+<p>
+    <a asp-action="ObterDadosBasicosManifestacao">Obter Dados Básicos da Manifestacao</a>
+</p>
+<br />
+<p>
+    <a asp-action="ObterDadosManifestante">Obter Dados do Manifestante</a>
+</p>
+<br />
+<p>
+    <a asp-action="ObterDadosAnaliseManifestacao">Obter Dados de Abálise da Manifestacao</a>
+</p>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="NovoDespacho">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="PrazoResposta" class="control-label"></label>
+                <input asp-for="PrazoResposta" class="form-control" />
+                <span asp-validation-for="PrazoResposta" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TextoSolicitacaoDespacho" class="control-label"></label>
+                <input asp-for="TextoSolicitacaoDespacho" class="form-control" />
+                <span asp-validation-for="TextoSolicitacaoDespacho" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="NovoDespacho" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>

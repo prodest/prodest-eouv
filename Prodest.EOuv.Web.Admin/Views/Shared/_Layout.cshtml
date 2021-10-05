@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - EOuv</title>
+
+    <link rel="stylesheet" href="~/dist/bootstrap-5.0.0-beta3-dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/dist/fontawesome-free-5.15.3-web/css/all.min.css" />
+    <link rel="stylesheet" href="~/dist/adminkit-2.2.0/css/app.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+        
+    <script defer src="~/dist/vue-3.2.6/vue.global.js"></script>
+
+    <script defer src="~/dist/bootstrap-5.0.0-beta3-dist/js/bootstrap.bundle.min.js"></script>
+    <script defer src="~/dist/adminkit-2.2.0/js/app.js" asp-append-version="true"></script>
+
+    <script defer src="~/scripts/common/fetchData.js" asp-append-version="true"></script>
+    <script defer src="~/scripts/common/bootstrapHelper.js" asp-append-version="true"></script>
+    <script defer src="~/scripts/common/mascaras.js" asp-append-version="true"></script>
+    <script defer src="~/scripts/common/utils.js" asp-append-version="true"></script>
+    <script defer src="~/scripts/common/vue/vueBase.js" asp-append-version="true"></script>
+    <script defer src="~/scripts/common/vue/vueReusaveis.js" asp-append-version="true"></script>
+    <script defer src="~/scripts/common/mensagemSistema.js" asp-append-version="true"></script>
+
+    <script defer src="/scripts/app/navbar/NavBarUsuario.js"></script>    
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+    @await RenderSectionAsync("modules", required: false)
+</head>
+<body>
+
+    @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+    @functions{
+        public string GetAntiXsrfRequestToken()
+        {
+            return Xsrf.GetAndStoreTokens(Context).RequestToken;
+        }
+    }
+    <input type="hidden" id="RequestVerificationToken" name="RequestVerificationToken" value="@GetAntiXsrfRequestToken()">
+
+    <div class="wrapper">
+        <nav id="sidebar" class="sidebar">
+            <div class="sidebar-content js-simplebar">
+                <a class="sidebar-brand" href="/">
+                    <span class="align-middle">E-Ouv</span>
+                </a>
+
+                <ul class="sidebar-nav">
+
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="/">
+                            <i class="align-middle me-2 fas fa-home"></i>
+                            <span>Início</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="/despacho">
+                            <i class="align-middle me-2 fas fa-building"></i>
+                            <span>Despachos</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="/despacho/NovoDespacho">
+                            <i class="align-middle me-2 fas fa-sitemap"></i>
+                            <span>Novo Despacho</span>
+                        </a>
+                    </li>
+
+                </ul>
+
+                <div class="sidebar-cta">
+                    <div class="sidebar-cta-content">
+                        <strong class="d-inline-block mb-2">E-Ouv</strong>
+                        <div class="mb-3 text-sm">
+                            Sistema desenvolvido e mantido pela Prodest.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="main">
+
+            <nav id="organograma-nav-bar" class="navbar navbar-expand navbar-light navbar-bg">
+                <a class="sidebar-toggle d-flex">
+                    <i class="hamburger align-self-center"></i>
+                </a>
+
+                <div class="d-flex">
+                    <h2>@ViewData["Title"]</h2>
+                </div>
+
+                <nav-bar-usuario></nav-bar-usuario>
+
+            </nav>
+
+            <main class="content">
+                @RenderBody()
+            </main>
+
+            <div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+
+        </div>
+
+    </div>
+
+    @*Vue Templates*@
+    @await Html.PartialAsync("_NavBarTemplate")
+    @RenderSection("templates", false)
+</body>
+</html>

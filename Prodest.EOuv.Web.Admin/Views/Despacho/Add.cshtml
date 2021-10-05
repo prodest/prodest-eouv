@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Criar Novo Despacho";
+    Layout = "_LayoutMDB";
+}
+
+@section scripts{
+<script defer src="~/scripts/app/shared/eOuvApi.js" asp-append-version="true"></script>
+<script defer src="~/scripts/app/pages/despacho/despachoAdd.js" asp-append-version="true"></script>
+}
+
+<div class="container-fluid p-0">
+    <div class="row">
+        <div id="app" class="col-12">
+            <despacho-form></despacho-form>
+        </div>
+    </div>
+</div>
+
+@section templates{
+
+<script type="text/html" id="template-despacho-form">    
+    <div>
+        <h4>Teste: {{dadosBasicos}}</h4>
+    </div>    
+</script>
+
+    }

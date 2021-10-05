@@ -1,0 +1,32 @@
+﻿<script type="text/html" id="nav-bar-usuario-template">
+
+    <div class="navbar-collapse collapse">
+        <ul class="navbar-nav navbar-align">
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#"
+                   data-bs-toggle="dropdown">
+                    @*<span class="text-dark">@nomes.primeiro @nomes.ultimo</span>*@
+                    <span class="text-dark">Nome do Usuário</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-end">
+                    <a class="dropdown-item" href="https://acessocidadao.es.gov.br/Perfil/Servicos">
+                        <i class="fas me-2 fa-user"></i>
+                        <span>Minha Conta</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" v-on:click="trocarAparencia">
+                        <i class="fas me-2 fa-adjust"></i>
+                        <span>Alternar Claro/Escuro</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/EndSession">
+                        <i class="fas me-2 fa-power-off"></i>
+                        <span>Sair</span>
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+</script>

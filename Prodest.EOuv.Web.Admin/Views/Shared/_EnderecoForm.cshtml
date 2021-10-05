@@ -1,0 +1,38 @@
+﻿<script type="text/html" id="template-endereco-form">
+
+    <div class="row mb-2">
+        <div class="col-md-7">
+            <label class="form-label">Logradouro</label>
+            <input type="text" class="form-control" v-model="endereco.logradouro" v-on:change="emitirMudanca" required maxlength="1000" v-bind:disabled="readOnly">
+            <div class="invalid-feedback">Logradouro é obrigatório.</div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Número</label>
+            <input type="text" class="form-control" v-model="endereco.numero" v-on:change="emitirMudanca" maxlength="10" v-bind:disabled="readOnly">
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Complemento</label>
+            <input type="text" class="form-control" v-model="endereco.complemento" v-on:change="emitirMudanca" maxlength="100" v-bind:disabled="readOnly">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <label class="form-label">Bairro</label>
+            <input type="text" class="form-control" v-model="endereco.bairro" v-on:change="emitirMudanca" required maxlength="50" v-bind:disabled="readOnly">
+            <div class="invalid-feedback">Bairro é obrigatório.</div>
+        </div>
+        <div class="col-md-5">
+            <label class="form-label">Município</label>
+            <select class="form-select" v-model="endereco.guidMunicipio" v-on:change="emitirMudanca" required v-bind:disabled="readOnly">
+                <option v-for="m in listaMunicipios" v-bind:value="m.guid">{{m.nome}}</option>
+            </select>
+            <div class="invalid-feedback">Município é obrigatório.</div>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">CEP</label>
+            <input type="text" class="form-control" v-model="endereco.cep" v-on:change="emitirMudanca" v-ext-mask="'cep'" required maxlength="9" v-bind:disabled="readOnly">
+            <div class="invalid-feedback">CEP é obrigatório.</div>
+        </div>
+    </div>
+
+</script>
