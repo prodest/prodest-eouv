@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Prodest.EOuv.Dominio.Modelo.Interfaces.BLL;
 using Prodest.EOuv.Dominio.Modelo.Model.Edocs;
+using Prodest.EOuv.Shared.Util;
+using Prodest.EOuv.Shared.Utils.Exceptions;
 using Prodest.EOuv.UI.Apresentacao;
 using System;
 using System.Collections.Generic;
@@ -115,6 +117,41 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             return Json(planos);
         }
 
+
+
+        public EventoModel BuscarEvento(string id)
+        {
+            System.Threading.Tasks.Task<EventoModel> task = BuscarEventoConcluidoAsync(id);
+
+            Task.WaitAll(task);
+
+            EventoModel evento = task.Result;
+            return evento;
+        }
+
+        public async Task<EventoModel> BuscarEventoConcluidoAsync(string id,
+            int? tries = 30,
+            int? delayMs = 1000) 
+        { 
+            var evento = new EventoModel();
+
+            // realiza polling na API do E-Docs até que o Evento esteja disponível
+            do
+            {
+                await Task.Delay(delayMs.Value);
+                evento = await _edocsBLL.GetEvento(id); 
+                tries--;
+            } while (evento.Situacao.ToUpper() != nameof(Enums.EventoSituacao.Concluido).ToUpper() && tries > 0);
+
+            if (evento.Situacao.ToUpper() != nameof(Enums.EventoSituacao.Concluido).ToUpper() && tries == 0)
+            {
+                // caso o número máximo de tentativas seja extrapolado
+                throw new EDocsApiException();
+            }
+
+            return evento;
+        }
+
         public JsonResult BuscarFundamentosLegais()
         {
             System.Threading.Tasks.Task<FundamentoLegalModel[]> task = _edocsBLL.GetFundamentosLegais("fe88eb2a-a1f3-4cb1-a684-87317baf5a57");// ESGOV
@@ -126,6 +163,11 @@ namespace Prodest.EOuv.Web.Admin.Controllers
         }
         //ainda precisa de mais informações
         public string DocumentoCapturarNatoDigitalCopiaServidor()
+        {
+            EventoModel evento = BuscarEvento(GetEventoDocumentoCapturarNatoDigitalCopiaServidor()); //com o Id do evento descobrimos o Id do Documento
+            return evento.IdDocumento;
+        }
+        public string GetEventoDocumentoCapturarNatoDigitalCopiaServidor()
         {
             //Task<string> task = _edocsBLL.PostDocumentoCapturarNatoDigitalCopiaServidor(parameters);
             //Task.WaitAll(task);
@@ -164,9 +206,25 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             return result;
         }
 
-        public string Encaminhar() {
+        public string GetProtocoloEncaminhamento()
+        {
+            System.Threading.Tasks.Task<string> task = _edocsBLL.GetEncaminhamentoProtocolo(Encaminhar());// ESGOV
+
+            Task.WaitAll(task);
+
+            string protocolo = task.Result;
+            return protocolo;
+        }
+
+        public string Encaminhar()
+        {
+            EventoModel evento = BuscarEvento(GetEventoEncaminhar()); //com o Id do evento descobrimos o Id do Documento
+            return evento.IdEncaminhamento;
+        }
+
+        public string GetEventoEncaminhar() {
             //DOCUMENTO CAPTURADO -> DocumentoCapturarNatoDigitalCopiaServidor
-            string idDocumento = "233c654d-5721-45e6-8306-6ffbfa5822c2"; //usuário logado deve ter acesso ao documento
+            string idDocumento = "38683aef-0613-45ea-bfd0-663783a7bfe0"; //usuário logado deve ter acesso ao documento
             var parametros = new EncaminhamentoRequestModel() {
                 Assunto = "Manifestação número",
                 Mensagem = "Manifestação número",

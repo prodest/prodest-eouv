@@ -11,6 +11,7 @@ namespace Prodest.EOuv.Dominio.Modelo.Interfaces.Service
     {
         Task<GerarUrlModel> GetGerarUrl(int dataLength);
         Task<EventoModel> GetEvento(string id);
+        Task<string> GetEncaminhamentoProtocolo(string idEncaminhamento);
         Task<List<PatriarcaModel>> GetPatriarca();
         Task<List<PatriarcaModel>> GetOrganizacoes(string idPatriarca);
         Task<List<PatriarcaSetorModel>> GetSetores(string idOrgao);

@@ -22,6 +22,8 @@ namespace Prodest.EOuv.Dominio.Modelo.Interfaces.BLL
         Task<List<PatriarcaSetorModel>> GetSetores(string idOrgao);
         Task<List<PatriarcaSetorModel>> GetGrupoTrabalho(string idOrgao);
         Task<List<PatriarcaSetorModel>> GetComissoes(string idOrgao);
+        Task<EventoModel> GetEvento(string id);
+        Task<string> GetEncaminhamentoProtocolo(string idEncaminhamento);
         Task<string> PostEncaminhamentoNovo(EncaminhamentoRequestModel parameters);
         Task<PapelModel[]> GetUsuarioPapeisEncaminhamento(Guid id);
         Task<PlanoModel[]> GetPlanosAtivos(Guid id);

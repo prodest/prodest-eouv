@@ -32,6 +32,16 @@ namespace Prodest.EOuv.Dominio.BLL
             return await _eDocsService.GetDocumentoDownloadUrl(id.ToString());
         }
 
+        public async Task<EventoModel> GetEvento(string id)
+        {
+            return await _eDocsService.GetEvento(id);
+        }
+
+        public async Task<string> GetEncaminhamentoProtocolo(string idEncaminhamento)
+        {
+            return await _eDocsService.GetEncaminhamentoProtocolo(idEncaminhamento);
+        }
+
         public async Task<List<PatriarcaModel>> GetPatriarca()
         {
             return await _eDocsService.GetPatriarca();

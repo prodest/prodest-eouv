@@ -29,6 +29,16 @@ namespace Prodest.EOuv.Shared.Util
             Application = 2
         }
 
+        public enum EventoSituacao
+        {
+            Criado = 1,
+            Enfileirado = 2,
+            Processando = 3,
+            Executado = 4,
+            Concluido = 5,
+            Cancelado = 9
+        }
+
         public enum DocumentoValorLegal
         {
             Original = 1,

@@ -48,6 +48,11 @@ namespace Prodest.EOuv.Infra.Service
             return await GetRequest<EventoModel>($"{_baseUrl}/v2/eventos/{id}");
         }
 
+        public async Task<string> GetEncaminhamentoProtocolo(string idEncaminhamento)
+        {
+            return await GetRequest<string>($"{_baseUrl}/v2/encaminhamento/{idEncaminhamento}/inicial/protocolo");
+        }
+
         public async Task<List<PatriarcaModel>> GetPatriarca()
         {
             return await GetRequest<List<PatriarcaModel>>($"{_baseUrl}/v2/agente/patriarcas");
@@ -74,6 +79,11 @@ namespace Prodest.EOuv.Infra.Service
         }
 
         public async Task<List<PapelModel>> GetPapeis()
+        {
+            return await GetRequest<List<PapelModel>>($"{_baseUrl}/v2/usuario/papeis");
+        }
+
+        public async Task<List<PapelModel>> GetRastreio()
         {
             return await GetRequest<List<PapelModel>>($"{_baseUrl}/v2/usuario/papeis");
         }
