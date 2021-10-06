@@ -176,7 +176,16 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             return Json(planos);
         }
 
-        
+        public string GetDocumentoDownloadUrl()
+        {
+            System.Threading.Tasks.Task<string> task = _edocsBLL.GetDocumentoDownloadUrl(new Guid("38683aef-0613-45ea-bfd0-663783a7bfe0"));// analista
+
+            Task.WaitAll(task);
+
+            string url = task.Result;
+            return url;
+        }
+
         public string DocumentoCapturarNatoDigitalCopiaServidor()
         {
             EventoModel evento = BuscarEvento(GetEventoDocumentoCapturarNatoDigitalCopiaServidor()); //com o Id do evento descobrimos o Id do Documento

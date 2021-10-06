@@ -16,7 +16,7 @@ namespace Prodest.EOuv.Dominio.Modelo.Interfaces.BLL
         Task<PlanoModel[]> GetPlanosAtivos(string id);
         Task<ClasseModel[]> GetClassesAtivas(string id);
         Task<FundamentoLegalModel[]> GetFundamentosLegais(string id);
-        Task<string> PostDocumentoCapturarNatoDigitalCopiaServidor(DocumentoRequestModel parameters);
+        Task<string> PostDocumentoCapturarNatoDigitalCopiaServidor(DocumentoRequestModel parameters);        
         Task<List<PatriarcaModel>> GetPatriarca();
         Task<List<PatriarcaModel>> GetOrganizacoes(string idPatriarca);
         Task<List<PatriarcaSetorModel>> GetSetores(string idOrgao);
