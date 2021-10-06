@@ -12,6 +12,8 @@ namespace Prodest.EOuv.Dominio.Modelo.Interfaces.BLL
         Task<List<PapelModel>> GetPapeis();
         Task<EncaminhamentoModel> GetEncaminhamento(Guid id);
         Task<string> GetDocumentoDownloadUrl(Guid id);
+        Task<DocumentoControladoModel[]> GetDocumentoEncaminhamento(string idEncaminhamento);
+        Task<DocumentoModel> GetDocumento(string id);
         Task<string> PostTempUrlMinio(GerarUrlModel gerarUrl, byte[] data);
         Task<PlanoModel[]> GetPlanosAtivos(string id);
         Task<ClasseModel[]> GetClassesAtivas(string id);
@@ -23,7 +25,8 @@ namespace Prodest.EOuv.Dominio.Modelo.Interfaces.BLL
         Task<List<PatriarcaSetorModel>> GetGrupoTrabalho(string idOrgao);
         Task<List<PatriarcaSetorModel>> GetComissoes(string idOrgao);
         Task<EventoModel> GetEvento(string id);
-        Task<string> GetEncaminhamentoProtocolo(string idEncaminhamento);
+        Task<string> GetProtocoloEncaminhamento(string idEncaminhamento);
+        Task<EncaminhamentoModel> GetEncaminhamentoPorProtocolo(string protocolo);
         Task<string> PostEncaminhamentoNovo(EncaminhamentoRequestModel parameters);
         Task<PapelModel[]> GetUsuarioPapeisEncaminhamento(Guid id);
         Task<PlanoModel[]> GetPlanosAtivos(Guid id);

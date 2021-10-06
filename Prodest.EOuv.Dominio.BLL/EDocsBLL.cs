@@ -31,15 +31,29 @@ namespace Prodest.EOuv.Dominio.BLL
         {
             return await _eDocsService.GetDocumentoDownloadUrl(id.ToString());
         }
+        public async Task<DocumentoModel> GetDocumento(string id)
+        {
+            return await _eDocsService.GetDocumento(id);
+        }
+                
+        public async Task<DocumentoControladoModel[]> GetDocumentoEncaminhamento(string id)
+        {
+            return await _eDocsService.GetDocumentoEncaminhamento(id);
+        }
 
         public async Task<EventoModel> GetEvento(string id)
         {
             return await _eDocsService.GetEvento(id);
         }
-
-        public async Task<string> GetEncaminhamentoProtocolo(string idEncaminhamento)
+        
+        public async Task<string> GetProtocoloEncaminhamento(string idEncaminhamento)
         {
-            return await _eDocsService.GetEncaminhamentoProtocolo(idEncaminhamento);
+            return await _eDocsService.GetProtocoloEncaminhamento(idEncaminhamento);
+        }
+        
+        public async Task<EncaminhamentoModel> GetEncaminhamentoPorProtocolo(string protocolo)
+        {
+            return await _eDocsService.GetEncaminhamentoPorProtocolo(protocolo);
         }
 
         public async Task<List<PatriarcaModel>> GetPatriarca()

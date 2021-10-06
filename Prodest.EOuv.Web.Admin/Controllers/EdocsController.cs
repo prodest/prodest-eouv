@@ -178,13 +178,53 @@ namespace Prodest.EOuv.Web.Admin.Controllers
 
         public string GetDocumentoDownloadUrl()
         {
-            System.Threading.Tasks.Task<string> task = _edocsBLL.GetDocumentoDownloadUrl(new Guid("38683aef-0613-45ea-bfd0-663783a7bfe0"));// analista
+            System.Threading.Tasks.Task<string> task = _edocsBLL.GetDocumentoDownloadUrl(new Guid("38683aef-0613-45ea-bfd0-663783a7bfe0"));// Documento
 
             Task.WaitAll(task);
 
             string url = task.Result;
             return url;
         }
+        //public JsonResult GetEncaminhamentoPorProtocolo()
+        //{//Retorna o encaminhamento inicial do protocolo
+
+        //    string idProtocolo = "2021-RXRGDG";
+        //    return GetEncaminhamentoPorProtocolo(idProtocolo);
+        //}
+        public JsonResult GetEncaminhamentoPorProtocolo(string id)
+        {//Retorna o encaminhamento inicial do protocolo
+
+            string idProtocolo = id;
+            System.Threading.Tasks.Task<EncaminhamentoModel> task = _edocsBLL.GetEncaminhamentoPorProtocolo(idProtocolo);
+
+            Task.WaitAll(task);
+
+            EncaminhamentoModel idEncaminhamento = task.Result;
+            return Json(idEncaminhamento);
+        }
+
+        public string GetProtocoloEncaminhamento()
+        {//Retorna o encaminhamento inicial do protocolo
+
+            string idEncaminhamento = "22a16dcb-8248-4655-ad33-6d7df581d7f2"; 
+            System.Threading.Tasks.Task<string> task = _edocsBLL.GetProtocoloEncaminhamento(idEncaminhamento);
+
+            Task.WaitAll(task);
+
+            string protocolo = task.Result;
+            return protocolo;
+        }
+
+        public JsonResult GetDocumentoEncaminhamento()
+        {
+            System.Threading.Tasks.Task<DocumentoControladoModel[]> task = _edocsBLL.GetDocumentoEncaminhamento("89565801-9382-4785-94f8-cd35d4ab39d2");// Documento
+
+            Task.WaitAll(task);
+
+            DocumentoControladoModel[] documentos = task.Result;            
+            return Json(documentos);
+        }
+
 
         public string DocumentoCapturarNatoDigitalCopiaServidor()
         {
@@ -230,9 +270,9 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             return result;
         }
 
-        public string GetProtocoloEncaminhamento()
+        public string GetProtocoloEncaminhamentoNovo()
         {
-            System.Threading.Tasks.Task<string> task = _edocsBLL.GetEncaminhamentoProtocolo(Encaminhar());// ESGOV
+            System.Threading.Tasks.Task<string> task = _edocsBLL.GetProtocoloEncaminhamento(Encaminhar());
 
             Task.WaitAll(task);
 

@@ -48,9 +48,14 @@ namespace Prodest.EOuv.Infra.Service
             return await GetRequest<EventoModel>($"{_baseUrl}/v2/eventos/{id}");
         }
 
-        public async Task<string> GetEncaminhamentoProtocolo(string idEncaminhamento)
+        public async Task<string> GetProtocoloEncaminhamento(string idEncaminhamento)
         {
             return await GetRequest<string>($"{_baseUrl}/v2/encaminhamento/{idEncaminhamento}/inicial/protocolo");
+        }
+        
+        public async Task<EncaminhamentoModel> GetEncaminhamentoPorProtocolo(string protocolo)
+        {
+            return await GetRequest<EncaminhamentoModel>($"{_baseUrl}/v2/encaminhamento/{protocolo}/inicial");            
         }
 
         public async Task<List<PatriarcaModel>> GetPatriarca()
@@ -92,6 +97,11 @@ namespace Prodest.EOuv.Infra.Service
         public async Task<DocumentoModel> GetDocumento(string id)
         {
             return await GetRequest<DocumentoModel>($"{_baseUrl}/v2/documentos/{id}");
+        }
+
+        public async Task<DocumentoControladoModel[]> GetDocumentoEncaminhamento(string idEncaminhamento)
+        {
+            return await GetRequest<DocumentoControladoModel[]>($"{_baseUrl}/v2/encaminhamento/{idEncaminhamento}/documentos");
         }
 
         public async Task<EncaminhamentoModel> GetEncaminhamento(string id)
