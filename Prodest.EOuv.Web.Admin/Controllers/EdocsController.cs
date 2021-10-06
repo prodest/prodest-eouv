@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Prodest.EOuv.Dominio.Modelo.Interfaces.BLL;
+using Prodest.EOuv.Dominio.Modelo.Model;
 using Prodest.EOuv.Dominio.Modelo.Model.Edocs;
 using Prodest.EOuv.Shared.Util;
 using Prodest.EOuv.Shared.Utils.Exceptions;
@@ -18,12 +19,15 @@ namespace Prodest.EOuv.Web.Admin.Controllers
     {
         private readonly IDespachoWorkService _despachoWorkService;
         private readonly IEDocsBLL _edocsBLL;
+        private readonly IAcessoCidadaoBLL _AcessoCidadaoBLL;
+        
 
 
-        public EdocsController(IDespachoWorkService despachoWorkService, IEDocsBLL edocsBLL)
+        public EdocsController(IDespachoWorkService despachoWorkService, IEDocsBLL edocsBLL, IAcessoCidadaoBLL acessoCidadaoBLL)
         {
             _despachoWorkService = despachoWorkService;
             _edocsBLL = edocsBLL;
+            _AcessoCidadaoBLL = acessoCidadaoBLL;
         }
 
         public JsonResult BuscarPatriarca()
@@ -161,7 +165,18 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             FundamentoLegalModel[] planos = task.Result;
             return Json(planos);
         }
-        //ainda precisa de mais informações
+
+        public JsonResult GetConjuntoAgentesPublicos()
+        {
+            System.Threading.Tasks.Task<AgentePublicoModel[]> task = _AcessoCidadaoBLL.GetConjuntoAgentesPublicos(new Guid ("ec00931d-74a2-4877-9b93-95ce029ba7f6"));// analista
+
+            Task.WaitAll(task);
+
+            AgentePublicoModel[] planos = task.Result;
+            return Json(planos);
+        }
+
+        
         public string DocumentoCapturarNatoDigitalCopiaServidor()
         {
             EventoModel evento = BuscarEvento(GetEventoDocumentoCapturarNatoDigitalCopiaServidor()); //com o Id do evento descobrimos o Id do Documento

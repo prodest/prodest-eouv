@@ -17,7 +17,10 @@ namespace Prodest.EOuv.Shared.Configuracao
 
             services.AddScoped<IApiContext, ApiContext>();
             services.AddScoped<IEDocsBLL, EDocsBLL>();
+            services.AddScoped<IAcessoCidadaoService, AcessoCidadaoService>();
+            services.AddScoped<IOrganogramaService, OrganogramaService>();
             services.AddScoped<IEDocsService, EDocsService>();
+            services.AddScoped<IAcessoCidadaoBLL, AcessoCidadaoBLL>();
 
             services.AddScoped<IDespachoWorkService, DespachoWorkService>();
             services.AddScoped<IManifestacaoWorkService, ManifestacaoWorkService>();

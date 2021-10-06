@@ -6,5 +6,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Prodest.EOuv.Dominio.Modelo\Prodest.EOuv.Dominio.Modelo.csproj" />
+		<ProjectReference Include="..\Prodest.EOuv.Infra.Service\Prodest.EOuv.Infra.Servico.csproj" />
 	</ItemGroup>
 </Project>
