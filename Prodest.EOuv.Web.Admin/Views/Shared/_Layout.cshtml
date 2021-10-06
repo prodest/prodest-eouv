@@ -5,15 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - EOuv</title>
 
-    <link rel="stylesheet" href="~/dist/bootstrap-5.0.0-beta3-dist/css/bootstrap.min.css" />
+    <!-- MDB -->
+    <link rel="stylesheet" href="~/dist/mdb/css/mdb.min.css" />
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="~/dist/mdb/css/admin.css" />
     <link rel="stylesheet" href="~/dist/fontawesome-free-5.15.3-web/css/all.min.css" />
-    <link rel="stylesheet" href="~/dist/adminkit-2.2.0/css/app.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
-        
-    <script defer src="~/dist/vue-3.2.6/vue.global.js"></script>
 
-    <script defer src="~/dist/bootstrap-5.0.0-beta3-dist/js/bootstrap.bundle.min.js"></script>
-    <script defer src="~/dist/adminkit-2.2.0/js/app.js" asp-append-version="true"></script>
+    <script defer src="~/dist/vue-3.2.6/vue.global.js"></script>
 
     <script defer src="~/scripts/common/fetchData.js" asp-append-version="true"></script>
     <script defer src="~/scripts/common/bootstrapHelper.js" asp-append-version="true"></script>
@@ -23,7 +21,15 @@
     <script defer src="~/scripts/common/vue/vueReusaveis.js" asp-append-version="true"></script>
     <script defer src="~/scripts/common/mensagemSistema.js" asp-append-version="true"></script>
 
-    <script defer src="/scripts/app/navbar/NavBarUsuario.js"></script>    
+    <script defer src="/scripts/app/navbar/NavBarUsuario.js"></script>
+
+    <!--Main layout-->
+    <!-- MDB -->
+    <script type="text/javascript" src="~/dist/mdb/js/mdb.min.js"></script>
+    <!-- Custom scripts -->
+    <!--
+    ...
+    -->
 
     @await RenderSectionAsync("Scripts", required: false)
 
@@ -40,74 +46,83 @@
     }
     <input type="hidden" id="RequestVerificationToken" name="RequestVerificationToken" value="@GetAntiXsrfRequestToken()">
 
-    <div class="wrapper">
-        <nav id="sidebar" class="sidebar">
-            <div class="sidebar-content js-simplebar">
-                <a class="sidebar-brand" href="/">
-                    <span class="align-middle">E-Ouv</span>
-                </a>
-
-                <ul class="sidebar-nav">
-
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="/">
-                            <i class="align-middle me-2 fas fa-home"></i>
-                            <span>Início</span>
-                        </a>
-                    </li>
-
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="/despacho">
-                            <i class="align-middle me-2 fas fa-building"></i>
-                            <span>Despachos</span>
-                        </a>
-                    </li>
-
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="/despacho/NovoDespacho">
-                            <i class="align-middle me-2 fas fa-sitemap"></i>
-                            <span>Novo Despacho</span>
-                        </a>
-                    </li>
-
-                </ul>
-
-                <div class="sidebar-cta">
-                    <div class="sidebar-cta-content">
-                        <strong class="d-inline-block mb-2">E-Ouv</strong>
-                        <div class="mb-3 text-sm">
-                            Sistema desenvolvido e mantido pela Prodest.
-                        </div>
-                    </div>
+    <!--Main Navigation-->
+    <header>
+        <!-- Sidebar -->
+        <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
+            <div class="position-sticky">
+                <div class="list-group list-group-flush mx-3 mt-4">
+                    <a href="/" title="Sistema Eletrônico de Ouvidoria" class="list-group-item list-group-item-action list-group-item-info py-2 ripple" aria-current="true">
+                        <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>Home</span>
+                    </a>
+                    <a href="/Despacho" title="Despachos" class="list-group-item list-group-item-action list-group-item-info py-2 ripple">
+                        <i class="fas fa-chart-area fa-fw me-3"></i><span>Despachos </span>
+                    </a>
+                    <a href="/Despacho/Add" title="Novo Despacho" class="list-group-item list-group-item-action list-group-item-info py-2 ripple active">
+                        <i class="fas fa-lock fa-fw me-3"></i><span>Novo Despacho</span>
+                    </a>                    
                 </div>
             </div>
         </nav>
+        <!-- Sidebar -->
+        <!-- Navbar -->
+        <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light bg-info fixed-top">
+            <!-- Container wrapper -->
+            <div class="container-fluid">
+                <!-- Toggle button -->
+                <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#sidebarMenu"
+                        aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fas fa-bars"></i>
+                </button>
 
-        <div class="main">
-
-            <nav id="organograma-nav-bar" class="navbar navbar-expand navbar-light navbar-bg">
-                <a class="sidebar-toggle d-flex">
-                    <i class="hamburger align-self-center"></i>
+                <!-- Brand -->
+                <a class="navbar-brand font-weight-bold" href="#">
+                    E-OUV
                 </a>
+                <!-- Search form -->
+                <form class="d-none d-md-flex input-group w-auto my-auto">
+                    <input autocomplete="off" type="search" class="form-control rounded"
+                           placeholder='Search (ctrl + "/" to focus)' style="min-width: 225px" />
+                    <span class="input-group-text border-0"><i class="fas fa-search"></i></span>
+                </form>
 
-                <div class="d-flex">
-                    <h2>@ViewData["Title"]</h2>
-                </div>
-
-                <nav-bar-usuario></nav-bar-usuario>
-
-            </nav>
-
-            <main class="content">
-                @RenderBody()
-            </main>
-
-            <div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
-
+                <!-- Right links -->
+                <ul class="navbar-nav ms-auto d-flex flex-row">
+                    <!-- Avatar -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle hidden-arrow d-flex align-items-center" href="#"
+                           id="navbarDropdownMenuLink" role="button" data-mdb-toggle="dropdown" aria-expanded="false">
+                            <img src="https://mdbootstrap.com/img/Photos/Avatars/img (31).jpg" class="rounded-circle" height="22"
+                                 alt="" loading="lazy" />
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" href="#">Meu Perfil</a></li>                            
+                            <li><a class="dropdown-item" href="#">Sair</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- Container wrapper -->
+        </nav>
+        <!-- Navbar -->
+    </header>
+    <!--Main Navigation-->
+    <!--Main layout-->
+    <main style="margin-top: 58px">
+        <div class="container pt-4">            
+            <section class="mb-4">                
+                    <div class="card">
+                        <div class="card-header py-3">
+                            <h5 class="mb-0"><strong>@ViewData["Title"]</strong></h5>
+                        </div>
+                        <div class="card-body">
+                            @RenderBody()
+                        </div>
+                    </div>                
+            </section>
         </div>
-
-    </div>
-
+    </main>
+    <!--Main layout-->
     @*Vue Templates*@
     @await Html.PartialAsync("_NavBarTemplate")
     @RenderSection("templates", false)
