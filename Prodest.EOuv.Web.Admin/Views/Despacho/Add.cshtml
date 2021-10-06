@@ -4,8 +4,8 @@
 }
 
 @section scripts{
-<script defer src="~/scripts/app/shared/eOuvApi.js" asp-append-version="true"></script>
-<script defer src="~/scripts/app/pages/despacho/despachoAdd.js" asp-append-version="true"></script>
+    <script defer src="~/scripts/app/shared/eOuvApi.js" asp-append-version="true"></script>
+    <script defer src="~/scripts/app/pages/despacho/despachoAdd.js" asp-append-version="true"></script>
 }
 
 <div class="container-fluid p-0">
@@ -18,10 +18,159 @@
 
 @section templates{
 
-<script type="text/html" id="template-despacho-form">    
-    <div>
-        <h4>Teste: {{dadosBasicos}}</h4>
-    </div>    
-</script>
+    <script type="text/html" id="template-despacho-form">
+        <div>
+            <div class="accordion" id="accordionPanelsManifestacao">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="dadoBasicos">
+                        <button class="accordion-button" type="button" data-mdb-toggle="collapse"
+                                data-mdb-target="#panel-DadosBasicos" aria-expanded="true" aria-controls="panel-DadosBasicos">
+                            Dados Básicos da Manifestação
+                        </button>
+                    </h2>
+                    <div id="panel-DadosBasicos" class="accordion-collapse collapse hide" aria-labelledby="dadoBasicos">
+                        <div class="accordion-body">
+                            <div class="row justify-content-start">
+                                <div class="col-md-4">
+                                    <span class="fw-bold">Número de Protocolo</span>
+                                    <br />
+                                    <span>{{dadosBasicos.numProtocolo}}</span>
+                                </div>
 
-    }
+                                <div class="col-md-4">
+                                    <span class="fw-bold">Tipo de Manifestação</span>
+                                    <br />
+                                    <span>{{dadosBasicos.tipoManifestacao}}</span>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <span class="fw-bold">Situação</span>
+                                    <br />
+                                    <span>{{dadosBasicos.situacao}}</span>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <span class="fw-bold">Órgão Atual</span>
+                                    <br />
+                                    <span>{{dadosBasicos.orgaoAtual.nomeFantasia}}</span>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <span class="fw-bold">Órgão Destinatário</span>
+                                    <br />
+                                    <span>{{dadosBasicos.orgaoDestinatario.nomeFantasia}}</span>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <span class="fw-bold">Assunto</span>
+                                    <br />
+                                    <span>{{dadosBasicos.assunto}}</span>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <span class="fw-bold">Data de Cadastro</span>
+                                    <br />
+                                    <span>{{dadosBasicos.dataRegistro}}</span>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <span class="fw-bold">Prazo de Atendimento</span>
+                                    <br />
+                                    <span>{{dadosBasicos.prazoResposta}}</span>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <span class="fw-bold">Registrado Por</span>
+                                    <br />
+                                    <span>{{dadosBasicos.usuarioCadastrador}}</span>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <span class="fw-bold">Canal de Entrada</span>
+                                    <br />
+                                    <span>{{dadosBasicos.canalEntrada}}</span>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <span class="fw-bold">Modo de Resposta</span>
+                                    <br />
+                                    <span>{{dadosBasicos.modoResposta}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="demaisDados">
+                        <button class="accordion-button" type="button" data-mdb-toggle="collapse"
+                                data-mdb-target="#panel-demaisDados" aria-expanded="true" aria-controls="panel-demaisDados">
+                            Demais Dados da Manifestação
+                        </button>
+                    </h2>
+                    <div id="panel-demaisDados" class="accordion-collapse collapse hide" aria-labelledby="demaisDados">
+                        <div class="accordion p-4" id="accordionPanelsDemaisDados">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="Teor">
+                                    <button class="accordion-button" type="button" data-mdb-toggle="collapse"
+                                            data-mdb-target="#panel-Teor" aria-expanded="true" aria-controls="panel-Teor">
+                                        Teor da Manifestação
+                                    </button>
+                                </h2>
+                                <div id="panel-Teor" class="accordion-collapse collapse hide" aria-labelledby="Teor">
+                                    <div class="accordion-body">
+                                        <div class="row justify-content-start">
+                                            <div class="col-md12">
+                                                <span class="fw-bold">Município do local do fato</span>
+                                                <br />
+                                                <span>{{teorManifestacao.localFato}}</span>
+                                            </div>
+                                            <div class="col-md12">
+                                                <span class="fw-bold">Texto da Manifestação</span>
+                                                <br />
+                                                <span>{{teorManifestacao.textoManifestacao}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="historicoManifestacao">
+                        <button class="accordion-button" type="button" data-mdb-toggle="collapse"
+                                data-mdb-target="#panel-historicoManifestacao" aria-expanded="true" aria-controls="panel-historicoManifestacao">
+                            Histórico da Manifestação
+                        </button>
+                    </h2>
+                    <div id="panel-historicoManifestacao" class="accordion-collapse collapse hide" aria-labelledby="historicoManifestacao">
+                        <div class="accordion-body">
+                            <table class="table table-striped table-bordered">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th scope="col">Data/Hora</th>
+                                        <th scope="col">Órgão</th>
+                                        <th scope="col">Responsável</th>
+                                        <th scope="col">Situação</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(dados, index) in historicoManifestacao" :key="index">
+                                        <td>{{dados.dataHistorico}}</td>
+                                        <td>{{dados.orgao.siglaOrgao}}</td>
+                                        <td>{{index}}</td>
+                                        <td>{{dados.situacaoManifestacao.descSituacaoManifestacao}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </script>
+
+}
