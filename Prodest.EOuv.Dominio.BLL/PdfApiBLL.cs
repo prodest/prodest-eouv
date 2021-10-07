@@ -1,0 +1,32 @@
+﻿using Prodest.EOuv.Dominio.Modelo.Interfaces;
+using Prodest.EOuv.Dominio.Modelo.Interfaces.BLL;
+using Prodest.EOuv.Dominio.Modelo.Interfaces.Service;
+using Prodest.EOuv.Dominio.Modelo.Model.Edocs;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Prodest.EOuv.Dominio.BLL
+{
+    public class PdfApiBLL : IPdfApiBLL
+    {
+        private readonly IPdfApiService _pdfApiService;
+
+        public PdfApiBLL(IPdfApiService pdfApiService)
+        {
+            _pdfApiService = pdfApiService;
+        }
+
+        public async Task<byte[]> ConcatenarPdfs(List<byte[]> listaDocumentos)
+        {
+            return await _pdfApiService.ConcatenarPdfs(listaDocumentos);
+        }
+
+        public async Task<byte[]> GerarPdfByHtml(string html)
+        {
+            return await _pdfApiService.GerarPdfByHtml(html);
+        }
+    }
+}

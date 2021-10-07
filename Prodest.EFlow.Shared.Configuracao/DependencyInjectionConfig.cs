@@ -7,6 +7,7 @@ using Prodest.EOuv.Dominio.Modelo.Interfaces.Service;
 using Prodest.EOuv.Infra;
 using Prodest.EOuv.Dominio.Modelo.Interfaces.BLL;
 using Prodest.EOuv.Infra.Service;
+using Prodest.EOuv.Dominio.Modelo.Interfaces;
 
 namespace Prodest.EOuv.Shared.Configuracao
 {
@@ -14,13 +15,14 @@ namespace Prodest.EOuv.Shared.Configuracao
     {
         public static void InjetarDependencias(this IServiceCollection services)
         {
-
             services.AddScoped<IApiContext, ApiContext>();
             services.AddScoped<IEDocsBLL, EDocsBLL>();
             services.AddScoped<IAcessoCidadaoService, AcessoCidadaoService>();
             services.AddScoped<IOrganogramaService, OrganogramaService>();
             services.AddScoped<IEDocsService, EDocsService>();
             services.AddScoped<IAcessoCidadaoBLL, AcessoCidadaoBLL>();
+            services.AddScoped<IPdfApiBLL, PdfApiBLL>();
+            services.AddScoped<IPdfApiService, PdfApiService>();
 
             services.AddScoped<IDespachoWorkService, DespachoWorkService>();
             services.AddScoped<IManifestacaoWorkService, ManifestacaoWorkService>();
