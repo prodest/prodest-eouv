@@ -96,10 +96,26 @@ namespace Prodest.EOuv.Infra.Service
         public async Task<EncaminhamentoRastreioModel> GetRastreioCompleto(string idEncaminhamento)
         {
             var rastreio =  await GetRequest<EncaminhamentoRastreioModel>($"{_baseUrl}/v2/encaminhamento/{idEncaminhamento }/rastreio");
+
+            rastreio = await BuscaDocumentoRastreio(rastreio);
+            //rastreio.Documentos = await GetDocumentoEncaminhamento(rastreio.Id);
+
+            //foreach (DocumentoControladoModel documento in rastreio.Documentos)
+            //{
+            //    documento.Documento.Url = await GetDocumentoDownloadUrl(documento.Documento.Id);
+            //}
+            return rastreio;
+        }
+
+        public async Task<EncaminhamentoRastreioModel> BuscaDocumentoRastreio(EncaminhamentoRastreioModel rastreio)
+        {
             rastreio.Documentos = await GetDocumentoEncaminhamento(rastreio.Id);
-            foreach (DocumentoControladoModel documento in rastreio.Documentos)
+            if (rastreio.EncaminhamentosPosteriores != null)
             {
-                documento.Documento.Url = await GetDocumentoDownloadUrl(documento.Documento.Id);
+                for (int i = 0; i < rastreio.EncaminhamentosPosteriores.Count(); i++)
+                {
+                    rastreio.EncaminhamentosPosteriores[i] = await BuscaDocumentoRastreio(rastreio.EncaminhamentosPosteriores[i]);
+                }
             }
             return rastreio;
         }

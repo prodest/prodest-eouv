@@ -46,5 +46,10 @@ namespace Prodest.EOuv.Shared.Util
             CopiaAutenticadaAdministrativamente = 3,
             CopiaSimples = 4
         }
+
+        public enum nivelAcesso
+        {
+            Sigiloso = 4
+        }
     }
 }
