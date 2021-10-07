@@ -20,14 +20,29 @@ namespace Prodest.EOuv.Web.Admin.Controllers
         private readonly IDespachoWorkService _despachoWorkService;
         private readonly IEDocsBLL _edocsBLL;
         private readonly IAcessoCidadaoBLL _AcessoCidadaoBLL;
-        
+        private readonly IPdfApiBLL _pdfApiBLL;
 
 
-        public EdocsController(IDespachoWorkService despachoWorkService, IEDocsBLL edocsBLL, IAcessoCidadaoBLL acessoCidadaoBLL)
+        public FileContentResult Pdf()
+        {
+            var teste = "<html> <head>     <title></title> </head> <body>     <div class='text-center'>         <h1 class='display-4'>EOuv</h1>         <p>Sistema de Ouvidoria do Espírito Santo</p>     </div> </body> </html>";
+
+            Task<byte[]> task = _pdfApiBLL.GerarPdfByHtml(teste);
+            Task.WaitAll(task);
+            var resultado = task.Result;
+
+            //System.IO.File.WriteAllBytes(@"C:\Temp\hello.pdf", resultado);
+
+            return File(resultado, "application/pdf");
+        }
+
+
+        public EdocsController(IDespachoWorkService despachoWorkService, IEDocsBLL edocsBLL, IAcessoCidadaoBLL acessoCidadaoBLL, IPdfApiBLL pdfApiBLL)
         {
             _despachoWorkService = despachoWorkService;
             _edocsBLL = edocsBLL;
             _AcessoCidadaoBLL = acessoCidadaoBLL;
+            _pdfApiBLL = pdfApiBLL;
         }
 
         public JsonResult BuscarPatriarca()
@@ -85,6 +100,22 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             return Json(papel);
         }
 
+        public string EnviarArquivo(byte[] arquivo)
+        {
+            string caminhoCompletoArquivoLocal = @"C:\Temp\TesteEDOCS.pdf";
+            FileInfo fi = new FileInfo(caminhoCompletoArquivoLocal);
+            int tamanhoArquivo = Convert.ToInt32(fi.Length);
+
+            Task<GerarUrlModel> task = _edocsBLL.GetGerarUrl(tamanhoArquivo);
+            byte[] readText = System.IO.File.ReadAllBytes(caminhoCompletoArquivoLocal);
+            Task<string> task2 = _edocsBLL.PostTempUrlMinio(task.Result, readText);
+            Task.WaitAll(task);
+
+            string result = task2.Result;
+            //IdentificadorTemporarioArquivoNaNuvem
+            return result;
+        }
+
         public string EnviarArquivo()
         {
             string caminhoCompletoArquivoLocal = @"C:\Temp\TesteEDOCS.pdf";
@@ -135,15 +166,15 @@ namespace Prodest.EOuv.Web.Admin.Controllers
 
         public async Task<EventoModel> BuscarEventoConcluidoAsync(string id,
             int? tries = 30,
-            int? delayMs = 1000) 
-        { 
+            int? delayMs = 1000)
+        {
             var evento = new EventoModel();
 
             // realiza polling na API do E-Docs até que o Evento esteja disponível
             do
             {
                 await Task.Delay(delayMs.Value);
-                evento = await _edocsBLL.GetEvento(id); 
+                evento = await _edocsBLL.GetEvento(id);
                 tries--;
             } while (evento.Situacao.ToUpper() != nameof(Enums.EventoSituacao.Concluido).ToUpper() && tries > 0);
 
@@ -168,7 +199,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
 
         public JsonResult GetConjuntoAgentesPublicos()
         {
-            System.Threading.Tasks.Task<AgentePublicoModel[]> task = _AcessoCidadaoBLL.GetConjuntoAgentesPublicos(new Guid ("ec00931d-74a2-4877-9b93-95ce029ba7f6"));// analista
+            System.Threading.Tasks.Task<AgentePublicoModel[]> task = _AcessoCidadaoBLL.GetConjuntoAgentesPublicos(new Guid("ec00931d-74a2-4877-9b93-95ce029ba7f6"));// analista
 
             Task.WaitAll(task);
 
@@ -206,7 +237,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
         public string GetProtocoloEncaminhamento()
         {//Retorna o encaminhamento inicial do protocolo
 
-            string idEncaminhamento = "22a16dcb-8248-4655-ad33-6d7df581d7f2"; 
+            string idEncaminhamento = "22a16dcb-8248-4655-ad33-6d7df581d7f2";
             System.Threading.Tasks.Task<string> task = _edocsBLL.GetProtocoloEncaminhamento(idEncaminhamento);
 
             Task.WaitAll(task);
@@ -221,7 +252,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
 
             Task.WaitAll(task);
 
-            DocumentoControladoModel[] documentos = task.Result;            
+            DocumentoControladoModel[] documentos = task.Result;
             return Json(documentos);
         }
 
@@ -250,6 +281,48 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             EventoModel evento = BuscarEvento(GetEventoDocumentoCapturarNatoDigitalCopiaServidor()); //com o Id do evento descobrimos o Id do Documento
             return evento.IdDocumento;
         }
+
+        public string GetEventoDocumentoCapturarNatoDigitalCopiaServidor(byte[] arquivo)
+        {
+            //Task<string> task = _edocsBLL.PostDocumentoCapturarNatoDigitalCopiaServidor(parameters);
+            //Task.WaitAll(task);
+
+            //string result = task.Result;
+            //string identificadorTemporarioArquivoNaNuvem = JsonConvert.SerializeObject(EnviarArquivo());
+            string identificadorTemporarioArquivoNaNuvem = EnviarArquivo(arquivo);
+
+            DocumentoRequestModel parameters = new DocumentoRequestModel
+            {
+                IdPapelCapturador = "6470bd19-c178-4824-8edc-e8c3ef22a536", //analista
+                IdClasse = "b84db19f-7c05-44b8-9f07-9592e3a91f0a", //"01.01.05.01"
+                ValorLegalDocumentoConferencia = Shared.Util.Enums.DocumentoValorLegal.CopiaSimples,
+                ValorLegal = Shared.Util.Enums.DocumentoValorLegal.CopiaSimples,
+                NomeArquivo = "Manifestação número",
+                CredenciarCapturador = true,
+                RestricaoAcesso = new RestricaoAcessoModel()
+                {
+                    TransparenciaAtiva = false,
+                    IdsFundamentosLegais = new Guid[1] { new Guid("d4ecc485-d889-4e2f-848c-b2099b3412b7") }, //"Sigilo das Manifestações de Ouvidoria"
+                    ClassificacaoInformacao = new ClassificacaoInformacaoModel()
+                    {
+                        PrazoAnos = 1,
+                        PrazoMeses = 0,
+                        PrazoDias = 0,
+                        Justificativa = "Ouvidoria",
+                        IdPapelAprovador = "6470bd19-c178-4824-8edc-e8c3ef22a536", //mesmo do capturador
+                    }
+                },
+                IdentificadorTemporarioArquivoNaNuvem = identificadorTemporarioArquivoNaNuvem,
+            };
+
+            //var auxJson = JsonConvert.SerializeObject(parameters);
+
+            Task<string> task = _edocsBLL.PostDocumentoCapturarNatoDigitalCopiaServidor(parameters);
+            Task.WaitAll(task);
+
+            string result = task.Result;
+            return result;
+        }
         public string GetEventoDocumentoCapturarNatoDigitalCopiaServidor()
         {
             //Task<string> task = _edocsBLL.PostDocumentoCapturarNatoDigitalCopiaServidor(parameters);
@@ -259,17 +332,20 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             //string identificadorTemporarioArquivoNaNuvem = JsonConvert.SerializeObject(EnviarArquivo());
             string identificadorTemporarioArquivoNaNuvem = EnviarArquivo();
 
-            DocumentoRequestModel parameters = new DocumentoRequestModel {
+            DocumentoRequestModel parameters = new DocumentoRequestModel
+            {
                 IdPapelCapturador = "ec00931d-74a2-4877-9b93-95ce029ba7f6", //analista
                 IdClasse = "b84db19f-7c05-44b8-9f07-9592e3a91f0a", //"01.01.05.01"
                 ValorLegalDocumentoConferencia = Shared.Util.Enums.DocumentoValorLegal.CopiaSimples,
                 ValorLegal = Shared.Util.Enums.DocumentoValorLegal.CopiaSimples,
                 NomeArquivo = "Manifestação número",
                 CredenciarCapturador = true,
-                RestricaoAcesso = new RestricaoAcessoModel() {
+                RestricaoAcesso = new RestricaoAcessoModel()
+                {
                     TransparenciaAtiva = false,
                     IdsFundamentosLegais = new Guid[1] { new Guid("d4ecc485-d889-4e2f-848c-b2099b3412b7") }, //"Sigilo das Manifestações de Ouvidoria"
-                    ClassificacaoInformacao = new ClassificacaoInformacaoModel() {
+                    ClassificacaoInformacao = new ClassificacaoInformacaoModel()
+                    {
                         PrazoAnos = 1,
                         PrazoMeses = 0,
                         PrazoDias = 0,
@@ -305,10 +381,12 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             return evento.IdEncaminhamento;
         }
 
-        public string GetEventoEncaminhar() {
+        public string GetEventoEncaminhar()
+        {
             //DOCUMENTO CAPTURADO -> DocumentoCapturarNatoDigitalCopiaServidor
             string idDocumento = "38683aef-0613-45ea-bfd0-663783a7bfe0"; //usuário logado deve ter acesso ao documento
-            var parametros = new EncaminhamentoRequestModel() {
+            var parametros = new EncaminhamentoRequestModel()
+            {
                 Assunto = "Manifestação número",
                 Mensagem = "Manifestação número",
                 IdResponsavel = "ec00931d-74a2-4877-9b93-95ce029ba7f6",
