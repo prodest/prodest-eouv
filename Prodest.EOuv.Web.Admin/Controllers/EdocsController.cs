@@ -265,6 +265,17 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             EncaminhamentoRastreioModel rastreio = task.Result;
             return Json(rastreio);
         }
+        public JsonResult EncontraDestinatarioHangFire()
+        {
+            System.Threading.Tasks.Task<bool> task = _edocsBLL.EncontraDestinatario("89565801-9382-4785-94f8-cd35d4ab39d2", new[]{ "43ccc355-87e9-4f14-8812-6469f8f0c81b", new Guid().ToString(), new Guid().ToString()});// Encaminhamento, grupo
+            //System.Threading.Tasks.Task<bool> task = _edocsBLL.EncontraDestinatario("89565801-9382-4785-94f8-cd35d4ab39d2", new[]{ new Guid().ToString(), new Guid().ToString()});// Encaminhamento, grupo
+
+            Task.WaitAll(task);
+
+            bool encontrado = task.Result;
+            return Json(encontrado);
+        }
+        
 
         public JsonResult BuscarRastreioCompleto()
         {
@@ -390,7 +401,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
                 Assunto = "Manifestação número",
                 Mensagem = "Manifestação número",
                 IdResponsavel = "ec00931d-74a2-4877-9b93-95ce029ba7f6",
-                IdsDestinos = new string[] { "ec00931d-74a2-4877-9b93-95ce029ba7f6" },
+                IdsDestinos = new string[] { "6470bd19-c178-4824-8edc-e8c3ef22a536" },
                 IdsDocumentos = new string[] { idDocumento },
                 RestricaoAcesso = new RestricaoAcessoModel()
                 {

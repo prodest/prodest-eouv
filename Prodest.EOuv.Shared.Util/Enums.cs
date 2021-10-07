@@ -49,7 +49,14 @@ namespace Prodest.EOuv.Shared.Util
 
         public enum nivelAcesso
         {
-            Sigiloso = 4
+            Publico = 1, 
+            Organizacional = 2, 
+            Restrito = 3, 
+            Sigiloso = 4, 
+            Reservado = 5, 
+            Secreto = 6, 
+            Ultrassecreto = 7, 
+            SigilosoSemFundamentoLegal = 8
         }
     }
 }

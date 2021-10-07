@@ -88,6 +88,46 @@ namespace Prodest.EOuv.Infra.Service
             return await GetRequest<List<PapelModel>>($"{_baseUrl}/v2/usuario/papeis");
         }
 
+        public async Task<bool> EncontraDestinatario(string idEncaminhamentoRaiz, string[] idDestinatario)
+        {
+            string s = "";
+            var rastreio = await GetRequest<EncaminhamentoRastreioModel>($"{_baseUrl}/v2/encaminhamento/{idEncaminhamentoRaiz}/rastreio");
+
+            return await EncontraDestinatario(rastreio, idDestinatario);
+        }
+
+        public async Task<bool> EncontraDestinatario(EncaminhamentoRastreioModel rastreio, string[] idDestinatario)
+        {
+            if (EhDestino(rastreio, idDestinatario))
+            {
+                return true;
+            }
+            else
+            {
+                if (rastreio.EncaminhamentosPosteriores != null)
+                {
+                    for (int i = 0; i < rastreio.EncaminhamentosPosteriores.Count(); i++)
+                    {
+                        if (await EncontraDestinatario(rastreio.EncaminhamentosPosteriores[i], idDestinatario))
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+        private bool EhDestino(EncaminhamentoRastreioModel rastreio, string[] idDestinatario)
+        {
+            bool encontrou = false;
+            if ((rastreio.Destinos != null) && (rastreio.Destinos.Where(d => idDestinatario.Any(dest => dest == d.Id)).Select(s => s.Id).Count() > 0))
+            {
+                encontrou = true;
+            }
+            return encontrou;
+        }
+
         public async Task<EncaminhamentoRastreioModel> GetRastreio(string idEncaminhamento)
         {
             return await GetRequest<EncaminhamentoRastreioModel>($"{_baseUrl}/v2/encaminhamento/{idEncaminhamento }/rastreio");
@@ -98,12 +138,6 @@ namespace Prodest.EOuv.Infra.Service
             var rastreio =  await GetRequest<EncaminhamentoRastreioModel>($"{_baseUrl}/v2/encaminhamento/{idEncaminhamento }/rastreio");
 
             rastreio = await BuscaDocumentoRastreio(rastreio);
-            //rastreio.Documentos = await GetDocumentoEncaminhamento(rastreio.Id);
-
-            //foreach (DocumentoControladoModel documento in rastreio.Documentos)
-            //{
-            //    documento.Documento.Url = await GetDocumentoDownloadUrl(documento.Documento.Id);
-            //}
             return rastreio;
         }
 
