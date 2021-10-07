@@ -109,16 +109,40 @@
             this.PreencheTeorManifestacao(ret.textoManifestacao, ret.localFato);
 
             //Dados do Manifestante
-            this.PreencheDadosManifestante(ret.dadosManifestante);
-
-            //Dados da Resposta            
-            ret.respostaManifestacao.forEach(this.PreencheRespostaManifestacao)
-
-            //Dados Despacho
-            ret.despachoManifestacao.forEach(this.PreencheDespachoManifestacao);
+            this.PreencherDadosManifestante(ret.dadosManifestante);
 
             //Dados de Histórico
             ret.historicoManifestacao.forEach(this.PreencherHistoricoManifestacao);
+
+            //Dados da Resposta            
+            ret.respostaManifestacao.forEach(this.PreencherRespostaManifestacao)
+
+            //Dados Despacho
+            ret.despachoManifestacao.forEach(this.PreencherDespachoManifestacao);
+
+            //Dados Prorrogação
+            ret.prorrogacaoManifestacao.forEach(this.PreencherProrrogacaoManifestacao);
+
+            //Dados Encaminhamentos
+            ret.encaminhamentoManifestacao.forEach(this.PreencherEncaminhamentoManifestacao);
+
+            //Dados Notificações
+            ret.notificacaoManifestacao.forEach(this.PreencherNotificacoes);
+
+            //Dados Anotações
+            ret.anotacaoManifestacao.forEach(this.PreencherAnotacaoManifestacao);
+
+            //Dados Anotações
+            ret.diligenciaManifestacao.forEach(this.PreencherDiligenciaManifestacao);
+
+            //Dados Apuração
+            ret.apuracaoManifestacao.forEach(this.PreencherApuracaoManifestacao);
+
+            //Dados Complementos
+            ret.complementoManifestacao.forEach(this.PreencherComplementoManifestacao);
+
+            //Dados Anexos
+            ret.anexoManifestacao.forEach(this.PreencherAnexoManifestacao);
         },
 
         async PreencheTeorManifestacao(txtManifestacao, local) {
@@ -127,7 +151,7 @@
             this.teorManifestacao.localFato = local;
         },
 
-        async PreencheDadosManifestante(item) {
+        async PreencherDadosManifestante(item) {
             //Dados da Manifestante
             this.dadosManifestante.nome = item.nome;
             this.dadosManifestante.cpf = item.cpf;
@@ -146,15 +170,15 @@
             this.dadosManifestante.bairro = item.bairro;
         },
 
-        async PreencheRespostaManifestacao(item,) {
+        async PreencherRespostaManifestacao(item,) {
             this.respostaManifestacao.push(item);
         },
 
-        async PreencheDespachoManifestacao(item) {
+        async PreencherDespachoManifestacao(item) {
             this.despachoManifestacao.push(item);
         },
 
-        async PreencheDadosNotificacao(item) {
+        async PreencherNotificacoes(item) {
             this.notificacaoManifestacao.push(item);
         },
 
