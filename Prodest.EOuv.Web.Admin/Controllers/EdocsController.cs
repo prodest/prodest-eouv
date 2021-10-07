@@ -225,6 +225,25 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             return Json(documentos);
         }
 
+        public JsonResult BuscarRastreio()
+        {
+            System.Threading.Tasks.Task<EncaminhamentoRastreioModel> task = _edocsBLL.GetRastreio("89565801-9382-4785-94f8-cd35d4ab39d2");// Documento
+
+            Task.WaitAll(task);
+
+            EncaminhamentoRastreioModel rastreio = task.Result;
+            return Json(rastreio);
+        }
+
+        public JsonResult BuscarRastreioCompleto()
+        {
+            System.Threading.Tasks.Task<EncaminhamentoRastreioModel> task = _edocsBLL.GetRastreioCompleto("89565801-9382-4785-94f8-cd35d4ab39d2");// Documento
+
+            Task.WaitAll(task);
+
+            EncaminhamentoRastreioModel rastreio = task.Result;
+            return Json(rastreio);
+        }
 
         public string DocumentoCapturarNatoDigitalCopiaServidor()
         {

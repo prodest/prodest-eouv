@@ -21,6 +21,8 @@ namespace Prodest.EOuv.Dominio.Modelo.Interfaces.Service
         Task<List<PapelModel>> GetPapeis();
         Task<DocumentoModel> GetDocumento(string id);
         Task<DocumentoControladoModel[]> GetDocumentoEncaminhamento(string idEncaminhamento);
+        Task<EncaminhamentoRastreioModel> GetRastreio(string idEncaminhamento);
+        Task<EncaminhamentoRastreioModel> GetRastreioCompleto(string idEncaminhamento);
         Task<EncaminhamentoModel> GetEncaminhamento(string id);
         Task<string> GetDocumentoDownloadUrl(string id);
         Task<PapelModel[]> GetUsuarioPapeisEncaminhamento(string id);

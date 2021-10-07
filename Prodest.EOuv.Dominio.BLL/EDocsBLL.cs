@@ -45,7 +45,16 @@ namespace Prodest.EOuv.Dominio.BLL
         {
             return await _eDocsService.GetEvento(id);
         }
-        
+
+        public async Task<EncaminhamentoRastreioModel> GetRastreio(string idEncaminhamento)
+        {
+            return await _eDocsService.GetRastreio(idEncaminhamento);
+        }
+        public async Task<EncaminhamentoRastreioModel> GetRastreioCompleto(string idEncaminhamento)
+        {
+            return await _eDocsService.GetRastreioCompleto(idEncaminhamento);
+        }
+
         public async Task<string> GetProtocoloEncaminhamento(string idEncaminhamento)
         {
             return await _eDocsService.GetProtocoloEncaminhamento(idEncaminhamento);

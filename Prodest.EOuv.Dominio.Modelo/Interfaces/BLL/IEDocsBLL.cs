@@ -13,6 +13,8 @@ namespace Prodest.EOuv.Dominio.Modelo.Interfaces.BLL
         Task<EncaminhamentoModel> GetEncaminhamento(Guid id);
         Task<string> GetDocumentoDownloadUrl(Guid id);
         Task<DocumentoControladoModel[]> GetDocumentoEncaminhamento(string idEncaminhamento);
+        Task<EncaminhamentoRastreioModel> GetRastreio(string idEncaminhamento);
+        Task<EncaminhamentoRastreioModel> GetRastreioCompleto(string idEncaminhamento);
         Task<DocumentoModel> GetDocumento(string id);
         Task<string> PostTempUrlMinio(GerarUrlModel gerarUrl, byte[] data);
         Task<PlanoModel[]> GetPlanosAtivos(string id);
