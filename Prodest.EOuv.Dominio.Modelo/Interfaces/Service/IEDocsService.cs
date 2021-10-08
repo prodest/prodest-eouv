@@ -11,6 +11,8 @@ namespace Prodest.EOuv.Dominio.Modelo.Interfaces.Service
     {
         Task<GerarUrlModel> GetGerarUrl(int dataLength);
         Task<EventoModel> GetEvento(string id);
+        Task<string> GetProtocoloEncaminhamento(string idEncaminhamento);
+        Task<EncaminhamentoModel> GetEncaminhamentoPorProtocolo(string protocolo);
         Task<List<PatriarcaModel>> GetPatriarca();
         Task<List<PatriarcaModel>> GetOrganizacoes(string idPatriarca);
         Task<List<PatriarcaSetorModel>> GetSetores(string idOrgao);
@@ -18,6 +20,10 @@ namespace Prodest.EOuv.Dominio.Modelo.Interfaces.Service
         Task<List<PatriarcaSetorModel>> GetComissoes(string idOrgao);
         Task<List<PapelModel>> GetPapeis();
         Task<DocumentoModel> GetDocumento(string id);
+        Task<DocumentoControladoModel[]> GetDocumentoEncaminhamento(string idEncaminhamento);
+        Task<EncaminhamentoRastreioModel> GetRastreio(string idEncaminhamento);
+        Task<EncaminhamentoRastreioModel> GetRastreioCompleto(string idEncaminhamento);
+        Task<bool> EncontraDestinatario(string idEncaminhamentoRaiz, string[] idDestinatario);
         Task<EncaminhamentoModel> GetEncaminhamento(string id);
         Task<string> GetDocumentoDownloadUrl(string id);
         Task<PapelModel[]> GetUsuarioPapeisEncaminhamento(string id);

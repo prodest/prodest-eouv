@@ -17,6 +17,7 @@ namespace Prodest.EOuv.Shared.Util
             Anexo_Interpelacao = 8,
             Anexo_Notificacao = 9
         }
+
         public enum AuthenticationType
         {
             [Description("Nenhuma")]
@@ -29,12 +30,34 @@ namespace Prodest.EOuv.Shared.Util
             Application = 2
         }
 
+        public enum EventoSituacao
+        {
+            Criado = 1,
+            Enfileirado = 2,
+            Processando = 3,
+            Executado = 4,
+            Concluido = 5,
+            Cancelado = 9
+        }
+
         public enum DocumentoValorLegal
         {
             Original = 1,
             CopiaAutenticadaCartorio = 2,
             CopiaAutenticadaAdministrativamente = 3,
             CopiaSimples = 4
+        }
+
+        public enum nivelAcesso
+        {
+            Publico = 1, 
+            Organizacional = 2, 
+            Restrito = 3, 
+            Sigiloso = 4, 
+            Reservado = 5, 
+            Secreto = 6, 
+            Ultrassecreto = 7, 
+            SigilosoSemFundamentoLegal = 8
         }
     }
 }

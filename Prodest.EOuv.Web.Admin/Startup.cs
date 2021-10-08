@@ -22,22 +22,23 @@ using Audit.EntityFramework.Providers;
 using Audit.Core;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Elastic.Apm.NetCoreAll;
 
 namespace Prodest.EOuv.Web.Admin
 {
     public class Startup
     {
-        public IConfiguration _configuration { get; }
+        public IConfiguration Configuration { get; }
 
         public Startup(IConfiguration configuration)
         {
-            _configuration = configuration;
+            Configuration = configuration;
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
             #region[=== DataProtectionKeys ===]
-            services.AddDbContext<DataProtectionKeysContext>(options => options.UseSqlServer(_configuration.GetConnectionString("DataProtectionKeysConnection")));
+            services.AddDbContext<DataProtectionKeysContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DataProtectionKeysConnection")));
             services.AddDataProtection().SetApplicationName("EOuv")
                                         .PersistKeysToDbContext<DataProtectionKeysContext>();
             #endregion
@@ -91,13 +92,13 @@ namespace Prodest.EOuv.Web.Admin
             services.AddElmah<SqlErrorLog>(options =>
             {
                 //options.ApplicationName = "E-Flow";
-                options.ConnectionString = _configuration.GetConnectionString("ElmahConnection");
+                options.ConnectionString = Configuration.GetConnectionString("ElmahConnection");
                 //options.OnPermissionCheck = context => false;
             });
             #endregion
 
             services.AddControllersWithViews();
-            services.AddSingleton(_configuration);
+            services.AddSingleton(Configuration);
             services.AddDbContext<EouvContext>();
             services.InjetarDependencias();
             services.AddHttpContextAccessor();
@@ -128,15 +129,15 @@ namespace Prodest.EOuv.Web.Admin
                 })
                 .AddOpenIdConnect("oidc", options =>
                 {
-                    options.Authority = _configuration.GetValue<string>("AcessoCidadao:Authority");
-                    options.ClientSecret = _configuration.GetValue<string>("AcessoCidadao:Hybrid:ClientSecret");
-                    options.ClientId = _configuration.GetValue<string>("AcessoCidadao:Hybrid:ClientId");
-                    options.SignedOutRedirectUri = _configuration.GetValue<string>("AcessoCidadao:Hybrid:SignedOutRedirectUri");
-                    options.ResponseType = _configuration.GetValue<string>("AcessoCidadao:Hybrid:ResponseType");
+                    options.Authority = Configuration.GetValue<string>("AcessoCidadao:Authority");
+                    options.ClientSecret = Configuration.GetValue<string>("AcessoCidadao:Hybrid:ClientSecret");
+                    options.ClientId = Configuration.GetValue<string>("AcessoCidadao:Hybrid:ClientId");
+                    options.SignedOutRedirectUri = Configuration.GetValue<string>("AcessoCidadao:Hybrid:SignedOutRedirectUri");
+                    options.ResponseType = Configuration.GetValue<string>("AcessoCidadao:Hybrid:ResponseType");
                     //options.CallbackPath = "/";
                     options.Scope.Clear();
 
-                    foreach (var scope in _configuration.GetValue<string>("AcessoCidadao:Hybrid:Scopes").Split(' '))
+                    foreach (var scope in Configuration.GetValue<string>("AcessoCidadao:Hybrid:Scopes").Split(' '))
                     {
                         options.Scope.Add(scope);
                     }
@@ -166,6 +167,8 @@ namespace Prodest.EOuv.Web.Admin
         {
             app.UseForwardedHeaders();
 
+            app.UseAllElasticApm(Configuration);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -194,7 +197,6 @@ namespace Prodest.EOuv.Web.Admin
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
-
         }
     }
 }
