@@ -17,6 +17,7 @@ namespace Prodest.EOuv.Shared.Util
             Anexo_Interpelacao = 8,
             Anexo_Notificacao = 9
         }
+
         public enum AuthenticationType
         {
             [Description("Nenhuma")]
