@@ -7,6 +7,7 @@ namespace Prodest.EOuv.Dominio.Modelo.Model.Edocs
     {
         public string Id { get; set; }
         public string Nome { get; set; }
-        public string Tipo { get; set; }
+        public int TipoAgente { get; set; }
+        public string DescricaoTipoAgente { get; set; }
     }
 }

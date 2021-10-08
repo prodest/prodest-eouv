@@ -39,14 +39,14 @@ namespace Prodest.EOuv.UI.Apresentacao
             manifestacaoViewModel.Assunto = manifestacaoModel.Assunto?.DescAssunto;
             manifestacaoViewModel.DataRegistro = manifestacaoModel.DataRegistro.ToString();
             manifestacaoViewModel.PrazoResposta = manifestacaoModel.PrazoResposta?.ToString();
-            manifestacaoViewModel.UsuarioCadastrador = manifestacaoModel.UsuarioCadastrador?.Pessoa?.Nome;
+            manifestacaoViewModel.UsuarioCadastrador = manifestacaoModel.UsuarioCadastrador != null ? manifestacaoModel.UsuarioCadastrador?.Pessoa?.Nome : "Cidadão";
             manifestacaoViewModel.CanalEntrada = manifestacaoModel.CanalEntrada?.DescCanalEntrada;
             manifestacaoViewModel.ModoResposta = manifestacaoModel.ModoResposta?.DescModoResposta;
             manifestacaoViewModel.TipoIdentificacao = manifestacaoModel.TipoIdentificacao?.DescTipoIdentificacao;
 
             //Teor da Manifestação
             manifestacaoViewModel.TextoManifestacao = manifestacaoModel.TextoManifestacao;
-            manifestacaoViewModel.LocalFato = manifestacaoModel.IdMunicipio.ToString();
+            manifestacaoViewModel.LocalFato = manifestacaoModel.Municipio != null ? manifestacaoModel.Municipio.DescMunicipio : "Todo o Estado";
             var anexoManifestacao = manifestacaoModel.AnexoManifestacao.Where(a => a.IdTipoAnexoManifestacao == (int)Enums.TipoAnexoManifestacaoOptions.Anexo_Resposta).ToList();
             manifestacaoViewModel.AnexoManifestacao = _mapper.Map<List<AnexoManifestacaoViewModel>>(anexoManifestacao);
             manifestacaoViewModel.ComplementoManifestacao = _mapper.Map<List<ComplementoManifestacaoViewModel>>(manifestacaoModel.ComplementoManifestacao);
@@ -55,7 +55,7 @@ namespace Prodest.EOuv.UI.Apresentacao
             ManifestanteViewModel dadosManifestante = new ManifestanteViewModel();
             dadosManifestante.Nome = manifestacaoModel.Pessoa?.Nome;
             dadosManifestante.Cpf = manifestacaoModel.Pessoa?.Cpf;
-            dadosManifestante.Genero = manifestacaoModel.Pessoa?.Sexo;
+            dadosManifestante.Genero = manifestacaoModel.Pessoa != null ? (manifestacaoModel.Pessoa.Sexo.Equals("M") ? "Masculino" : "Feminino") : "";
             dadosManifestante.Telefone = manifestacaoModel.Pessoa?.Telefone;
             dadosManifestante.Email = manifestacaoModel.Pessoa?.Email;
             dadosManifestante.TipoManifestante = manifestacaoModel.TipoManifestante?.DescTipoManifestante;

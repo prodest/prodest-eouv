@@ -11,6 +11,8 @@ namespace Prodest.EOuv.Dominio.Modelo
 
         Task<PessoaJuridicaModel> ObterDadosPessoaJuridica(int idPessoa);
 
+        Task<MunicipioModel> ObterDadosMunicipio(int idPessoa);
+
         Task<List<AnexoManifestacaoModel>> ObterAnexosManifestacao(int idManifestacao);
 
         Task<List<ComplementoManifestacaoModel>> ObterDadosComplemento(int idManifestacao);

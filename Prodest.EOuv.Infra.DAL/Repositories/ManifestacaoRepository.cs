@@ -57,6 +57,15 @@ namespace Prodest.EOuv.Infra.DAL
             return _mapper.Map<PessoaJuridicaModel>(pessoaJuridica); ;
         }
 
+        public async Task<MunicipioModel> ObterDadosMunicipio(int idMunicipio)
+        {
+            Municipio municipio = await _eouvContext.Municipio
+                                    .Include(m => m.Uf)
+                                    .Where(m => m.IdMunicipio == idMunicipio).AsNoTracking().FirstOrDefaultAsync();
+
+            return _mapper.Map<MunicipioModel>(municipio);
+        }
+
         public async Task<ManifestacaoModel> ObterDadosCompletosManifestacao(int idManifestacao)
         {
             Manifestacao manifestacao = await _eouvContext.Manifestacao

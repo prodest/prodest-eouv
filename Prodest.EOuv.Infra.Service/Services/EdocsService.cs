@@ -14,7 +14,6 @@ using Prodest.EOuv.Shared.Utils.Exceptions;
 
 namespace Prodest.EOuv.Infra.Service
 {
-   
     public class EDocsService : IEDocsService
     {
         private readonly string _baseUrl;
@@ -52,10 +51,10 @@ namespace Prodest.EOuv.Infra.Service
         {
             return await GetRequest<string>($"{_baseUrl}/v2/encaminhamento/{idEncaminhamento}/inicial/protocolo");
         }
-        
+
         public async Task<EncaminhamentoModel> GetEncaminhamentoPorProtocolo(string protocolo)
         {
-            return await GetRequest<EncaminhamentoModel>($"{_baseUrl}/v2/encaminhamento/{protocolo}/inicial");            
+            return await GetRequest<EncaminhamentoModel>($"{_baseUrl}/v2/encaminhamento/{protocolo}/inicial");
         }
 
         public async Task<List<PatriarcaModel>> GetPatriarca()
@@ -90,7 +89,6 @@ namespace Prodest.EOuv.Infra.Service
 
         public async Task<bool> EncontraDestinatario(string idEncaminhamentoRaiz, string[] idDestinatario)
         {
-            string s = "";
             var rastreio = await GetRequest<EncaminhamentoRastreioModel>($"{_baseUrl}/v2/encaminhamento/{idEncaminhamentoRaiz}/rastreio");
 
             return await EncontraDestinatario(rastreio, idDestinatario);
@@ -135,7 +133,7 @@ namespace Prodest.EOuv.Infra.Service
 
         public async Task<EncaminhamentoRastreioModel> GetRastreioCompleto(string idEncaminhamento)
         {
-            var rastreio =  await GetRequest<EncaminhamentoRastreioModel>($"{_baseUrl}/v2/encaminhamento/{idEncaminhamento }/rastreio");
+            var rastreio = await GetRequest<EncaminhamentoRastreioModel>($"{_baseUrl}/v2/encaminhamento/{idEncaminhamento }/rastreio");
 
             rastreio = await BuscaDocumentoRastreio(rastreio);
             return rastreio;
@@ -312,6 +310,7 @@ namespace Prodest.EOuv.Infra.Service
         }
 
         #region[v1]
+
         public async Task<EncaminhamentoModel> PostEncaminhamento(EncaminhamentoRequestModel parameters)
         {
             return await PostRequest<EncaminhamentoModel>($"{_baseUrl}/encaminhamentos", parameters);
@@ -343,6 +342,7 @@ namespace Prodest.EOuv.Infra.Service
 
             return await PostRequest<DocumentoModel>($"{_baseUrl}/documentos", parameters, httpContent);
         }
+
         #endregion
 
         // =========================
@@ -380,7 +380,7 @@ namespace Prodest.EOuv.Infra.Service
 
             if (!isSuccess)
             {
-                var ex = new EDocsApiException(errorMessage);                
+                var ex = new EDocsApiException(errorMessage);
                 throw ex;
             }
 
