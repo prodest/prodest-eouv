@@ -28,6 +28,10 @@ namespace Prodest.EOuv.Dominio.BLL
             {
                 manifestacaoModel.PessoaJuridica = await ObterDadosPessoaJuridica((int)manifestacaoModel.IdPessoaJuridica);
             }
+            if (manifestacaoModel.IdMunicipio != 0)
+            {
+                manifestacaoModel.Municipio = await ObterDadosMunicipio((int)manifestacaoModel.IdMunicipio);
+            }
 
             manifestacaoModel.AnexoManifestacao = await ObterAnexosManifestacao(idManifestacao);
             manifestacaoModel.ComplementoManifestacao = await ObterDadosComplemento(idManifestacao);
@@ -71,6 +75,11 @@ namespace Prodest.EOuv.Dominio.BLL
         public async Task<PessoaJuridicaModel> ObterDadosPessoaJuridica(int idPessoaJuridica)
         {
             return await _manifestacaoRepository.ObterDadosPessoaJuridica(idPessoaJuridica);
+        }
+
+        public async Task<MunicipioModel> ObterDadosMunicipio(int idMunicipio)
+        {
+            return await _manifestacaoRepository.ObterDadosMunicipio(idMunicipio);
         }
 
         public async Task<List<RespostaManifestacaoModel>> ObterDadosResposta(int idManifestacao)

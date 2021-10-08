@@ -2,6 +2,7 @@
 using Prodest.EOuv.UI.Apresentacao;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
@@ -93,20 +94,20 @@ namespace Prodest.EOuv.UI.Apresentacao
 
     public partial class ProrrogacaoManifestacaoViewModel
     {
-        public DateTime PrazoOriginal { get; set; }
-        public DateTime NovoPrazo { get; set; }
+        public string PrazoOriginal { get; set; }
+        public string NovoPrazo { get; set; }
         public OrgaoViewModel Orgao { get; set; }
         public string TxtJustificativaProrrogacao { get; set; }
-        public DateTime DataProrrogacao { get; set; }
+        public string DataProrrogacao { get; set; }
     }
 
     public partial class DiligenciaManifestacaoViewModel
     {
         public string TxtDiligencia { get; set; }
         public OrgaoViewModel Orgao { get; set; }
-        public DateTime DataDiligencia { get; set; }
+        public string DataDiligencia { get; set; }
         public string TxtRespostaDiligencia { get; set; }
-        public DateTime? DataRespostaDiligencia { get; set; }
+        public string DataRespostaDiligencia { get; set; }
         //public List<AnexoManifestacaoViewModel> AnexoRespostaDiligencia { get; set; }
     }
 
@@ -115,37 +116,37 @@ namespace Prodest.EOuv.UI.Apresentacao
         public OrgaoViewModel OrgaoOrigem { get; set; }
         public OrgaoViewModel OrgaoDestino { get; set; }
         public string TxtEncaminhamento { get; set; }
-        public DateTime DataEncaminhamento { get; set; }
+        public string DataEncaminhamento { get; set; }
     }
 
     public partial class RespostaManifestacaoViewModel
     {
         public string TxtResposta { get; set; }
         public OrgaoViewModel Orgao { get; set; }
-        public DateTime DataResposta { get; set; }
+        public string DataResposta { get; set; }
         //public List<AnexoManifestacaoViewModel> AnexoResposta { get; set; }
     }
 
     public partial class ApuracaoManifestacaoViewModel
     {
         public string TxtSolicitacaoApuracao { get; set; }
-        public DateTime DataSolicitacaoApuracao { get; set; }
+        public string DataSolicitacaoApuracao { get; set; }
         public string TxtRespostaApuracao { get; set; }
-        public DateTime? DataRespostaApuracao { get; set; }
+        public string DataRespostaApuracao { get; set; }
         //public List<AnexoManifestacaoViewModel> AnexoApuracao { get; set; }
     }
 
     public partial class NotificacaoManifestacaoViewModel
     {
         public string TxtNotificacao { get; set; }
-        public DateTime DataNotificacao { get; set; }
+        public string DataNotificacao { get; set; }
         //public List<AnexoManifestacaoViewModel> AnexoNotificacao { get; set; }
     }
 
     public partial class AnotacaoManifestacaoViewModel
     {
         public string TxtAnotacao { get; set; }
-        public DateTime DataAnotacao { get; set; }
+        public string DataAnotacao { get; set; }
     }
 
     public partial class InterpelacaoManifestacaoViewModel
@@ -154,7 +155,7 @@ namespace Prodest.EOuv.UI.Apresentacao
         public string DataInterpelacao { get; set; }
         public string TxtRespostaInterpelacao { get; set; }
         public OrgaoViewModel OrgaoResposta { get; set; }
-        public DateTime? DataRespostaInterpelacao { get; set; }
+        public string DataRespostaInterpelacao { get; set; }
         //public List<AnexoManifestacaoViewModel> AnexoInterpelacao { get; set; }
     }
 
@@ -176,7 +177,7 @@ namespace Prodest.EOuv.UI.Apresentacao
         public string TxtRespostaRecursoNegativa { get; set; }
 
         //public List<AnexoManifestacaoViewModel> AnexoRespostaRecurso { get; set; }
-        public DateTime? DataRespostaRecursoNegativa { get; set; }
+        public string DataRespostaRecursoNegativa { get; set; }
     }
 
     public partial class DesdobramentoManifestacaoViewModel

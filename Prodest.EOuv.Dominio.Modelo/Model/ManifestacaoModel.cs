@@ -73,6 +73,7 @@ namespace Prodest.EOuv.Dominio.Modelo
         public virtual UsuarioModel UsuarioAnalise { get; set; }
         public virtual UsuarioModel UsuarioCadastrador { get; set; }
         public virtual UsuarioModel Usuario { get; set; }
+        public virtual MunicipioModel Municipio { get; set; }
 
         public virtual ICollection<AnexoManifestacaoModel> AnexoManifestacao { get; set; }
         public virtual ICollection<AnotacaoManifestacaoModel> AnotacaoManifestacao { get; set; }

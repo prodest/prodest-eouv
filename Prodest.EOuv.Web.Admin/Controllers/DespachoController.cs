@@ -17,6 +17,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             _manifestacaoWorkService = manifestacaoWorkService;
         }
 
+        [Route("Despacho")]
         [Route("Despacho/{idManifestacao}")]
         public async Task<IActionResult> Index(int idManifestacao)
         {
