@@ -37,3 +37,26 @@ body {
   overflow-x: hidden;
   overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
 }
+
+/*Accordion Button*/
+.accordion-button, .accordion-button:focus, .accordion-collapse {
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+}
+
+/*CheckDocument Personalizado*/
+.check-document {
+    font-size: 1rem;
+    padding: 1.15rem 0rem 1rem .5rem;
+}
+
+/*Form Outline*/
+.form-outline .form-control:focus ~ .form-label {    
+    background-color: #fff;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.form-outline .form-control {
+    border: 1px solid #bdbdbd;
+}

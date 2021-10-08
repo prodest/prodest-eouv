@@ -60,7 +60,7 @@
                     </a>
                     <a href="/Despacho/Add" title="Novo Despacho" class="list-group-item list-group-item-action list-group-item-info py-2 ripple active">
                         <i class="fas fa-lock fa-fw me-3"></i><span>Novo Despacho</span>
-                    </a>                    
+                    </a>
                 </div>
             </div>
         </nav>
@@ -96,7 +96,7 @@
                                  alt="" loading="lazy" />
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
-                            <li><a class="dropdown-item" href="#">Meu Perfil</a></li>                            
+                            <li><a class="dropdown-item" href="#">Meu Perfil</a></li>
                             <li><a class="dropdown-item" href="#">Sair</a></li>
                         </ul>
                     </li>
@@ -109,17 +109,9 @@
     <!--Main Navigation-->
     <!--Main layout-->
     <main style="margin-top: 58px">
-        <div class="container pt-4">            
-            <section class="mb-4">                
-                    <div class="card">
-                        <div class="card-header py-3">
-                            <h5 class="mb-0"><strong>@ViewData["Title"]</strong></h5>
-                        </div>
-                        <div class="card-body">
-                            @RenderBody()
-                        </div>
-                    </div>                
-            </section>
+        <div class="container pt-4">
+            <h5 class="mb-3"><strong>@ViewData["Title"]</strong></h5>
+            @RenderBody()
         </div>
     </main>
     <!--Main layout-->
