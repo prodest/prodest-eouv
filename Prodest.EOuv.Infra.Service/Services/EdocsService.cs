@@ -48,6 +48,16 @@ namespace Prodest.EOuv.Infra.Service
             return await GetRequest<EventoModel>($"{_baseUrl}/v2/eventos/{id}");
         }
 
+        public async Task<string> GetProtocoloEncaminhamento(string idEncaminhamento)
+        {
+            return await GetRequest<string>($"{_baseUrl}/v2/encaminhamento/{idEncaminhamento}/inicial/protocolo");
+        }
+        
+        public async Task<EncaminhamentoModel> GetEncaminhamentoPorProtocolo(string protocolo)
+        {
+            return await GetRequest<EncaminhamentoModel>($"{_baseUrl}/v2/encaminhamento/{protocolo}/inicial");            
+        }
+
         public async Task<List<PatriarcaModel>> GetPatriarca()
         {
             return await GetRequest<List<PatriarcaModel>>($"{_baseUrl}/v2/agente/patriarcas");
@@ -78,10 +88,80 @@ namespace Prodest.EOuv.Infra.Service
             return await GetRequest<List<PapelModel>>($"{_baseUrl}/v2/usuario/papeis");
         }
 
+        public async Task<bool> EncontraDestinatario(string idEncaminhamentoRaiz, string[] idDestinatario)
+        {
+            string s = "";
+            var rastreio = await GetRequest<EncaminhamentoRastreioModel>($"{_baseUrl}/v2/encaminhamento/{idEncaminhamentoRaiz}/rastreio");
+
+            return await EncontraDestinatario(rastreio, idDestinatario);
+        }
+
+        public async Task<bool> EncontraDestinatario(EncaminhamentoRastreioModel rastreio, string[] idDestinatario)
+        {
+            if (EhDestino(rastreio, idDestinatario))
+            {
+                return true;
+            }
+            else
+            {
+                if (rastreio.EncaminhamentosPosteriores != null)
+                {
+                    for (int i = 0; i < rastreio.EncaminhamentosPosteriores.Count(); i++)
+                    {
+                        if (await EncontraDestinatario(rastreio.EncaminhamentosPosteriores[i], idDestinatario))
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+        private bool EhDestino(EncaminhamentoRastreioModel rastreio, string[] idDestinatario)
+        {
+            bool encontrou = false;
+            if ((rastreio.Destinos != null) && (rastreio.Destinos.Where(d => idDestinatario.Any(dest => dest == d.Id)).Select(s => s.Id).Count() > 0))
+            {
+                encontrou = true;
+            }
+            return encontrou;
+        }
+
+        public async Task<EncaminhamentoRastreioModel> GetRastreio(string idEncaminhamento)
+        {
+            return await GetRequest<EncaminhamentoRastreioModel>($"{_baseUrl}/v2/encaminhamento/{idEncaminhamento }/rastreio");
+        }
+
+        public async Task<EncaminhamentoRastreioModel> GetRastreioCompleto(string idEncaminhamento)
+        {
+            var rastreio =  await GetRequest<EncaminhamentoRastreioModel>($"{_baseUrl}/v2/encaminhamento/{idEncaminhamento }/rastreio");
+
+            rastreio = await BuscaDocumentoRastreio(rastreio);
+            return rastreio;
+        }
+
+        public async Task<EncaminhamentoRastreioModel> BuscaDocumentoRastreio(EncaminhamentoRastreioModel rastreio)
+        {
+            rastreio.Documentos = await GetDocumentoEncaminhamento(rastreio.Id);
+            if (rastreio.EncaminhamentosPosteriores != null)
+            {
+                for (int i = 0; i < rastreio.EncaminhamentosPosteriores.Count(); i++)
+                {
+                    rastreio.EncaminhamentosPosteriores[i] = await BuscaDocumentoRastreio(rastreio.EncaminhamentosPosteriores[i]);
+                }
+            }
+            return rastreio;
+        }
 
         public async Task<DocumentoModel> GetDocumento(string id)
         {
             return await GetRequest<DocumentoModel>($"{_baseUrl}/v2/documentos/{id}");
+        }
+
+        public async Task<DocumentoControladoModel[]> GetDocumentoEncaminhamento(string idEncaminhamento)
+        {
+            return await GetRequest<DocumentoControladoModel[]>($"{_baseUrl}/v2/encaminhamento/{idEncaminhamento}/documentos");
         }
 
         public async Task<EncaminhamentoModel> GetEncaminhamento(string id)
