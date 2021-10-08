@@ -1,7 +1,8 @@
 ﻿const DespachoManifestacao = {
 
-    name: 'DespachoForm',
+    name: 'DespachoManifestacao',
     template: '#template-despacho-manifestacao',
+    components: ['SelecaoPapel'],
 
     data() {
         return {

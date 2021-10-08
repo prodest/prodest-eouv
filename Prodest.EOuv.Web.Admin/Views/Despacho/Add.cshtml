@@ -7,6 +7,7 @@
     <script defer src="~/scripts/app/pages/despacho/Manifestacao.js" asp-append-version="true"></script>
     <script defer src="~/scripts/app/pages/despacho/FormularioDespacho.js" asp-append-version="true"></script>
     <script defer src="~/scripts/app/pages/despacho/SelecaoDestinatarios.js" asp-append-version="true"></script>
+    <script defer src="~/scripts/app/pages/despacho/SelecaoPapel.js" asp-append-version="true"></script>
     <script defer src="~/scripts/app/pages/despacho/despachoAdd.js" asp-append-version="true"></script>
 }
 
@@ -16,6 +17,7 @@
             <despacho-manifestacao></despacho-manifestacao>
             <despacho-form></despacho-form>
             <selecao-destinatarios></selecao-destinatarios>
+            <selecao-papel></selecao-papel>
         </div>
     </div>
 </div>
@@ -33,9 +35,9 @@
 
                         <!--Dados Básicos da Manifestação-->
                         <div class="accordion-item">
-                            <h2 class="accordion-header collapsed d-flex" id="dadoBasicos">
+                            <h2 class="accordion-header d-flex" id="dadoBasicos">
                                 <i class="flex-fill check-document far fa-check-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                <button class="flex-fill accordion-button" type="button" data-mdb-toggle="collapse"
+                                <button class="flex-fill accordion-button collapsed" type="button" data-mdb-toggle="collapse"
                                         data-mdb-target="#panel-DadosBasicos" aria-expanded="false" aria-controls="panel-DadosBasicos">
                                     Dados Básicos da Manifestação
                                 </button>
@@ -757,21 +759,30 @@
                     <h5 class="mb-0">{{titulo}}</h5>
                 </div>
                 <div class="card-body">
-                    <div class="form-outline mb-3">
-                        <button type="button" data-mdb-toggle="modal" data-mdb-target="#destinatariosModal" class="btn btn-info btn-block"><i class="fas fa-search"></i> Incluir Destinatários</button>
-                    </div>
-                    <div class="form-outline mb-3">
+                    <div class="form-outline mb-3 col-md-2">
                         <input type="text" id="prazoresposta" class="form-control" />
                         <label class="form-label" for="form1">Prazo para Resposta</label>
                     </div>
                     <div class="form-outline mb-3">
                         <textarea id="txtdespacho" class="form-control" />
                         <label class="form-label" for="form1">Texto do Despacho</label>
+                    </div>                    
+                    <div class="form-outline mb-3">
+                        <button type="button" data-mdb-toggle="modal" data-mdb-target="#destinatariosModal" class="btn btn-info btn-block"><i class="fas fa-search"></i> Incluir Destinatários</button>
                     </div>
                     <hr />
                     <div class="form-outline mb-3">
-                        <label class="form-label" for="customFile">Incluir outros documentos</label>
-                        <input type="file" class="form-control" id="customFile" />
+                        <button class="btn btn-block btn-info"><i class="fas fa-plus"></i> Incluir novo arquivo</button>
+                    </div>
+                    <hr />
+                    <div class="form-outline mb-3">
+                        <label class="form-label" for="customFile">Assinar despacho como:</label>
+                        <button type="button" class="mx-2 btn btn-outline-dark btn-rounded ripple-surface ripple-surface-dark" data-mdb-ripple-color="dark" style="min-width: 79px;">
+                            Cidadão
+                        </button>
+                        <button type="button" class="mx-2 btn btn-outline-dark btn-rounded ripple-surface ripple-surface-dark" data-mdb-ripple-color="dark" style="min-width: 79px;">
+                            Analista de Sistemas
+                        </button>
                     </div>
                     <hr />
                     <div class="row justify-content-end">
@@ -779,7 +790,7 @@
                             <button type="button" class="btn btn-danger btn-block"><i class="fas fa-times"></i> Cancelar</button>
                         </div>
                         <div class="col-md-2 col- col-sm-6">
-                            <button type="button" class="btn btn-primary btn-block"><i class="fas fa-share"></i> Despachar</button>
+                            <button type="button" data-mdb-toggle="modal" data-mdb-target="#papelModal" class="btn btn-primary btn-block"><i class="fas fa-share"></i> Despachar</button>
                         </div>
                     </div>
                 </div>
@@ -791,7 +802,7 @@
         <div class="modal fade"
              id="destinatariosModal"
              tabindex="-1"
-             aria-labelledby="exampleModalLabel"
+             aria-labelledby="destinatariosModalLabel"
              aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -803,16 +814,78 @@
                                 aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        Selecione os destinatários do despacho
+                        <!-- Tabs navs -->
+                        <ul class="nav nav-tabs nav-fill mb-3" id="ex1" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link active"
+                                   id="ex3-tab-1"
+                                   data-mdb-toggle="tab"
+                                   href="#ex3-tabs-1"
+                                   role="tab"
+                                   aria-controls="ex3-tabs-1"
+                                   aria-selected="true">Órgão</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link"
+                                   id="ex3-tab-2"
+                                   data-mdb-toggle="tab"
+                                   href="#ex3-tabs-2"
+                                   role="tab"
+                                   aria-controls="ex3-tabs-2"
+                                   aria-selected="false">Setor</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link"
+                                   id="ex3-tab-3"
+                                   data-mdb-toggle="tab"
+                                   href="#ex3-tabs-3"
+                                   role="tab"
+                                   aria-controls="ex3-tabs-3"
+                                   aria-selected="false">Grupos e Comissões</a>
+                            </li>
+                        </ul>
+                        <!-- Tabs navs -->
+                        <!-- Tabs content -->
+                        <div class="tab-content" id="ex2-content">
+                            <div class="tab-pane fade show active"
+                                 id="ex3-tabs-1"
+                                 role="tabpanel"
+                                 aria-labelledby="ex3-tab-1">
+                                Tab 1 content
+                            </div>
+                            <div class="tab-pane fade"
+                                 id="ex3-tabs-2"
+                                 role="tabpanel"
+                                 aria-labelledby="ex3-tab-2">
+                                Tab 2 content
+                            </div>
+                            <div class="tab-pane fade"
+                                 id="ex3-tabs-3"
+                                 role="tabpanel"
+                                 aria-labelledby="ex3-tab-3">
+                                Tab 3 content
+                            </div>
+                        </div>
+                        <!-- Tabs content -->
+                        <hr />
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="fs-6 fw-bold">Selecionados:</span>
+                            </div>
+                            <div class="card-body">
+
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-mdb-dismiss="modal">
-                            Fechar
-                        </button>                        
+                            <i class="fas fa-times"></i> Fechar
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </script>
 
+    
 }

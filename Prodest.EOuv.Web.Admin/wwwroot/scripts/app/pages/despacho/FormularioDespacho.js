@@ -1,6 +1,6 @@
 ﻿const DespachoForm = {
 
-    name: 'DespachoManifestacao',
+    name: 'DespachoForm',
     template: '#template-despacho-form',
 
     data() {
