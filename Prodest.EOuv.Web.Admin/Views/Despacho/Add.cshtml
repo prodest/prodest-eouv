@@ -759,20 +759,26 @@
                     <h5 class="mb-0">{{titulo}}</h5>
                 </div>
                 <div class="card-body">
-                    <div class="form-outline mb-3 col-md-2">
+                    <div class="form-outline mb-3 col-md-3">
                         <input type="text" id="prazoresposta" class="form-control" />
                         <label class="form-label" for="form1">Prazo para Resposta</label>
                     </div>
                     <div class="form-outline mb-3">
                         <textarea id="txtdespacho" class="form-control" />
                         <label class="form-label" for="form1">Texto do Despacho</label>
-                    </div>                    
+                    </div>
                     <div class="form-outline mb-3">
                         <button type="button" data-mdb-toggle="modal" data-mdb-target="#destinatariosModal" class="btn btn-info btn-block"><i class="fas fa-search"></i> Incluir Destinatários</button>
                     </div>
                     <hr />
                     <div class="form-outline mb-3">
-                        <button class="btn btn-block btn-info"><i class="fas fa-plus"></i> Incluir novo arquivo</button>
+                        <button class="btn btn-block btn-info" v-on:click="IncluirCampoFile"><i class="fas fa-plus"></i> Incluir novo arquivo</button>
+                        <div class="border-1 mt-3" v-if="campoFile.length > 0">
+                            <div class="input-group mb-3" v-for="(campo, index) in campoFile" :key="index">
+                                <input type="file" class="form-control" id="{{campo}}" aria-describedby="addon-{{campo}}" />
+                                <span v-on:click="RemoverCampoFile(campo)" class="input-group-text border-0 btn btn-danger shadow-0" id="addon-{{campo}}"><i class="fas fa-times"></i></span>
+                            </div>
+                        </div>
                     </div>
                     <hr />
                     <div class="form-outline mb-3">
@@ -887,5 +893,36 @@
         </div>
     </script>
 
-    
+    <script type="text/html" id="template-selecao-papel">
+        <div class="modal fade"
+             id="papelModal"
+             tabindex="-1"
+             aria-labelledby="papelModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="papelModalLabel">{{titulo}}</h5>
+                        <button type="button"
+                                class="btn-close"
+                                data-mdb-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <button type="button" class="mx-2 btn btn-outline-dark btn-rounded ripple-surface ripple-surface-dark" data-mdb-ripple-color="dark" style="min-width: 79px;">
+                            Cidadão
+                        </button>
+                        <button type="button" class="mx-2 btn btn-outline-dark btn-rounded ripple-surface ripple-surface-dark" data-mdb-ripple-color="dark" style="min-width: 79px;">
+                            Analista de Sistemas
+                        </button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-mdb-dismiss="modal">
+                            <i class="fas fa-times"></i> Fechar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
 }
