@@ -1,8 +1,8 @@
 ﻿const bootstrapHelper = {
 
     openModal(ref) {
-        var modal = new bootstrap.Modal(ref, {});
-        modal.show();
+        var modal = new mdb.Modal(ref)
+        modal.show()
         return modal;
     },
 

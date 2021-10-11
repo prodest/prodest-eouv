@@ -36,5 +36,14 @@
                 return false;
         }
         return true;
+    },
+
+    /*
+     * Remove item de um array
+     */
+    RemoverItemArray(arr, value) {
+        return arr.filter(function (ele) {
+            return ele != value;
+        });
     }
 }

@@ -2,18 +2,21 @@
 
     name: 'DespachoForm',
     template: '#template-despacho-form',
+    components: [SelecaoDestinatarios],
     emits: ['incluir-campo-file'],
-
     data() {
         return {
             titulo: 'Formulário de Despacho',
             campoFile: [],
-            idCampoFile:0
+            idCampoFile: 0,
+            papeisUsuario: [],
+            papelSelecionado: null
+
         }
     },
 
     mounted() {
-
+        this.CarregarPapeisUsuario();
     },
 
     methods: {
@@ -23,12 +26,11 @@
         },
         RemoverCampoFile(campo) {
             console.log(campo);
-            this.campoFile = this.RemoverItemArray(this.campoFile, campo);
-        },
-        RemoverItemArray(arr, value) {
-            return arr.filter(function (ele) {
-                return ele != value;
-            });
-        }
+            this.campoFile = utils.RemoverItemArray(this.campoFile, campo);
+        },        
+        async CarregarPapeisUsuario() {
+            let ret = await eOuvApi.PapeisUsuarioEDocs();
+            this.papeisUsuario = JSON.parse(JSON.stringify(ret));
+        }        
     }
 };
