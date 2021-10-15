@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Prodest.EOuv.Dominio.Modelo.Model.Edocs
+namespace Prodest.EOuv.Dominio.Modelo
 {
     public class AssinaturaDigitalValidaModel
     {

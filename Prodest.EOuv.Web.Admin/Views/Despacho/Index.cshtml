@@ -7,10 +7,11 @@
 <div class="text-center">
     <h1 class="display-4">Despacho</h1>
     <p>Tela de com a Lista de Despacho e opção de Criar Novo Despacho</p>
+    <p>Id da Manifestação: @TempData["idManifestacao"]</p>
 </div>
 
 <p>
-    <a asp-action="NovoDespacho">Novo Despacho</a>
+    <a href="/Despacho/Add/@Model">Novo Despacho</a>
 </p>
 <table class="table">
     <thead>

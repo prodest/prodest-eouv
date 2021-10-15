@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using Prodest.EOuv.Dominio.Modelo.Interfaces.BLL;
+using Prodest.EOuv.Dominio.Modelo;
 using Prodest.EOuv.Dominio.Modelo.Model;
-using Prodest.EOuv.Dominio.Modelo.Model.Edocs;
 using Prodest.EOuv.Shared.Util;
 using Prodest.EOuv.Shared.Utils.Exceptions;
 using Prodest.EOuv.UI.Apresentacao;
@@ -22,7 +20,6 @@ namespace Prodest.EOuv.Web.Admin.Controllers
         private readonly IAcessoCidadaoBLL _AcessoCidadaoBLL;
         private readonly IPdfApiBLL _pdfApiBLL;
 
-
         public FileContentResult Pdf()
         {
             var teste = "<html> <head>     <title></title> </head> <body>     <div class='text-center'>         <h1 class='display-4'>EOuv</h1>         <p>Sistema de Ouvidoria do Espírito Santo</p>     </div> </body> </html>";
@@ -35,7 +32,6 @@ namespace Prodest.EOuv.Web.Admin.Controllers
 
             return File(resultado, "application/pdf");
         }
-
 
         public EdocsController(IDespachoWorkService despachoWorkService, IEDocsBLL edocsBLL, IAcessoCidadaoBLL acessoCidadaoBLL, IPdfApiBLL pdfApiBLL)
         {
@@ -54,6 +50,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             List<PatriarcaModel> patriarca = task.Result;
             return Json(patriarca);
         }
+
         public JsonResult BuscarOrganizacoes()
         {
             System.Threading.Tasks.Task<List<PatriarcaModel>> task = _edocsBLL.GetOrganizacoes("fe88eb2a-a1f3-4cb1-a684-87317baf5a57");// ESGOV
@@ -73,6 +70,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             List<PatriarcaSetorModel> setor = task.Result;
             return Json(setor);
         }
+
         public JsonResult BuscarGrupoTrabalho()
         {
             System.Threading.Tasks.Task<List<PatriarcaSetorModel>> task = _edocsBLL.GetGrupoTrabalho("3ca6ea0e-ca14-46fa-a911-22e616303722");// Prodest
@@ -82,6 +80,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             List<PatriarcaSetorModel> grupo = task.Result;
             return Json(grupo);
         }
+
         public JsonResult BuscarComissoes()
         {
             System.Threading.Tasks.Task<List<PatriarcaSetorModel>> task = _edocsBLL.GetComissoes("3ca6ea0e-ca14-46fa-a911-22e616303722");// Prodest
@@ -91,6 +90,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             List<PatriarcaSetorModel> comissoes = task.Result;
             return Json(comissoes);
         }
+
         public JsonResult BuscarPapeis()
         {
             Task<List<PapelModel>> task = _edocsBLL.GetPapeis();
@@ -98,38 +98,6 @@ namespace Prodest.EOuv.Web.Admin.Controllers
 
             List<PapelModel> papel = task.Result;
             return Json(papel);
-        }
-
-        public string EnviarArquivo(byte[] arquivo)
-        {
-            string caminhoCompletoArquivoLocal = @"C:\Temp\TesteEDOCS.pdf";
-            FileInfo fi = new FileInfo(caminhoCompletoArquivoLocal);
-            int tamanhoArquivo = Convert.ToInt32(fi.Length);
-
-            Task<GerarUrlModel> task = _edocsBLL.GetGerarUrl(tamanhoArquivo);
-            byte[] readText = System.IO.File.ReadAllBytes(caminhoCompletoArquivoLocal);
-            Task<string> task2 = _edocsBLL.PostTempUrlMinio(task.Result, readText);
-            Task.WaitAll(task);
-
-            string result = task2.Result;
-            //IdentificadorTemporarioArquivoNaNuvem
-            return result;
-        }
-
-        public string EnviarArquivo()
-        {
-            string caminhoCompletoArquivoLocal = @"C:\Temp\TesteEDOCS.pdf";
-            FileInfo fi = new FileInfo(caminhoCompletoArquivoLocal);
-            int tamanhoArquivo = Convert.ToInt32(fi.Length);
-
-            Task<GerarUrlModel> task = _edocsBLL.GetGerarUrl(tamanhoArquivo);
-            byte[] readText = System.IO.File.ReadAllBytes(caminhoCompletoArquivoLocal);
-            Task<string> task2 = _edocsBLL.PostTempUrlMinio(task.Result, readText);
-            Task.WaitAll(task);
-
-            string result = task2.Result;
-            //IdentificadorTemporarioArquivoNaNuvem
-            return result;
         }
 
         public JsonResult BuscarPlanosAtivos()
@@ -151,8 +119,6 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             ClasseModel[] planos = task.Result;
             return Json(planos);
         }
-
-
 
         public EventoModel BuscarEvento(string id)
         {
@@ -216,15 +182,14 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             string url = task.Result;
             return url;
         }
+
         //public JsonResult GetEncaminhamentoPorProtocolo()
         //{//Retorna o encaminhamento inicial do protocolo
-
         //    string idProtocolo = "2021-RXRGDG";
         //    return GetEncaminhamentoPorProtocolo(idProtocolo);
         //}
         public JsonResult GetEncaminhamentoPorProtocolo(string id)
         {//Retorna o encaminhamento inicial do protocolo
-
             string idProtocolo = id;
             System.Threading.Tasks.Task<EncaminhamentoModel> task = _edocsBLL.GetEncaminhamentoPorProtocolo(idProtocolo);
 
@@ -236,7 +201,6 @@ namespace Prodest.EOuv.Web.Admin.Controllers
 
         public string GetProtocoloEncaminhamento()
         {//Retorna o encaminhamento inicial do protocolo
-
             string idEncaminhamento = "22a16dcb-8248-4655-ad33-6d7df581d7f2";
             System.Threading.Tasks.Task<string> task = _edocsBLL.GetProtocoloEncaminhamento(idEncaminhamento);
 
@@ -265,9 +229,10 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             EncaminhamentoRastreioModel rastreio = task.Result;
             return Json(rastreio);
         }
+
         public JsonResult EncontraDestinatarioHangFire()
         {
-            System.Threading.Tasks.Task<bool> task = _edocsBLL.EncontraDestinatario("89565801-9382-4785-94f8-cd35d4ab39d2", new[]{ "43ccc355-87e9-4f14-8812-6469f8f0c81b", new Guid().ToString(), new Guid().ToString()});// Encaminhamento, grupo
+            System.Threading.Tasks.Task<bool> task = _edocsBLL.EncontraDestinatario("89565801-9382-4785-94f8-cd35d4ab39d2", new[] { "43ccc355-87e9-4f14-8812-6469f8f0c81b", new Guid().ToString(), new Guid().ToString() });// Encaminhamento, grupo
             //System.Threading.Tasks.Task<bool> task = _edocsBLL.EncontraDestinatario("89565801-9382-4785-94f8-cd35d4ab39d2", new[]{ new Guid().ToString(), new Guid().ToString()});// Encaminhamento, grupo
 
             Task.WaitAll(task);
@@ -275,7 +240,6 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             bool encontrado = task.Result;
             return Json(encontrado);
         }
-        
 
         public JsonResult BuscarRastreioCompleto()
         {
@@ -287,13 +251,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             return Json(rastreio);
         }
 
-        public string DocumentoCapturarNatoDigitalCopiaServidor()
-        {
-            EventoModel evento = BuscarEvento(GetEventoDocumentoCapturarNatoDigitalCopiaServidor()); //com o Id do evento descobrimos o Id do Documento
-            return evento.IdDocumento;
-        }
-
-        public string GetEventoDocumentoCapturarNatoDigitalCopiaServidor(byte[] arquivo)
+        public string GetEventoDocumentoCapturarNatoDigitalCopiaServidor(byte[] arquivo, string papelResponsavel)
         {
             //Task<string> task = _edocsBLL.PostDocumentoCapturarNatoDigitalCopiaServidor(parameters);
             //Task.WaitAll(task);
@@ -304,7 +262,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
 
             DocumentoRequestModel parameters = new DocumentoRequestModel
             {
-                IdPapelCapturador = "6470bd19-c178-4824-8edc-e8c3ef22a536", //analista
+                IdPapelCapturador = papelResponsavel, //analista
                 IdClasse = "b84db19f-7c05-44b8-9f07-9592e3a91f0a", //"01.01.05.01"
                 ValorLegalDocumentoConferencia = Shared.Util.Enums.DocumentoValorLegal.CopiaSimples,
                 ValorLegal = Shared.Util.Enums.DocumentoValorLegal.CopiaSimples,
@@ -319,8 +277,8 @@ namespace Prodest.EOuv.Web.Admin.Controllers
                         PrazoAnos = 1,
                         PrazoMeses = 0,
                         PrazoDias = 0,
-                        Justificativa = "Ouvidoria",
-                        IdPapelAprovador = "6470bd19-c178-4824-8edc-e8c3ef22a536", //mesmo do capturador
+                        Justificativa = "Demanda de Ouvidoria",
+                        IdPapelAprovador = papelResponsavel, //mesmo do capturador
                     }
                 },
                 IdentificadorTemporarioArquivoNaNuvem = identificadorTemporarioArquivoNaNuvem,
@@ -334,6 +292,29 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             string result = task.Result;
             return result;
         }
+
+        public string EnviarArquivo(byte[] arquivo)
+        {
+            string caminhoCompletoArquivoLocal = @"C:\Temp\TesteEDOCS.pdf";
+            FileInfo fi = new FileInfo(caminhoCompletoArquivoLocal);
+            int tamanhoArquivo = Convert.ToInt32(fi.Length);
+
+            Task<GerarUrlModel> task = _edocsBLL.GetGerarUrl(tamanhoArquivo);
+            byte[] readText = System.IO.File.ReadAllBytes(caminhoCompletoArquivoLocal);
+            Task<string> task2 = _edocsBLL.PostTempUrlMinio(task.Result, readText);
+            Task.WaitAll(task);
+
+            string result = task2.Result;
+            //IdentificadorTemporarioArquivoNaNuvem
+            return result;
+        }
+
+        public string DocumentoCapturarNatoDigitalCopiaServidor()
+        {
+            EventoModel evento = BuscarEvento(GetEventoDocumentoCapturarNatoDigitalCopiaServidor()); //com o Id do evento descobrimos o Id do Documento
+            return evento.IdDocumento;
+        }
+
         public string GetEventoDocumentoCapturarNatoDigitalCopiaServidor()
         {
             //Task<string> task = _edocsBLL.PostDocumentoCapturarNatoDigitalCopiaServidor(parameters);
@@ -373,6 +354,22 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             Task.WaitAll(task);
 
             string result = task.Result;
+            return result;
+        }
+
+        public string EnviarArquivo()
+        {
+            string caminhoCompletoArquivoLocal = @"C:\Temp\TesteEDOCS.pdf";
+            FileInfo fi = new FileInfo(caminhoCompletoArquivoLocal);
+            int tamanhoArquivo = Convert.ToInt32(fi.Length);
+
+            Task<GerarUrlModel> task = _edocsBLL.GetGerarUrl(tamanhoArquivo);
+            byte[] readText = System.IO.File.ReadAllBytes(caminhoCompletoArquivoLocal);
+            Task<string> task2 = _edocsBLL.PostTempUrlMinio(task.Result, readText);
+            Task.WaitAll(task);
+
+            string result = task2.Result;
+            //IdentificadorTemporarioArquivoNaNuvem
             return result;
         }
 
@@ -424,6 +421,5 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             string result = task.Result;
             return result;
         }
-
     }
 }

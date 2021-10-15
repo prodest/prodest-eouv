@@ -5,7 +5,6 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Prodest.EOuv.Dominio.Modelo;
-using Prodest.EOuv.Dominio.Modelo.Interfaces.Service;
 using Prodest.EOuv.Shared.Util;
 using Prodest.EOuv.Shared.Utils.Exceptions;
 using System;
@@ -176,6 +175,15 @@ namespace Prodest.EOuv.Infra
             }
 
             return apiResponse;
+        }
+
+        public async Task<HttpResponseMessage> PostAsync(string url, HttpContent content)
+        {
+            var httpClient = _httpClientFactory.CreateClient("default");
+
+            var result = await httpClient.PostAsync(url, content);
+
+            return result;
         }
 
         // =========================

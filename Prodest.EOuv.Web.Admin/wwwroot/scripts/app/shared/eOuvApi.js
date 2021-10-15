@@ -1,12 +1,11 @@
 ﻿const eOuvApi = {
-    
     async obterDespachos() {
         let ret = await fetchData.fetchGetJson(`/despacho/index`);
         return ret;
     },
 
-    async novoDespacho() {
-        let ret = await fetchData.fetchGetJson(`/despacho/NovoDespacho`);
+    async obterDadosManifestacao() {
+        let ret = await fetchData.fetchGetJson(`/despacho/ObterDadosManifestacao`);
         return ret;
     },
 
@@ -28,6 +27,10 @@
     async PapeisUsuarioEDocs() {
         let ret = await fetchData.fetchGetJson(`/edocs/BuscarPapeis`);
         return ret;
+    },
+
+    async despachar(entry) {
+        let ret = await fetchData.fetchPostJson(`/despacho/Despachar`, entry);
+        return ret;
     }
-    
 }

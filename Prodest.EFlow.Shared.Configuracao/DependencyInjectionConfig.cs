@@ -3,11 +3,8 @@ using Prodest.EOuv.Dominio.Modelo;
 using Prodest.EOuv.Dominio.BLL;
 using Prodest.EOuv.UI.Apresentacao;
 using Prodest.EOuv.Infra.DAL;
-using Prodest.EOuv.Dominio.Modelo.Interfaces.Service;
 using Prodest.EOuv.Infra;
-using Prodest.EOuv.Dominio.Modelo.Interfaces.BLL;
 using Prodest.EOuv.Infra.Service;
-using Prodest.EOuv.Dominio.Modelo.Interfaces;
 
 namespace Prodest.EOuv.Shared.Configuracao
 {
@@ -23,6 +20,8 @@ namespace Prodest.EOuv.Shared.Configuracao
             services.AddScoped<IAcessoCidadaoBLL, AcessoCidadaoBLL>();
             services.AddScoped<IPdfApiBLL, PdfApiBLL>();
             services.AddScoped<IPdfApiService, PdfApiService>();
+            services.AddScoped<IHtmlApiBLL, HtmlApiBLL>();
+            services.AddScoped<IHtmlApiService, HtmlApiService>();
 
             services.AddScoped<IDespachoWorkService, DespachoWorkService>();
             services.AddScoped<IManifestacaoWorkService, ManifestacaoWorkService>();

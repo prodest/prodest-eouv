@@ -1,7 +1,5 @@
-﻿using Prodest.EOuv.Dominio.Modelo.Interfaces.BLL;
-using Prodest.EOuv.Dominio.Modelo.Interfaces.Service;
+﻿using Prodest.EOuv.Dominio.Modelo;
 using Prodest.EOuv.Dominio.Modelo.Model;
-using Prodest.EOuv.Infra.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;

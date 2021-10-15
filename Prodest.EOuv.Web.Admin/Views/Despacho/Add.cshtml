@@ -1,5 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Criar Novo Despacho";
+
 }
 
 @section scripts{
@@ -703,11 +704,9 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -744,7 +743,6 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -755,15 +753,15 @@
         <section class="mb-4">
             <div class="card">
                 <div class="card-header py-3">
-                    <h5 class="mb-0">{{titulo}}</h5>
+                    <h5 class="mb-0">Formulário de Despacho</h5>
                 </div>
                 <div class="card-body">
                     <div class="form-outline mb-3 col-md-3">
-                        <input type="text" id="prazoresposta" class="form-control" />
+                        <input type="text" v-model="prazoResposta" class="form-control" />
                         <label class="form-label" for="form1">Prazo para Resposta</label>
                     </div>
                     <div class="form-outline mb-3">
-                        <textarea id="txtdespacho" class="form-control" />
+                        <textarea v-model="textoDespacho" class="form-control" />
                         <label class="form-label" for="form1">Texto do Despacho</label>
                     </div>
                     <selecao-destinatarios></selecao-destinatarios>
@@ -771,7 +769,7 @@
                     <div class="form-outline mb-3">
                         <button class="btn btn-block btn-info" v-on:click="IncluirCampoFile"><i class="fas fa-plus"></i> Incluir novo arquivo</button>
                         <div class="border-1 mt-3" v-if="campoFile.length > 0">
-                            <div class="input-group mb-3" v-for="(campo, index) in campoFile" :key="index">
+                            <div class="input-group mb-3" v-for="(campo, index) in campoFile" v-bind:key="index">
                                 <input type="file" class="form-control" id="{{campo}}" aria-describedby="addon-{{campo}}" />
                                 <span v-on:click="RemoverCampoFile(campo)" class="input-group-text border-0 btn btn-danger shadow-0" id="addon-{{campo}}"><i class="fas fa-times"></i></span>
                             </div>
@@ -782,8 +780,8 @@
                         <label class="form-label" for="customFile">Assinar despacho como:</label>
                         <br />
                         <div class="btn-group">
-                            <label v-for="(papel, index) in papeisUsuario" :key="index" class="btn btn-secondary" :for="papel.id">
-                                <input type="radio" class="btn-check" :name="papel.id" :id="papel.id" autocomplete="off" />
+                            <label v-for="(papel, index) in papeisUsuario" v-bind:key="index" class="btn btn-secondary" v-bind:for="papel.id">
+                                <input type="radio" class="btn-check" v-bind:name="papel.id" v-bind:id="papel.id" autocomplete="off" />
                                 {{papel.nome}} - {{papel.siglaUnidadePapel}} - {{papel.siglaOrganizacaoPapel}}
                             </label>
                         </div>
@@ -794,7 +792,7 @@
                             <button type="button" class="btn btn-danger btn-block"><i class="fas fa-times"></i> Cancelar</button>
                         </div>
                         <div class="col-md-2 col- col-sm-6">
-                            <button type="button" data-mdb-toggle="modal" data-mdb-target="#papelModal" class="btn btn-primary btn-block"><i class="fas fa-share"></i> Despachar</button>
+                            <button type="button" v-on:click="Despachar()" class="btn btn-primary btn-block"><i class="fas fa-share"></i> Despachar</button>
                         </div>
                     </div>
                 </div>

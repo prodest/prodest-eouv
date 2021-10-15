@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Prodest.EOuv.Dominio.Modelo.Model.Edocs
+namespace Prodest.EOuv.Dominio.Modelo
 {
     public class EncaminhamentoRastreioDestinoModel
     {

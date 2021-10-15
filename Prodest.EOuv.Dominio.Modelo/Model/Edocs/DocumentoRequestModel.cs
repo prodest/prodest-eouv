@@ -3,12 +3,13 @@ using Prodest.EOuv.Shared.Utils;
 using System;
 using System.Collections.Generic;
 
-namespace Prodest.EOuv.Dominio.Modelo.Model.Edocs
+namespace Prodest.EOuv.Dominio.Modelo
 {
     public class DocumentoRequestModel
     {
         // v1
         public string AssinanteId { get; set; }
+
         public string DocumentoClasseId { get; set; }
         public string FileName { get; set; }
         public bool Publico { get; set; }
@@ -17,6 +18,7 @@ namespace Prodest.EOuv.Dominio.Modelo.Model.Edocs
 
         // v2
         public string IdPapelCapturadorAssinante { get; set; }
+
         public string IdPapelCapturador { get; set; }
         public string IdClasse { get; set; }
         public Enums.DocumentoValorLegal ValorLegalDocumentoConferencia { get; set; }

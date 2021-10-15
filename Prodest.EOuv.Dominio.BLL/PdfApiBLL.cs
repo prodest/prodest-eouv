@@ -1,11 +1,5 @@
-﻿using Prodest.EOuv.Dominio.Modelo.Interfaces;
-using Prodest.EOuv.Dominio.Modelo.Interfaces.BLL;
-using Prodest.EOuv.Dominio.Modelo.Interfaces.Service;
-using Prodest.EOuv.Dominio.Modelo.Model.Edocs;
-using System;
+﻿using Prodest.EOuv.Dominio.Modelo;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Prodest.EOuv.Dominio.BLL

@@ -1,11 +1,10 @@
-﻿using Prodest.EOuv.Dominio.Modelo.Model.Edocs;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Prodest.EOuv.Dominio.Modelo.Interfaces
+namespace Prodest.EOuv.Dominio.Modelo
 {
     public interface IPdfApiService
     {

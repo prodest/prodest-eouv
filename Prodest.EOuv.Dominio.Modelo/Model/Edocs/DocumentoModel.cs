@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Prodest.EOuv.Dominio.Modelo.Model.Edocs
+namespace Prodest.EOuv.Dominio.Modelo
 {
     public class DocumentoModel
     {
@@ -13,6 +13,5 @@ namespace Prodest.EOuv.Dominio.Modelo.Model.Edocs
         public string Extensao { get; set; }
         public string Base64 { get; set; }
         public Enums.nivelAcesso nivelAcesso { get; set; }
-
     }
 }

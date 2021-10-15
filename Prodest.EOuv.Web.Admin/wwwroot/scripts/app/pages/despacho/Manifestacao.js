@@ -1,7 +1,6 @@
 ﻿const DespachoManifestacao = {
-
     name: 'DespachoManifestacao',
-    template: '#template-despacho-manifestacao',    
+    template: '#template-despacho-manifestacao',
 
     data() {
         return {
@@ -87,7 +86,7 @@
 
     methods: {
         async obterManifestacao() {
-            let ret = await eOuvApi.novoDespacho();
+            let ret = await eOuvApi.obterDadosManifestacao();
             console.log(ret);
             //Dados Basicos da Manifestacao
             this.titulo += ` (${ret.numProtocolo})`;
@@ -105,8 +104,6 @@
             this.dadosBasicos.dataRegistro = ret.dataRegistro;
             this.dadosBasicos.prazoResposta = ret.prazoResposta;
 
-
-
             //Teor da Manifestacao
             this.PreencheTeorManifestacao(ret.textoManifestacao, ret.localFato);
 
@@ -116,7 +113,7 @@
             //Dados de Histórico
             ret.historicoManifestacao.forEach(this.PreencherHistoricoManifestacao);
 
-            //Dados da Resposta            
+            //Dados da Resposta
             ret.respostaManifestacao.forEach(this.PreencherRespostaManifestacao)
 
             //Dados Despacho

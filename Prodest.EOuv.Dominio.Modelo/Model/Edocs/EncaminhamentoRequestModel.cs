@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Prodest.EOuv.Dominio.Modelo.Model.Edocs
+namespace Prodest.EOuv.Dominio.Modelo
 {
     public class EncaminhamentoRequestModel
     {
         // v1
         public string? Titulo { get; set; }
+
         public string? Conteudo { get; set; }
         public string? ResponsavelId { get; set; }
         public string? EncaminhamentoAnteriorId { get; set; }
@@ -16,6 +17,7 @@ namespace Prodest.EOuv.Dominio.Modelo.Model.Edocs
 
         // v2
         public string? Assunto { get; set; }
+
         public string? Mensagem { get; set; }
         public string? IdResponsavel { get; set; }
         public string? IdEncaminhamentoAnterior { get; set; }

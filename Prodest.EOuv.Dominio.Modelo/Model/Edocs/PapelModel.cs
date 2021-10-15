@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Prodest.EOuv.Dominio.Modelo.Model.Edocs
+namespace Prodest.EOuv.Dominio.Modelo
 {
     public class PapelModel
     {
@@ -11,10 +11,12 @@ namespace Prodest.EOuv.Dominio.Modelo.Model.Edocs
 
         // comuns
         public Guid Id { get; set; }
+
         public string Nome { get; set; }
 
         // v2
         public string Tipo { get; set; }
+
         public string SiglaOrganizacao { get; set; }
         public string SiglaUnidade { get; set; }
         public string NomeOrganizacaoUnidade { get; set; }

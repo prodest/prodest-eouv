@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Prodest.EOuv.Dominio.Modelo.Interfaces.Service
+namespace Prodest.EOuv.Dominio.Modelo
 {
     public interface IApiContext
     {
@@ -23,5 +23,7 @@ namespace Prodest.EOuv.Dominio.Modelo.Interfaces.Service
         Task<(bool isSuccess, Stream data, string errorMessage)> PdfPostRequest(string url, object body);
 
         Task<ApiResponse<T>> PostAndDownloadAsync<T>(string url, HttpContent content);
+
+        Task<HttpResponseMessage> PostAsync(string url, HttpContent content);
     }
 }
