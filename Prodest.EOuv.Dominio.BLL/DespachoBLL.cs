@@ -46,21 +46,20 @@ namespace Prodest.EOuv.Dominio.BLL
             //Validar se o destinatario está ok
             //Validar se o papel está ok
 
-            //Buscar Dados da Manifestação
+            //Buscar Dados filtrados da Manifestação
             ManifestacaoModel manifestacao = await _manifestacaoBLL.ObterDadosFiltradosManifestacao(despachoModel.IdManifestacao, filtroDadosManifestacao);
 
             string nomeArquivo = "Manifestação " + manifestacao.NumProtocolo;
 
+            //Gerar página HTML
             string html = await MontarHtmlDetalhesManifestacao(manifestacao);
+            //Gerar PDF a partir do HTML
             byte[] arquivoPdfCapturar = await _pdfApiBLL.GerarPdfByHtml(html);
+            //Capturar arquivo PDF no E-Docs
             string idDocumento = await CapturarDocumentoEdocs(arquivoPdfCapturar, papelResponsavel, nomeArquivo);
+            //Encaminhar via E-Docs
 
-            //obter dados necessarios
-            //- Verificar lista de dados selecionados, montar HTML e gerar PDF
-
-            //- Capturar arquivo PDF
-            //- Encaminhar via E-Docs
-            //- Salvar Despacho no Eouv com IdEvento (sem IdEncaminhamento por enquanto)
+            //Salvar Despacho no Eouv com IdEvento (sem IdEncaminhamento por enquanto)
         }
 
         private async Task<string> MontarHtmlDetalhesManifestacao(ManifestacaoModel manifestacao)

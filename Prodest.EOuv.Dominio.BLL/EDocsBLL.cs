@@ -177,6 +177,27 @@ namespace Prodest.EOuv.Dominio.BLL
             return evento;
         }
 
+        private async Task<EventoModel> BuscarEventoConcluidoAsync(string id, int? tries = 30, int? delayMs = 1000)
+        {
+            var evento = new EventoModel();
+
+            // realiza polling na API do E-Docs até que o Evento esteja disponível
+            do
+            {
+                await Task.Delay(delayMs.Value);
+                evento = await GetEvento(id);
+                tries--;
+            } while (evento.Situacao.ToUpper() != nameof(Enums.EventoSituacao.Concluido).ToUpper() && tries > 0);
+
+            if (evento.Situacao.ToUpper() != nameof(Enums.EventoSituacao.Concluido).ToUpper() && tries == 0)
+            {
+                // caso o número máximo de tentativas seja extrapolado
+                throw new EDocsApiException();
+            }
+
+            return evento;
+        }
+
         public async Task<string> GetEventoDocumentoCapturarNatoDigitalCopiaServidor(byte[] arquivo, string papelResponsavel, string nomeArquivo)
         {
             string identificadorTemporarioArquivoNaNuvem = await EnviarArquivo(arquivo);
@@ -228,28 +249,53 @@ namespace Prodest.EOuv.Dominio.BLL
             return result;
         }
 
-        // ======================
-        // private methods
-        // ======================
-        private async Task<EventoModel> BuscarEventoConcluidoAsync(string id, int? tries = 30, int? delayMs = 1000)
+        public async Task<string> GetProtocoloEncaminhamentoNovo()
         {
-            var evento = new EventoModel();
+            Task<string> task = GetProtocoloEncaminhamento(await Encaminhar());
 
-            // realiza polling na API do E-Docs até que o Evento esteja disponível
-            do
+            Task.WaitAll(task);
+
+            string protocolo = task.Result;
+            return protocolo;
+        }
+
+        public async Task<string> Encaminhar()
+        {
+            EventoModel evento = await BuscarEvento(await GetEventoEncaminhar()); //com o Id do evento descobrimos o Id do Documento
+            return evento.IdEncaminhamento;
+        }
+
+        public async Task<string> GetEventoEncaminhar()
+        {
+            //DOCUMENTO CAPTURADO -> DocumentoCapturarNatoDigitalCopiaServidor
+            string idDocumento = "38683aef-0613-45ea-bfd0-663783a7bfe0"; //usuário logado deve ter acesso ao documento
+            var parametros = new EncaminhamentoRequestModel()
             {
-                await Task.Delay(delayMs.Value);
-                evento = await GetEvento(id);
-                tries--;
-            } while (evento.Situacao.ToUpper() != nameof(Enums.EventoSituacao.Concluido).ToUpper() && tries > 0);
+                Assunto = "Manifestação número",
+                Mensagem = "Manifestação número",
+                IdResponsavel = "ec00931d-74a2-4877-9b93-95ce029ba7f6",
+                IdsDestinos = new string[] { "6470bd19-c178-4824-8edc-e8c3ef22a536" },
+                IdsDocumentos = new string[] { idDocumento },
+                RestricaoAcesso = new RestricaoAcessoModel()
+                {
+                    TransparenciaAtiva = false,
+                    IdsFundamentosLegais = new Guid[1] { new Guid("d4ecc485-d889-4e2f-848c-b2099b3412b7") }, //"Sigilo das Manifestações de Ouvidoria"
+                    ClassificacaoInformacao = new ClassificacaoInformacaoModel()
+                    {
+                        PrazoAnos = 1,
+                        PrazoMeses = 0,
+                        PrazoDias = 0,
+                        Justificativa = "Ouvidoria",
+                        IdPapelAprovador = "ec00931d-74a2-4877-9b93-95ce029ba7f6", //mesmo do capturador
+                    }
+                },
+            };
 
-            if (evento.Situacao.ToUpper() != nameof(Enums.EventoSituacao.Concluido).ToUpper() && tries == 0)
-            {
-                // caso o número máximo de tentativas seja extrapolado
-                throw new EDocsApiException();
-            }
+            Task<string> task = PostEncaminhamentoNovo(parametros);
+            Task.WaitAll(task);
 
-            return evento;
+            string result = task.Result;
+            return result;
         }
     }
 }
