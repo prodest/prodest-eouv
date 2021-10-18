@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Prodest.EOuv.Dominio.Modelo;
 using Prodest.EOuv.UI.Apresentacao;
 
 namespace DocumentModels.Controllers
@@ -12,10 +11,16 @@ namespace DocumentModels.Controllers
             public string Descricao { get; set; }
         }
 
-        public IActionResult ResumoManifestacao()//[FromBody] ManifestacaoModel manifestacao)
+        public IActionResult ResumoManifestacao([FromBody] ManifestacaoViewModel manifestacao)
         {
-            //ManifestacaoViewModel manifestacao = new ManifestacaoViewModel();
-            return View();
+            ManifestacaoViewModel manifestacao2 = new ManifestacaoViewModel();
+            return View(manifestacao);
+        }
+
+        public IActionResult ResumoManifestacao2()
+        {
+            ManifestacaoViewModel manifestacao = new ManifestacaoViewModel();
+            return View("ResumoManifestacao", manifestacao);
         }
     }
 }

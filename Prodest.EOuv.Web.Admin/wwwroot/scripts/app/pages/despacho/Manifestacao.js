@@ -91,24 +91,25 @@
             //Dados Basicos da Manifestacao
             this.titulo += ` (${ret.numProtocolo})`;
             this.dadosBasicos.numProtocolo = ret.numProtocolo;
-            this.dadosBasicos.tipoManifestacao = ret.tipoManifestacao;
-            this.dadosBasicos.situacao = ret.situacao;
-            this.dadosBasicos.orgaoAtual.nomeFantasia = ret.orgaoAtual.nomeFantasia;
-            this.dadosBasicos.orgaoAtual.siglaOrgao = ret.orgaoAtual.siglaOrgao;
-            this.dadosBasicos.orgaoDestinatario.nomeFantasia = ret.orgaoDestinatario.nomeFantasia;
-            this.dadosBasicos.orgaoDestinatario.siglaOrgao = ret.orgaoDestinatario.siglaOrgao;
+            this.dadosBasicos.tipoManifestacao = ret.tipoManifestacao.descTipoManifestacao;
+            this.dadosBasicos.situacao = ret.situacaoManifestacao.descSituacaoManifestacao;
+            this.dadosBasicos.orgaoAtual.nomeFantasia = ret.orgaoResponsavel.nomeFantasia;
+            this.dadosBasicos.orgaoAtual.siglaOrgao = ret.orgaoResponsavel.siglaOrgao;
+            this.dadosBasicos.orgaoDestinatario.nomeFantasia = ret.orgaoInteresse.nomeFantasia;
+            this.dadosBasicos.orgaoDestinatario.siglaOrgao = ret.orgaoInteresse.siglaOrgao;
             this.dadosBasicos.usuarioCadastrador = ret.usuarioCadastrador;
-            this.dadosBasicos.canalEntrada = ret.canalEntrada;
-            this.dadosBasicos.modoResposta = ret.modoResposta;
-            this.dadosBasicos.assunto = ret.assunto;
+            this.dadosBasicos.canalEntrada = ret.canalEntrada.descCanalEntrada;
+            this.dadosBasicos.modoResposta = ret.modoResposta.descModoResposta;
+            this.dadosBasicos.assunto = ret.assunto.descAssunto;
             this.dadosBasicos.dataRegistro = ret.dataRegistro;
             this.dadosBasicos.prazoResposta = ret.prazoResposta;
+            this.dadosBasicos.tipoManifestante = ret.tipoManifestante.descTipoManifestante;
 
             //Teor da Manifestacao
             this.PreencheTeorManifestacao(ret.textoManifestacao, ret.localFato);
 
             //Dados do Manifestante
-            this.PreencherDadosManifestante(ret.dadosManifestante);
+            this.PreencherDadosManifestante(ret.pessoa);
 
             //Dados de Histórico
             ret.historicoManifestacao.forEach(this.PreencherHistoricoManifestacao);
@@ -154,15 +155,14 @@
             //Dados da Manifestante
             this.dadosManifestante.nome = item.nome;
             this.dadosManifestante.cpf = item.cpf;
-            this.dadosManifestante.genero = item.genero;
+            this.dadosManifestante.genero = item.sexo;
             this.dadosManifestante.telefone = item.telefone;
             this.dadosManifestante.email = item.email;
-            this.dadosManifestante.tipoManifestante = item.tipoManifestante;
             this.dadosManifestante.cnpj = item.cnpj;
             this.dadosManifestante.orgaoEmpresa = item.orgaoEmpresa;
             this.dadosManifestante.cep = item.cep;
-            this.dadosManifestante.municipio = item.municipio;
-            this.dadosManifestante.uf = item.uf;
+            this.dadosManifestante.municipio = item.municipio.descMunicipio;
+            this.dadosManifestante.uf = item.municipio.uf.descUf;
             this.dadosManifestante.logradouro = item.logradouro;
             this.dadosManifestante.numero = item.numero;
             this.dadosManifestante.complemento = item.complemento;

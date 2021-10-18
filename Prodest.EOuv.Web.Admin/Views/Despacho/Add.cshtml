@@ -194,7 +194,7 @@
                                                     <div class="col-md-4">
                                                         <span class="fw-bold">Tipo de Manifestante</span>
                                                         <br />
-                                                        <span>{{dadosManifestante.tipoManifestante}}</span>
+                                                        <span>{{dadosBasicos.tipoManifestante}}</span>
                                                     </div>
                                                     <div class="col-md-4">
                                                         <span class="fw-bold">CNPJ</span>
@@ -281,9 +281,8 @@
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr v-for="(dados, index) in prorrogacaoManifestacao" :key="index">
-                                                                        <td>{{dados.prazoOriginal}}</td>
+                                                                        <td>{{dados.prazoOriginal}}.Date.ToString("dd/MMM/yyyy")</td>
                                                                         <td>{{dados.novoPrazo}}</td>
-                                                                        <td>{{index}}</td>
                                                                         <td>{{dados.orgao.siglaOrgao}}</td>
                                                                         <td>{{dados.txtJustificativaProrrogacao}}</td>
                                                                         <td>{{dados.dataProrrogacao}}</td>
@@ -735,7 +734,6 @@
                                             <tr v-for="(dados, index) in historicoManifestacao" :key="index">
                                                 <td>{{dados.dataHistorico}}</td>
                                                 <td>{{dados.orgao.siglaOrgao}}</td>
-                                                <td>{{index}}</td>
                                                 <td>{{dados.situacaoManifestacao.descSituacaoManifestacao}}</td>
                                             </tr>
                                         </tbody>

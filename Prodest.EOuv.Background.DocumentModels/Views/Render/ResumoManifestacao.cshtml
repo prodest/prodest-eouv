@@ -1,4 +1,4 @@
-﻿@model Prodest.EOuv.Dominio.Modelo.ManifestacaoModel
+﻿@model Prodest.EOuv.UI.Apresentacao.ManifestacaoViewModel
 
 @{
     ViewData["Title"] = "Home Page";
@@ -7,10 +7,89 @@
 
 <html>
 <head>
-    <title></title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-    <div class='text-center'>         <h1 class='display-4'>EOuv</h1>         <p>Sistema de Ouvidoria do Espírito Santo</p>     </div>
+    <!--Dados Básicos da Manifestação-->
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="dadoBasicos">
+            <i class="flex-fill check-document far fa-check-square incluir"></i>
+                Dados Básicos da Manifestação
+        </h2>
+        <div class="accordion-collapse">
+            <div class="accordion-body">
+                <div class="row justify-content-start">
+                    <div class="col-md-4">
+                        <span class="fw-bold">Número de Protocolo</span>
+                        <br />
+                        <span>@Model.NumProtocolo</span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <span class="fw-bold">Tipo de Manifestação</span>
+                        <br />
+                        <span>@Model.TipoManifestacao?.DescTipoManifestacao</span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <span class="fw-bold">Situação</span>
+                        <br />
+                        <span>@Model.SituacaoManifestacao?.DescSituacaoManifestacao</span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <span class="fw-bold">Órgão Atual</span>
+                        <br />
+                        <span>@Model.OrgaoResponsavel?.NomeFantasia</span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <span class="fw-bold">Órgão Destinatário</span>
+                        <br />
+                        <span>@Model.OrgaoInteresse?.NomeFantasia</span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <span class="fw-bold">Assunto</span>
+                        <br />
+                        <span>@Model.Assunto?.DescAssunto</span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <span class="fw-bold">Data de Cadastro</span>
+                        <br />
+                        <span>@Model.DataRegistro</span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <span class="fw-bold">Prazo de Atendimento</span>
+                        <br />
+                        <span>@Model.PrazoResposta</span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <span class="fw-bold">Registrado Por</span>
+                        <br />
+                        <span>@Model.UsuarioCadastrador?.Pessoa?.Nome</span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <span class="fw-bold">Canal de Entrada</span>
+                        <br />
+                        <span>@Model.CanalEntrada?.DescCanalEntrada</span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <span class="fw-bold">Modo de Resposta</span>
+                        <br />
+                        <span>@Model.ModoResposta?.DescModoResposta</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
 

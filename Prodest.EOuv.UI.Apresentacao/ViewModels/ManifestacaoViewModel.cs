@@ -11,31 +11,31 @@ namespace Prodest.EOuv.UI.Apresentacao
     public partial class ManifestacaoViewModel
     {
         //Dados Básicos da Manifestação-----------------------------------------------------------
-        public int IdManifestacao { get; set; }
-
         public string NumProtocolo { get; set; }
-        public string TipoManifestacao { get; set; }
-        public string Situacao { get; set; }
-        public OrgaoViewModel OrgaoAtual { get; set; }
-        public OrgaoViewModel OrgaoDestinatario { get; set; }
-        public string Assunto { get; set; }
-        public string DataRegistro { get; set; }
-        public string PrazoResposta { get; set; }
-        public string UsuarioCadastrador { get; set; }
-        public string CanalEntrada { get; set; }
-        public string ModoResposta { get; set; }
+
+        public virtual TipoManifestacaoViewModel TipoManifestacao { get; set; }
+        public virtual SituacaoManifestacaoViewModel SituacaoManifestacao { get; set; }
+        public virtual OrgaoViewModel OrgaoResponsavel { get; set; }
+        public virtual OrgaoViewModel OrgaoInteresse { get; set; }
+        public virtual AssuntoViewModel Assunto { get; set; }
+        public DateTime DataRegistro { get; set; }
+        public DateTime? PrazoResposta { get; set; }
+        public virtual UsuarioViewModel UsuarioCadastrador { get; set; }
+        public virtual CanalEntradaViewModel CanalEntrada { get; set; }
+        public virtual ModoRespostaViewModel ModoResposta { get; set; }
 
         //Teor da Manifestação-----------------------------------------------------------
         public string TextoManifestacao { get; set; }
 
-        public string LocalFato { get; set; }
+        public virtual MunicipioViewModel Municipio { get; set; }
         public List<AnexoManifestacaoViewModel> AnexoManifestacao { get; set; }
         public List<ComplementoManifestacaoViewModel> ComplementoManifestacao { get; set; }
 
         //Dados do Manifestante-----------------------------------------------------------
-        public string TipoIdentificacao { get; set; }
+        public virtual TipoIdentificacaoViewModel TipoIdentificacao { get; set; }
 
-        public ManifestanteViewModel DadosManifestante { get; set; }
+        public virtual TipoManifestanteViewModel TipoManifestante { get; set; }
+        public virtual PessoaViewModel Pessoa { get; set; }
 
         //Dados de Análise-----------------------------------------------------------
         public List<ProrrogacaoManifestacaoViewModel> ProrrogacaoManifestacao { get; set; }
@@ -69,32 +69,35 @@ namespace Prodest.EOuv.UI.Apresentacao
     public partial class ComplementoManifestacaoViewModel
     {
         public string TxtComplemento { get; set; }
-        public string DtComplemento { get; set; }
+        public DateTime DtComplemento { get; set; }
         //public List<AnexoManifestacaoViewModel> AnexoComplemento { get; set; }
     }
 
-    public partial class ManifestanteViewModel
+    public partial class PessoaViewModel
     {
         public string Nome { get; set; }
         public string Cpf { get; set; }
-        public string Genero { get; set; }
-        public string Telefone { get; set; }
         public string Email { get; set; }
-        public string TipoManifestante { get; set; }
-        public string CNPJ { get; set; }
-        public string OrgaoEmpresa { get; set; }
         public string Cep { get; set; }
-        public string Municipio { get; set; }
-        public string UF { get; set; }
+        public int? IdMunicipio { get; set; }
         public string Logradouro { get; set; }
         public string Numero { get; set; }
         public string Complemento { get; set; }
         public string Bairro { get; set; }
+        public string Sexo { get; set; }
+        public string Telefone { get; set; }
+        public virtual MunicipioViewModel Municipio { get; set; }
+    }
+
+    public partial class PessoaJuridicaViewModel
+    {
+        public string NumCnpj { get; set; }
+        public string OrgaoEmpresa { get; set; }
     }
 
     public partial class ProrrogacaoManifestacaoViewModel
     {
-        public string PrazoOriginal { get; set; }
+        public DateTime PrazoOriginal { get; set; }
         public string NovoPrazo { get; set; }
         public OrgaoViewModel Orgao { get; set; }
         public string TxtJustificativaProrrogacao { get; set; }
@@ -198,6 +201,7 @@ namespace Prodest.EOuv.UI.Apresentacao
     {
         public string SiglaOrgao { get; set; }
         public string NomeFantasia { get; set; }
+        public string RazaoSocial { get; set; }
     }
 
     public partial class SituacaoManifestacaoViewModel
@@ -208,5 +212,53 @@ namespace Prodest.EOuv.UI.Apresentacao
     public partial class ManifestacaoSimplificadaViewModel
     {
         public string NumProtocolo { get; set; }
+    }
+
+    public partial class AssuntoViewModel
+    {
+        public string DescAssunto { get; set; }
+    }
+
+    public partial class CanalEntradaViewModel
+    {
+        public string DescCanalEntrada { get; set; }
+    }
+
+    public partial class ModoRespostaViewModel
+    {
+        public string DescModoResposta { get; set; }
+    }
+
+    public partial class TipoIdentificacaoViewModel
+    {
+        public string DescTipoIdentificacao { get; set; }
+    }
+
+    public partial class TipoManifestacaoViewModel
+    {
+        public string DescTipoManifestacao { get; set; }
+    }
+
+    public partial class TipoManifestanteViewModel
+    {
+        public string DescTipoManifestante { get; set; }
+    }
+
+    public partial class UsuarioViewModel
+    {
+        public virtual OrgaoViewModel Orgao { get; set; }
+        public virtual PessoaViewModel Pessoa { get; set; }
+    }
+
+    public partial class MunicipioViewModel
+    {
+        public string DescMunicipio { get; set; }
+        public string SigUf { get; set; }
+        public virtual UfViewModel Uf { get; set; }
+    }
+
+    public partial class UfViewModel
+    {
+        public string DescUf { get; set; }
     }
 }
