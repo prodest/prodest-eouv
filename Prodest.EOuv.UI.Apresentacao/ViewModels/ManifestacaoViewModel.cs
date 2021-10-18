@@ -36,6 +36,7 @@ namespace Prodest.EOuv.UI.Apresentacao
 
         public virtual TipoManifestanteViewModel TipoManifestante { get; set; }
         public virtual PessoaViewModel Pessoa { get; set; }
+        public virtual PessoaJuridicaViewModel PessoaJuridica { get; set; }
 
         //Dados de Análise-----------------------------------------------------------
         public List<ProrrogacaoManifestacaoViewModel> ProrrogacaoManifestacao { get; set; }

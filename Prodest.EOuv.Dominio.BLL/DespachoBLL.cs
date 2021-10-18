@@ -37,7 +37,7 @@ namespace Prodest.EOuv.Dominio.BLL
             await _despachoRepository.AdicionarDespacho(despacho);
         }
 
-        public async Task Despachar(DespachoManifestacaoModel despachoModel, string destinatarios, string papelResponsavel, ListaFiltroDadosManifestacaoModel listaDadosSelecionados)
+        public async Task Despachar(DespachoManifestacaoModel despachoModel, string destinatarios, string papelResponsavel, FiltroDadosManifestacaoModel filtroDadosManifestacao)
         {
             //Validar regras de negócio
             //Validar se o prazo está OK
@@ -47,11 +47,11 @@ namespace Prodest.EOuv.Dominio.BLL
             //Validar se o papel está ok
 
             //Buscar Dados da Manifestação
-            ManifestacaoModel manifestacao = await _manifestacaoBLL.ObterDadosCompletosManifestacao(despachoModel.IdManifestacao);
+            ManifestacaoModel manifestacao = await _manifestacaoBLL.ObterDadosFiltradosManifestacao(despachoModel.IdManifestacao, filtroDadosManifestacao);
 
             string nomeArquivo = "Manifestação " + manifestacao.NumProtocolo;
 
-            string html = await MontarHtmlDetalhesManifestacao(manifestacao, listaDadosSelecionados);
+            string html = await MontarHtmlDetalhesManifestacao(manifestacao);
             byte[] arquivoPdfCapturar = await _pdfApiBLL.GerarPdfByHtml(html);
             string idDocumento = await CapturarDocumentoEdocs(arquivoPdfCapturar, papelResponsavel, nomeArquivo);
 
@@ -63,7 +63,7 @@ namespace Prodest.EOuv.Dominio.BLL
             //- Salvar Despacho no Eouv com IdEvento (sem IdEncaminhamento por enquanto)
         }
 
-        private async Task<string> MontarHtmlDetalhesManifestacao(ManifestacaoModel manifestacao, ListaFiltroDadosManifestacaoModel listaDadosSelecionados)
+        private async Task<string> MontarHtmlDetalhesManifestacao(ManifestacaoModel manifestacao)
         {
             string html = await _htmlApiBLL.GerarHtml(manifestacao);
             return html;

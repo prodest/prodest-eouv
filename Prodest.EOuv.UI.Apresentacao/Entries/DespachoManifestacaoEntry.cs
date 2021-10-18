@@ -16,6 +16,6 @@ namespace Prodest.EOuv.UI.Apresentacao
         public string[] Anexos { get; set; }
         public string GuidDestinatario { get; set; }
         public string GuidPapelResponsavel { get; set; }
-        public ListaDadosManifestacaoSelecionadosEntry ListaDadosSelecionados { get; set; }
+        public FiltroDadosManifestacaoSelecionadosEntry FiltroDadosManifestacaoSelecionados { get; set; }
     }
 }

@@ -4,7 +4,6 @@
     ViewData["Title"] = "Home Page";
 }
 
-
 <html>
 <head>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
@@ -12,12 +11,11 @@
 </head>
 <body>
     <!--Dados Básicos da Manifestação-->
-    <div class="accordion-item">
-        <h2 class="accordion-header" id="dadoBasicos">
-            <i class="flex-fill check-document far fa-check-square incluir"></i>
-                Dados Básicos da Manifestação
+    <div>
+        <h2>
+            Dados Básicos da Manifestação
         </h2>
-        <div class="accordion-collapse">
+        <div>
             <div class="accordion-body">
                 <div class="row justify-content-start">
                     <div class="col-md-4">
@@ -90,6 +88,126 @@
         </div>
     </div>
 
+    <!--Demais Dados da Manifestação-->
+    <div>
+        <h2>
+            Demais Dados da Manifestação
+        </h2>
+        <div>
+            <div>
+
+                <!--Teor da Manifestação-->
+                <div>
+                    <h2>
+                        Teor da Manifestação
+                    </h2>
+                    <div>
+                        <div>
+                            <div class="row justify-content-start">
+                                <div class="col-md-12">
+                                    <span class="fw-bold">Município do local do fato</span>
+                                    <br />
+                                    <span>@Model.Municipio?.DescMunicipio</span>
+                                </div>
+                                <div class="col-md-12">
+                                    <span class="fw-bold">Texto da Manifestação</span>
+                                    <br />
+                                    <span>@Model.Municipio?.DescMunicipio</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Dados do Manifestante-->
+                <div>
+                    <h2>
+                        Dados do Manifestante
+                    </h2>
+                    <div>
+                        <div class="accordion-body">
+                            <div class="row justify-content-start">
+                                <div class="col-md-4">
+                                    <span class="fw-bold">Nome</span>
+                                    <br />
+                                    <span>@Model.Pessoa?.Nome</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span class="fw-bold">CPF</span>
+                                    <br />
+                                    <span>@Model.Pessoa?.Cpf</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span class="fw-bold">Gênero</span>
+                                    <br />
+                                    <span>@Model.Pessoa?.Sexo</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span class="fw-bold">Telefone</span>
+                                    <br />
+                                    <span>@Model.Pessoa?.Telefone</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span class="fw-bold">E-mail</span>
+                                    <br />
+                                    <span>@Model.Pessoa?.Email</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span class="fw-bold">Tipo de Manifestante</span>
+                                    <br />
+                                    <span>@Model.TipoManifestante?.DescTipoManifestante</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span class="fw-bold">CNPJ</span>
+                                    <br />
+                                    <span>@Model.PessoaJuridica?.NumCnpj</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span class="fw-bold">Órgão/Empresa</span>
+                                    <br />
+                                    <span>@Model.PessoaJuridica?.OrgaoEmpresa</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span class="fw-bold">CEP</span>
+                                    <br />
+                                    <span>@Model.Pessoa?.Cep</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span class="fw-bold">Municipio</span>
+                                    <br />
+                                    <span>@Model.Pessoa?.Municipio?.DescMunicipio</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span class="fw-bold">UF</span>
+                                    <br />
+                                    <span>@Model.Pessoa?.Municipio?.Uf?.DescUf</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span class="fw-bold">Logradouro</span>
+                                    <br />
+                                    <span>@Model.Pessoa?.Logradouro</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span class="fw-bold">Número</span>
+                                    <br />
+                                    <span>@Model.Pessoa?.Numero</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span class="fw-bold">Complemento</span>
+                                    <br />
+                                    <span>@Model.Pessoa?.Complemento</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span class="fw-bold">Bairro</span>
+                                    <br />
+                                    <span>@Model.Pessoa?.Bairro</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
-

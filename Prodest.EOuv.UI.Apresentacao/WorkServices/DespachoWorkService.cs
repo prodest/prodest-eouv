@@ -56,12 +56,12 @@ namespace Prodest.EOuv.UI.Apresentacao
             despachoModel.PrazoResposta = Convert.ToDateTime(DateTime.Now);
             despachoModel.TextoSolicitacaoDespacho = despachoEntry.TextoDespacho;
 
-            var listaDadosSelecionados = _mapper.Map<ListaFiltroDadosManifestacaoModel>(despachoEntry.ListaDadosSelecionados);
+            var filtroDadosSelecionados = _mapper.Map<FiltroDadosManifestacaoModel>(despachoEntry.FiltroDadosManifestacaoSelecionados);
 
             string destinatario = despachoEntry.GuidDestinatario;
             string papelResponsavel = despachoEntry.GuidPapelResponsavel;
 
-            await _despachoBLL.Despachar(despachoModel, destinatario, papelResponsavel, listaDadosSelecionados);
+            await _despachoBLL.Despachar(despachoModel, destinatario, papelResponsavel, filtroDadosSelecionados);
         }
     }
 }

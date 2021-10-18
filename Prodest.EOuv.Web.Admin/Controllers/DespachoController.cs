@@ -49,27 +49,17 @@ namespace Prodest.EOuv.Web.Admin.Controllers
                 return View();
             }
 
-            ListaDadosManifestacaoSelecionadosEntry dadosSelecionados = new ListaDadosManifestacaoSelecionadosEntry();
+            FiltroDadosManifestacaoSelecionadosEntry dadosSelecionados = new FiltroDadosManifestacaoSelecionadosEntry();
             dadosSelecionados.DadosBasicos = true;
             dadosSelecionados.DadosManifestante = true;
             dadosSelecionados.DadosComplemento = true;
-            dadosSelecionados.DadosProrrogacao = true;
-            dadosSelecionados.DadosDiligencia = true;
             dadosSelecionados.DadosEncaminhamento = true;
-            dadosSelecionados.DadosResposta = true;
-            dadosSelecionados.DadosApuracao = true;
-            dadosSelecionados.DadosDespacho = true;
-            dadosSelecionados.DadosNotificacao = true;
             dadosSelecionados.DadosAnotacao = true;
-            dadosSelecionados.DadosInterpelacao = true;
-            dadosSelecionados.DadosReclamacaoOmissao = true;
-            dadosSelecionados.DadosRecursoNegativa = true;
-            dadosSelecionados.DadosDesdobramento = true;
             dadosSelecionados.DadosHistorico = true;
 
-            despachoEntry.ListaDadosSelecionados = dadosSelecionados;
+            despachoEntry.FiltroDadosManifestacaoSelecionados = dadosSelecionados;
 
-            despachoEntry.GuidDestinatario = "";
+            despachoEntry.GuidDestinatario = "90dab47e-e5ef-481e-8d0f-8a90d9390f4d";
             despachoEntry.GuidPapelResponsavel = "6470bd19-c178-4824-8edc-e8c3ef22a536";
 
             despachoEntry.IdManifestacao = 583;

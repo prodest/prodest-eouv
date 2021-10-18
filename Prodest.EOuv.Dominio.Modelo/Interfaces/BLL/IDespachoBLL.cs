@@ -12,6 +12,6 @@ namespace Prodest.EOuv.Dominio.Modelo
 
         Task AdicionarDespacho(DespachoManifestacaoModel despacho);
 
-        Task Despachar(DespachoManifestacaoModel despachoModel, string destinatarios, string papelResponsavel, ListaFiltroDadosManifestacaoModel listaDadosSelecionados);
+        Task Despachar(DespachoManifestacaoModel despachoModel, string destinatarios, string papelResponsavel, FiltroDadosManifestacaoModel listaDadosSelecionados);
     }
 }

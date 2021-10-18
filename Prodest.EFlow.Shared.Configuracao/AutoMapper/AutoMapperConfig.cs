@@ -97,7 +97,7 @@ namespace Prodest.EOuv.Shared.Configuracao
             CreateMap<Perfil, PerfilModel>().ReverseMap();
 
             //Mapeamento de objetos customizados
-            CreateMap<ListaDadosManifestacaoSelecionadosEntry, ListaFiltroDadosManifestacaoModel>().ReverseMap();
+            CreateMap<FiltroDadosManifestacaoSelecionadosEntry, FiltroDadosManifestacaoModel>().ReverseMap();
         }
     }
 }

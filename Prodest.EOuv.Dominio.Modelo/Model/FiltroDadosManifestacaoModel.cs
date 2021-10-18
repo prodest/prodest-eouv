@@ -1,16 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 #nullable disable
 
-namespace Prodest.EOuv.UI.Apresentacao
+namespace Prodest.EOuv.Dominio.Modelo
 {
-    public partial class ListaDadosManifestacaoSelecionadosEntry
+    public partial class FiltroDadosManifestacaoModel
     {
         public bool DadosBasicos { get; set; }
+        public bool DadosTeor { get; set; }
         public bool DadosManifestante { get; set; }
         public bool DadosComplemento { get; set; }
+        public bool DadosAnexo { get; set; }
         public bool DadosProrrogacao { get; set; }
         public bool DadosDiligencia { get; set; }
         public bool DadosEncaminhamento { get; set; }
