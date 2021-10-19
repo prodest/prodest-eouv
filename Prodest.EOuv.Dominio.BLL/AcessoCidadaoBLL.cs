@@ -43,6 +43,12 @@ namespace Prodest.EOuv.Dominio.BLL
             return await _acessoCidadaoService.GetConjuntoAgentesPublicos(id.ToString());
         }
 
+        public async Task<AgentePublicoPapelModel[]> GetAgentePublico(string id, string busca)
+        {
+            return await _acessoCidadaoService.GetAgentePublico(id.ToString(),busca);
+        }
+        
+
         public async Task<UnidadeModel[]> GetUnidadesPerfilAdministrador(Guid id)
         {
             var response = await _acessoCidadaoService.GetPermissaoUsuario(id.ToString());

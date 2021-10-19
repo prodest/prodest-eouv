@@ -15,5 +15,7 @@ namespace Prodest.EOuv.Dominio.Modelo
         Task<AgentePublicoModel[]> GetConjuntoAgentesPublicos(Guid id);
 
         Task<UnidadeModel[]> GetUnidadesPerfilAdministrador(Guid id);
+
+        Task<AgentePublicoPapelModel[]> GetAgentePublico(string id, string busca);
     }
 }

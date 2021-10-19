@@ -82,6 +82,11 @@ namespace Prodest.EOuv.Infra.Service
             return await GetRequest<PermissaoUsuarioModel>($"{_baseUrl}/restrito/usuario/{id}/permissoes");
         }
 
+        public async Task<AgentePublicoPapelModel[]> GetAgentePublico(string id,string busca)
+        {
+            return await GetRequest<AgentePublicoPapelModel[]>($"{_baseUrl}/conjunto/{id}/papeis/{busca}");
+        }
+
         // ======================
         // private methods
         // ======================

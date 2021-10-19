@@ -51,6 +51,17 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             return Json(patriarca);
         }
 
+        public JsonResult BuscarAgentes(String nome)
+        {
+            
+            Task<AgentePublicoPapelModel[]> task = _AcessoCidadaoBLL.GetAgentePublico("3ca6ea0e-ca14-46fa-a911-22e616303722",nome);// Prodest
+
+            Task.WaitAll(task);
+
+            AgentePublicoPapelModel[] agente = task.Result;
+            return Json(agente);
+        }
+
         public JsonResult BuscarOrganizacoes()
         {
             System.Threading.Tasks.Task<List<PatriarcaModel>> task = _edocsBLL.GetOrganizacoes("fe88eb2a-a1f3-4cb1-a684-87317baf5a57");// ESGOV
