@@ -51,10 +51,10 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             return Json(patriarca);
         }
 
-        public JsonResult BuscarAgentes()
+        public JsonResult BuscarAgentes(String nome)
         {
             
-            Task<AgentePublicoPapelModel[]> task = _AcessoCidadaoBLL.GetAgentePublico("3ca6ea0e-ca14-46fa-a911-22e616303722","CAIO");// Prodest
+            Task<AgentePublicoPapelModel[]> task = _AcessoCidadaoBLL.GetAgentePublico("3ca6ea0e-ca14-46fa-a911-22e616303722",nome);// Prodest
 
             Task.WaitAll(task);
 
