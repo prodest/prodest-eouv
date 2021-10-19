@@ -2,10 +2,12 @@ using Hangfire;
 using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Prodest.EOuv.Infra.DAL;
+using Prodest.EOuv.Shared.Configuracao;
 using System;
 
 namespace Prodest.EOuv.Background.Jobs
@@ -23,8 +25,17 @@ namespace Prodest.EOuv.Background.Jobs
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddSingleton(Configuration);
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddDbContext<EouvContext>();
+            services.InjetarDependencias();
+            services.AddHttpContextAccessor();
+            services.AddHttpClient();
+            services.AddAutoMapper(typeof(AutoMapperConfig));
 
-            // Add Hangfire services.
+            services.AddScoped<IHangfireService, HangfireService>();
+
+            // Add Hangfire services
             services.AddHangfire(configuration => configuration
                 .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
                 .UseSimpleAssemblyNameTypeSerializer()
@@ -60,14 +71,12 @@ namespace Prodest.EOuv.Background.Jobs
 
             app.UseRouting();
 
-            //app.UseAuthorization();
+            JobsHangfire();
+        }
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
-            });
+        private static void JobsHangfire()
+        {
+            RecurringJob.AddOrUpdate<IHangfireService>("BuscaRespostaDespachosAbertos", bj => bj.BuscaRespostaDespachosAbertos(), "* * * * *");
         }
     }
 }
