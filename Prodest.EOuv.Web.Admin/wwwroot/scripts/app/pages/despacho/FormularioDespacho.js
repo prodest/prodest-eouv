@@ -1,16 +1,36 @@
 ﻿const DespachoForm = {
     name: 'DespachoForm',
     template: '#template-despacho-form',
-    components: [SelecaoDestinatarios],
+    components: [SelecaoDestinatarios, DespachoManifestacao],
     emits: ['incluir-campo-file'],
     data() {
         return {
-            campoFile: [],
-            idCampoFile: 0,
+            campoAnexo: [],
+            idCampoAnexo: 0,
             papeisUsuario: [],
             papelSelecionado: null,
             prazoResposta: '',
-            textoDespacho: ''
+            textoDespacho: '',
+            DadosManifestacaoSelecionados: {
+                DadosBasicos: true,
+                DadosTeor: false,
+                DadosManifestante: false,
+                DadosProrrogacao: false,
+                DadosEncaminhamento: false,
+                DadosDespacho: false,
+                DadosDesdobramento: false,
+                DadosAnotacao: false,
+                DadosNotificacao: false,
+                DadosReclamacaoOmissao: false,
+                DadosResposta: false,
+                DadosDiligencia: false,
+                DadosApuracao: false,
+                DadosComplemento: false,
+                DadosAnexo: false,
+                DadosInterpelacao: false,
+                DadosRecursoNegativa: false,
+                DadosHistorico: false
+            }
         }
     },
 
@@ -19,13 +39,13 @@
     },
 
     methods: {
-        IncluirCampoFile() {
-            this.idCampoFile++;
-            this.campoFile.push('file-' + (this.idCampoFile));
+        IncluirCampoAnexo() {
+            this.idCampoAnexo++;
+            this.campoAnexo.push('file-' + (this.idCampoAnexo));
         },
-        RemoverCampoFile(campo) {
+        RemoverCampoAnexo(campo) {
             console.log(campo);
-            this.campoFile = utils.RemoverItemArray(this.campoFile, campo);
+            this.campoAnexo = utils.RemoverItemArray(this.campoAnexo, campo);
         },
         async CarregarPapeisUsuario() {
             let ret = await eOuvApi.PapeisUsuarioEDocs();
@@ -35,9 +55,24 @@
             let entry = {
                 prazoResposta: this.prazoResposta,
                 textoDespacho: this.textoDespacho,
-                anexos: this.campoFile
+                dadosManifestacaoSelecionados: JSON.parse(JSON.stringify(this.DadosManifestacaoSelecionados)),
+                papelSelecionado: this.papelSelecionado,
+                destinatario: null
             }
-            await eOuvApi.despachar(entry);
+            //await eOuvApi.despachar(entry);
+            console.log(entry);
+        },
+        ToggleDadosManifestacaoSelecionados(e) {
+            console.log(e)
+            let item = e.target.parentNode.id;
+            this.DadosManifestacaoSelecionados[item] = !this.DadosManifestacaoSelecionados[item];
+
+            for (var i in this.DadosManifestacaoSelecionados) {                                
+                console.log(i + ': '+this.DadosManifestacaoSelecionados[i]);
+                
+            }
+
         }
+
     }
 };

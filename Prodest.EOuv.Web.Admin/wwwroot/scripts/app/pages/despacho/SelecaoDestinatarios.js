@@ -6,8 +6,7 @@
 
     data() {
         return {
-            titulo: 'Seleção de Destinatários',
-            listaOrgaos: [],
+            titulo: 'Seleção de Destinatários',            
             listaSetores: [],
             listaGrupos: [],
             modal: null,
@@ -21,8 +20,7 @@
     },
 
     methods: {
-        async CarregarDadosEDocs() {
-            await this.GetOrgaos();
+        async CarregarDadosEDocs() {            
             await this.GetGrupos();
             await this.GetSetores();
             this.VerificaCarregamentoTodos();
@@ -53,7 +51,7 @@
         },
 
         VerificaCarregamentoTodos() {
-            if ((this.listaGrupos.length > 0) && (this.listaOrgaos.length > 0) && (this.listaSetores.length > 0)) {
+            if ((this.listaGrupos.length > 0) && (this.listaSetores.length > 0)) {
                 console.log('Todos foram carregados!');
                 this.modalDestinatarios = this.$refs.destinatariosModal;
                 console.log(this.modalDestinatarios);
