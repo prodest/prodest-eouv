@@ -163,12 +163,6 @@ namespace Prodest.EOuv.Dominio.BLL
             return await _eDocsService.PostAssinaturaDigitalValida(model);
         }
 
-        public async Task<string> CapturarDocumento(byte[] arquivo, string papelResponsavel, string nomeArquivo)
-        {
-            EventoModel evento = await BuscarEvento(await GetEventoDocumentoCapturarNatoDigitalCopiaServidor(arquivo, papelResponsavel, nomeArquivo)); //com o Id do evento descobrimos o Id do Documento
-            return evento.IdDocumento;
-        }
-
         public async Task<EventoModel> BuscarEvento(string id)
         {
             EventoModel task = await BuscarEventoConcluidoAsync(id);
@@ -197,6 +191,14 @@ namespace Prodest.EOuv.Dominio.BLL
 
             return evento;
         }
+
+        #region [=== Capturar Documento ===]
+
+        public async Task<string> CapturarDocumento(byte[] arquivo, string papelResponsavel, string nomeArquivo)
+        {
+            EventoModel evento = await BuscarEvento(await GetEventoDocumentoCapturarNatoDigitalCopiaServidor(arquivo, papelResponsavel, nomeArquivo)); //com o Id do evento descobrimos o Id do Documento
+            return evento.IdDocumento;
+        } //Retorna o Id do Documento
 
         public async Task<string> GetEventoDocumentoCapturarNatoDigitalCopiaServidor(byte[] arquivo, string papelResponsavel, string nomeArquivo)
         {
@@ -249,32 +251,24 @@ namespace Prodest.EOuv.Dominio.BLL
             return result;
         }
 
-        public async Task<string> GetProtocoloEncaminhamentoNovo()
+        #endregion [=== Capturar Documento ===]
+
+        #region [=== Encaminhamento ===]
+
+        public async Task<string> EncaminharDocumento(string idDocumento, string assunto, string mensagem, string idResponsavel, string idDestinatario, string papelResponsavel) //Retorna o Id do Encaminhamento
         {
-            Task<string> task = GetProtocoloEncaminhamento(await Encaminhar());
-
-            Task.WaitAll(task);
-
-            string protocolo = task.Result;
-            return protocolo;
-        }
-
-        public async Task<string> Encaminhar()
-        {
-            EventoModel evento = await BuscarEvento(await GetEventoEncaminhar()); //com o Id do evento descobrimos o Id do Documento
+            EventoModel evento = await BuscarEvento(await GetEventoEncaminhar(idDocumento, assunto, mensagem, idResponsavel, idDestinatario, papelResponsavel)); //com o Id do evento descobrimos o Id do Encaminhamento
             return evento.IdEncaminhamento;
         }
 
-        public async Task<string> GetEventoEncaminhar()
+        public async Task<string> GetEventoEncaminhar(string idDocumento, string assunto, string mensagem, string idResponsavel, string idDestinatario, string papelResponsavel) //Retorna o Id do Evento
         {
-            //DOCUMENTO CAPTURADO -> DocumentoCapturarNatoDigitalCopiaServidor
-            string idDocumento = "38683aef-0613-45ea-bfd0-663783a7bfe0"; //usuário logado deve ter acesso ao documento
             var parametros = new EncaminhamentoRequestModel()
             {
-                Assunto = "Manifestação número",
-                Mensagem = "Manifestação número",
-                IdResponsavel = "ec00931d-74a2-4877-9b93-95ce029ba7f6",
-                IdsDestinos = new string[] { "6470bd19-c178-4824-8edc-e8c3ef22a536" },
+                Assunto = assunto,
+                Mensagem = mensagem,
+                IdResponsavel = idResponsavel,
+                IdsDestinos = new string[] { idDestinatario },
                 IdsDocumentos = new string[] { idDocumento },
                 RestricaoAcesso = new RestricaoAcessoModel()
                 {
@@ -285,8 +279,8 @@ namespace Prodest.EOuv.Dominio.BLL
                         PrazoAnos = 1,
                         PrazoMeses = 0,
                         PrazoDias = 0,
-                        Justificativa = "Ouvidoria",
-                        IdPapelAprovador = "ec00931d-74a2-4877-9b93-95ce029ba7f6", //mesmo do capturador
+                        Justificativa = "Demanda de Ouvidoria",
+                        IdPapelAprovador = papelResponsavel, //mesmo do capturador
                     }
                 },
             };
@@ -297,5 +291,7 @@ namespace Prodest.EOuv.Dominio.BLL
             string result = task.Result;
             return result;
         }
+
+        #endregion [=== Encaminhamento ===]
     }
 }

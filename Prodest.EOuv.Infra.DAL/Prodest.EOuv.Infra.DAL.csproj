@@ -17,4 +17,8 @@
     <ProjectReference Include="..\Prodest.EOuv.Dominio.Modelo\Prodest.EOuv.Dominio.Modelo.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Temp\" />
+  </ItemGroup>
+
 </Project>

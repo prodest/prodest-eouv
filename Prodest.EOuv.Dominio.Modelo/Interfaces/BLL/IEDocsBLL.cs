@@ -65,5 +65,7 @@ namespace Prodest.EOuv.Dominio.Modelo
         Task<AssinaturaDigitalValidaModel> PostAssinaturaDigitalValida(AssinaturaDigitalValidaModel model);
 
         Task<string> CapturarDocumento(byte[] arquivo, string papelResponsavel, string nomeArquivo);
+
+        Task<string> EncaminharDocumento(string idDocumento, string assunto, string mensagem, string idResponsavel, string idDestinatario, string papelResponsavel);
     }
 }

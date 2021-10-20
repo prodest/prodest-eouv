@@ -11,7 +11,11 @@ namespace Prodest.EOuv.UI.Apresentacao
     public partial class ManifestacaoViewModel
     {
         //Dados Básicos da Manifestação-----------------------------------------------------------
+        public int IdManifestacao { get; set; }
+
         public string NumProtocolo { get; set; }
+        public int IdOrgaoResponsavel { get; set; }
+        public int? IdUsuarioAnalise { get; set; }
 
         public virtual TipoManifestacaoViewModel TipoManifestacao { get; set; }
         public virtual SituacaoManifestacaoViewModel SituacaoManifestacao { get; set; }
