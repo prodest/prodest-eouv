@@ -14,7 +14,7 @@
 
 <div class="container-fluid p-0">
     <div class="row">
-        <div id="app" class="col-12">            
+        <div id="app" class="col-12">
             <despacho-form></despacho-form>
             <selecao-papel></selecao-papel>
         </div>
@@ -747,39 +747,43 @@
     </script>
 
     <script type="text/html" id="template-despacho-form">
-        <despacho-manifestacao v-on:selecionar-dado-manifestacao="ToggleDadosManifestacaoSelecionados($event)" ></despacho-manifestacao>
+        <despacho-manifestacao v-on:selecionar-dado-manifestacao="ToggleDadosManifestacaoSelecionados($event)"></despacho-manifestacao>
         <section class="mb-4">
             <div class="card">
                 <div class="card-header py-3">
                     <h5 class="mb-0">Formulário de Despacho</h5>
                 </div>
                 <div class="card-body">
-                    <div class="form-outline mb-3 col-md-3">
-                        <input type="text" v-model="prazoResposta" class="form-control" />
-                        <label class="form-label" for="form1">Prazo para Resposta</label>
+                    <div class="mb-3 col-md-3">
+                        <div class="form-floating">
+                            <input v-model="prazoResposta" value="{{prazoResposta}}" type="email" class="form-control" id="flPrazoResposta" placeholder="01/01/2021">
+                            <label for="flPrazoResposta">Prazo de Resposta</label>
+                        </div>                        
                     </div>
                     <div class="form-outline mb-3">
-                        <textarea v-model="textoDespacho" class="form-control" />
-                        <label class="form-label" for="form1">Texto do Despacho</label>
+                        <div class="form-floating">
+                            <textarea class="form-control" maxlength="2000" placeholder="Leave a comment here" v-model="textoDespacho" id="flTextoDespacho" style="height: 80px"></textarea>
+                            <label for="flTextoDespacho">Texto do Despacho</label>                            
+                        </div>                        
                     </div>
-                    <selecao-destinatarios></selecao-destinatarios>
+                    <selecao-destinatarios v-on:selecionar-destinatario="IncluirDestinatarioSelecionado"></selecao-destinatarios>
                     <hr />
                     @*<div class="form-outline mb-3">
-                        <button class="btn btn-block btn-info" v-on:click="IncluirCampoAnexo"><i class="fas fa-plus"></i> Incluir novo arquivo</button>
-                        <div class="border-1 mt-3" v-if="campoAnexo.length > 0">
-                            <div class="input-group mb-3" v-for="(campo, index) in campoAnexo" v-bind:key="index">
-                                <input type="file" class="form-control" id="{{campo}}" aria-describedby="addon-{{campo}}" />
-                                <span v-on:click="RemoverCampoAnexo(campo)" class="input-group-text border-0 btn btn-danger shadow-0" id="addon-{{campo}}"><i class="fas fa-times"></i></span>
+                            <button class="btn btn-block btn-info" v-on:click="IncluirCampoAnexo"><i class="fas fa-plus"></i> Incluir novo arquivo</button>
+                            <div class="border-1 mt-3" v-if="campoAnexo.length > 0">
+                                <div class="input-group mb-3" v-for="(campo, index) in campoAnexo" v-bind:key="index">
+                                    <input type="file" class="form-control" id="{{campo}}" aria-describedby="addon-{{campo}}" />
+                                    <span v-on:click="RemoverCampoAnexo(campo)" class="input-group-text border-0 btn btn-danger shadow-0" id="addon-{{campo}}"><i class="fas fa-times"></i></span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <hr />*@
+                        <hr />*@
                     <div class="form-outline mb-3">
                         <label class="form-label" for="customAnexo">Assinar despacho como:</label>
                         <br />
-                        <div class="btn-group">
-                            <label v-for="(papel, index) in papeisUsuario" v-bind:key="index" class="btn btn-secondary" v-bind:for="papel.id">
-                                <input type="radio" class="btn-check" v-bind:name="papel.id" v-bind:id="papel.id" autocomplete="off" />
+                        <div class="form-check" v-for="(papel, index) in papeisUsuario" v-bind:key="index" v-bind:for="papel.id">
+                            <label>
+                                <input type="radio" v-on:change="TogglePapelSelecionado($event)" class="form-check-input" v-bind:name="papel.id" v-bind:id="papel.id" autocomplete="off" />
                                 {{papel.nome}} - {{papel.siglaUnidadePapel}} - {{papel.siglaOrganizacaoPapel}}
                             </label>
                         </div>
@@ -802,8 +806,8 @@
         <div class="form-outline mb-3">
             <button type="button" v-on:click="CarregarDadosEDocs" class="btn btn-info btn-block"><i class="fas fa-search"></i> Incluir Destinatários</button>
             <div class="row">
-                <div v-if="destinatarios.length > 0 " class="col-12 mt-2 border-secondary border-1">
-                    <span v-for="(destinatario, index) in destinatarios" :key="index" class="badge bg-warning text-dark m-1">{{destinatario.nome}} <i class="fas fa-times-circle" v-on:click="RemoverDestinatario(destinatario)"></i></span>
+                <div v-if="destinatario != null " class="col-12 mt-2 border-secondary border-1">
+                    <span class="badge bg-warning text-dark m-1">{{destinatario.nome}} <i class="fas fa-times-circle" v-on:click="RemoverDestinatario()"></i></span>
                 </div>
             </div>
             <div class="modal fade modal-dialog-scrollable"
@@ -822,7 +826,7 @@
                         </div>
                         <div class="modal-body">
                             <!-- Tabs navs -->
-                            <ul class="nav nav-tabs nav-fill mb-3" id="ex1" role="tablist">                                
+                            <ul class="nav nav-tabs nav-fill mb-3" id="ex1" role="tablist">
                                 <li class="nav-item" role="presentation">
                                     <a class="nav-link"
                                        id="ex3-tab-2"
@@ -868,8 +872,8 @@
                                     <span class="fs-6 fw-bold">Selecionados:</span>
                                 </div>
                                 <div class="card-body">
-                                    <div v-if="destinatarios.length > 0 " class="col-12 mt-2 border-secondary border-1">
-                                        <span v-for="(destinatario, index) in destinatarios" :key="index" class="badge bg-warning text-dark m-1">{{destinatario.nome}} <i class="fas fa-times-circle" v-on:click="RemoverDestinatario(destinatario)"></i></span>
+                                    <div v-if="destinatario != null " class="col-12 mt-2 border-secondary border-1">
+                                        <span class="badge bg-warning text-dark m-1">{{destinatario.nome}} <i class="fas fa-times-circle" v-on:click="RemoverDestinatario()"></i></span>
                                     </div>
                                 </div>
                             </div>
@@ -883,5 +887,5 @@
                 </div>
             </div>
         </div>
-    </script>    
+    </script>
 }

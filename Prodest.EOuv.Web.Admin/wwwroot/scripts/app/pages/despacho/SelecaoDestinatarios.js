@@ -2,7 +2,7 @@
 
     name: 'SelecaoDestinatarios',
     template: '#template-selecao-destinatarios',
-    emits: ['get-orgaos'],
+    emits: ['selecionar-destinatario', 'get-orgaos'],
 
     data() {
         return {
@@ -11,7 +11,7 @@
             listaGrupos: [],
             modal: null,
             modalDestinatarios: null,
-            destinatarios: []
+            destinatario:null
         }
     },
 
@@ -20,7 +20,7 @@
     },
 
     methods: {
-        async CarregarDadosEDocs() {            
+        async CarregarDadosEDocs() {
             await this.GetGrupos();
             await this.GetSetores();
             this.VerificaCarregamentoTodos();
@@ -60,14 +60,25 @@
         },
 
         AdicionarDestinatario(id, nome) {
+            this.destinatario = { 'id': id, 'nome': nome };
+            /*
+            //Adicionar multiplos destinatarios
             if (this.destinatarios.filter(e => e.id === id).length == 0) {
                 let destinatario = { 'id': id, 'nome': nome };
                 this.destinatarios.push(destinatario);                
             }
+            */
+
+            this.$emit('selecionar-destinatario', this.destinatario);
         },
 
-        RemoverDestinatario(id) {
+        RemoverDestinatario() {
+            this.destinatario = null;
+            /*
+            //Utilizar quando estiver trabalhando com múltiplos destinatários
             this.destinatarios = utils.RemoverItemArray(this.destinatarios, id);
+            */
+            this.$emit('selecionar-destinatario', this.destinatario);
         },
 
         FecharModal() {

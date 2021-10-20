@@ -1,17 +1,20 @@
-﻿const DespachoForm = {
+﻿const PrazoEmDias = 20;
+const DespachoForm = {
     name: 'DespachoForm',
     template: '#template-despacho-form',
     components: [SelecaoDestinatarios, DespachoManifestacao],
     emits: ['incluir-campo-file'],
     data() {
         return {
-            campoAnexo: [],
+            anexos: [],
             idCampoAnexo: 0,
             papeisUsuario: [],
             papelSelecionado: null,
-            prazoResposta: '',
-            textoDespacho: '',
-            DadosManifestacaoSelecionados: {
+            prazoResposta: null,
+            textoDespacho: 'Texto do despacho....',
+            idManifestacao: null,
+            destinatarioSelecionado: null,
+            dadosManifestacaoSelecionados: {
                 DadosBasicos: true,
                 DadosTeor: false,
                 DadosManifestante: false,
@@ -36,9 +39,15 @@
 
     mounted() {
         this.CarregarPapeisUsuario();
+        this.GerarDataPrazoResposta();
     },
 
     methods: {
+        GerarDataPrazoResposta() {
+            let data = new Date();
+            data.setDate(data.getDate() + PrazoEmDias);
+            this.prazoResposta = utils.DataFormatada(data);
+        },
         IncluirCampoAnexo() {
             this.idCampoAnexo++;
             this.campoAnexo.push('file-' + (this.idCampoAnexo));
@@ -53,26 +62,36 @@
         },
         async Despachar() {
             let entry = {
-                prazoResposta: this.prazoResposta,
-                textoDespacho: this.textoDespacho,
-                dadosManifestacaoSelecionados: JSON.parse(JSON.stringify(this.DadosManifestacaoSelecionados)),
-                papelSelecionado: this.papelSelecionado,
-                destinatario: null
+                IdManifestacao: 0,
+                IdOrgao: 0,
+                IdUsuarioSolicitacao: 0,
+                PrazoResposta: this.prazoResposta,
+                TextoDespacho: this.textoDespacho,
+                FiltroDadosManifestacaoSelecionados: JSON.parse(JSON.stringify(this.dadosManifestacaoSelecionados)),
+                GuidDestinatario: this.destinatarioSelecionado,
+                GuidPapelResponsavel: this.papelSelecionado
             }
-            //await eOuvApi.despachar(entry);
             console.log(entry);
+            await eOuvApi.despachar(entry);
         },
         ToggleDadosManifestacaoSelecionados(e) {
             console.log(e)
             let item = e.target.parentNode.id;
-            this.DadosManifestacaoSelecionados[item] = !this.DadosManifestacaoSelecionados[item];
+            this.dadosManifestacaoSelecionados[item] = !this.dadosManifestacaoSelecionados[item];
 
-            for (var i in this.DadosManifestacaoSelecionados) {                                
-                console.log(i + ': '+this.DadosManifestacaoSelecionados[i]);
+            for (var i in this.dadosManifestacaoSelecionados) {                                
+                console.log(i + ': '+this.dadosManifestacaoSelecionados[i]);
                 
             }
 
+        },
+        TogglePapelSelecionado(e) {
+            this.papelSelecionado = e.target.id;
+            console.log('Papel Selecionado: ' + this.papelSelecionado);
+        },
+        IncluirDestinatarioSelecionado(destinatario) {
+            console.log(destinatario);
+            this.destinatarioSelecionado = destinatario.id;
         }
-
     }
 };
