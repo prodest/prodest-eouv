@@ -21,7 +21,6 @@ using ElmahCore.Sql;
 using Audit.EntityFramework.Providers;
 using Audit.Core;
 using System.Linq;
-using Microsoft.AspNetCore.Mvc;
 using Elastic.Apm.NetCoreAll;
 
 namespace Prodest.EOuv.Web.Admin

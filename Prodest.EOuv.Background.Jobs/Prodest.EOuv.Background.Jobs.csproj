@@ -6,6 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
     <PackageReference Include="Hangfire" Version="1.7.25" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Prodest.EFlow.Shared.Configuracao\Prodest.EOuv.Shared.Configuracao.csproj" />
+    <ProjectReference Include="..\Prodest.EOuv.Dominio.Modelo\Prodest.EOuv.Dominio.Modelo.csproj" />
   </ItemGroup>
 </Project>
