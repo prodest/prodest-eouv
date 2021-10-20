@@ -50,7 +50,10 @@ namespace Prodest.EOuv.Background.Jobs
                 }));
 
             // Add the processing server as IHostedService
-            services.AddHangfireServer();
+            services.AddHangfireServer(options =>
+            {
+                options.Queues = new[] { "Edocs", "default" };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

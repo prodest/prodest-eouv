@@ -27,6 +27,12 @@ namespace Prodest.EOuv.Dominio.BLL
             return await _despachoRepository.ObterDespachoPorManifestacao(idManifestacao);
         }
 
+        public async Task<List<DespachoManifestacaoModel>> ObterDespachosEmAberto()
+        {
+            return await _despachoRepository.ObterDespachosEmAberto();
+        }
+
+
         public async Task AdicionarDespacho(DespachoManifestacaoModel despacho)
         {
             despacho.IdManifestacao = 366;
@@ -72,6 +78,11 @@ namespace Prodest.EOuv.Dominio.BLL
         {
             var IdEncaminhamento = await _edocsBLL.CapturarDocumento(arquivoPdfCapturar, papelResponsavel, nomeArquivo);
             return IdEncaminhamento;
+        }
+
+        public async Task ResponderDespacho(int idDespacho, object atorResposta)
+        {   
+           await _despachoRepository.ResponderDespacho(idDespacho, atorResposta);            
         }
     }
 }

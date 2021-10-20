@@ -59,5 +59,11 @@ namespace Prodest.EOuv.Shared.Util
             Ultrassecreto = 7, 
             SigilosoSemFundamentoLegal = 8
         }
+        public enum SituacaoDespacho
+        {
+            Aberto = 1,
+            Respondido= 2,
+            FinalizadoManualmente = 3
+        }
     }
 }

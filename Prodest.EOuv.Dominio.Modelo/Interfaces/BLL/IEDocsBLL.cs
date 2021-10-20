@@ -20,7 +20,7 @@ namespace Prodest.EOuv.Dominio.Modelo
 
         Task<EncaminhamentoRastreioModel> GetRastreioCompleto(string idEncaminhamento);
 
-        Task<bool> EncontraDestinatario(string idEncaminhamentoRaiz, string[] idDestinatario);
+        Task<EncaminhamentoRastreioDestinoModel> ResponsavelPorResponderAoDestinatario(string idEncaminhamentoRaiz, string[] idDestinatario);
 
         Task<DocumentoModel> GetDocumento(string id);
 

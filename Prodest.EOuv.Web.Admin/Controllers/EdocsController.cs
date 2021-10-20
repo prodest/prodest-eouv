@@ -243,12 +243,12 @@ namespace Prodest.EOuv.Web.Admin.Controllers
 
         public JsonResult EncontraDestinatarioHangFire()
         {
-            System.Threading.Tasks.Task<bool> task = _edocsBLL.EncontraDestinatario("89565801-9382-4785-94f8-cd35d4ab39d2", new[] { "43ccc355-87e9-4f14-8812-6469f8f0c81b", new Guid().ToString(), new Guid().ToString() });// Encaminhamento, grupo
+            System.Threading.Tasks.Task<EncaminhamentoRastreioDestinoModel> task = _edocsBLL.ResponsavelPorResponderAoDestinatario("89565801-9382-4785-94f8-cd35d4ab39d2", new[] { "43ccc355-87e9-4f14-8812-6469f8f0c81b", new Guid().ToString(), new Guid().ToString() });// Encaminhamento, grupo
             //System.Threading.Tasks.Task<bool> task = _edocsBLL.EncontraDestinatario("89565801-9382-4785-94f8-cd35d4ab39d2", new[]{ new Guid().ToString(), new Guid().ToString()});// Encaminhamento, grupo
 
             Task.WaitAll(task);
 
-            bool encontrado = task.Result;
+            EncaminhamentoRastreioDestinoModel encontrado = task.Result;
             return Json(encontrado);
         }
 
