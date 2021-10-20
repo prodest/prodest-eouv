@@ -43,7 +43,7 @@ namespace Prodest.EOuv.Dominio.BLL
             await _despachoRepository.AdicionarDespacho(despacho);
         }
 
-        public async Task Despachar(DespachoManifestacaoModel despachoModel, string destinatarios, string papelResponsavel, FiltroDadosManifestacaoModel filtroDadosManifestacao)
+        public async Task Despachar(DespachoManifestacaoModel despachoModel, string destinatario, string papelResponsavel, FiltroDadosManifestacaoModel filtroDadosManifestacao)
         {
             //Validar regras de negócio
             //Validar se o prazo está OK
@@ -64,7 +64,7 @@ namespace Prodest.EOuv.Dominio.BLL
             //Capturar arquivo PDF no E-Docs
             string idDocumento = await CapturarDocumentoEdocs(arquivoPdfCapturar, papelResponsavel, nomeArquivo);
             //Encaminhar via E-Docs
-
+            string idEncaminhamento = await EncaminharDocumentoEdocs(idDocumento, "Demanda de Ouvidoria", despachoModel.TextoSolicitacaoDespacho, despachoModel.IdUsuarioSolicitacaoDespacho.ToString(), destinatario, papelResponsavel);
             //Salvar Despacho no Eouv com IdEvento (sem IdEncaminhamento por enquanto)
         }
 
@@ -76,7 +76,13 @@ namespace Prodest.EOuv.Dominio.BLL
 
         private async Task<string> CapturarDocumentoEdocs(byte[] arquivoPdfCapturar, string papelResponsavel, string nomeArquivo)
         {
-            var IdEncaminhamento = await _edocsBLL.CapturarDocumento(arquivoPdfCapturar, papelResponsavel, nomeArquivo);
+            var IdDocumento = await _edocsBLL.CapturarDocumento(arquivoPdfCapturar, papelResponsavel, nomeArquivo);
+            return IdDocumento;
+        }
+
+        private async Task<string> EncaminharDocumentoEdocs(string idDocumento, string assunto, string mensagem, string idResponsavel, string idDestinatario, string papelResponsavel)
+        {
+            var IdEncaminhamento = await _edocsBLL.EncaminharDocumento(idDocumento, assunto, mensagem, idResponsavel, idDestinatario, papelResponsavel);
             return IdEncaminhamento;
         }
 

@@ -1,6 +1,7 @@
 ﻿const DespachoManifestacao = {
     name: 'DespachoManifestacao',
     template: '#template-despacho-manifestacao',
+    emits: ['selecionar-dado-manifestacao'],
 
     data() {
         return {
@@ -24,12 +25,10 @@
                 canalEntrada: '',
                 modoResposta: ''
             },
-
             teorManifestacao: {
                 textoManifestacao: '',
                 localFato: ''
             },
-
             dadosManifestante: {
                 nome: '',
                 cpf: '',
@@ -47,35 +46,20 @@
                 complemento: '',
                 bairro: ''
             },
-
             anexoManifestacao: [],
-
             anotacaoManifestacao: [],
-
             apuracaoManifestacao: [],
-
             complementoManifestacao: [],
-
             desdobramentoManifestacao: [],
-
             despachoManifestacao: [],
-
             diligenciaManifestacao: [],
-
             encaminhamentoManifestacao: [],
-
             historicoManifestacao: [],
-
             interpelacaoManifestacao: [],
-
             notificacaoManifestacao: [],
-
             prorrogacaoManifestacao: [],
-
             reclamacaoOmissao: [],
-
             recursoNegativa: [],
-
             respostaManifestacao: []
         }
     },
@@ -235,6 +219,7 @@
 
         IncluirDocumento(e) {
             this.ToggleCheck(e);
+            this.$emit('selecionar-dado-manifestacao', e);
             console.log(e);
 
             if (e.target.classList.contains("fa-check-square")) {
@@ -247,6 +232,6 @@
         ToggleCheck(e) {
             e.target.classList.toggle('fa-square');
             e.target.classList.toggle('fa-check-square');
-        }
+        },       
     }
 };

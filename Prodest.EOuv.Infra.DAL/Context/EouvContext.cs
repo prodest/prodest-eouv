@@ -16,6 +16,7 @@ namespace Prodest.EOuv.Infra.DAL
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
+        public virtual DbSet<AgenteManifestacao> AgenteManifestacao { get; set; }
         public virtual DbSet<AnexoManifestacao> AnexoManifestacao { get; set; }
         public virtual DbSet<AnotacaoManifestacao> AnotacaoManifestacao { get; set; }
         public virtual DbSet<ApuracaoManifestacao> ApuracaoManifestacao { get; set; }
@@ -76,6 +77,50 @@ namespace Prodest.EOuv.Infra.DAL
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "Latin1_General_CI_AS");
+
+            modelBuilder.Entity<AgenteManifestacao>(entity =>
+            {
+                entity.HasKey(e => e.IdAgenteManifestacao)
+                    .HasName("PK_Ouvidoria.AgenteManifestacao");
+
+                entity.ToTable("AgenteManifestacao", "Ouvidoria");
+
+                entity.Property(e => e.GuidUsuario)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.NomeOrgao)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.NomePapel)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.NomePatriarca)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.NomeSetor)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.NomeUsuario)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.SiglaOrgao)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.SiglaPatriarca)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.SiglaSetor)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+            });
 
             modelBuilder.Entity<AnexoManifestacao>(entity =>
             {
@@ -391,50 +436,12 @@ namespace Prodest.EOuv.Infra.DAL
 
                 entity.Property(e => e.DataSolicitacaoDespacho).HasColumnType("datetime");
 
-                entity.Property(e => e.GuidSetorDestinatarioEdocs).HasColumnName("GuidSetorDestinatarioEDocs");
-
-                entity.Property(e => e.GuidSetorRespostaEdocs).HasColumnName("GuidSetorRespostaEDocs");
-
-                entity.Property(e => e.GuidUsuarioDestinatarioEdocs).HasColumnName("GuidUsuarioDestinatarioEDocs");
-
-                entity.Property(e => e.GuidUsuarioRespostaEdocs).HasColumnName("GuidUsuarioRespostaEDocs");
-
-                entity.Property(e => e.NomeSetorDestinatarioEdocs)
-                    .HasMaxLength(200)
-                    .IsUnicode(false)
-                    .HasColumnName("NomeSetorDestinatarioEDocs");
-
-                entity.Property(e => e.NomeSetorRespostaEdocs)
-                    .HasMaxLength(200)
-                    .IsUnicode(false)
-                    .HasColumnName("NomeSetorRespostaEDocs");
-
-                entity.Property(e => e.NomeUsuarioDestinatarioEdocs)
-                    .HasMaxLength(200)
-                    .IsUnicode(false)
-                    .HasColumnName("NomeUsuarioDestinatarioEDocs");
-
-                entity.Property(e => e.NomeUsuarioRespostaEdocs)
-                    .HasMaxLength(200)
-                    .IsUnicode(false)
-                    .HasColumnName("NomeUsuarioRespostaEDocs");
-
                 entity.Property(e => e.PrazoResposta).HasColumnType("datetime");
 
                 entity.Property(e => e.ProtocoloEdocs)
                     .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("ProtocoloEDocs");
-
-                entity.Property(e => e.SiglaSetorDestinatarioEdocs)
-                    .HasMaxLength(20)
-                    .IsUnicode(false)
-                    .HasColumnName("SiglaSetorDestinatarioEDocs");
-
-                entity.Property(e => e.SiglaSetorRespostaEdocs)
-                    .HasMaxLength(20)
-                    .IsUnicode(false)
-                    .HasColumnName("SiglaSetorRespostaEDocs");
 
                 entity.Property(e => e.Situacao)
                     .HasMaxLength(50)
@@ -444,11 +451,23 @@ namespace Prodest.EOuv.Infra.DAL
                     .IsRequired()
                     .IsUnicode(false);
 
-                entity.HasOne(d => d.Manifestacao)
-                    .WithMany(p => p.DespachoManifestacao)
-                    .HasForeignKey(d => d.IdManifestacao)
+                entity.HasOne(d => d.AgenteDestinatario)
+                    .WithMany(p => p.DespachoManifestacaoAgenteDestinatario)
+                    .HasForeignKey(d => d.IdAgenteDestinatario)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_DespachoManifestacao_Manifestacao");
+                    .HasConstraintName("FK_Ouvidoria.DespachoManifestacaoAgente_IdAgenteDestinatario");
+
+                entity.HasOne(d => d.AgenteResposta)
+                    .WithMany(p => p.DespachoManifestacaoAgenteResposta)
+                    .HasForeignKey(d => d.IdAgenteResposta)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Ouvidoria.DespachoManifestacaoAgente_IdAgenteResposta");
+
+                entity.HasOne(d => d.Manifestacao)
+                        .WithMany(p => p.DespachoManifestacao)
+                        .HasForeignKey(d => d.IdManifestacao)
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK_DespachoManifestacao_Manifestacao");
 
                 entity.HasOne(d => d.Orgao)
                     .WithMany(p => p.DespachoManifestacao)

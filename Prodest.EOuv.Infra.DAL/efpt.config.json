@@ -1,208 +1,24 @@
 ﻿{
    "CodeGenerationMode": 0,
-   "ContextClassName": "EouvContext",
+   "ContextClassName": "EouvContextTemp",
    "ContextNamespace": null,
    "DefaultDacpacSchema": null,
    "FilterSchemas": false,
    "IncludeConnectionString": false,
    "ModelNamespace": null,
-   "OutputContextPath": null,
-   "OutputPath": "Model",
+   "OutputContextPath": "Temp",
+   "OutputPath": "Temp",
    "ProjectRootNamespace": "Prodest.EOuv.Infra.DAL",
    "Schemas": null,
    "SelectedHandlebarsLanguage": 0,
    "SelectedToBeGenerated": 0,
    "Tables": [
       {
-         "Name": "[Ouvidoria].[AnexoManifestacao]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[AnotacaoManifestacao]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[ApuracaoManifestacao]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[ArquivamentoManifestacao]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[ArquivoFisicoAnexoManifestacao]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[Assunto]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[AtendimentoImediato]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[CanalEntrada]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[ComplementoManifestacao]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[DesdobramentoManifestacao]",
+         "Name": "[Ouvidoria].[AgenteManifestacao]",
          "ObjectType": 0
       },
       {
          "Name": "[Ouvidoria].[DespachoManifestacao]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[DiligenciaManifestacao]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[EncaminhamentoManifestacao]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[Feriado]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[HistoricoManifestacao]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[InterpelacaoManifestacao]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[ItemInterface]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[ItemInterface_Perfil]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[Log]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[LogAcesso]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[Manifestacao]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[ModoResposta]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[Municipio]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[NotificacaoManifestacao]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[Orgao]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[Ouvidoria]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[OuvidoriaOrgao]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[Pais]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[Perfil]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[PesquisaSatisfacao]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[Pessoa]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[PessoaJuridica]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[ProrrogacaoManifestacao]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[ReclamacaoOmissao]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[RecursoNegativa]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[RespostaManifestacao]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[ResultadoResposta]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[ResultadoRespostaTipologia]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[Setor]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[SituacaoInterpelacao]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[SituacaoManifestacao]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[TipoAnexoManifestacao]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[TipoIdentificacao]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[TipoItemInterface]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[TipoManifestacao]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[TipoManifestante]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[UF]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Ouvidoria].[Usuario]",
          "ObjectType": 0
       }
    ],
@@ -215,6 +31,7 @@
    "UseInflector": false,
    "UseLegacyPluralizer": false,
    "UseNoConstructor": false,
+   "UseNoDefaultConstructor": false,
    "UseNoNavigations": false,
    "UseNoObjectFilter": false,
    "UseNodaTime": false,

@@ -1,31 +1,60 @@
-﻿const DespachoForm = {
+﻿const PrazoEmDias = 20;
+const DespachoForm = {
     name: 'DespachoForm',
     template: '#template-despacho-form',
-    components: [SelecaoDestinatarios],
+    components: [SelecaoDestinatarios, DespachoManifestacao],
     emits: ['incluir-campo-file'],
     data() {
         return {
-            campoFile: [],
-            idCampoFile: 0,
+            anexos: [],
+            idCampoAnexo: 0,
             papeisUsuario: [],
             papelSelecionado: null,
-            prazoResposta: '',
-            textoDespacho: ''
+            prazoResposta: null,
+            textoDespacho: 'Texto do despacho....',
+            idManifestacao: null,
+            destinatarioSelecionado: null,
+            dadosManifestacaoSelecionados: {
+                DadosBasicos: true,
+                DadosTeor: false,
+                DadosManifestante: false,
+                DadosProrrogacao: false,
+                DadosEncaminhamento: false,
+                DadosDespacho: false,
+                DadosDesdobramento: false,
+                DadosAnotacao: false,
+                DadosNotificacao: false,
+                DadosReclamacaoOmissao: false,
+                DadosResposta: false,
+                DadosDiligencia: false,
+                DadosApuracao: false,
+                DadosComplemento: false,
+                DadosAnexo: false,
+                DadosInterpelacao: false,
+                DadosRecursoNegativa: false,
+                DadosHistorico: false
+            }
         }
     },
 
     mounted() {
         this.CarregarPapeisUsuario();
+        this.GerarDataPrazoResposta();
     },
 
     methods: {
-        IncluirCampoFile() {
-            this.idCampoFile++;
-            this.campoFile.push('file-' + (this.idCampoFile));
+        GerarDataPrazoResposta() {
+            let data = new Date();
+            data.setDate(data.getDate() + PrazoEmDias);
+            this.prazoResposta = utils.DataFormatada(data);
         },
-        RemoverCampoFile(campo) {
+        IncluirCampoAnexo() {
+            this.idCampoAnexo++;
+            this.campoAnexo.push('file-' + (this.idCampoAnexo));
+        },
+        RemoverCampoAnexo(campo) {
             console.log(campo);
-            this.campoFile = utils.RemoverItemArray(this.campoFile, campo);
+            this.campoAnexo = utils.RemoverItemArray(this.campoAnexo, campo);
         },
         async CarregarPapeisUsuario() {
             let ret = await eOuvApi.PapeisUsuarioEDocs();
@@ -33,11 +62,36 @@
         },
         async Despachar() {
             let entry = {
-                prazoResposta: this.prazoResposta,
-                textoDespacho: this.textoDespacho,
-                anexos: this.campoFile
+                IdManifestacao: 0,
+                IdOrgao: 0,
+                IdUsuarioSolicitacao: 0,
+                PrazoResposta: this.prazoResposta,
+                TextoDespacho: this.textoDespacho,
+                FiltroDadosManifestacaoSelecionados: JSON.parse(JSON.stringify(this.dadosManifestacaoSelecionados)),
+                GuidDestinatario: this.destinatarioSelecionado,
+                GuidPapelResponsavel: this.papelSelecionado
             }
+            console.log(entry);
             await eOuvApi.despachar(entry);
+        },
+        ToggleDadosManifestacaoSelecionados(e) {
+            console.log(e)
+            let item = e.target.parentNode.id;
+            this.dadosManifestacaoSelecionados[item] = !this.dadosManifestacaoSelecionados[item];
+
+            for (var i in this.dadosManifestacaoSelecionados) {                                
+                console.log(i + ': '+this.dadosManifestacaoSelecionados[i]);
+                
+            }
+
+        },
+        TogglePapelSelecionado(e) {
+            this.papelSelecionado = e.target.id;
+            console.log('Papel Selecionado: ' + this.papelSelecionado);
+        },
+        IncluirDestinatarioSelecionado(destinatario) {
+            console.log(destinatario);
+            this.destinatarioSelecionado = destinatario.id;
         }
     }
 };
