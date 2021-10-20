@@ -84,5 +84,10 @@ namespace Prodest.EOuv.Dominio.BLL
         {   
            await _despachoRepository.ResponderDespacho(idDespacho, atorResposta);            
         }
+        
+        public async Task BuscaSetor(string idSetor)
+        {
+            await _despachoRepository.BuscaSetor(idSetor);
+        }
     }
 }

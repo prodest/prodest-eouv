@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Prodest.EOuv.Dominio.Modelo;
 using Prodest.EOuv.Shared.Util;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -47,7 +48,11 @@ namespace Prodest.EOuv.Infra.DAL
             _eouvContext.Update(_mapper.Map<DespachoManifestacao>(despachoManifestacao));
             await _eouvContext.SaveChangesAsync();            
         }
-
+        public async Task<SetorModel> BuscaSetor(string idSetor)
+        {
+            var setor = await _eouvContext.Setor.Where(d => d.GuidSetor == new Guid(idSetor)).AsNoTracking().FirstOrDefaultAsync();
+            return _mapper.Map<SetorModel>(setor);            
+        }
 
         public async Task AdicionarDespacho(DespachoManifestacaoModel despachoManifestacao)
         {

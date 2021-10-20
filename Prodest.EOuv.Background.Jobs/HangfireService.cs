@@ -1,5 +1,6 @@
 ﻿using Hangfire;
 using Prodest.EOuv.Dominio.Modelo;
+using Prodest.EOuv.Dominio.Modelo.Model;
 using Prodest.EOuv.Shared.Util;
 using Prodest.EOuv.UI.Apresentacao;
 using System;
@@ -18,11 +19,13 @@ namespace Prodest.EOuv.Background.Jobs
 
         private readonly IDespachoBLL _despachoBLL;
         private readonly IEDocsBLL _edocsBLL;
+        private readonly IAcessoCidadaoBLL _AcessoCidadaoBLL;
 
-        public HangfireService(IEDocsBLL edocsBLL, IDespachoBLL  despachoBLL)
+        public HangfireService(IEDocsBLL edocsBLL, IDespachoBLL  despachoBLL, IAcessoCidadaoBLL acessoCidadaoBLL)
         {
             _edocsBLL = edocsBLL;
             _despachoBLL = despachoBLL;
+            _AcessoCidadaoBLL = acessoCidadaoBLL;
         }
         [Queue("Edocs")]
         public void BuscaRespostaDespachosAbertos()
@@ -53,6 +56,18 @@ namespace Prodest.EOuv.Background.Jobs
                 //verificar se o despacho já foi respondido
                 if (despacho.Situacao == nameof(Enums.SituacaoDespacho.Aberto)){
                     //marca como respondido, salva quem respondeu
+                    Task<AgentePublicoPapelModel> taskPapel = _AcessoCidadaoBLL.GetPapel(new Guid(responsavel.Id));
+                    Task.WaitAll(taskPapel);
+                    AgentePublicoPapelModel encontrado = taskPapel.Result;                    
+                    if (encontrado != null && !String.IsNullOrEmpty(encontrado.LotacaoGuid))
+                    {
+                        Task<SetorModel> taskSetor = _despachoBLL.BuscaSetor(encontrado.LotacaoGuid);
+                        Task.WaitAll(taskSetor);
+                        SetorModel setor = taskSetor.Result;
+                    }
+
+
+
                     _despachoBLL.ResponderDespacho(despacho.IdDespachoManifestacao, responsavel /*atorResposta*/);
                 }
             }
