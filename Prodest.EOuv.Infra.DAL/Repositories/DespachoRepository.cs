@@ -39,11 +39,12 @@ namespace Prodest.EOuv.Infra.DAL
             return _mapper.Map<List<DespachoManifestacaoModel>>(despachoManifestacao);        
         }
 
-        public async Task ResponderDespacho(int idDespacho, object atorResposta)
+        public async Task ResponderDespacho(int idDespacho, AgenteManifestacaoModel atorResposta)
         {
             var despachoManifestacao = await ObterDespacho(idDespacho);
 
             despachoManifestacao.Situacao = nameof(Enums.SituacaoDespacho.Respondido);
+            despachoManifestacao.AgenteResposta = atorResposta;
             //salva ator resposta
             _eouvContext.Update(_mapper.Map<DespachoManifestacao>(despachoManifestacao));
             await _eouvContext.SaveChangesAsync();            

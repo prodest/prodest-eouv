@@ -40,7 +40,10 @@ namespace Prodest.EOuv.Background.Jobs
             //busca a situação de cada despacho
             foreach (var despacho in despachos)
             {
-                BackgroundJob.Enqueue(() => EncontraDestinatarioHangFire(despacho ,despacho.IdEncaminhamento.ToString(),new[] { new Guid().ToString(), new Guid().ToString() }));
+                //BackgroundJob.Enqueue(() => EncontraDestinatarioHangFire(despacho ,despacho.IdEncaminhamento.ToString(),new[] { new Guid().ToString(), new Guid().ToString() }));
+                //teste
+                BackgroundJob.Enqueue(() => EncontraDestinatarioHangFire(despacho, "89565801-9382-4785-94f8-cd35d4ab39d2", new[] { "43ccc355-87e9-4f14-8812-6469f8f0c81b", new Guid().ToString() }));
+                
             }
         }
 
@@ -65,10 +68,30 @@ namespace Prodest.EOuv.Background.Jobs
                         Task.WaitAll(taskSetor);
                         SetorModel setor = taskSetor.Result;
                     }
+                    AgenteManifestacaoModel AgenteResposta = new AgenteManifestacaoModel
+                    {
+                        GuidPapel = new Guid(responsavel.Id),
+                        //                NomePapel = responsavel.Nome,
+
+                        //                        public int IdAgenteManifestacao { get; set; }
+                        //public byte Tipo { get; set; }
+                        //public string GuidUsuario { get; set; }
+                        //public string NomeUsuario { get; set; }
+                        //public Guid? GuidPapel { get; set; }
+                        //public string NomePapel { get; set; }
+                        //public Guid? GuidSetor { get; set; }
+                        //public string NomeSetor { get; set; }
+                        //public string SiglaSetor { get; set; }
+                        //public Guid? GuidOrgao { get; set; }
+                        //public string NomeOrgao { get; set; }
+                        //public string SiglaOrgao { get; set; }
+                        //public Guid? GuidPatriarca { get; set; }
+                        //public string NomePatriarca { get; set; }
+                        //public string SiglaPatriarca { get; set; }
+                    };
 
 
-
-                    _despachoBLL.ResponderDespacho(despacho.IdDespachoManifestacao, responsavel /*atorResposta*/);
+                    _despachoBLL.ResponderDespacho(despacho.IdDespachoManifestacao, AgenteResposta /*atorResposta*/);
                 }
             }
         }

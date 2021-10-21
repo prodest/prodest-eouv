@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Prodest.EOuv.Infra.DAL.Setor;
 
 namespace Prodest.EOuv.Dominio.Modelo
 {
@@ -10,7 +9,7 @@ namespace Prodest.EOuv.Dominio.Modelo
         Task<List<DespachoManifestacaoModel>> ObterDespachosEmAberto();
 
         Task AdicionarDespacho(DespachoManifestacaoModel despachoManifestacao);
-        Task ResponderDespacho(int idDespacho, object atorResposta);
+        Task ResponderDespacho(int idDespacho, AgenteManifestacaoModel atorResposta);
         Task<SetorModel> BuscaSetor(string idSetor);
     }
 }

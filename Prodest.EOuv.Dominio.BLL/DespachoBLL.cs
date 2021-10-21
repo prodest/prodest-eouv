@@ -86,14 +86,15 @@ namespace Prodest.EOuv.Dominio.BLL
             return IdEncaminhamento;
         }
 
-        public async Task ResponderDespacho(int idDespacho, object atorResposta)
+        public async Task ResponderDespacho(int idDespacho, AgenteManifestacaoModel atorResposta)
         {   
            await _despachoRepository.ResponderDespacho(idDespacho, atorResposta);            
         }
         
-        public async Task BuscaSetor(string idSetor)
+        public async Task<SetorModel> BuscaSetor(string idSetor)
         {
-            await _despachoRepository.BuscaSetor(idSetor);
+            var setor = await _despachoRepository.BuscaSetor(idSetor);
+            return setor;
         }
     }
 }
