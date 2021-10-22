@@ -44,7 +44,7 @@
                             </h2>
                             <div id="panel-DadosBasicos" class="accordion-collapse collapse hide" aria-labelledby="DadosBasicos">
                                 <div class="accordion-body">
-                                    <div class="row justify-content-start">
+                                    <div class="row justify-content-start">                                        
                                         <div class="col-md-4">
                                             <span class="fw-bold">Número de Protocolo</span>
                                             <br />
@@ -748,7 +748,7 @@
     </script>
 
     <script type="text/html" id="template-despacho-form">
-        <despacho-manifestacao v-on:selecionar-dado-manifestacao="ToggleDadosManifestacaoSelecionados($event)"></despacho-manifestacao>
+        <despacho-manifestacao v-on:capturar-dados-manifestacao="CapturarDadosManifestacao" v-on:selecionar-dado-manifestacao="ToggleDadosManifestacaoSelecionados($event)"></despacho-manifestacao>
         <section class="mb-4">
             <div class="card">
                 <div class="card-header py-3">

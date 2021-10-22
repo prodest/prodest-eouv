@@ -1,13 +1,13 @@
 ﻿const DespachoManifestacao = {
     name: 'DespachoManifestacao',
     template: '#template-despacho-manifestacao',
-    emits: ['selecionar-dado-manifestacao'],
+    emits: ['selecionar-dado-manifestacao', 'capturar-dados-manifestacao'],
 
     data() {
         return {
             titulo: 'Manifestação',
             dadosBasicos: {
-                idManifestacao: '',
+                idManifestacao: null,
                 numProtocolo: '',
                 tipoManifestacao: '',
                 situacao: '',
@@ -74,7 +74,7 @@
             let ret = await eOuvApi.obterDadosManifestacao();
             console.log(ret);
             //Dados Basicos da Manifestacao
-            this.titulo += ` (${ret.numProtocolo})`;
+            this.titulo += ` (${ret.numProtocolo})`;            
             this.dadosBasicos.idManifestacao = ret.idManifestacao;
             this.dadosBasicos.numProtocolo = ret.numProtocolo;
             this.dadosBasicos.tipoManifestacao = ret.tipoManifestacao.descTipoManifestacao;
@@ -90,6 +90,8 @@
             this.dadosBasicos.dataRegistro = ret.dataRegistro;
             this.dadosBasicos.prazoResposta = ret.prazoResposta;
             this.dadosBasicos.tipoManifestante = ret.tipoManifestante.descTipoManifestante;
+
+            this.$emit('capturar-dados-manifestacao', this.dadosBasicos);
 
             //Teor da Manifestacao
             this.PreencheTeorManifestacao(ret.textoManifestacao, ret.localFato);

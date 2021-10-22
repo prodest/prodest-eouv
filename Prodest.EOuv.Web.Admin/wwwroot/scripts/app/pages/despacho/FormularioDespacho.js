@@ -43,6 +43,9 @@ const DespachoForm = {
     },
 
     methods: {
+        CapturarDadosManifestacao(dadosBasicosManifestacao) {            
+            this.idManifestacao = dadosBasicosManifestacao.idManifestacao;
+        },
         GerarDataPrazoResposta() {
             let data = new Date();
             data.setDate(data.getDate() + PrazoEmDias);
