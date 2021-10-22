@@ -454,20 +454,18 @@ namespace Prodest.EOuv.Infra.DAL
                 entity.HasOne(d => d.AgenteDestinatario)
                     .WithMany(p => p.DespachoManifestacaoAgenteDestinatario)
                     .HasForeignKey(d => d.IdAgenteDestinatario)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Ouvidoria.DespachoManifestacaoAgente_IdAgenteDestinatario");
 
                 entity.HasOne(d => d.AgenteResposta)
                     .WithMany(p => p.DespachoManifestacaoAgenteResposta)
                     .HasForeignKey(d => d.IdAgenteResposta)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Ouvidoria.DespachoManifestacaoAgente_IdAgenteResposta");
 
                 entity.HasOne(d => d.Manifestacao)
-                        .WithMany(p => p.DespachoManifestacao)
-                        .HasForeignKey(d => d.IdManifestacao)
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_DespachoManifestacao_Manifestacao");
+                    .WithMany(p => p.DespachoManifestacao)
+                    .HasForeignKey(d => d.IdManifestacao)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_DespachoManifestacao_Manifestacao");
 
                 entity.HasOne(d => d.Orgao)
                     .WithMany(p => p.DespachoManifestacao)

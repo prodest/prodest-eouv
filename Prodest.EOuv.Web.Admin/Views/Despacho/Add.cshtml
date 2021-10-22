@@ -25,6 +25,7 @@
 
     <script type="text/html" id="template-despacho-manifestacao">
         <section class="mb-4">
+            <input type="hidden" v-model="dadosBasicos.idManifestacao">
             <div class="card">
                 <div class="card-header py-3">
                     <h5 class="mb-0">{{titulo}}</h5>
@@ -758,13 +759,13 @@
                         <div class="form-floating">
                             <input v-model="prazoResposta" value="{{prazoResposta}}" type="email" class="form-control" id="flPrazoResposta" placeholder="01/01/2021">
                             <label for="flPrazoResposta">Prazo de Resposta</label>
-                        </div>                        
+                        </div>
                     </div>
                     <div class="form-outline mb-3">
                         <div class="form-floating">
                             <textarea class="form-control" maxlength="2000" placeholder="Leave a comment here" v-model="textoDespacho" id="flTextoDespacho" style="height: 80px"></textarea>
-                            <label for="flTextoDespacho">Texto do Despacho</label>                            
-                        </div>                        
+                            <label for="flTextoDespacho">Texto do Despacho</label>
+                        </div>
                     </div>
                     <selecao-destinatarios v-on:selecionar-destinatario="IncluirDestinatarioSelecionado"></selecao-destinatarios>
                     <hr />

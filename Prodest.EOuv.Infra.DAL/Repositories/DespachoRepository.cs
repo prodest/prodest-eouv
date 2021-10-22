@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Prodest.EOuv.Dominio.Modelo;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,9 +25,10 @@ namespace Prodest.EOuv.Infra.DAL
             return _mapper.Map<List<DespachoManifestacaoModel>>(despachoManifestacao);
         }
 
-        public async Task AdicionarDespacho(DespachoManifestacaoModel despachoManifestacao)
+        public async Task AdicionarDespacho(DespachoManifestacaoModel despachoManifestacaoModel)
         {
-            _eouvContext.Add(_mapper.Map<DespachoManifestacao>(despachoManifestacao));
+            DespachoManifestacao despachoManifestacao = _mapper.Map<DespachoManifestacao>(despachoManifestacaoModel);
+            _eouvContext.Add(despachoManifestacao);
             await _eouvContext.SaveChangesAsync();
         }
     }

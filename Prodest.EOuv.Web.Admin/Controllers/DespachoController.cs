@@ -22,7 +22,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
         public async Task<IActionResult> Index(int idManifestacao)
         {
             TempData["idManifestacao"] = idManifestacao;
-            var despachoViewModel = await _despachoWorkService.ObterDespachosPorManifestacao(idManifestacao != 0 ? idManifestacao : 583);
+            var despachoViewModel = await _despachoWorkService.ObterDespachosPorManifestacao(idManifestacao != 0 ? idManifestacao : 250);
             return View(despachoViewModel);
         }
 
@@ -49,20 +49,22 @@ namespace Prodest.EOuv.Web.Admin.Controllers
                 return View();
             }
 
-            FiltroDadosManifestacaoSelecionadosEntry dadosSelecionados = new FiltroDadosManifestacaoSelecionadosEntry();
-            dadosSelecionados.DadosBasicos = true;
-            dadosSelecionados.DadosManifestante = true;
-            dadosSelecionados.DadosComplemento = true;
-            dadosSelecionados.DadosEncaminhamento = true;
-            dadosSelecionados.DadosAnotacao = true;
-            dadosSelecionados.DadosHistorico = true;
+            //FiltroDadosManifestacaoSelecionadosEntry dadosSelecionados = new FiltroDadosManifestacaoSelecionadosEntry();
+            //dadosSelecionados.DadosBasicos = true;
+            //dadosSelecionados.DadosManifestante = true;
+            //dadosSelecionados.DadosComplemento = true;
+            //dadosSelecionados.DadosEncaminhamento = true;
+            //dadosSelecionados.DadosAnotacao = true;
+            //dadosSelecionados.DadosHistorico = true;
 
-            despachoEntry.FiltroDadosManifestacaoSelecionados = dadosSelecionados;
+            //despachoEntry.FiltroDadosManifestacaoSelecionados = dadosSelecionados;
 
             despachoEntry.GuidDestinatario = "90dab47e-e5ef-481e-8d0f-8a90d9390f4d";
             despachoEntry.GuidPapelResponsavel = "6470bd19-c178-4824-8edc-e8c3ef22a536";
 
             despachoEntry.IdManifestacao = 583;
+            despachoEntry.IdOrgao = 877;
+            despachoEntry.IdUsuarioSolicitacao = 29;
             //Receber:
             //    - Lista de dados selecionados
             //    - Formulário de Despacho (Prazo resposta, Texto despacho e anexos)

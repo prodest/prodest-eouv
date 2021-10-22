@@ -20,6 +20,18 @@
       {
          "Name": "[Ouvidoria].[DespachoManifestacao]",
          "ObjectType": 0
+      },
+      {
+         "Name": "[Ouvidoria].[Manifestacao]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[Ouvidoria].[Orgao]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[Ouvidoria].[Usuario]",
+         "ObjectType": 0
       }
    ],
    "UiHint": "ITISRVDSDB06.eOuv",

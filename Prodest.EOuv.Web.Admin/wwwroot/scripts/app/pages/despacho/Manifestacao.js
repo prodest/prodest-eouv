@@ -7,6 +7,7 @@
         return {
             titulo: 'Manifestação',
             dadosBasicos: {
+                idManifestacao: '',
                 numProtocolo: '',
                 tipoManifestacao: '',
                 situacao: '',
@@ -74,6 +75,7 @@
             console.log(ret);
             //Dados Basicos da Manifestacao
             this.titulo += ` (${ret.numProtocolo})`;
+            this.dadosBasicos.idManifestacao = ret.idManifestacao;
             this.dadosBasicos.numProtocolo = ret.numProtocolo;
             this.dadosBasicos.tipoManifestacao = ret.tipoManifestacao.descTipoManifestacao;
             this.dadosBasicos.situacao = ret.situacaoManifestacao.descSituacaoManifestacao;

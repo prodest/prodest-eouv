@@ -66,6 +66,6 @@ namespace Prodest.EOuv.Dominio.Modelo
 
         Task<string> CapturarDocumento(byte[] arquivo, string papelResponsavel, string nomeArquivo);
 
-        Task<string> EncaminharDocumento(string idDocumento, string assunto, string mensagem, string idResponsavel, string idDestinatario, string papelResponsavel);
+        Task<string> EncaminharDocumento(string idDocumento, string assunto, string mensagem, string papelResponsavel, string papelDestinatario);
     }
 }

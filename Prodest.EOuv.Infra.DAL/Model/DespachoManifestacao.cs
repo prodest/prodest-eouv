@@ -16,8 +16,8 @@ namespace Prodest.EOuv.Infra.DAL
         public DateTime PrazoResposta { get; set; }
         public string ProtocoloEdocs { get; set; }
         public Guid? IdEncaminhamento { get; set; }
-        public int IdAgenteDestinatario { get; set; }
-        public int IdAgenteResposta { get; set; }
+        public int? IdAgenteDestinatario { get; set; }
+        public int? IdAgenteResposta { get; set; }
         public DateTime? DataRespostaDespacho { get; set; }
         public string Situacao { get; set; }
 

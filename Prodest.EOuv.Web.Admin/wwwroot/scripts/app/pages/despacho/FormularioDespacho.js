@@ -11,7 +11,7 @@ const DespachoForm = {
             papeisUsuario: [],
             papelSelecionado: null,
             prazoResposta: null,
-            textoDespacho: 'Texto do despacho....',
+            textoDespacho: '',
             idManifestacao: null,
             destinatarioSelecionado: null,
             dadosManifestacaoSelecionados: {
@@ -62,7 +62,7 @@ const DespachoForm = {
         },
         async Despachar() {
             let entry = {
-                IdManifestacao: 0,
+                IdManifestacao: this.idManifestacao,
                 IdOrgao: 0,
                 IdUsuarioSolicitacao: 0,
                 PrazoResposta: this.prazoResposta,
@@ -79,11 +79,9 @@ const DespachoForm = {
             let item = e.target.parentNode.id;
             this.dadosManifestacaoSelecionados[item] = !this.dadosManifestacaoSelecionados[item];
 
-            for (var i in this.dadosManifestacaoSelecionados) {                                
-                console.log(i + ': '+this.dadosManifestacaoSelecionados[i]);
-                
+            for (var i in this.dadosManifestacaoSelecionados) {
+                console.log(i + ': ' + this.dadosManifestacaoSelecionados[i]);
             }
-
         },
         TogglePapelSelecionado(e) {
             this.papelSelecionado = e.target.id;

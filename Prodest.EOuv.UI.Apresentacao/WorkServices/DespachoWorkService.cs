@@ -53,7 +53,8 @@ namespace Prodest.EOuv.UI.Apresentacao
             despachoModel.IdManifestacao = despachoEntry.IdManifestacao;
             despachoModel.IdOrgao = despachoEntry.IdOrgao;
             despachoModel.IdUsuarioSolicitacaoDespacho = despachoEntry.IdUsuarioSolicitacao;
-            despachoModel.PrazoResposta = Convert.ToDateTime(DateTime.Now);
+            despachoModel.DataSolicitacaoDespacho = Convert.ToDateTime(DateTime.Now);
+            despachoModel.PrazoResposta = Convert.ToDateTime(despachoEntry.PrazoResposta);
             despachoModel.TextoSolicitacaoDespacho = despachoEntry.TextoDespacho;
 
             var filtroDadosSelecionados = _mapper.Map<FiltroDadosManifestacaoModel>(despachoEntry.FiltroDadosManifestacaoSelecionados);
