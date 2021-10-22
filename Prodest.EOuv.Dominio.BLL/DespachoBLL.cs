@@ -1,4 +1,5 @@
-﻿using Prodest.EOuv.Dominio.Modelo;
+﻿using Newtonsoft.Json.Linq;
+using Prodest.EOuv.Dominio.Modelo;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -67,8 +68,9 @@ namespace Prodest.EOuv.Dominio.BLL
         }
 
         private async Task<string> MontarHtmlDetalhesManifestacao(ManifestacaoModel manifestacao)
-        {
-            string html = await _htmlApiBLL.GerarHtml(manifestacao);
+        {            
+            string html = await _htmlApiBLL.GerarHtml(manifestacao);            
+            JObject json = JObject.FromObject(manifestacao);//Geração de objeto json de teste a partir da manifestacao
             return html;
         }
 
