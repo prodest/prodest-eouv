@@ -51,18 +51,16 @@ namespace Prodest.EOuv.UI.Apresentacao
             //Converter Entry para Model
             DespachoManifestacaoModel despachoModel = new DespachoManifestacaoModel();
             despachoModel.IdManifestacao = despachoEntry.IdManifestacao;
-            despachoModel.IdOrgao = despachoEntry.IdOrgao;
-            despachoModel.IdUsuarioSolicitacaoDespacho = despachoEntry.IdUsuarioSolicitacao;
             despachoModel.DataSolicitacaoDespacho = Convert.ToDateTime(DateTime.Now);
             despachoModel.PrazoResposta = Convert.ToDateTime(despachoEntry.PrazoResposta);
             despachoModel.TextoSolicitacaoDespacho = despachoEntry.TextoDespacho;
 
             var filtroDadosSelecionados = _mapper.Map<FiltroDadosManifestacaoModel>(despachoEntry.FiltroDadosManifestacaoSelecionados);
 
-            string destinatario = despachoEntry.GuidDestinatario;
             string papelResponsavel = despachoEntry.GuidPapelResponsavel;
+            string papelDestinatario = despachoEntry.GuidPapelDestinatario;
 
-            await _despachoBLL.Despachar(despachoModel, destinatario, papelResponsavel, filtroDadosSelecionados);
+            await _despachoBLL.Despachar(despachoModel, papelDestinatario, papelResponsavel, filtroDadosSelecionados);
         }
     }
 }
