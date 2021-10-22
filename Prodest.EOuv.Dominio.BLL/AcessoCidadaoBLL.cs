@@ -28,7 +28,7 @@ namespace Prodest.EOuv.Dominio.BLL
         public async Task<AgentePublicoPapelModel> GetPapel(Guid id)
         {
             var papel = await _acessoCidadaoService.GetPapel(id.ToString());
-            papel.Lotacao = await _organogramaService.GetUnidade(papel.LotacaoGuid);
+            //papel.Lotacao = await _organogramaService.GetUnidade(papel.LotacaoGuid);
 
             return papel;
         }

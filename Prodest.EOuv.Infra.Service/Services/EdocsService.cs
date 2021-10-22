@@ -88,7 +88,7 @@ namespace Prodest.EOuv.Infra.Service
 
         public async Task<EncaminhamentoRastreioDestinoModel> ResponsavelPorResponderAoDestinatario(string idEncaminhamentoRaiz, string[] idDestinatario)
         {
-            var rastreio = await GetRequest<EncaminhamentoRastreioModel>($"{_baseUrl}/v2/encaminhamento/{idEncaminhamentoRaiz}/rastreio");
+            var rastreio = await GetRequestClient<EncaminhamentoRastreioModel>($"{_baseUrl}/v2/encaminhamento/{idEncaminhamentoRaiz}/rastreio");
 
             return await EncontraResposavel(rastreio, idDestinatario);
         }
@@ -353,6 +353,19 @@ namespace Prodest.EOuv.Infra.Service
         private async Task<T> GetRequest<T>(string url) where T : class
         {
             var (isSuccess, data, errorMessage) = await _apiContext.GetRequest<T>(url, Enums.AuthenticationType.User);
+
+            if (!isSuccess)
+            {
+                var ex = new EDocsApiException(errorMessage);
+                throw ex;
+            }
+
+            return data;
+        }
+
+        private async Task<T> GetRequestClient<T>(string url) where T : class
+        {
+            var (isSuccess, data, errorMessage) = await _apiContext.GetRequest<T>(url, Enums.AuthenticationType.Application);
 
             if (!isSuccess)
             {

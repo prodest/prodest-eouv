@@ -45,8 +45,7 @@ namespace Prodest.EOuv.Background.Dashboard
                     DisableGlobalLocks = true
                 }));
 
-            // Add the processing server as IHostedService
-            services.AddHangfireServer();
+          
 
             #region[=== Acesso Cidadão ===]
             services.AddAuthentication(options =>

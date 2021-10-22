@@ -19,6 +19,16 @@ namespace Prodest.EOuv.Web.Admin.Controllers
         private readonly IEDocsBLL _edocsBLL;
         private readonly IAcessoCidadaoBLL _AcessoCidadaoBLL;
         private readonly IPdfApiBLL _pdfApiBLL;
+        private readonly IDespachoBLL _despachoBLL;
+
+        public EdocsController(IDespachoWorkService despachoWorkService, IEDocsBLL edocsBLL, IAcessoCidadaoBLL acessoCidadaoBLL, IPdfApiBLL pdfApiBLL, IDespachoBLL despachoBLL)
+        {
+            _despachoWorkService = despachoWorkService;
+            _edocsBLL = edocsBLL;
+            _AcessoCidadaoBLL = acessoCidadaoBLL;
+            _pdfApiBLL = pdfApiBLL;
+            _despachoBLL = despachoBLL;
+        }
 
         public FileContentResult Pdf()
         {
@@ -31,14 +41,6 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             //System.IO.File.WriteAllBytes(@"C:\Temp\hello.pdf", resultado);
 
             return File(resultado, "application/pdf");
-        }
-
-        public EdocsController(IDespachoWorkService despachoWorkService, IEDocsBLL edocsBLL, IAcessoCidadaoBLL acessoCidadaoBLL, IPdfApiBLL pdfApiBLL)
-        {
-            _despachoWorkService = despachoWorkService;
-            _edocsBLL = edocsBLL;
-            _AcessoCidadaoBLL = acessoCidadaoBLL;
-            _pdfApiBLL = pdfApiBLL;
         }
 
         public JsonResult BuscarPatriarca()
@@ -445,5 +447,25 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             string result = task.Result;
             return result;
         }
+        #region hangfire
+        public JsonResult GetDespachoEmAberto()
+        {
+            Task<List<int>> task = _despachoBLL.ObterDespachosEmAberto();
+            Task.WaitAll(task);
+            List<int> despachos = task.Result;
+            return Json(despachos);
+        }
+
+        public string ResponderDespacho()
+        {
+
+            Task<AgenteManifestacaoModel> task = _despachoBLL.montaAgente("90dab47e-e5ef-481e-8d0f-8a90d9390f4d", 2);
+            Task.WaitAll(task);
+            AgenteManifestacaoModel agenteResposta = task.Result;
+            //salva quem respondeu e marca como respondido
+            Task.WaitAll(_despachoBLL.ResponderDespacho(9, agenteResposta));
+            return "Despacho respondido";
+        }
+        #endregion
     }
 }
