@@ -60,10 +60,11 @@ namespace Prodest.EOuv.Dominio.BLL
             //Encaminhar via E-Docs
             string idEncaminhamento = await EncaminharDocumentoEdocs(idDocumento, "Demanda de Ouvidoria", despachoModel.TextoSolicitacaoDespacho, papelResponsavel, destinatario);
             //Salvar Despacho no Eouv com IdEvento (sem IdEncaminhamento por enquanto)
-
             despachoModel.ProtocoloEdocs = await _edocsBLL.GetProtocoloEncaminhamento(idEncaminhamento);
             despachoModel.IdEncaminhamento = new Guid(idEncaminhamento);
-            _despachoRepository.AdicionarDespacho(despachoModel);
+            despachoModel.IdOrgao = manifestacao.IdOrgaoResponsavel;
+            despachoModel.IdUsuarioSolicitacaoDespacho = (int)manifestacao.IdUsuarioAnalise;
+            await _despachoRepository.AdicionarDespacho(despachoModel);
         }
 
         private async Task<string> MontarHtmlDetalhesManifestacao(ManifestacaoModel manifestacao)
