@@ -54,7 +54,7 @@ namespace Prodest.EOuv.Infra.DAL
             return retorno;
         }
 
-        public async Task<int> AdicionaAtor( AgenteManifestacaoModel agente)
+        public async Task<int> AdicionarAgente( AgenteManifestacaoModel agente)
         {
             try
             {
@@ -69,7 +69,7 @@ namespace Prodest.EOuv.Infra.DAL
             }
         }
 
-        public async Task AtualizaDespacho(DespachoManifestacaoModel despachoManifestacao)
+        public async Task AtualizarDespacho(DespachoManifestacaoModel despachoManifestacao)
         {            
             _eouvContext.Update(_mapper.Map<DespachoManifestacao>(despachoManifestacao));
             await _eouvContext.SaveChangesAsync();            
@@ -86,7 +86,7 @@ namespace Prodest.EOuv.Infra.DAL
             _eouvContext.Update(_mapper.Map<DespachoManifestacao>(despachoManifestacao));
             await _eouvContext.SaveChangesAsync();            
         }
-        public async Task<SetorModel> BuscaSetor(string idSetor)
+        public async Task<SetorModel> BuscarSetor(string idSetor)
         {
             var setor = await _eouvContext.Setor
                                     .Include(m => m.Orgao)
@@ -113,7 +113,7 @@ namespace Prodest.EOuv.Infra.DAL
             SetorModel setor = null;
             if (papel != null && !String.IsNullOrEmpty(papel.LotacaoGuid))
             {
-                setor = await BuscaSetor(papel.LotacaoGuid);
+                setor = await BuscarSetor(papel.LotacaoGuid);
             }
             AgenteManifestacaoModel AgenteResposta = new AgenteManifestacaoModel
             {

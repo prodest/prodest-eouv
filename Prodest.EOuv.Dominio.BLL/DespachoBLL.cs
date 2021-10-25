@@ -113,14 +113,14 @@ namespace Prodest.EOuv.Dominio.BLL
         public async Task ResponderDespacho(int idDespacho, AgenteManifestacaoModel agenteResposta)
         {
             //salva ator
-            var idAtorResposta = await _despachoRepository.AdicionaAtor(agenteResposta);
+            var idAtorResposta = await _despachoRepository.AdicionarAgente(agenteResposta);
 
             var despachoManifestacao = await _despachoRepository.ObterDespacho(idDespacho);
             despachoManifestacao.Situacao = nameof(Enums.SituacaoDespacho.Respondido);
             //despachoManifestacao.AgenteResposta = agenteResposta;
             //salva ator resposta            
             despachoManifestacao.IdAgenteResposta = idAtorResposta;
-            await _despachoRepository.AtualizaDespacho(despachoManifestacao);
+            await _despachoRepository.AtualizarDespacho(despachoManifestacao);
         }
 
         public async Task ResponderDespacho(int idDespacho)
@@ -137,10 +137,10 @@ namespace Prodest.EOuv.Dominio.BLL
                     {
                         AgenteManifestacaoModel agenteResposta = await montaAgente(responsavel.Id, responsavel.TipoAgente);
 
-                        var idAtorResposta = await _despachoRepository.AdicionaAtor(agenteResposta);
+                        var idAtorResposta = await _despachoRepository.AdicionarAgente(agenteResposta);
                         despacho.Situacao = nameof(Enums.SituacaoDespacho.Respondido);
                         despacho.IdAgenteResposta = idAtorResposta;
-                        await _despachoRepository.AtualizaDespacho(despacho);
+                        await _despachoRepository.AtualizarDespacho(despacho);
                     }
                 }
             }
@@ -150,9 +150,9 @@ namespace Prodest.EOuv.Dominio.BLL
             }
         }
 
-        public async Task<SetorModel> BuscaSetor(string idSetor)
+        public async Task<SetorModel> BuscarSetor(string idSetor)
         {
-            var setor = await _despachoRepository.BuscaSetor(idSetor);
+            var setor = await _despachoRepository.BuscarSetor(idSetor);
             return setor;
         }
         public async Task AdicionarAgenteResposta(AgenteManifestacaoModel agenteResposta)

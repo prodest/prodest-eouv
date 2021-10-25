@@ -14,7 +14,7 @@ namespace Prodest.EOuv.Dominio.Modelo
         Task ResponderDespacho(int idDespacho, AgenteManifestacaoModel atorResposta);
 
         Task Despachar(DespachoManifestacaoModel despachoModel, string destinatarios, string papelResponsavel, FiltroDadosManifestacaoModel listaDadosSelecionados);
-        Task<SetorModel> BuscaSetor(string idSetor);
+        Task<SetorModel> BuscarSetor(string idSetor);
         Task<List<int>> ObterDespachosEmAberto();
         Task AdicionarAgenteResposta(AgenteManifestacaoModel agenteResposta);
         Task<AgenteManifestacaoModel> montaAgente(string idAgente, int tipoAgente);
