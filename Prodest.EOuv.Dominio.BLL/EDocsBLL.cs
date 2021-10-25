@@ -255,20 +255,20 @@ namespace Prodest.EOuv.Dominio.BLL
 
         #region [=== Encaminhamento ===]
 
-        public async Task<string> EncaminharDocumento(string idDocumento, string assunto, string mensagem, string idResponsavel, string idDestinatario, string papelResponsavel) //Retorna o Id do Encaminhamento
+        public async Task<string> EncaminharDocumento(string idDocumento, string assunto, string mensagem, string papelResponsavel, string papelDestinatario) //Retorna o Id do Encaminhamento
         {
-            EventoModel evento = await BuscarEvento(await GetEventoEncaminhar(idDocumento, assunto, mensagem, idResponsavel, idDestinatario, papelResponsavel)); //com o Id do evento descobrimos o Id do Encaminhamento
+            EventoModel evento = await BuscarEvento(await GetEventoEncaminhar(idDocumento, assunto, mensagem, papelResponsavel, papelDestinatario)); //com o Id do evento descobrimos o Id do Encaminhamento
             return evento.IdEncaminhamento;
         }
 
-        public async Task<string> GetEventoEncaminhar(string idDocumento, string assunto, string mensagem, string idResponsavel, string idDestinatario, string papelResponsavel) //Retorna o Id do Evento
+        public async Task<string> GetEventoEncaminhar(string idDocumento, string assunto, string mensagem, string papelResponsavel, string papelDestinatario) //Retorna o Id do Evento
         {
             var parametros = new EncaminhamentoRequestModel()
             {
                 Assunto = assunto,
                 Mensagem = mensagem,
-                IdResponsavel = idResponsavel,
-                IdsDestinos = new string[] { idDestinatario },
+                IdResponsavel = papelResponsavel,
+                IdsDestinos = new string[] { papelDestinatario },
                 IdsDocumentos = new string[] { idDocumento },
                 RestricaoAcesso = new RestricaoAcessoModel()
                 {

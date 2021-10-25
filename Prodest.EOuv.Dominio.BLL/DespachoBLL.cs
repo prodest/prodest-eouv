@@ -1,4 +1,5 @@
-﻿using Prodest.EOuv.Dominio.Modelo;
+﻿using Newtonsoft.Json.Linq;
+using Prodest.EOuv.Dominio.Modelo;
 using Prodest.EOuv.Shared.Util;
 using System;
 using System.Collections.Generic;
@@ -81,13 +82,19 @@ namespace Prodest.EOuv.Dominio.BLL
             //Capturar arquivo PDF no E-Docs
             string idDocumento = await CapturarDocumentoEdocs(arquivoPdfCapturar, papelResponsavel, nomeArquivo);
             //Encaminhar via E-Docs
-            string idEncaminhamento = await EncaminharDocumentoEdocs(idDocumento, "Demanda de Ouvidoria", despachoModel.TextoSolicitacaoDespacho, despachoModel.IdUsuarioSolicitacaoDespacho.ToString(), destinatario, papelResponsavel);
+            string idEncaminhamento = await EncaminharDocumentoEdocs(idDocumento, "Demanda de Ouvidoria", despachoModel.TextoSolicitacaoDespacho, papelResponsavel, destinatario);
             //Salvar Despacho no Eouv com IdEvento (sem IdEncaminhamento por enquanto)
+            despachoModel.ProtocoloEdocs = await _edocsBLL.GetProtocoloEncaminhamento(idEncaminhamento);
+            despachoModel.IdEncaminhamento = new Guid(idEncaminhamento);
+            despachoModel.IdOrgao = manifestacao.IdOrgaoResponsavel;
+            despachoModel.IdUsuarioSolicitacaoDespacho = (int)manifestacao.IdUsuarioAnalise;
+            await _despachoRepository.AdicionarDespacho(despachoModel);
         }
 
         private async Task<string> MontarHtmlDetalhesManifestacao(ManifestacaoModel manifestacao)
-        {
-            string html = await _htmlApiBLL.GerarHtml(manifestacao);
+        {            
+            string html = await _htmlApiBLL.GerarHtml(manifestacao);            
+            JObject json = JObject.FromObject(manifestacao);//Geração de objeto json de teste a partir da manifestacao
             return html;
         }
 
@@ -97,9 +104,9 @@ namespace Prodest.EOuv.Dominio.BLL
             return IdDocumento;
         }
 
-        private async Task<string> EncaminharDocumentoEdocs(string idDocumento, string assunto, string mensagem, string idResponsavel, string idDestinatario, string papelResponsavel)
+        private async Task<string> EncaminharDocumentoEdocs(string idDocumento, string assunto, string mensagem, string papelResponsavel, string idDestinatario)
         {
-            var IdEncaminhamento = await _edocsBLL.EncaminharDocumento(idDocumento, assunto, mensagem, idResponsavel, idDestinatario, papelResponsavel);
+            var IdEncaminhamento = await _edocsBLL.EncaminharDocumento(idDocumento, assunto, mensagem, papelResponsavel, idDestinatario);
             return IdEncaminhamento;
         }
 

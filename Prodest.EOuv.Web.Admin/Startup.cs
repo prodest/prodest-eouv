@@ -167,7 +167,7 @@ namespace Prodest.EOuv.Web.Admin
                 var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
                 options.Filters.Add(new AuthorizeFilter(policy));
                 //options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
-            });
+            }).AddRazorRuntimeCompilation(); //Refresh de tela sem precisar reiniciar
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -24,6 +24,7 @@ namespace Prodest.EOuv.Background.DocumentModels
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddMvc().AddRazorRuntimeCompilation(); //Refresh de tela sem precisar reiniciar
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

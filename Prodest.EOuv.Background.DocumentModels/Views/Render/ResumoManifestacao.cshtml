@@ -1,213 +1,228 @@
 ﻿@model Prodest.EOuv.UI.Apresentacao.ManifestacaoViewModel
-
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Dados da Manifestação";
 }
+<style>
+    body {
+        font-family: Arial;
+        font-size: 11px;
+    }
 
-<html>
-<head>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
-</head>
-<body>
-    <!--Dados Básicos da Manifestação-->
-    <div>
-        <h2>
-            Dados Básicos da Manifestação
-        </h2>
-        <div>
-            <div class="accordion-body">
-                <div class="row justify-content-start">
-                    <div class="col-md-4">
-                        <span class="fw-bold">Número de Protocolo</span>
-                        <br />
-                        <span>@Model.NumProtocolo</span>
-                    </div>
+    table {
+        width: 776px;
+        vertical-align: top;
+        border-spacing: 5px;
+    }
 
-                    <div class="col-md-4">
-                        <span class="fw-bold">Tipo de Manifestação</span>
-                        <br />
-                        <span>@Model.TipoManifestacao?.DescTipoManifestacao</span>
-                    </div>
+    thead {
+        margin-bottom: 10px;
+    }
 
-                    <div class="col-md-4">
-                        <span class="fw-bold">Situação</span>
-                        <br />
-                        <span>@Model.SituacaoManifestacao?.DescSituacaoManifestacao</span>
-                    </div>
+    tbody {
+        margin-top: 20px;
+    }
 
-                    <div class="col-md-4">
-                        <span class="fw-bold">Órgão Atual</span>
-                        <br />
-                        <span>@Model.OrgaoResponsavel?.NomeFantasia</span>
-                    </div>
+    td {
+        border: 1px solid #ccc;
+        padding: 8px 10px;
+    }
 
-                    <div class="col-md-4">
-                        <span class="fw-bold">Órgão Destinatário</span>
-                        <br />
-                        <span>@Model.OrgaoInteresse?.NomeFantasia</span>
-                    </div>
+        td.empty {
+            border: 1px solid #fff;
+        }
 
-                    <div class="col-md-4">
-                        <span class="fw-bold">Assunto</span>
-                        <br />
-                        <span>@Model.Assunto?.DescAssunto</span>
-                    </div>
+    th {
+        text-align: left;
+        border-spacing: 20px
+    }    
+    tr.titulo-1 {
+        font-size: 1.1rem;        
+        background-color: #ddd;
+    }
+        tr.titulo-1 th {
+            padding: 5px;
+            text-align: center;
+        }
+    tr.titulo-2 {
+        font-size: 1.1rem;
+        color: #fff;
+        background-color: #2479a7;
+    }
 
-                    <div class="col-md-4">
-                        <span class="fw-bold">Data de Cadastro</span>
-                        <br />
-                        <span>@Model.DataRegistro</span>
-                    </div>
+        tr.titulo-2 th {
+            padding: 5px;
+            text-align:center;
+        }
+    tr.titulo-3 {
+        font-size: 1.1rem;
+        color: #fff;
+        background-color: #36556e;
+    }
 
-                    <div class="col-md-4">
-                        <span class="fw-bold">Prazo de Atendimento</span>
-                        <br />
-                        <span>@Model.PrazoResposta</span>
-                    </div>
+        tr.titulo-3 th {
+            padding: 5px;
+        }
+</style>
+<table>
+    <tr>
+        <th>
+            <img src="~/images/brasao-GovernoES.png" alt="Governo do Estado do Espírito Santo"/>
+        </th>
+        <th><h1>e-OUV - Sistema de Ouvidoria do Estado do Espírito Santo</h1></th>
+    </tr>
+</table>
+<table>
+    <tr class="titulo-1">        
+        <th>e-OUV - Sistema de Ouvidoria do Estado do Espírito Santo</th>
+    </tr>
+</table>
+<table>
+    <tr class="titulo-2">
+        <th>DADOS GERAIS DA MANIFESTAÇÃO</th>
+    </tr>
+</table>
 
-                    <div class="col-md-4">
-                        <span class="fw-bold">Registrado Por</span>
-                        <br />
-                        <span>@Model.UsuarioCadastrador?.Pessoa?.Nome</span>
-                    </div>
+<!--Dados Básicos da Manifestação-->
+<table>
+    <thead>
+        <tr class="titulo-3">
+            <th colspan="4">Dados Básicos da Manifestação</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>Número de Protocolo</th>
+            <th>Tipo de Manifestação</th>
+            <th>Situação</th>
+            <th>Órgão Atual</th>
+        </tr>
+        <tr>
+            <td>@Model.NumProtocolo</td>
+            <td>@Model.TipoManifestacao?.DescTipoManifestacao</td>
+            <td>@Model.SituacaoManifestacao?.DescSituacaoManifestacao</td>
+            <td>@Model.OrgaoResponsavel?.NomeFantasia</td>
+        </tr>
+        <tr>
+            <th colspan="2">Órgão Destinatário</th>
+            <th colspan="2">Assunto</th>
+        </tr>
+        <tr>
+            <td colspan="2">@Model.OrgaoInteresse?.NomeFantasia</td>
+            <td colspan="2">@Model.Assunto?.DescAssunto</td>
+        </tr>
+        <tr>
+            <th colspan="2">Data de Cadastro</th>
+            <th colspan="2">Prazo de Atendimento</th>
+        </tr>
+        <tr>
+            <td colspan="2">@Model.DataRegistro</td>
+            <td colspan="2">@Model.PrazoResposta</td>
+        </tr>
+        <tr>
+            <th colspan="2">Registrado Por</th>
+            <th>Canal de Entrada</th>
+            <th>Modo de Resposta</th>
+        </tr>
+        <tr>
+            <td colspan="2">@Model.UsuarioCadastrador?.Pessoa?.Nome</td>
+            <td>@Model.CanalEntrada?.DescCanalEntrada</td>
+            <td>@Model.ModoResposta?.DescModoResposta</td>
+        </tr>
+    </tbody>
+</table>
 
-                    <div class="col-md-4">
-                        <span class="fw-bold">Canal de Entrada</span>
-                        <br />
-                        <span>@Model.CanalEntrada?.DescCanalEntrada</span>
-                    </div>
+<!--Teor da Manifestação-->
+<table>
+    <thead>
+        <tr class="titulo-3">
+            <th colspan="3">Teor da Manifestação</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th colspan="3">Município do fato</th>
+        </tr>
+        <tr>
+            <td>@Model.Municipio?.DescMunicipio</td>
+            <td class="empty"></td>
+            <td class="empty"></td>
+        </tr>
+        <tr>
+            <th colspan="3">Texto da Manifestação</th>
+        </tr>
+        <tr>
+            <td colspan="3">@Model.TextoManifestacao</td>
+        </tr>
+    </tbody>
+</table>
 
-                    <div class="col-md-4">
-                        <span class="fw-bold">Modo de Resposta</span>
-                        <br />
-                        <span>@Model.ModoResposta?.DescModoResposta</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!--Demais Dados da Manifestação-->
-    <div>
-        <h2>
-            Demais Dados da Manifestação
-        </h2>
-        <div>
-            <div>
-
-                <!--Teor da Manifestação-->
-                <div>
-                    <h2>
-                        Teor da Manifestação
-                    </h2>
-                    <div>
-                        <div>
-                            <div class="row justify-content-start">
-                                <div class="col-md-12">
-                                    <span class="fw-bold">Município do local do fato</span>
-                                    <br />
-                                    <span>@Model.Municipio?.DescMunicipio</span>
-                                </div>
-                                <div class="col-md-12">
-                                    <span class="fw-bold">Texto da Manifestação</span>
-                                    <br />
-                                    <span>@Model.Municipio?.DescMunicipio</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!--Dados do Manifestante-->
-                <div>
-                    <h2>
-                        Dados do Manifestante
-                    </h2>
-                    <div>
-                        <div class="accordion-body">
-                            <div class="row justify-content-start">
-                                <div class="col-md-4">
-                                    <span class="fw-bold">Nome</span>
-                                    <br />
-                                    <span>@Model.Pessoa?.Nome</span>
-                                </div>
-                                <div class="col-md-4">
-                                    <span class="fw-bold">CPF</span>
-                                    <br />
-                                    <span>@Model.Pessoa?.Cpf</span>
-                                </div>
-                                <div class="col-md-4">
-                                    <span class="fw-bold">Gênero</span>
-                                    <br />
-                                    <span>@Model.Pessoa?.Sexo</span>
-                                </div>
-                                <div class="col-md-4">
-                                    <span class="fw-bold">Telefone</span>
-                                    <br />
-                                    <span>@Model.Pessoa?.Telefone</span>
-                                </div>
-                                <div class="col-md-4">
-                                    <span class="fw-bold">E-mail</span>
-                                    <br />
-                                    <span>@Model.Pessoa?.Email</span>
-                                </div>
-                                <div class="col-md-4">
-                                    <span class="fw-bold">Tipo de Manifestante</span>
-                                    <br />
-                                    <span>@Model.TipoManifestante?.DescTipoManifestante</span>
-                                </div>
-                                <div class="col-md-4">
-                                    <span class="fw-bold">CNPJ</span>
-                                    <br />
-                                    <span>@Model.PessoaJuridica?.NumCnpj</span>
-                                </div>
-                                <div class="col-md-4">
-                                    <span class="fw-bold">Órgão/Empresa</span>
-                                    <br />
-                                    <span>@Model.PessoaJuridica?.OrgaoEmpresa</span>
-                                </div>
-                                <div class="col-md-4">
-                                    <span class="fw-bold">CEP</span>
-                                    <br />
-                                    <span>@Model.Pessoa?.Cep</span>
-                                </div>
-                                <div class="col-md-4">
-                                    <span class="fw-bold">Municipio</span>
-                                    <br />
-                                    <span>@Model.Pessoa?.Municipio?.DescMunicipio</span>
-                                </div>
-                                <div class="col-md-4">
-                                    <span class="fw-bold">UF</span>
-                                    <br />
-                                    <span>@Model.Pessoa?.Municipio?.Uf?.DescUf</span>
-                                </div>
-                                <div class="col-md-4">
-                                    <span class="fw-bold">Logradouro</span>
-                                    <br />
-                                    <span>@Model.Pessoa?.Logradouro</span>
-                                </div>
-                                <div class="col-md-4">
-                                    <span class="fw-bold">Número</span>
-                                    <br />
-                                    <span>@Model.Pessoa?.Numero</span>
-                                </div>
-                                <div class="col-md-4">
-                                    <span class="fw-bold">Complemento</span>
-                                    <br />
-                                    <span>@Model.Pessoa?.Complemento</span>
-                                </div>
-                                <div class="col-md-4">
-                                    <span class="fw-bold">Bairro</span>
-                                    <br />
-                                    <span>@Model.Pessoa?.Bairro</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</body>
-</html>
+<!--Demais Dados da Manifestação-->
+<table>
+    <thead>
+        <tr class="titulo-3">
+            <th colspan="4">Dados do Manifestante</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th colspan="4">Tipo de Identificação da Manifestação</th>
+        </tr>
+        <tr>
+            <td colspan="4">@Model.TipoIdentificacao.DescTipoIdentificacao</td>
+        </tr>
+        <tr>
+            <th colspan="2">Nome</th>
+            <th colspan="2">CPF</th>
+        </tr>
+        <tr>
+            <td colspan="2">@Model.Pessoa?.Nome</td>
+            <td colspan="2">@Model.Pessoa?.Cpf</td>
+        </tr>
+        <tr>
+            <th>Gênero</th>
+            <th>Telefone</th>
+            <th colspan="2">E-mail</th>
+        </tr>
+        <tr>
+            <td>@Model.Pessoa?.Sexo</td>
+            <td>@Model.Pessoa?.Telefone</td>
+            <td colspan="2">@Model.Pessoa?.Email</td>
+        </tr>
+        <tr>
+            <th>Tipo de Manifestante</th>
+            <th>CNPJ</th>
+            <th colspan="2">Órgão/Empresa</th>
+        </tr>
+        <tr>
+            <td>@Model.TipoManifestante?.DescTipoManifestante</td>
+            <td>@Model.PessoaJuridica?.NumCnpj</td>
+            <td colspan="2">@Model.PessoaJuridica?.OrgaoEmpresa</td>
+        </tr>
+        <tr>
+            <th>CEP</th>
+            <th colspan="2">Município</th>
+            <th>UF</th>
+        </tr>
+        <tr>
+            <td>@Model.Pessoa?.Cep</td>
+            <td colspan="2">@Model.Pessoa?.Municipio.DescMunicipio</td>
+            <td>@Model.Pessoa?.Municipio?.Uf?.DescUf</td>
+        </tr>
+        <tr>
+            <th colspan="3">Logradouro</th>
+            <th>Número</th>
+        </tr>
+        <tr>
+            <td colspan="3">@Model.Pessoa?.Logradouro</td>
+            <td>@Model.Pessoa?.Numero</td>
+        </tr>
+        <tr>
+            <th colspan="2">Complemento</th>
+            <th colspan="2">Bairro</th>
+        </tr>
+        <tr>
+            <td colspan="2">@Model.Pessoa?.Complemento</td>
+            <td colspan="2">@Model.Pessoa?.Bairro</td>
+        </tr>
+    </tbody>
+</table>
