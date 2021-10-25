@@ -8,5 +8,6 @@ namespace Prodest.EOuv.Dominio.Modelo
         Task<List<DespachoManifestacaoModel>> ObterDespachoPorManifestacao(int id);
 
         Task AdicionarDespacho(DespachoManifestacaoModel despachoManifestacao);
+        Task EncerrarDespacho(int idDespacho);
     }
 }

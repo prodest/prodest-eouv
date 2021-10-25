@@ -86,5 +86,10 @@ namespace Prodest.EOuv.Dominio.BLL
             var IdEncaminhamento = await _edocsBLL.EncaminharDocumento(idDocumento, assunto, mensagem, papelResponsavel, idDestinatario);
             return IdEncaminhamento;
         }
+
+        public async Task EncerrarDespacho(int idDespacho)
+        {
+            await _despachoRepository.EncerrarDespacho(idDespacho);
+        }
     }
 }

@@ -144,6 +144,27 @@ namespace Prodest.EOuv.UI.Apresentacao
         //public List<AnexoManifestacaoViewModel> AnexoApuracao { get; set; }
     }
 
+    public partial class DespachoManifestacaoViewModel
+    {
+        public int IdDespachoManifestacao { get; set; }
+        public int IdManifestacao { get; set; }
+        public int IdOrgao { get; set; }
+        public string TextoSolicitacaoDespacho { get; set; }
+        public int IdUsuarioSolicitacaoDespacho { get; set; }
+        public DateTime DataSolicitacaoDespacho { get; set; }
+        public DateTime PrazoResposta { get; set; }
+        public string ProtocoloEdocs { get; set; }
+        public Guid? IdEncaminhamento { get; set; }
+        public int IdAgenteDestinatario { get; set; }
+        public int IdAgenteResposta { get; set; }
+        public DateTime? DataRespostaDespacho { get; set; }
+        public string Situacao { get; set; }
+        public virtual OrgaoViewModel Orgao { get; set; }
+        public virtual UsuarioViewModel UsuarioSolicitacaoDespacho { get; set; }
+        public virtual AgenteManifestacaoViewModel AgenteDestinatario { get; set; }
+        public virtual AgenteManifestacaoViewModel AgenteResposta { get; set; }
+    }
+
     public partial class NotificacaoManifestacaoViewModel
     {
         public string TxtNotificacao { get; set; }
@@ -265,5 +286,24 @@ namespace Prodest.EOuv.UI.Apresentacao
     public partial class UfViewModel
     {
         public string DescUf { get; set; }
+    }
+
+    public partial class AgenteManifestacaoViewModel
+    {
+        public int IdAgenteManifestacao { get; set; }
+        public byte Tipo { get; set; }
+        public string GuidUsuario { get; set; }
+        public string NomeUsuario { get; set; }
+        public Guid? GuidPapel { get; set; }
+        public string NomePapel { get; set; }
+        public Guid? GuidSetor { get; set; }
+        public string NomeSetor { get; set; }
+        public string SiglaSetor { get; set; }
+        public Guid? GuidOrgao { get; set; }
+        public string NomeOrgao { get; set; }
+        public string SiglaOrgao { get; set; }
+        public Guid? GuidPatriarca { get; set; }
+        public string NomePatriarca { get; set; }
+        public string SiglaPatriarca { get; set; }
     }
 }

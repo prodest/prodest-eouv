@@ -194,7 +194,7 @@ namespace Prodest.EOuv.Web.Admin
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Despacho}/{action=Index}/{id?}");
             });
         }
     }

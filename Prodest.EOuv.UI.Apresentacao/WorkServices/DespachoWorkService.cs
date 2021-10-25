@@ -13,6 +13,7 @@ namespace Prodest.EOuv.UI.Apresentacao
         Task AdicionarDespacho(DespachoManifestacaoViewModel despachoViewModel);
 
         Task Despachar(DespachoManifestacaoEntry despachoEntry);
+        Task EncerrarDespacho(int idDespacho);
     }
 
     public class DespachoWorkService : IDespachoWorkService
@@ -61,6 +62,11 @@ namespace Prodest.EOuv.UI.Apresentacao
             string papelDestinatario = despachoEntry.GuidPapelDestinatario;
 
             await _despachoBLL.Despachar(despachoModel, papelDestinatario, papelResponsavel, filtroDadosSelecionados);
+        }
+
+        public async Task EncerrarDespacho(int idDespacho)
+        {
+            await _despachoBLL.EncerrarDespacho(idDespacho);
         }
     }
 }

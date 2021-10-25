@@ -28,7 +28,14 @@ namespace Prodest.EOuv.Infra.DAL
         public async Task AdicionarDespacho(DespachoManifestacaoModel despachoManifestacaoModel)
         {
             DespachoManifestacao despachoManifestacao = _mapper.Map<DespachoManifestacao>(despachoManifestacaoModel);
-            _eouvContext.Add(despachoManifestacao);
+            _eouvContext.DespachoManifestacao.Add(despachoManifestacao);
+            await _eouvContext.SaveChangesAsync();
+        }
+
+        public async Task EncerrarDespacho(int idDespacho)
+        {
+            DespachoManifestacao despachoManifestacao = await _eouvContext.DespachoManifestacao.Where(d => d.IdDespachoManifestacao == idDespacho).AsNoTracking().FirstOrDefaultAsync();
+            _eouvContext.DespachoManifestacao.Remove(despachoManifestacao);
             await _eouvContext.SaveChangesAsync();
         }
     }
