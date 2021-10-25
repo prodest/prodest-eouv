@@ -115,7 +115,34 @@ namespace Prodest.EOuv.Dominio.BLL
             despachoManifestacao.IdAgenteResposta = idAtorResposta;
             await _despachoRepository.AtualizaDespacho(despachoManifestacao);
         }
-        
+
+        public async Task ResponderDespacho(int idDespacho)
+        {
+            try { 
+                //busca Despacho
+                DespachoManifestacaoModel despacho = await ObterDespachoEDestinatario(idDespacho);
+
+                //busca se o encaminhamento foi respondido pelo destinatario, retorna quem respondeu
+                EncaminhamentoRastreioDestinoModel responsavel = await _edocsBLL.ResponsavelPorResponderAoDestinatario(despacho.IdEncaminhamento.ToString(), new[] { despacho.AgenteDestinatario.GuidUsuario });
+                if (responsavel != null)//encontrado
+                {
+                    if (despacho.Situacao == nameof(Enums.SituacaoDespacho.Aberto))
+                    {
+                        AgenteManifestacaoModel agenteResposta = await montaAgente(responsavel.Id, responsavel.TipoAgente);
+
+                        var idAtorResposta = await _despachoRepository.AdicionaAtor(agenteResposta);
+                        despacho.Situacao = nameof(Enums.SituacaoDespacho.Respondido);
+                        despacho.IdAgenteResposta = idAtorResposta;
+                        await _despachoRepository.AtualizaDespacho(despacho);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw (new Exception(e.StackTrace));
+            }
+        }
+
         public async Task<SetorModel> BuscaSetor(string idSetor)
         {
             var setor = await _despachoRepository.BuscaSetor(idSetor);

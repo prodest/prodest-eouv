@@ -20,5 +20,6 @@ namespace Prodest.EOuv.Dominio.Modelo
         Task<AgenteManifestacaoModel> montaAgente(string idAgente, int tipoAgente);
         Task<DespachoManifestacaoModel> ObterDespacho(int IdDespachoManifestacao);
         Task<DespachoManifestacaoModel> ObterDespachoEDestinatario(int IdDespachoManifestacao);
+        Task ResponderDespacho(int idDespacho);
     }
 }

@@ -54,40 +54,46 @@ namespace Prodest.EOuv.Background.Jobs
             }
         }
 
-        public void EncontraDestinatarioHangFire(int  idDespacho)
+        public void EncontraDestinatarioHangFire(int idDespacho)
         {
-            try
-            {
-                //busca destinatario
-                Task<DespachoManifestacaoModel>taskDespacho = _despachoBLL.ObterDespachoEDestinatario(idDespacho);
-                Task.WaitAll(taskDespacho);
-                DespachoManifestacaoModel despacho = taskDespacho.Result;
-
-                //busca se o encaminhamento foi respondido pelo destinatario, retorna quem respondeu
-                Task<EncaminhamentoRastreioDestinoModel> task = _edocsBLL.ResponsavelPorResponderAoDestinatario(despacho.IdEncaminhamento.ToString(), new[] { despacho.AgenteDestinatario.GuidUsuario });            
-                Task.WaitAll(task);
-
-                EncaminhamentoRastreioDestinoModel responsavel = task.Result;
-                if (responsavel != null)//encontrado
-                {
-                    retorno += $"\n o responsavel{responsavel.Id} - {responsavel.Nome} respondeu pelo encaminhamento {despacho.IdEncaminhamento.ToString()}";
-                    //verificar se o despacho já foi respondido
-                    if (despacho.Situacao == nameof(Enums.SituacaoDespacho.Aberto)){
-                        retorno += $"\n o encaminhamento {despacho.IdEncaminhamento.ToString()} esta {despacho.Situacao}";
-                        Task<AgenteManifestacaoModel> taskAgente =  _despachoBLL.montaAgente(responsavel.Id, responsavel.TipoAgente);
-                        AgenteManifestacaoModel agenteResposta = taskAgente.Result;
-                        //salva quem respondeu e marca como respondido
-                        _despachoBLL.ResponderDespacho(despacho.IdDespachoManifestacao, agenteResposta);
-                        //Task taskResponderDespacho = _despachoBLL.AdicionarDespacho(despacho.IdDespachoManifestacao, agenteResposta);
-                        //Task.WaitAll(taskResponderDespacho);
-                        retorno += $"\n o Despacho {despacho.IdDespachoManifestacao} foi alterado";
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                throw (new Exception(retorno + "\n" + e.StackTrace));
-            }
+            Task.WaitAll(_despachoBLL.ResponderDespacho(idDespacho));
         }
+        
+
+        //public void EncontraDestinatarioHangFire(int  idDespacho)
+        //{
+        //    try
+        //    {
+        //        //busca destinatario
+        //        Task<DespachoManifestacaoModel>taskDespacho = _despachoBLL.ObterDespachoEDestinatario(idDespacho);
+        //        Task.WaitAll(taskDespacho);
+        //        DespachoManifestacaoModel despacho = taskDespacho.Result;
+
+        //        //busca se o encaminhamento foi respondido pelo destinatario, retorna quem respondeu
+        //        Task<EncaminhamentoRastreioDestinoModel> task = _edocsBLL.ResponsavelPorResponderAoDestinatario(despacho.IdEncaminhamento.ToString(), new[] { despacho.AgenteDestinatario.GuidUsuario });            
+        //        Task.WaitAll(task);
+
+        //        EncaminhamentoRastreioDestinoModel responsavel = task.Result;
+        //        if (responsavel != null)//encontrado
+        //        {
+        //            retorno += $"\n o responsavel{responsavel.Id} - {responsavel.Nome} respondeu pelo encaminhamento {despacho.IdEncaminhamento.ToString()}";
+        //            //verificar se o despacho já foi respondido
+        //            if (despacho.Situacao == nameof(Enums.SituacaoDespacho.Aberto)){
+        //                retorno += $"\n o encaminhamento {despacho.IdEncaminhamento.ToString()} esta {despacho.Situacao}";
+        //                Task<AgenteManifestacaoModel> taskAgente =  _despachoBLL.montaAgente(responsavel.Id, responsavel.TipoAgente);
+        //                AgenteManifestacaoModel agenteResposta = taskAgente.Result;
+        //                //salva quem respondeu e marca como respondido
+        //                _despachoBLL.ResponderDespacho(despacho.IdDespachoManifestacao, agenteResposta);
+        //                //Task taskResponderDespacho = _despachoBLL.AdicionarDespacho(despacho.IdDespachoManifestacao, agenteResposta);
+        //                //Task.WaitAll(taskResponderDespacho);
+        //                retorno += $"\n o Despacho {despacho.IdDespachoManifestacao} foi alterado";
+        //            }
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        throw (new Exception(retorno + "\n" + e.StackTrace));
+        //    }
+        //}
     }
 }

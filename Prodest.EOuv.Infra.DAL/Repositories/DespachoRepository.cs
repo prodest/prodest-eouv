@@ -39,8 +39,9 @@ namespace Prodest.EOuv.Infra.DAL
         public async Task<DespachoManifestacaoModel> ObterDespachoEDestinatario(int IdDespachoManifestacao)
         {
             var despachoManifestacao = await _eouvContext.DespachoManifestacao.Where(d => d.IdDespachoManifestacao == IdDespachoManifestacao)
-                                                                              .Include(d => d.AgenteDestinatario) 
-                                                                              .AsNoTracking().FirstOrDefaultAsync();            
+                                                                              .Include(d => d.AgenteDestinatario)
+                                                                              .AsNoTracking()
+                                                                              .FirstOrDefaultAsync();            
             return _mapper.Map<DespachoManifestacaoModel>(despachoManifestacao);
         }
 
@@ -108,15 +109,11 @@ namespace Prodest.EOuv.Infra.DAL
 
         public async Task<AgenteManifestacaoModel> montaAgente(string idAgente, int tipoAgente)
         {
-            Task<AgentePublicoPapelModel> taskPapel = _AcessoCidadaoBLL.GetPapel(new Guid(idAgente));
-            Task.WaitAll(taskPapel);
-            AgentePublicoPapelModel papel = taskPapel.Result;
+            AgentePublicoPapelModel papel = await _AcessoCidadaoBLL.GetPapel(new Guid(idAgente));
             SetorModel setor = null;
             if (papel != null && !String.IsNullOrEmpty(papel.LotacaoGuid))
             {
-                Task<SetorModel> taskSetor = BuscaSetor(papel.LotacaoGuid);
-                Task.WaitAll(taskSetor);
-                setor = taskSetor.Result;
+                setor = await BuscaSetor(papel.LotacaoGuid);
             }
             AgenteManifestacaoModel AgenteResposta = new AgenteManifestacaoModel
             {

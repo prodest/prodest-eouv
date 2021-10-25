@@ -75,16 +75,16 @@ namespace Prodest.EOuv.Web.Admin
                     entity.AuditDate = DateTime.Now;
                     entity.AuditUserName = _httpContextAccessor.HttpContext.User.FindFirst("nome")?.Value;
                     entity.AuditUserCpf = _httpContextAccessor.HttpContext.User.FindFirst("cpf")?.Value;
-                    entity.Origin = _httpContextAccessor.HttpContext.Request.GetTypedHeaders().Referer.AbsoluteUri.Split("//").Last();
-                    //var urlAcessada = _httpContextAccessor.HttpContext.Request.GetTypedHeaders().Referer;
-                    //if (urlAcessada is null)
-                    //{
-                    //    entity.Origin = _httpContextAccessor.HttpContext.Request.Path.Value;
-                    //}
-                    //else
-                    //{
-                    //    entity.Origin = _httpContextAccessor.HttpContext.Request.GetTypedHeaders().Referer.AbsoluteUri.Split("//").Last();
-                    //}
+                    //entity.Origin = _httpContextAccessor.HttpContext.Request.GetTypedHeaders().Referer.AbsoluteUri.Split("//").Last();
+                    var urlAcessada = _httpContextAccessor.HttpContext.Request.GetTypedHeaders().Referer;
+                    if (urlAcessada is null)
+                    {
+                        entity.Origin = _httpContextAccessor.HttpContext.Request.Path.Value;
+                    }
+                    else
+                    {
+                        entity.Origin = _httpContextAccessor.HttpContext.Request.GetTypedHeaders().Referer.AbsoluteUri.Split("//").Last();
+                    }
                     entity.EntityType = entry.EntityType.Name;
                     entity.Action = entry.Action;
                     entity.TablePk = entry.PrimaryKey.First().Value.ToString();
