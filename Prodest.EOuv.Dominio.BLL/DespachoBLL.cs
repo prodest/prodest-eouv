@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using Prodest.EOuv.Dominio.Modelo;
+using Prodest.EOuv.Shared.Util;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -26,6 +27,26 @@ namespace Prodest.EOuv.Dominio.BLL
         public async Task<List<DespachoManifestacaoModel>> ObterDespachosPorManifestacao(int idManifestacao)
         {
             return await _despachoRepository.ObterDespachoPorManifestacao(idManifestacao);
+        }
+
+        public async Task<List<int>> ObterDespachosEmAberto()
+        {
+            return await _despachoRepository.ObterDespachosEmAberto();
+        }
+
+        public async Task<DespachoManifestacaoModel> ObterDespacho(int IdDespachoManifestacao)
+        {
+            return await _despachoRepository.ObterDespacho(IdDespachoManifestacao);
+        }
+
+        public async Task<DespachoManifestacaoModel> ObterDespachoEDestinatario(int IdDespachoManifestacao)
+        {
+            return await _despachoRepository.ObterDespachoEDestinatario(IdDespachoManifestacao);
+        }
+
+        public async Task<AgenteManifestacaoModel> montaAgente(string idAgente, int tipoAgente)
+        {
+            return await _despachoRepository.montaAgente(idAgente, tipoAgente);
         }
 
         public async Task AdicionarDespacho(DespachoManifestacaoModel despacho)
@@ -69,8 +90,8 @@ namespace Prodest.EOuv.Dominio.BLL
         }
 
         private async Task<string> MontarHtmlDetalhesManifestacao(ManifestacaoModel manifestacao)
-        {            
-            string html = await _htmlApiBLL.GerarHtml(manifestacao);            
+        {
+            string html = await _htmlApiBLL.GerarHtml(manifestacao);
             JObject json = JObject.FromObject(manifestacao);//Geração de objeto json de teste a partir da manifestacao
             return html;
         }
@@ -85,6 +106,56 @@ namespace Prodest.EOuv.Dominio.BLL
         {
             var IdEncaminhamento = await _edocsBLL.EncaminharDocumento(idDocumento, assunto, mensagem, papelResponsavel, idDestinatario);
             return IdEncaminhamento;
+        }
+
+        public async Task ResponderDespacho(int idDespacho, AgenteManifestacaoModel agenteResposta)
+        {
+            //salva ator
+            var idAtorResposta = await _despachoRepository.AdicionarAgente(agenteResposta);
+
+            var despachoManifestacao = await _despachoRepository.ObterDespacho(idDespacho);
+            despachoManifestacao.Situacao = nameof(Enums.SituacaoDespacho.Respondido);
+            //despachoManifestacao.AgenteResposta = agenteResposta;
+            //salva ator resposta
+            despachoManifestacao.IdAgenteResposta = idAtorResposta;
+            await _despachoRepository.AtualizarDespacho(despachoManifestacao);
+        }
+
+        public async Task ResponderDespacho(int idDespacho)
+        {
+            try {
+                //busca Despacho
+                DespachoManifestacaoModel despacho = await ObterDespachoEDestinatario(idDespacho);
+
+                //busca se o encaminhamento foi respondido pelo destinatario, retorna quem respondeu
+                EncaminhamentoRastreioDestinoModel responsavel = await _edocsBLL.ResponsavelPorResponderAoDestinatario(despacho.IdEncaminhamento.ToString(), new[] { despacho.AgenteDestinatario.GuidUsuario });
+                if (responsavel != null)//encontrado
+                {
+                    if (despacho.Situacao == nameof(Enums.SituacaoDespacho.Aberto))
+                    {
+                        AgenteManifestacaoModel agenteResposta = await montaAgente(responsavel.Id, responsavel.TipoAgente);
+
+                        var idAtorResposta = await _despachoRepository.AdicionarAgente(agenteResposta);
+                        despacho.Situacao = nameof(Enums.SituacaoDespacho.Respondido);
+                        despacho.IdAgenteResposta = idAtorResposta;
+                        await _despachoRepository.AtualizarDespacho(despacho);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw (new Exception(e.StackTrace));
+            }
+        }
+
+        public async Task<SetorModel> BuscarSetor(string idSetor)
+        {
+            var setor = await _despachoRepository.BuscarSetor(idSetor);
+            return setor;
+        }
+        public async Task AdicionarAgenteResposta(AgenteManifestacaoModel agenteResposta)
+        {
+            await _despachoRepository.AdicionarAgenteResposta(agenteResposta);
         }
 
         public async Task EncerrarDespacho(int idDespacho)

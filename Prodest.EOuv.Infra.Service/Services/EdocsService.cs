@@ -86,18 +86,19 @@ namespace Prodest.EOuv.Infra.Service
             return await GetRequest<List<PapelModel>>($"{_baseUrl}/v2/usuario/papeis");
         }
 
-        public async Task<bool> EncontraDestinatario(string idEncaminhamentoRaiz, string[] idDestinatario)
+        public async Task<EncaminhamentoRastreioDestinoModel> ResponsavelPorResponderAoDestinatario(string idEncaminhamentoRaiz, string[] idDestinatario)
         {
-            var rastreio = await GetRequest<EncaminhamentoRastreioModel>($"{_baseUrl}/v2/encaminhamento/{idEncaminhamentoRaiz}/rastreio");
+            var rastreio = await GetRequestClient<EncaminhamentoRastreioModel>($"{_baseUrl}/v2/encaminhamento/{idEncaminhamentoRaiz}/rastreio");
 
-            return await EncontraDestinatario(rastreio, idDestinatario);
+            return await EncontraResposavel(rastreio, idDestinatario);
         }
 
-        public async Task<bool> EncontraDestinatario(EncaminhamentoRastreioModel rastreio, string[] idDestinatario)
+        public async Task<EncaminhamentoRastreioDestinoModel> EncontraResposavel(EncaminhamentoRastreioModel rastreio, string[] idDestinatario)
         {
-            if (EhDestino(rastreio, idDestinatario))
+            var ehDestino = EhDestino(rastreio, idDestinatario);
+            if (ehDestino != null )
             {
-                return true;
+                return ehDestino;
             }
             else
             {
@@ -105,22 +106,23 @@ namespace Prodest.EOuv.Infra.Service
                 {
                     for (int i = 0; i < rastreio.EncaminhamentosPosteriores.Count(); i++)
                     {
-                        if (await EncontraDestinatario(rastreio.EncaminhamentosPosteriores[i], idDestinatario))
+                        var responsavelEncontrado = await EncontraResposavel(rastreio.EncaminhamentosPosteriores[i], idDestinatario);
+                        if (responsavelEncontrado != null)
                         {
-                            return true;
+                            return responsavelEncontrado;
                         }
                     }
                 }
             }
-            return false;
+            return null;
         }
 
-        private bool EhDestino(EncaminhamentoRastreioModel rastreio, string[] idDestinatario)
+        private EncaminhamentoRastreioDestinoModel EhDestino(EncaminhamentoRastreioModel rastreio, string[] idDestinatario)
         {
-            bool encontrou = false;
+            EncaminhamentoRastreioDestinoModel encontrou = null;
             if ((rastreio.Destinos != null) && (rastreio.Destinos.Where(d => idDestinatario.Any(dest => dest == d.Id)).Select(s => s.Id).Count() > 0))
             {
-                encontrou = true;
+                encontrou = rastreio.Responsavel;
             }
             return encontrou;
         }
@@ -351,6 +353,19 @@ namespace Prodest.EOuv.Infra.Service
         private async Task<T> GetRequest<T>(string url) where T : class
         {
             var (isSuccess, data, errorMessage) = await _apiContext.GetRequest<T>(url, Enums.AuthenticationType.User);
+
+            if (!isSuccess)
+            {
+                var ex = new EDocsApiException(errorMessage);
+                throw ex;
+            }
+
+            return data;
+        }
+
+        private async Task<T> GetRequestClient<T>(string url) where T : class
+        {
+            var (isSuccess, data, errorMessage) = await _apiContext.GetRequest<T>(url, Enums.AuthenticationType.Application);
 
             if (!isSuccess)
             {

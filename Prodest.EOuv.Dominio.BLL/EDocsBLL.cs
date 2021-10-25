@@ -58,9 +58,9 @@ namespace Prodest.EOuv.Dominio.BLL
             return await _eDocsService.GetRastreioCompleto(idEncaminhamento);
         }
 
-        public async Task<bool> EncontraDestinatario(string idEncaminhamentoRaiz, string[] idDestinatario)
+        public async Task<EncaminhamentoRastreioDestinoModel> ResponsavelPorResponderAoDestinatario(string idEncaminhamentoRaiz, string[] idDestinatario)
         {
-            return await _eDocsService.EncontraDestinatario(idEncaminhamentoRaiz, idDestinatario);
+            return await _eDocsService.ResponsavelPorResponderAoDestinatario(idEncaminhamentoRaiz, idDestinatario);
         }
 
         public async Task<string> GetProtocoloEncaminhamento(string idEncaminhamento)
