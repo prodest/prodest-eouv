@@ -60,3 +60,8 @@ body {
 .form-outline .form-control {
     border: 1px solid #bdbdbd;
 }
+
+/*background app-gov*/
+.bg-appgov {
+    background: linear-gradient( 135deg,#266fd9,#2359a8 40%,#2359a8);
+}

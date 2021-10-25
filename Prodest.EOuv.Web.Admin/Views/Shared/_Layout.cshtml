@@ -48,25 +48,8 @@
 
     <!--Main Navigation-->
     <header>
-        <!-- Sidebar -->
-        <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
-            <div class="position-sticky">
-                <div class="list-group list-group-flush mx-3 mt-4">
-                    <a href="/" title="Sistema Eletrônico de Ouvidoria" class="list-group-item list-group-item-action list-group-item-info py-2 ripple" aria-current="true">
-                        <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>Home</span>
-                    </a>
-                    <a href="/Despacho" title="Despachos" class="list-group-item list-group-item-action list-group-item-info py-2 ripple">
-                        <i class="fas fa-chart-area fa-fw me-3"></i><span>Despachos </span>
-                    </a>
-                    <a href="/Despacho/Add" title="Novo Despacho" class="list-group-item list-group-item-action list-group-item-info py-2 ripple active">
-                        <i class="fas fa-lock fa-fw me-3"></i><span>Novo Despacho</span>
-                    </a>
-                </div>
-            </div>
-        </nav>
-        <!-- Sidebar -->
         <!-- Navbar -->
-        <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light bg-info fixed-top">
+        <nav id="main-navbar" class="navbar fixed-top navbar-expand-lg navbar-light bg-white shadow-2">
             <!-- Container wrapper -->
             <div class="container-fluid">
                 <!-- Toggle button -->
@@ -79,12 +62,6 @@
                 <a class="navbar-brand font-weight-bold" href="#">
                     E-OUV
                 </a>
-                <!-- Search form -->
-                <form class="d-none d-md-flex input-group w-auto my-auto">
-                    <input autocomplete="off" type="search" class="form-control rounded"
-                           placeholder='Search (ctrl + "/" to focus)' style="min-width: 225px" />
-                    <span class="input-group-text border-0"><i class="fas fa-search"></i></span>
-                </form>
 
                 <!-- Right links -->
                 <ul class="navbar-nav ms-auto d-flex flex-row">
@@ -92,8 +69,7 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle hidden-arrow d-flex align-items-center" href="#"
                            id="navbarDropdownMenuLink" role="button" data-mdb-toggle="dropdown" aria-expanded="false">
-                            <img src="https://mdbootstrap.com/img/Photos/Avatars/img (31).jpg" class="rounded-circle" height="22"
-                                 alt="" loading="lazy" />
+                            <i class="fas fa-user"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
                             <li><a class="dropdown-item" href="#">Meu Perfil</a></li>
@@ -105,6 +81,27 @@
             <!-- Container wrapper -->
         </nav>
         <!-- Navbar -->
+        <!-- Sidebar -->
+        <nav id="sidebarMenu" class="sidebar bg-appgov">
+            <a class="navbar-brand font-weight-bold" href="#">
+                E-OUV
+            </a>
+            <ul class="sidenav-menu">
+                <li class="sidenav-item list-unstyled">
+                    <i class="fas fa-grin fa-fw me-3"></i><span>Despachos</span>
+                    <ul class="sidenav-collapse collapse show" id="sidenav-collapse-2-0-0" style="">
+                        <li class="sidenav-item list-unstyled">
+                            <a href="/Despacho" title="Despachos" class="sidenav-link ripple-surface"><i class="fas fa-caret-right"></i> Despachos Realizados</a>
+                        </li>
+                        <li class="sidenav-item list-unstyled">
+                            <a href="/Despacho/Add" title="Novo Despacho" class="sidenav-link ripple-surface"><i class="fas fa-caret-right"></i> Novo Despacho</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <!-- Sidebar -->
+
     </header>
     <!--Main Navigation-->
     <!--Main layout-->
