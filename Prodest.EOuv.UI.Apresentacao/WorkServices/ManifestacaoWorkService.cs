@@ -27,18 +27,8 @@ namespace Prodest.EOuv.UI.Apresentacao
         public async Task<ManifestacaoViewModel> ObterDadosCompletosManifestacao(int idManifestacao)
         {
             ManifestacaoModel manifestacaoModel = await _manifestacaoBLL.ObterDadosCompletosManifestacao(idManifestacao);
-            ManifestacaoViewModel manifestacaoViewModel;
-            try
-            {
-                manifestacaoViewModel = _mapper.Map<ManifestacaoViewModel>(manifestacaoModel);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
+            ManifestacaoViewModel manifestacaoViewModel = _mapper.Map<ManifestacaoViewModel>(manifestacaoModel);
             return manifestacaoViewModel;
-
         }
     }
 }

@@ -288,6 +288,13 @@ namespace Prodest.EOuv.UI.Apresentacao
         public string DescUf { get; set; }
     }
 
+    public partial class ResultadoRespostaViewModel
+    {
+        public int IdResultadoResposta { get; set; }
+        public string DescResultadoResposta { get; set; }
+        public string ClassificacaoResultadoResposta { get; set; }
+    }
+
     public partial class AgenteManifestacaoViewModel
     {
         public int IdAgenteManifestacao { get; set; }

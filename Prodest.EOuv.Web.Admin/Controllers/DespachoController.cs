@@ -23,7 +23,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
         }
 
         //[Route("{idManifestacao?}")]
-        public async Task<IActionResult> Despachos(int idManifestacao)
+        public async Task<IActionResult> AcompanharDespachos(int idManifestacao)
         {
             //TempData["idManifestacao"] = idManifestacao;
             var despachoViewModel = await _despachoWorkService.ObterDespachosPorManifestacao(idManifestacao != 0 ? idManifestacao : 250);

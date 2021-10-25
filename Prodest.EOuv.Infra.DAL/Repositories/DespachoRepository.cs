@@ -54,7 +54,7 @@ namespace Prodest.EOuv.Infra.DAL
             return retorno;
         }
 
-        public async Task<int> AdicionarAgente( AgenteManifestacaoModel agente)
+        public async Task<int> AdicionarAgente(AgenteManifestacaoModel agente)
         {
             try
             {
@@ -86,6 +86,7 @@ namespace Prodest.EOuv.Infra.DAL
             _eouvContext.Update(_mapper.Map<DespachoManifestacao>(despachoManifestacao));
             await _eouvContext.SaveChangesAsync();
         }
+
         public async Task<SetorModel> BuscarSetor(string idSetor)
         {
             var setor = await _eouvContext.Setor
@@ -103,8 +104,7 @@ namespace Prodest.EOuv.Infra.DAL
 
         public async Task AdicionarAgenteResposta(AgenteManifestacaoModel agenteResposta)
         {
-            DespachoManifestacao despachoManifestacao = _mapper.Map<DespachoManifestacao>(despachoManifestacaoModel);
-            _eouvContext.DespachoManifestacao.Add(despachoManifestacao);
+            _eouvContext.Add(_mapper.Map<AgenteManifestacao>(agenteResposta));
             await _eouvContext.SaveChangesAsync();
         }
 
@@ -112,7 +112,7 @@ namespace Prodest.EOuv.Infra.DAL
         {
             DespachoManifestacao despachoManifestacao = await _eouvContext.DespachoManifestacao.Where(d => d.IdDespachoManifestacao == idDespacho).AsNoTracking().FirstOrDefaultAsync();
             _eouvContext.DespachoManifestacao.Remove(despachoManifestacao);
-            _eouvContext.Add(_mapper.Map<AgenteManifestacao>(agenteResposta));
+
             await _eouvContext.SaveChangesAsync();
         }
 

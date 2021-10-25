@@ -25,12 +25,15 @@ namespace Prodest.EOuv.Shared.Configuracao
 
             services.AddScoped<IDespachoWorkService, DespachoWorkService>();
             services.AddScoped<IManifestacaoWorkService, ManifestacaoWorkService>();
+            services.AddScoped<IRespostaWorkService, RespostaWorkService>();
 
             services.AddScoped<IDespachoBLL, DespachoBLL>();
             services.AddScoped<IManifestacaoBLL, ManifestacaoBLL>();
+            services.AddScoped<IRespostaBLL, RespostaBLL>();
 
             services.AddScoped<IDespachoRepository, DespachoRepository>();
             services.AddScoped<IManifestacaoRepository, ManifestacaoRepository>();
+            services.AddScoped<IRespostaRepository, RespostaRepository>();
         }
     }
 }
