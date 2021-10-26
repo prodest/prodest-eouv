@@ -36,15 +36,22 @@
                                             <i class="flex-fill check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i> {{doc.documento.registro}} - {{doc.documento.nome}}.{{doc.documento.extensao}}
                                         </li>
                                     </ul>
-                                </div>                                
+                                </div>
                                 <div class="mb-3">
                                     <label for="slResultadoResposta">Resultado da Resposta:</label>
-                                    <select id="slResultadoResposta" class="form-control form-select-sm">
-                                        <option v-for="(tipologia) in resultadosRespostaPorTipologia" :key="tipologia.idResultadoResposta" value="{{tipologia.idResultadoResposta}}">
-                                            {{tipologia.descResultadoResposta}}
-                                        </option>
+                                    <select id="slResultadoResposta" class="form-control">
+                                        <optgroup label="Resultados Positivos">
+                                            <option v-for="(tipologia) in resultadosRespostaPositiva" :key="tipologia.idResultadoResposta" value="{{tipologia.idResultadoResposta}}">
+                                                {{tipologia.descResultadoResposta}}
+                                            </option>
+                                        </optgroup>
+                                        <optgroup label="Resultados Negativos">
+                                            <option v-for="(tipologia) in resultadosRespostaNegativa" :key="tipologia.idResultadoResposta" value="{{tipologia.idResultadoResposta}}">
+                                                {{tipologia.descResultadoResposta}}
+                                            </option>
+                                        </optgroup>
                                     </select>
-                                </div>                                
+                                </div>
                                 <div class="mb-3">
                                     <label for="slOrgao">Competência do Fato:</label>
                                     <select id="slOrgao" class="form-control form-select-sm">
@@ -53,7 +60,7 @@
                                         </option>
                                     </select>
                                 </div>
-                                
+
                                 <div class="mb-3">
                                     <label for="flTextoDespacho">Texto do Despacho:</label>
                                     <textarea class="form-control form-control-sm" v-model="textoResposta" maxlength="2000" placeholder="Informe aqui o texto de resposta à manifestação." id="flTextoDespacho" style="height: 80px"></textarea>

@@ -8,6 +8,8 @@
             documentosSelecionados: [],
             documentosEncaminhamento: [],
             resultadosRespostaPorTipologia: [],
+            resultadosRespostaPositiva: [],
+            resultadosRespostaNegativa: [],
             idResultadosRespostaPorTipologia: null,
             orgaosCompetenciaFato: [],
             idOrgaosCompetenciaFato: null
@@ -24,14 +26,22 @@
         async CarregarDocumentosEDocs() {
             let ret = await eOuvApi.DocumentosEncaminhamentoEDocs();
             this.documentosEncaminhamento = ret;
-
             console.log(this.documentosEncaminhamento);
+        },
+
+        ApenasPositivo(item) {
+            return item.classificacaoResultadoResposta.toLowerCase() == "positivo";
+        },
+
+        ApenasNegativo(item) {
+            return item.classificacaoResultadoResposta.toLowerCase() == "negativo";
         },
 
         async ObterResultadosRespostaPorTipologia() {
             let ret = await eOuvApi.ObterResultadosRespostaPorTipologia();
-            this.resultadosRespostaPorTipologia = ret;
-            console.log(this.resultadosRespostaPorTipologia);
+            this.resultadosRespostaPorTipologia = ret;            
+            this.resultadosRespostaPositiva = this.resultadosRespostaPorTipologia.filter(this.ApenasPositivo);            
+            this.resultadosRespostaNegativa = this.resultadosRespostaPorTipologia.filter(this.ApenasNegativo);            
         },
 
         async ObterOrgaosCompetenciaFato() {
