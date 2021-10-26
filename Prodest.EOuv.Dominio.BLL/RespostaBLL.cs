@@ -1,8 +1,7 @@
 ﻿using Prodest.EOuv.Dominio.Modelo;
-using System;
+using Prodest.EOuv.Dominio.Modelo.Interfaces.BLL;
+using Prodest.EOuv.Dominio.Modelo.Interfaces.DAL;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Prodest.EOuv.Dominio.BLL

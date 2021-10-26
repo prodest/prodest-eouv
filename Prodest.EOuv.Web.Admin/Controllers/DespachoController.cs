@@ -22,12 +22,9 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             return RedirectToAction(nameof(AcompanharDespachos), new { id = 583 });
         }
 
-        //[Route("{idManifestacao?}")]
         public async Task<IActionResult> AcompanharDespachos(int id)
         {
-            //TempData["idManifestacao"] = idManifestacao;
             var despachoViewModel = await _despachoWorkService.ObterDespachosPorManifestacao(id);
-            //return Json(despachoViewModel);
             return View(despachoViewModel);
         }
 
@@ -43,19 +40,8 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             return Json(dadosManifestacao);
         }
 
-        //[Route("Despacho/Despachar")]
         public async Task<IActionResult> Despachar([FromBody] DespachoManifestacaoEntry despachoEntry)
         {
-            //if (!ModelState.IsValid)
-            //{
-            //    return View();
-            //}
-
-            //Validações de tela
-
-            despachoEntry.GuidPapelResponsavel = despachoEntry.GuidPapelResponsavel; //"6470bd19-c178-4824-8edc-e8c3ef22a536";
-            despachoEntry.GuidPapelDestinatario = despachoEntry.GuidPapelDestinatario; //"90dab47e-e5ef-481e-8d0f-8a90d9390f4d";
-
             await _despachoWorkService.Despachar(despachoEntry);
 
             return Json(despachoEntry.IdManifestacao);

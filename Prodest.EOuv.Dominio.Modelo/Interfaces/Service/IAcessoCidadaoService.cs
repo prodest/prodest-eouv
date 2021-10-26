@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Prodest.EOuv.Dominio.Modelo
+namespace Prodest.EOuv.Dominio.Modelo.Interfaces.Service
 {
     public interface IAcessoCidadaoService
     {
@@ -19,6 +19,9 @@ namespace Prodest.EOuv.Dominio.Modelo
         Task<AgentePublicoModel[]> GetConjuntoAgentesPublicos(string id);
 
         Task<PermissaoUsuarioModel> GetPermissaoUsuario(string id);
+
         Task<AgentePublicoPapelModel[]> GetAgentePublico(string id, string busca);
+
+        Task<UnidadeModel[]> GetUnidadesPerfilAdministrador(Guid id);
     }
 }

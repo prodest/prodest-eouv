@@ -8,6 +8,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Prodest.EOuv.Dominio.Modelo;
+using Prodest.EOuv.Dominio.Modelo.Interfaces.Service;
 using Prodest.EOuv.Shared.Util;
 using Prodest.EOuv.Shared.Utils.Exceptions;
 

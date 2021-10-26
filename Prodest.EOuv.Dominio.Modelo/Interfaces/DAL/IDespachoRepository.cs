@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Prodest.EOuv.Dominio.Modelo
+namespace Prodest.EOuv.Dominio.Modelo.Interfaces.DAL
 {
     public interface IDespachoRepository
     {
@@ -9,15 +9,11 @@ namespace Prodest.EOuv.Dominio.Modelo
 
         Task<List<int>> ObterDespachosEmAberto();
 
-        Task AdicionarDespacho(DespachoManifestacaoModel despachoManifestacao);
-
-        Task<SetorModel> BuscarSetor(string idSetor);
-
-        Task<int> AdicionarAgente(AgenteManifestacaoModel agenteResposta);
-
-        Task<DespachoManifestacaoModel> ObterDespacho(int IdDespachoManifestacao);
+        Task<DespachoManifestacaoModel> ObterDespachoPorId(int IdDespachoManifestacao);
 
         Task<DespachoManifestacaoModel> ObterDespachoEDestinatario(int idDespachoManifestacao);
+
+        Task AdicionarDespacho(DespachoManifestacaoModel despachoManifestacao);
 
         Task AtualizarDespacho(DespachoManifestacaoModel despachoManifestacao);
     }

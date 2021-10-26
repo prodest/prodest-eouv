@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
 using Prodest.EOuv.Dominio.Modelo;
-using Prodest.EOuv.Shared.Util;
-using System;
+using Prodest.EOuv.Dominio.Modelo.Interfaces.BLL;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Prodest.EOuv.UI.Apresentacao

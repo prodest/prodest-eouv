@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Prodest.EOuv.Dominio.Modelo
+namespace Prodest.EOuv.Dominio.Modelo.Interfaces.Service
 {
     public interface IEDocsService
     {
@@ -82,6 +82,10 @@ namespace Prodest.EOuv.Dominio.Modelo
         Task<string> PostTempUrlMinio(GerarUrlModel gerarUrl, byte[] data);
 
         Task<AssinaturaDigitalValidaModel> PostAssinaturaDigitalValida(AssinaturaDigitalValidaModel parameters);
+
+        Task<string> CapturarDocumento(byte[] arquivo, string papelResponsavel, string nomeArquivo);
+
+        Task<string> EncaminharDocumento(string idDocumento, string assunto, string mensagem, string papelResponsavel, string papelDestinatario);
 
         #region[v1]
 

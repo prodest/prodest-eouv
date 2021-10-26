@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Prodest.EOuv.Dominio.Modelo;
+using Prodest.EOuv.Dominio.Modelo.Interfaces.BLL;
 using Prodest.EOuv.Shared.Util;
 using System;
 using System.Collections.Generic;

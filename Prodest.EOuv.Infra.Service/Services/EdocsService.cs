@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Prodest.EOuv.Dominio.Modelo;
+using Prodest.EOuv.Dominio.Modelo.Interfaces.Service;
 using Prodest.EOuv.Shared.Util;
 using Prodest.EOuv.Shared.Utils.Exceptions;
 
@@ -96,7 +97,7 @@ namespace Prodest.EOuv.Infra.Service
         public async Task<EncaminhamentoRastreioDestinoModel> EncontraResposavel(EncaminhamentoRastreioModel rastreio, string[] idDestinatario)
         {
             var ehDestino = EhDestino(rastreio, idDestinatario);
-            if (ehDestino != null )
+            if (ehDestino != null)
             {
                 return ehDestino;
             }
@@ -309,6 +310,137 @@ namespace Prodest.EOuv.Infra.Service
 
             return gerarUrl.IdentificadorTemporarioArquivoNaNuvem;
         }
+
+        public async Task<EventoModel> BuscarEvento(string id)
+        {
+            EventoModel task = await BuscarEventoConcluidoAsync(id);
+
+            EventoModel evento = task;
+            return evento;
+        }
+
+        private async Task<EventoModel> BuscarEventoConcluidoAsync(string id, int? tries = 30, int? delayMs = 1000)
+        {
+            var evento = new EventoModel();
+
+            // realiza polling na API do E-Docs até que o Evento esteja disponível
+            do
+            {
+                await Task.Delay(delayMs.Value);
+                evento = await GetEvento(id);
+                tries--;
+            } while (evento.Situacao.ToUpper() != nameof(Enums.EventoSituacao.Concluido).ToUpper() && tries > 0);
+
+            if (evento.Situacao.ToUpper() != nameof(Enums.EventoSituacao.Concluido).ToUpper() && tries == 0)
+            {
+                // caso o número máximo de tentativas seja extrapolado
+                throw new EDocsApiException();
+            }
+
+            return evento;
+        }
+
+        #region [=== Capturar Documento ===]
+
+        public async Task<string> CapturarDocumento(byte[] arquivo, string papelResponsavel, string nomeArquivo)
+        {
+            EventoModel evento = await BuscarEvento(await GetEventoDocumentoCapturarNatoDigitalCopiaServidor(arquivo, papelResponsavel, nomeArquivo)); //com o Id do evento descobrimos o Id do Documento
+            return evento.IdDocumento;
+        } //Retorna o Id do Documento
+
+        public async Task<string> GetEventoDocumentoCapturarNatoDigitalCopiaServidor(byte[] arquivo, string papelResponsavel, string nomeArquivo)
+        {
+            string identificadorTemporarioArquivoNaNuvem = await EnviarArquivo(arquivo);
+
+            DocumentoRequestModel parameters = new DocumentoRequestModel
+            {
+                IdPapelCapturador = papelResponsavel, //analista
+                IdClasse = "b84db19f-7c05-44b8-9f07-9592e3a91f0a", //"01.01.05.01"
+                ValorLegalDocumentoConferencia = Shared.Util.Enums.DocumentoValorLegal.CopiaSimples,
+                ValorLegal = Shared.Util.Enums.DocumentoValorLegal.CopiaSimples,
+                NomeArquivo = nomeArquivo,
+                CredenciarCapturador = true,
+                RestricaoAcesso = new RestricaoAcessoModel()
+                {
+                    TransparenciaAtiva = false,
+                    IdsFundamentosLegais = new Guid[1] { new Guid("d4ecc485-d889-4e2f-848c-b2099b3412b7") }, //"Sigilo das Manifestações de Ouvidoria"
+                    ClassificacaoInformacao = new ClassificacaoInformacaoModel()
+                    {
+                        PrazoAnos = 1,
+                        PrazoMeses = 0,
+                        PrazoDias = 0,
+                        Justificativa = "Demanda de Ouvidoria",
+                        IdPapelAprovador = papelResponsavel, //mesmo do capturador
+                    }
+                },
+                IdentificadorTemporarioArquivoNaNuvem = identificadorTemporarioArquivoNaNuvem,
+            };
+
+            Task<string> task = PostDocumentoCapturarNatoDigitalCopiaServidor(parameters);
+            Task.WaitAll(task);
+
+            string result = task.Result;
+            return result;
+        }
+
+        public async Task<string> EnviarArquivo(byte[] arquivo)
+        {
+            //string caminhoCompletoArquivoLocal = @"C:\Temp\TesteEDOCS.pdf";
+            //FileInfo fi = new FileInfo(caminhoCompletoArquivoLocal);
+            //int tamanhoArquivo = Convert.ToInt32(fi.Length);
+
+            GerarUrlModel task = await GetGerarUrl(arquivo.Length);
+            //byte[] readText = System.IO.File.ReadAllBytes(caminhoCompletoArquivoLocal);
+
+            string task2 = await PostTempUrlMinio(task, arquivo);
+
+            string result = task2;
+            //IdentificadorTemporarioArquivoNaNuvem
+            return result;
+        }
+
+        #endregion [=== Capturar Documento ===]
+
+        #region [=== Encaminhamento ===]
+
+        public async Task<string> EncaminharDocumento(string idDocumento, string assunto, string mensagem, string papelResponsavel, string papelDestinatario) //Retorna o Id do Encaminhamento
+        {
+            EventoModel evento = await BuscarEvento(await GetEventoEncaminhar(idDocumento, assunto, mensagem, papelResponsavel, papelDestinatario)); //com o Id do evento descobrimos o Id do Encaminhamento
+            return evento.IdEncaminhamento;
+        }
+
+        public async Task<string> GetEventoEncaminhar(string idDocumento, string assunto, string mensagem, string papelResponsavel, string papelDestinatario) //Retorna o Id do Evento
+        {
+            var parametros = new EncaminhamentoRequestModel()
+            {
+                Assunto = assunto,
+                Mensagem = mensagem,
+                IdResponsavel = papelResponsavel,
+                IdsDestinos = new string[] { papelDestinatario },
+                IdsDocumentos = new string[] { idDocumento },
+                RestricaoAcesso = new RestricaoAcessoModel()
+                {
+                    TransparenciaAtiva = false,
+                    IdsFundamentosLegais = new Guid[1] { new Guid("d4ecc485-d889-4e2f-848c-b2099b3412b7") }, //"Sigilo das Manifestações de Ouvidoria"
+                    ClassificacaoInformacao = new ClassificacaoInformacaoModel()
+                    {
+                        PrazoAnos = 1,
+                        PrazoMeses = 0,
+                        PrazoDias = 0,
+                        Justificativa = "Demanda de Ouvidoria",
+                        IdPapelAprovador = papelResponsavel, //mesmo do capturador
+                    }
+                },
+            };
+
+            Task<string> task = PostEncaminhamentoNovo(parametros);
+            Task.WaitAll(task);
+
+            string result = task.Result;
+            return result;
+        }
+
+        #endregion [=== Encaminhamento ===]
 
         #region[v1]
 

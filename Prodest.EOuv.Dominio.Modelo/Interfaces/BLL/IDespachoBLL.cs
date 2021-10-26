@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Prodest.EOuv.Dominio.Modelo
+namespace Prodest.EOuv.Dominio.Modelo.Interfaces.BLL
 {
     public interface IDespachoBLL
     {
@@ -14,11 +14,7 @@ namespace Prodest.EOuv.Dominio.Modelo
 
         Task Despachar(DespachoManifestacaoModel despachoModel, string destinatarios, string papelResponsavel, FiltroDadosManifestacaoModel listaDadosSelecionados);
 
-        Task<SetorModel> BuscarSetor(string idSetor);
-
         Task<List<int>> ObterDespachosEmAberto();
-
-        Task<AgenteManifestacaoModel> montaAgente(string idAgente, int tipoAgente);
 
         Task<DespachoManifestacaoModel> ObterDespacho(int IdDespachoManifestacao);
 
