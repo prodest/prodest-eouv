@@ -19,11 +19,12 @@ namespace Prodest.EOuv.Dominio.Modelo
         public int? IdAgenteDestinatario { get; set; }
         public int? IdAgenteResposta { get; set; }
         public DateTime? DataRespostaDespacho { get; set; }
-        public string Situacao { get; set; }
+        public int? IdSituacaoDespacho { get; set; }
 
         public virtual OrgaoModel Orgao { get; set; }
         public virtual UsuarioModel UsuarioSolicitacaoDespacho { get; set; }
         public virtual AgenteManifestacaoModel AgenteDestinatario { get; set; }
         public virtual AgenteManifestacaoModel AgenteResposta { get; set; }
+        public virtual SituacaoDespachoModel SituacaoDespacho { get; set; }
     }
 }

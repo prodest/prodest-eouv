@@ -291,7 +291,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             Task.WaitAll(task);
             AgenteManifestacaoModel agenteResposta = task.Result;
             //salva quem respondeu e marca como respondido
-            Task.WaitAll(_despachoBLL.ResponderDespacho(33, agenteResposta));
+            Task.WaitAll(_despachoBLL.ResponderDespacho(33));
             return "Despacho respondido";
         }
 
@@ -315,13 +315,13 @@ namespace Prodest.EOuv.Web.Admin.Controllers
                 {
                     retorno += $"\n o responsavel{responsavel.Id} - {responsavel.Nome} respondeu pelo encaminhamento {despacho.IdEncaminhamento.ToString()}";
                     //verificar se o despacho já foi respondido
-                    if (despacho.Situacao == nameof(Enums.SituacaoDespacho.Aberto))
+                    if (despacho.IdSituacaoDespacho == (int)Enums.SituacaoDespacho.Aberto)
                     {
-                        retorno += $"\n o encaminhamento {despacho.IdEncaminhamento.ToString()} esta {despacho.Situacao}";
+                        retorno += $"\n o encaminhamento {despacho.IdEncaminhamento.ToString()} esta {despacho.SituacaoDespacho.DescSituacaoDespacho}";
                         Task<AgenteManifestacaoModel> taskAgente = _despachoBLL.montaAgente(responsavel.Id, responsavel.TipoAgente);
                         AgenteManifestacaoModel agenteResposta = taskAgente.Result;
                         //salva quem respondeu e marca como respondido
-                        _despachoBLL.ResponderDespacho(despacho.IdDespachoManifestacao, agenteResposta);
+                        _despachoBLL.ResponderDespacho(despacho.IdDespachoManifestacao);
                         //Task taskResponderDespacho = _despachoBLL.AdicionarDespacho(despacho.IdDespachoManifestacao, agenteResposta);
                         //Task.WaitAll(taskResponderDespacho);
                         retorno += $"\n o Despacho {despacho.IdDespachoManifestacao} foi alterado";

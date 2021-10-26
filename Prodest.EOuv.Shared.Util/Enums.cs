@@ -50,20 +50,21 @@ namespace Prodest.EOuv.Shared.Util
 
         public enum nivelAcesso
         {
-            Publico = 1, 
-            Organizacional = 2, 
-            Restrito = 3, 
-            Sigiloso = 4, 
-            Reservado = 5, 
-            Secreto = 6, 
-            Ultrassecreto = 7, 
+            Publico = 1,
+            Organizacional = 2,
+            Restrito = 3,
+            Sigiloso = 4,
+            Reservado = 5,
+            Secreto = 6,
+            Ultrassecreto = 7,
             SigilosoSemFundamentoLegal = 8
         }
+
         public enum SituacaoDespacho
         {
             Aberto = 1,
-            Respondido= 2,
-            FinalizadoManualmente = 3
+            Respondido = 2,
+            EncerradoManualmente = 3
         }
     }
 }

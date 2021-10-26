@@ -31,7 +31,7 @@
                                         @Html.DisplayNameFor(model => model.DataRespostaDespacho)
                                     </th>
                                     <th scope="col">
-                                        @Html.DisplayNameFor(model => model.Situacao)
+                                        @Html.DisplayNameFor(model => model.SituacaoDespacho.DescSituacaoDespacho)
                                     </th>
                                     <th scope="col"></th>
                                 </tr>
@@ -53,7 +53,7 @@
                                             @Html.DisplayFor(modelItem => item.DataRespostaDespacho)
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.Situacao)
+                                            @Html.DisplayFor(modelItem => item.SituacaoDespacho.DescSituacaoDespacho)
                                         </td>
                                         <td>
                                             <a class="btn btn-info" asp-action="Details" asp-route-id="@item.IdDespachoManifestacao"><i class="fas fa-exchange-alt"></i></a>
@@ -69,4 +69,3 @@
         </div>
     </div>
 </div>
-

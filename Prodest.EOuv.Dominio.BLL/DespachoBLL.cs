@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using Prodest.EOuv.Dominio.Modelo;
+using Prodest.EOuv.Dominio.Modelo.Model;
 using Prodest.EOuv.Shared.Util;
 using System;
 using System.Collections.Generic;
@@ -14,14 +15,16 @@ namespace Prodest.EOuv.Dominio.BLL
         private readonly IHtmlApiBLL _htmlApiBLL;
         private readonly IEDocsBLL _edocsBLL;
         private readonly IManifestacaoBLL _manifestacaoBLL;
+        private readonly IAcessoCidadaoBLL _AcessoCidadaoBLL;
 
-        public DespachoBLL(IDespachoRepository despachoRepository, IPdfApiBLL pdfApiBLL, IHtmlApiBLL htmlApiBLL, IEDocsBLL edocsBLL, IManifestacaoBLL manifestacaoBLL)
+        public DespachoBLL(IDespachoRepository despachoRepository, IPdfApiBLL pdfApiBLL, IHtmlApiBLL htmlApiBLL, IEDocsBLL edocsBLL, IManifestacaoBLL manifestacaoBLL, IAcessoCidadaoBLL acessoCidadaoBLL)
         {
             _despachoRepository = despachoRepository;
             _pdfApiBLL = pdfApiBLL;
             _htmlApiBLL = htmlApiBLL;
             _edocsBLL = edocsBLL;
             _manifestacaoBLL = manifestacaoBLL;
+            _AcessoCidadaoBLL = acessoCidadaoBLL;
         }
 
         public async Task<List<DespachoManifestacaoModel>> ObterDespachosPorManifestacao(int idManifestacao)
@@ -46,7 +49,39 @@ namespace Prodest.EOuv.Dominio.BLL
 
         public async Task<AgenteManifestacaoModel> montaAgente(string idAgente, int tipoAgente)
         {
-            return await _despachoRepository.montaAgente(idAgente, tipoAgente);
+            AgentePublicoPapelModel papel = await _AcessoCidadaoBLL.GetPapel(new Guid(idAgente));
+            SetorModel setor = null;
+            if (papel != null && !String.IsNullOrEmpty(papel.LotacaoGuid))
+            {
+                setor = await BuscarSetor(papel.LotacaoGuid);
+            }
+            AgenteManifestacaoModel AgenteResposta = new AgenteManifestacaoModel
+            {
+                GuidPapel = new Guid(idAgente),
+                NomePapel = papel.Nome,
+                GuidUsuario = papel.AgentePublicoSub,
+                NomeUsuario = papel.AgentePublicoNome,
+                GuidSetor = new Guid(papel.LotacaoGuid),
+                Tipo = (byte)tipoAgente
+            };
+            if (setor is not null)
+            {
+                AgenteResposta.NomeSetor = setor.NomeSetor;
+                AgenteResposta.SiglaSetor = setor.SiglaSetor;
+                AgenteResposta.GuidOrgao = setor.Orgao.GuidOrgao;
+                AgenteResposta.NomeOrgao = setor.Orgao.RazaoSocial;
+                AgenteResposta.SiglaOrgao = setor.Orgao.SiglaOrgao;
+                /*
+                //TODO: Adicionar Dados do Patriarca na API de Carga do Organograma no eOuv antigo
+                AgenteResposta.GuidPatriarca = setor.Orgao.Patriaca.Guid;
+                AgenteResposta.NomePatriarca = setor.Orgao.Patriaca.RazaoSocial;
+                AgenteResposta.SiglaPatriarca = setor.Orgao.Patriaca.Sigla;
+                */
+                AgenteResposta.GuidPatriarca = new Guid("fe88eb2a-a1f3-4cb1-a684-87317baf5a57");
+                AgenteResposta.NomePatriarca = "ESTADO DO ESPIRITO SANTO";
+                AgenteResposta.SiglaPatriarca = "GOVES";
+            }
+            return AgenteResposta;
         }
 
         public async Task AdicionarDespacho(DespachoManifestacaoModel despacho)
@@ -86,6 +121,7 @@ namespace Prodest.EOuv.Dominio.BLL
             despachoModel.IdEncaminhamento = new Guid(idEncaminhamento);
             despachoModel.IdOrgao = manifestacao.IdOrgaoResponsavel;
             despachoModel.IdUsuarioSolicitacaoDespacho = (int)manifestacao.IdUsuarioAnalise;
+            despachoModel.IdSituacaoDespacho = (int)Enums.SituacaoDespacho.Aberto;
             await _despachoRepository.AdicionarDespacho(despachoModel);
         }
 
@@ -108,43 +144,24 @@ namespace Prodest.EOuv.Dominio.BLL
             return IdEncaminhamento;
         }
 
-        public async Task ResponderDespacho(int idDespacho, AgenteManifestacaoModel agenteResposta)
-        {
-            //salva ator
-            var idAtorResposta = await _despachoRepository.AdicionarAgente(agenteResposta);
-
-            var despachoManifestacao = await _despachoRepository.ObterDespacho(idDespacho);
-            despachoManifestacao.Situacao = nameof(Enums.SituacaoDespacho.Respondido);
-            //despachoManifestacao.AgenteResposta = agenteResposta;
-            //salva ator resposta
-            despachoManifestacao.IdAgenteResposta = idAtorResposta;
-            await _despachoRepository.AtualizarDespacho(despachoManifestacao);
-        }
-
         public async Task ResponderDespacho(int idDespacho)
         {
-            try {
-                //busca Despacho
-                DespachoManifestacaoModel despacho = await ObterDespachoEDestinatario(idDespacho);
+            //busca Despacho
+            DespachoManifestacaoModel despacho = await ObterDespachoEDestinatario(idDespacho);
 
-                //busca se o encaminhamento foi respondido pelo destinatario, retorna quem respondeu
-                EncaminhamentoRastreioDestinoModel responsavel = await _edocsBLL.ResponsavelPorResponderAoDestinatario(despacho.IdEncaminhamento.ToString(), new[] { despacho.AgenteDestinatario.GuidUsuario });
-                if (responsavel != null)//encontrado
-                {
-                    if (despacho.Situacao == nameof(Enums.SituacaoDespacho.Aberto))
-                    {
-                        AgenteManifestacaoModel agenteResposta = await montaAgente(responsavel.Id, responsavel.TipoAgente);
-
-                        var idAtorResposta = await _despachoRepository.AdicionarAgente(agenteResposta);
-                        despacho.Situacao = nameof(Enums.SituacaoDespacho.Respondido);
-                        despacho.IdAgenteResposta = idAtorResposta;
-                        await _despachoRepository.AtualizarDespacho(despacho);
-                    }
-                }
-            }
-            catch (Exception e)
+            //busca se o encaminhamento foi respondido pelo destinatario, retorna quem respondeu
+            EncaminhamentoRastreioDestinoModel responsavel = await _edocsBLL.ResponsavelPorResponderAoDestinatario(despacho.IdEncaminhamento.ToString(), new[] { despacho.AgenteDestinatario.GuidUsuario });
+            if (responsavel != null)//encontrado
             {
-                throw (new Exception(e.StackTrace));
+                if (despacho.IdSituacaoDespacho == (int)Enums.SituacaoDespacho.Aberto)
+                {
+                    AgenteManifestacaoModel agenteResposta = await montaAgente(responsavel.Id, responsavel.TipoAgente);
+
+                    var idAgenteResposta = await _despachoRepository.AdicionarAgente(agenteResposta);
+                    despacho.IdSituacaoDespacho = (int)Enums.SituacaoDespacho.Respondido;
+                    despacho.IdAgenteResposta = idAgenteResposta;
+                    await _despachoRepository.AtualizarDespacho(despacho);
+                }
             }
         }
 
@@ -153,14 +170,12 @@ namespace Prodest.EOuv.Dominio.BLL
             var setor = await _despachoRepository.BuscarSetor(idSetor);
             return setor;
         }
-        public async Task AdicionarAgenteResposta(AgenteManifestacaoModel agenteResposta)
-        {
-            await _despachoRepository.AdicionarAgenteResposta(agenteResposta);
-        }
 
-        public async Task EncerrarDespacho(int idDespacho)
+        public async Task EncerrarDespachoManualmente(int idDespacho)
         {
-            await _despachoRepository.EncerrarDespacho(idDespacho);
+            DespachoManifestacaoModel despacho = await ObterDespacho(idDespacho);
+            despacho.IdSituacaoDespacho = (int)Enums.SituacaoDespacho.Respondido;
+            await _despachoRepository.AtualizarDespacho(despacho);
         }
     }
 }
