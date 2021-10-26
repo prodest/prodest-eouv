@@ -14,55 +14,7 @@
                         Despachos realizados para a Manifestação: @TempData["idManifestacao"]
                     </div>
                     <div class="card-body">                        
-                        <a class="btn btn-primary float-end" href="/Despacho/Add/@Model"><i class="fas fa-plus"></i> Novo Despacho</a>                        
-                        <table class="table table-hover table-striped">
-                            <thead>
-                                <tr>
-                                    <th scope="col">
-                                        @Html.DisplayNameFor(model => model.ProtocoloEdocs)
-                                    </th>
-                                    <th scope="col">
-                                        @Html.DisplayNameFor(model => model.DataSolicitacaoDespacho)
-                                    </th>
-                                    <th scope="col">
-                                        @Html.DisplayNameFor(model => model.PrazoResposta)
-                                    </th>
-                                    <th scope="col">
-                                        @Html.DisplayNameFor(model => model.DataRespostaDespacho)
-                                    </th>
-                                    <th scope="col">
-                                        @Html.DisplayNameFor(model => model.Situacao)
-                                    </th>
-                                    <th scope="col"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in Model)
-                                {
-                                    <tr>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.ProtocoloEdocs)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.DataSolicitacaoDespacho)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.PrazoResposta)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.DataRespostaDespacho)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Situacao)
-                                        </td>
-                                        <td>
-                                            <a class="btn btn-info" asp-action="Details" asp-route-id="@item.IdDespachoManifestacao"><i class="fas fa-exchange-alt"></i></a>
-                                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.IdDespachoManifestacao"><i class="fas fa-times"></i></a>
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
+                        <a class="btn btn-primary float-end" href="/Despacho/Add/@Model"><i class="fas fa-plus"></i> Novo Despacho</a>                                                
                     </div>
                 </div>
             </section>            
