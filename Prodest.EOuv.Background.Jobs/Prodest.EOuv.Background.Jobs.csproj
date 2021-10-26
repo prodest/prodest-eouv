@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Prodest.EFlow.Shared.Configuracao\Prodest.EOuv.Shared.Configuracao.csproj" />
+    <ProjectReference Include="..\Prodest.EOuv.Shared.Configuracao\Prodest.EOuv.Shared.Configuracao.csproj" />
     <ProjectReference Include="..\Prodest.EOuv.Dominio.Modelo\Prodest.EOuv.Dominio.Modelo.csproj" />
   </ItemGroup>
 </Project>
