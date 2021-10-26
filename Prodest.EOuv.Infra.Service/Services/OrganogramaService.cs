@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Prodest.EOuv.Dominio.Modelo;
+using Prodest.EOuv.Dominio.Modelo.Interfaces.Service;
 using Prodest.EOuv.Dominio.Modelo.Model;
 using Prodest.EOuv.Shared.Util;
 using Prodest.EOuv.Shared.Utils;

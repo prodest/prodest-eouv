@@ -48,7 +48,7 @@ namespace Prodest.EOuv.Shared.Util
             CopiaSimples = 4
         }
 
-        public enum nivelAcesso
+        public enum NivelAcesso
         {
             Publico = 1,
             Organizacional = 2,
@@ -65,6 +65,17 @@ namespace Prodest.EOuv.Shared.Util
             Aberto = 1,
             Respondido = 2,
             EncerradoManualmente = 3
+        }
+
+        public enum AgenteTipo
+        {
+            Cidadao = 1,
+            Papel = 2,
+            Grupo = 3,
+            Unidade = 4,
+            Organizacao = 5,
+            Sistema = 6,
+            NaoIdentificado = 99
         }
     }
 }

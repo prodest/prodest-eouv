@@ -1,8 +1,5 @@
 ﻿using Hangfire;
-using Prodest.EOuv.Dominio.Modelo;
-using Prodest.EOuv.Dominio.Modelo.Model;
-using Prodest.EOuv.Shared.Util;
-using Prodest.EOuv.UI.Apresentacao;
+using Prodest.EOuv.Dominio.Modelo.Interfaces.BLL;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -16,16 +13,14 @@ namespace Prodest.EOuv.Background.Jobs
 
     public class HangfireService : IHangfireService
     {
-
         private readonly IDespachoBLL _despachoBLL;
-        private readonly IEDocsBLL _edocsBLL;
         private string retorno;
 
-        public HangfireService(IEDocsBLL edocsBLL, IDespachoBLL  despachoBLL)
+        public HangfireService(IDespachoBLL despachoBLL)
         {
-            _edocsBLL = edocsBLL;
             _despachoBLL = despachoBLL;
         }
+
         [Queue("Edocs")]
         public void BuscaRespostaDespachosAbertos()
         {
@@ -45,7 +40,6 @@ namespace Prodest.EOuv.Background.Jobs
                     BackgroundJob.Enqueue(() => EncontraDestinatarioHangFire(despacho));
                     //teste
                     //BackgroundJob.Enqueue(() => EncontraDestinatarioHangFire(despacho, "89565801-9382-4785-94f8-cd35d4ab39d2", new[] { "43ccc355-87e9-4f14-8812-6469f8f0c81b", new Guid().ToString() }));
-
                 }
             }
             catch (Exception e)
@@ -58,7 +52,6 @@ namespace Prodest.EOuv.Background.Jobs
         {
             Task.WaitAll(_despachoBLL.ResponderDespacho(idDespacho));
         }
-        
 
         //public void EncontraDestinatarioHangFire(int  idDespacho)
         //{
@@ -70,7 +63,7 @@ namespace Prodest.EOuv.Background.Jobs
         //        DespachoManifestacaoModel despacho = taskDespacho.Result;
 
         //        //busca se o encaminhamento foi respondido pelo destinatario, retorna quem respondeu
-        //        Task<EncaminhamentoRastreioDestinoModel> task = _edocsBLL.ResponsavelPorResponderAoDestinatario(despacho.IdEncaminhamento.ToString(), new[] { despacho.AgenteDestinatario.GuidUsuario });            
+        //        Task<EncaminhamentoRastreioDestinoModel> task = _edocsBLL.ResponsavelPorResponderAoDestinatario(despacho.IdEncaminhamento.ToString(), new[] { despacho.AgenteDestinatario.GuidUsuario });
         //        Task.WaitAll(task);
 
         //        EncaminhamentoRastreioDestinoModel responsavel = task.Result;

@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Prodest.EOuv.Dominio.Modelo
+namespace Prodest.EOuv.Dominio.Modelo.Interfaces.Service
 {
     public interface IApiContext
     {

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Prodest.EOuv.Dominio.Modelo;
+using Prodest.EOuv.Dominio.Modelo.Interfaces.BLL;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -43,7 +44,7 @@ namespace Prodest.EOuv.UI.Apresentacao
 
         public async Task Despachar(DespachoManifestacaoEntry despachoEntry)
         {
-            //validações de tela
+            //TODO: validações de tela
             //Validar campo prazo preenchido
             //Validar campo texto preenchido
             //Validar anexos
@@ -59,8 +60,8 @@ namespace Prodest.EOuv.UI.Apresentacao
 
             var filtroDadosSelecionados = _mapper.Map<FiltroDadosManifestacaoModel>(despachoEntry.FiltroDadosManifestacaoSelecionados);
 
-            string papelResponsavel = despachoEntry.GuidPapelResponsavel;
-            string papelDestinatario = despachoEntry.GuidPapelDestinatario;
+            string papelResponsavel = despachoEntry.GuidPapelResponsavel; //"6470bd19-c178-4824-8edc-e8c3ef22a536";
+            string papelDestinatario = despachoEntry.GuidPapelDestinatario; //"90dab47e-e5ef-481e-8d0f-8a90d9390f4d";
 
             await _despachoBLL.Despachar(despachoModel, papelDestinatario, papelResponsavel, filtroDadosSelecionados);
         }

@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Prodest.EOuv.Dominio.Modelo;
+using Prodest.EOuv.Dominio.Modelo.Interfaces.Service;
 using Prodest.EOuv.Dominio.Modelo.Model;
 using Prodest.EOuv.Shared.Util;
 using Prodest.EOuv.Shared.Utils;
@@ -15,17 +18,20 @@ namespace Prodest.EOuv.Infra.Service
         private readonly int _cacheExpirationHours;
         private readonly IMemoryCache _memoryCache;
         private readonly IApiContext _apiContext;
+        private readonly IOrganogramaService _organogramaService;
 
         public AcessoCidadaoService(
             IConfiguration configuration,
             IMemoryCache memoryCache,
-            IApiContext apiContext
+            IApiContext apiContext,
+            IOrganogramaService organogramaService
         )
         {
             _baseUrl = configuration.GetValue<string>("ApiUrls:AcessoCidadao");
             _cacheExpirationHours = configuration.GetValue<int>("CacheExpirationHours:ApiAcessoCidadao");
             _memoryCache = memoryCache;
             _apiContext = apiContext;
+            _organogramaService = organogramaService;
         }
 
         // ======================
@@ -82,9 +88,27 @@ namespace Prodest.EOuv.Infra.Service
             return await GetRequest<PermissaoUsuarioModel>($"{_baseUrl}/restrito/usuario/{id}/permissoes");
         }
 
-        public async Task<AgentePublicoPapelModel[]> GetAgentePublico(string id,string busca)
+        public async Task<AgentePublicoPapelModel[]> GetAgentePublico(string id, string busca)
         {
             return await GetRequest<AgentePublicoPapelModel[]>($"{_baseUrl}/conjunto/{id}/papeis/{busca}");
+        }
+
+        public async Task<UnidadeModel[]> GetUnidadesPerfilAdministrador(Guid id)
+        {
+            var response = await GetPermissaoUsuario(id.ToString());
+            var ret = new List<UnidadeModel>();
+
+            foreach (var papel in response.Papeis)
+            {
+                var perfilAdministrador = papel.Perfis.First(x => x.Nome.ToUpper() == "ADMINISTRADOR");
+
+                foreach (var orgao in perfilAdministrador.Orgaos)
+                {
+                    ret.Add(await _organogramaService.GetUnidade(orgao.Guid));
+                }
+            }
+
+            return ret.ToArray();
         }
 
         // ======================

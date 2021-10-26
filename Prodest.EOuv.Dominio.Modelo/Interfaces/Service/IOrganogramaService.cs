@@ -1,7 +1,7 @@
 ﻿using Prodest.EOuv.Dominio.Modelo.Model;
 using System.Threading.Tasks;
 
-namespace Prodest.EOuv.Dominio.Modelo
+namespace Prodest.EOuv.Dominio.Modelo.Interfaces.Service
 {
     public interface IOrganogramaService
     {

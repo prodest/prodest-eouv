@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Prodest.EOuv.Dominio.Modelo;
+using Prodest.EOuv.Dominio.Modelo.Interfaces.DAL;
 using System;
 using System.Collections.Generic;
 using System.Linq;

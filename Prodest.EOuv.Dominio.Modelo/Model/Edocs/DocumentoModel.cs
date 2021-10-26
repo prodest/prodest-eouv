@@ -12,6 +12,6 @@ namespace Prodest.EOuv.Dominio.Modelo
         public string Nome { get; set; }
         public string Extensao { get; set; }
         public string Base64 { get; set; }
-        public Enums.nivelAcesso nivelAcesso { get; set; }
+        public Enums.NivelAcesso nivelAcesso { get; set; }
     }
 }

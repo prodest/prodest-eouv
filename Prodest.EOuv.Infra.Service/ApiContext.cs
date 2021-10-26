@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Prodest.EOuv.Dominio.Modelo;
+using Prodest.EOuv.Dominio.Modelo.Interfaces.Service;
 using Prodest.EOuv.Shared.Util;
 using Prodest.EOuv.Shared.Utils.Exceptions;
 using System;

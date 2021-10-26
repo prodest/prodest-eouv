@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Prodest.EOuv.Dominio.Modelo;
+using Prodest.EOuv.Dominio.Modelo.Interfaces.BLL;
+using Prodest.EOuv.Dominio.Modelo.Interfaces.Service;
 using Prodest.EOuv.Dominio.Modelo.Model;
 using Prodest.EOuv.Shared.Util;
 using Prodest.EOuv.Shared.Utils.Exceptions;
@@ -16,17 +18,17 @@ namespace Prodest.EOuv.Web.Admin.Controllers
     public class EdocsController : Controller
     {
         private readonly IDespachoWorkService _despachoWorkService;
-        private readonly IEDocsBLL _edocsBLL;
-        private readonly IAcessoCidadaoBLL _AcessoCidadaoBLL;
-        private readonly IPdfApiBLL _pdfApiBLL;
+        private readonly IEDocsService _edocsService;
+        private readonly IAcessoCidadaoService _acessoCidadaoService;
+        private readonly IPdfApiService _pdfApiService;
         private readonly IDespachoBLL _despachoBLL;
 
-        public EdocsController(IDespachoWorkService despachoWorkService, IEDocsBLL edocsBLL, IAcessoCidadaoBLL acessoCidadaoBLL, IPdfApiBLL pdfApiBLL, IDespachoBLL despachoBLL)
+        public EdocsController(IDespachoWorkService despachoWorkService, IEDocsService edocsService, IAcessoCidadaoService acessoCidadaoService, IPdfApiService pdfApiService, IDespachoBLL despachoBLL)
         {
             _despachoWorkService = despachoWorkService;
-            _edocsBLL = edocsBLL;
-            _AcessoCidadaoBLL = acessoCidadaoBLL;
-            _pdfApiBLL = pdfApiBLL;
+            _edocsService = edocsService;
+            _acessoCidadaoService = acessoCidadaoService;
+            _pdfApiService = pdfApiService;
             _despachoBLL = despachoBLL;
         }
 
@@ -34,7 +36,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
         {
             var teste = "<html> <head>     <title></title> </head> <body>     <div class='text-center'>         <h1 class='display-4'>EOuv</h1>         <p>Sistema de Ouvidoria do Espírito Santo</p>     </div> </body> </html>";
 
-            Task<byte[]> task = _pdfApiBLL.GerarPdfByHtml(teste);
+            Task<byte[]> task = _pdfApiService.GerarPdfByHtml(teste);
             Task.WaitAll(task);
             var resultado = task.Result;
 
@@ -45,7 +47,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
 
         public JsonResult BuscarPatriarca()
         {
-            System.Threading.Tasks.Task<List<PatriarcaModel>> task = _edocsBLL.GetPatriarca();
+            System.Threading.Tasks.Task<List<PatriarcaModel>> task = _edocsService.GetPatriarca();
 
             Task.WaitAll(task);
 
@@ -55,7 +57,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
 
         public JsonResult BuscarAgentes(String nome)
         {
-            Task<AgentePublicoPapelModel[]> task = _AcessoCidadaoBLL.GetAgentePublico("3ca6ea0e-ca14-46fa-a911-22e616303722", nome);// Prodest
+            Task<AgentePublicoPapelModel[]> task = _acessoCidadaoService.GetAgentePublico("3ca6ea0e-ca14-46fa-a911-22e616303722", nome);// Prodest
 
             Task.WaitAll(task);
 
@@ -65,7 +67,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
 
         public JsonResult BuscarOrganizacoes()
         {
-            System.Threading.Tasks.Task<List<PatriarcaModel>> task = _edocsBLL.GetOrganizacoes("fe88eb2a-a1f3-4cb1-a684-87317baf5a57");// ESGOV
+            System.Threading.Tasks.Task<List<PatriarcaModel>> task = _edocsService.GetOrganizacoes("fe88eb2a-a1f3-4cb1-a684-87317baf5a57");// ESGOV
 
             Task.WaitAll(task);
 
@@ -75,7 +77,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
 
         public JsonResult BuscarSetores()
         {
-            System.Threading.Tasks.Task<List<PatriarcaSetorModel>> task = _edocsBLL.GetSetores("3ca6ea0e-ca14-46fa-a911-22e616303722");// Prodest
+            System.Threading.Tasks.Task<List<PatriarcaSetorModel>> task = _edocsService.GetSetores("3ca6ea0e-ca14-46fa-a911-22e616303722");// Prodest
 
             Task.WaitAll(task);
 
@@ -85,7 +87,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
 
         public JsonResult BuscarGrupoTrabalho()
         {
-            System.Threading.Tasks.Task<List<PatriarcaSetorModel>> task = _edocsBLL.GetGrupoTrabalho("3ca6ea0e-ca14-46fa-a911-22e616303722");// Prodest
+            System.Threading.Tasks.Task<List<PatriarcaSetorModel>> task = _edocsService.GetGrupoTrabalho("3ca6ea0e-ca14-46fa-a911-22e616303722");// Prodest
 
             Task.WaitAll(task);
 
@@ -95,7 +97,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
 
         public JsonResult BuscarComissoes()
         {
-            System.Threading.Tasks.Task<List<PatriarcaSetorModel>> task = _edocsBLL.GetComissoes("3ca6ea0e-ca14-46fa-a911-22e616303722");// Prodest
+            System.Threading.Tasks.Task<List<PatriarcaSetorModel>> task = _edocsService.GetComissoes("3ca6ea0e-ca14-46fa-a911-22e616303722");// Prodest
 
             Task.WaitAll(task);
 
@@ -105,7 +107,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
 
         public JsonResult BuscarPapeis()
         {
-            Task<List<PapelModel>> task = _edocsBLL.GetPapeis();
+            Task<List<PapelModel>> task = _edocsService.GetPapeis();
             Task.WaitAll(task);
 
             List<PapelModel> papel = task.Result;
@@ -114,7 +116,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
 
         public JsonResult BuscarPlanosAtivos()
         {
-            Task<PlanoModel[]> task = _edocsBLL.GetPlanosAtivos("fe88eb2a-a1f3-4cb1-a684-87317baf5a57");// ESGOV
+            Task<PlanoModel[]> task = _edocsService.GetPlanosAtivos("fe88eb2a-a1f3-4cb1-a684-87317baf5a57");// ESGOV
 
             Task.WaitAll(task);
 
@@ -124,7 +126,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
 
         public JsonResult BuscarClassesAtivas()
         {
-            System.Threading.Tasks.Task<ClasseModel[]> task = _edocsBLL.GetClassesAtivas("c4496f9f-e366-4383-945f-de3fe5762c3a");// "nome": "PLANO DE CLASSIFICAÇÃO DE DOCUMENTOS: ATIVIDADES-MEIO"
+            System.Threading.Tasks.Task<ClasseModel[]> task = _edocsService.GetClassesAtivas("c4496f9f-e366-4383-945f-de3fe5762c3a");// "nome": "PLANO DE CLASSIFICAÇÃO DE DOCUMENTOS: ATIVIDADES-MEIO"
 
             Task.WaitAll(task);
 
@@ -152,7 +154,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             do
             {
                 await Task.Delay(delayMs.Value);
-                evento = await _edocsBLL.GetEvento(id);
+                evento = await _edocsService.GetEvento(id);
                 tries--;
             } while (evento.Situacao.ToUpper() != nameof(Enums.EventoSituacao.Concluido).ToUpper() && tries > 0);
 
@@ -167,7 +169,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
 
         public JsonResult BuscarFundamentosLegais()
         {
-            System.Threading.Tasks.Task<FundamentoLegalModel[]> task = _edocsBLL.GetFundamentosLegais("fe88eb2a-a1f3-4cb1-a684-87317baf5a57");// ESGOV
+            System.Threading.Tasks.Task<FundamentoLegalModel[]> task = _edocsService.GetFundamentosLegais("fe88eb2a-a1f3-4cb1-a684-87317baf5a57");// ESGOV
 
             Task.WaitAll(task);
 
@@ -177,7 +179,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
 
         public JsonResult GetConjuntoAgentesPublicos()
         {
-            System.Threading.Tasks.Task<AgentePublicoModel[]> task = _AcessoCidadaoBLL.GetConjuntoAgentesPublicos(new Guid("ec00931d-74a2-4877-9b93-95ce029ba7f6"));// analista
+            System.Threading.Tasks.Task<AgentePublicoModel[]> task = _acessoCidadaoService.GetConjuntoAgentesPublicos("ec00931d-74a2-4877-9b93-95ce029ba7f6");// analista
 
             Task.WaitAll(task);
 
@@ -187,7 +189,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
 
         public string GetDocumentoDownloadUrl()
         {
-            System.Threading.Tasks.Task<string> task = _edocsBLL.GetDocumentoDownloadUrl(new Guid("38683aef-0613-45ea-bfd0-663783a7bfe0"));// Documento
+            System.Threading.Tasks.Task<string> task = _edocsService.GetDocumentoDownloadUrl("38683aef-0613-45ea-bfd0-663783a7bfe0");// Documento
 
             Task.WaitAll(task);
 
@@ -203,7 +205,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
         public JsonResult GetEncaminhamentoPorProtocolo(string id)
         {//Retorna o encaminhamento inicial do protocolo
             string idProtocolo = id;
-            System.Threading.Tasks.Task<EncaminhamentoModel> task = _edocsBLL.GetEncaminhamentoPorProtocolo(idProtocolo);
+            System.Threading.Tasks.Task<EncaminhamentoModel> task = _edocsService.GetEncaminhamentoPorProtocolo(idProtocolo);
 
             Task.WaitAll(task);
 
@@ -214,7 +216,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
         //public string GetProtocoloEncaminhamento()
         //{//Retorna o encaminhamento inicial do protocolo
         //    string idEncaminhamento = "22a16dcb-8248-4655-ad33-6d7df581d7f2";
-        //    System.Threading.Tasks.Task<string> task = _edocsBLL.GetProtocoloEncaminhamento(idEncaminhamento);
+        //    System.Threading.Tasks.Task<string> task = _edocsService.GetProtocoloEncaminhamento(idEncaminhamento);
 
         //    Task.WaitAll(task);
 
@@ -224,7 +226,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
 
         public JsonResult GetDocumentoEncaminhamento()
         {
-            System.Threading.Tasks.Task<DocumentoControladoModel[]> task = _edocsBLL.GetDocumentoEncaminhamento("89565801-9382-4785-94f8-cd35d4ab39d2");// Documento
+            System.Threading.Tasks.Task<DocumentoControladoModel[]> task = _edocsService.GetDocumentoEncaminhamento("89565801-9382-4785-94f8-cd35d4ab39d2");// Documento
 
             Task.WaitAll(task);
 
@@ -234,7 +236,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
 
         public JsonResult BuscarRastreio()
         {
-            System.Threading.Tasks.Task<EncaminhamentoRastreioModel> task = _edocsBLL.GetRastreio("89565801-9382-4785-94f8-cd35d4ab39d2");// Documento
+            System.Threading.Tasks.Task<EncaminhamentoRastreioModel> task = _edocsService.GetRastreio("89565801-9382-4785-94f8-cd35d4ab39d2");// Documento
 
             Task.WaitAll(task);
 
@@ -244,7 +246,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
 
         public JsonResult EncontraDestinatarioHangFire()
         {
-            System.Threading.Tasks.Task<EncaminhamentoRastreioDestinoModel> task = _edocsBLL.ResponsavelPorResponderAoDestinatario("89565801-9382-4785-94f8-cd35d4ab39d2", new[] { "43ccc355-87e9-4f14-8812-6469f8f0c81b", new Guid().ToString(), new Guid().ToString() });// Encaminhamento, grupo
+            System.Threading.Tasks.Task<EncaminhamentoRastreioDestinoModel> task = _edocsService.ResponsavelPorResponderAoDestinatario("89565801-9382-4785-94f8-cd35d4ab39d2", new[] { "43ccc355-87e9-4f14-8812-6469f8f0c81b", new Guid().ToString(), new Guid().ToString() });// Encaminhamento, grupo
             //System.Threading.Tasks.Task<bool> task = _edocsBLL.EncontraDestinatario("89565801-9382-4785-94f8-cd35d4ab39d2", new[]{ new Guid().ToString(), new Guid().ToString()});// Encaminhamento, grupo
 
             Task.WaitAll(task);
@@ -256,7 +258,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
         public JsonResult GetPapelAcessoCidadao()
         {
             //"Roberto Marconi de Macedo Filho - ANALISTA DE TECNOLOGIA DA INFORMACAO - SGPRJ - PRODEST - GOVES",
-            System.Threading.Tasks.Task<AgentePublicoPapelModel> task = _AcessoCidadaoBLL.GetPapel(new Guid("90dab47e-e5ef-481e-8d0f-8a90d9390f4d"));// Encaminhamento, grupo
+            System.Threading.Tasks.Task<AgentePublicoPapelModel> task = _acessoCidadaoService.GetPapel("90dab47e-e5ef-481e-8d0f-8a90d9390f4d");// Encaminhamento, grupo
             //System.Threading.Tasks.Task<bool> task = _edocsBLL.EncontraDestinatario("89565801-9382-4785-94f8-cd35d4ab39d2", new[]{ new Guid().ToString(), new Guid().ToString()});// Encaminhamento, grupo
 
             Task.WaitAll(task);
@@ -267,7 +269,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
 
         public JsonResult BuscarRastreioCompleto()
         {
-            System.Threading.Tasks.Task<EncaminhamentoRastreioModel> task = _edocsBLL.GetRastreioCompleto("89565801-9382-4785-94f8-cd35d4ab39d2");// Documento
+            System.Threading.Tasks.Task<EncaminhamentoRastreioModel> task = _edocsService.GetRastreioCompleto("89565801-9382-4785-94f8-cd35d4ab39d2");// Documento
 
             Task.WaitAll(task);
 
@@ -277,77 +279,77 @@ namespace Prodest.EOuv.Web.Admin.Controllers
 
         #region hangfire
 
-        public JsonResult GetDespachoEmAberto()
-        {
-            Task<List<int>> task = _despachoBLL.ObterDespachosEmAberto();
-            Task.WaitAll(task);
-            List<int> despachos = task.Result;
-            return Json(despachos);
-        }
+        //public JsonResult GetDespachoEmAberto()
+        //{
+        //    Task<List<int>> task = _despachoBLL.ObterDespachosEmAberto();
+        //    Task.WaitAll(task);
+        //    List<int> despachos = task.Result;
+        //    return Json(despachos);
+        //}
 
-        public string ResponderDespacho()
-        {
-            Task<AgenteManifestacaoModel> task = _despachoBLL.montaAgente("90dab47e-e5ef-481e-8d0f-8a90d9390f4d", 2);
-            Task.WaitAll(task);
-            AgenteManifestacaoModel agenteResposta = task.Result;
-            //salva quem respondeu e marca como respondido
-            Task.WaitAll(_despachoBLL.ResponderDespacho(33));
-            return "Despacho respondido";
-        }
+        //public string ResponderDespacho()
+        //{
+        //    Task<AgenteManifestacaoModel> task = _despachoBLL.MontaAgente("90dab47e-e5ef-481e-8d0f-8a90d9390f4d", 2);
+        //    Task.WaitAll(task);
+        //    AgenteManifestacaoModel agenteResposta = task.Result;
+        //    //salva quem respondeu e marca como respondido
+        //    Task.WaitAll(_despachoBLL.ResponderDespacho(33));
+        //    return "Despacho respondido";
+        //}
 
-        public string EncontraDestinatarioHangFireTeste()
-        {
-            int idDespacho = 39;
-            string retorno = "";
-            try
-            {
-                //busca destinatario
-                Task<DespachoManifestacaoModel> taskDespacho = _despachoBLL.ObterDespachoEDestinatario(idDespacho);
-                Task.WaitAll(taskDespacho);
-                DespachoManifestacaoModel despacho = taskDespacho.Result;
+        //public string EncontraDestinatarioHangFireTeste()
+        //{
+        //    int idDespacho = 39;
+        //    string retorno = "";
+        //    try
+        //    {
+        //        //busca destinatario
+        //        Task<DespachoManifestacaoModel> taskDespacho = _despachoBLL.ObterDespachoEDestinatario(idDespacho);
+        //        Task.WaitAll(taskDespacho);
+        //        DespachoManifestacaoModel despacho = taskDespacho.Result;
 
-                //busca se o encaminhamento foi respondido pelo destinatario, retorna quem respondeu
-                Task<EncaminhamentoRastreioDestinoModel> task = _edocsBLL.ResponsavelPorResponderAoDestinatario(despacho.IdEncaminhamento.ToString(), new[] { despacho.AgenteDestinatario.GuidUsuario });
-                Task.WaitAll(task);
+        //        //busca se o encaminhamento foi respondido pelo destinatario, retorna quem respondeu
+        //        Task<EncaminhamentoRastreioDestinoModel> task = _edocsBLL.ResponsavelPorResponderAoDestinatario(despacho.IdEncaminhamento.ToString(), new[] { despacho.AgenteDestinatario.GuidUsuario });
+        //        Task.WaitAll(task);
 
-                EncaminhamentoRastreioDestinoModel responsavel = task.Result;
-                if (responsavel != null)//encontrado
-                {
-                    retorno += $"\n o responsavel{responsavel.Id} - {responsavel.Nome} respondeu pelo encaminhamento {despacho.IdEncaminhamento.ToString()}";
-                    //verificar se o despacho já foi respondido
-                    if (despacho.IdSituacaoDespacho == (int)Enums.SituacaoDespacho.Aberto)
-                    {
-                        retorno += $"\n o encaminhamento {despacho.IdEncaminhamento.ToString()} esta {despacho.SituacaoDespacho.DescSituacaoDespacho}";
-                        Task<AgenteManifestacaoModel> taskAgente = _despachoBLL.montaAgente(responsavel.Id, responsavel.TipoAgente);
-                        AgenteManifestacaoModel agenteResposta = taskAgente.Result;
-                        //salva quem respondeu e marca como respondido
-                        _despachoBLL.ResponderDespacho(despacho.IdDespachoManifestacao);
-                        //Task taskResponderDespacho = _despachoBLL.AdicionarDespacho(despacho.IdDespachoManifestacao, agenteResposta);
-                        //Task.WaitAll(taskResponderDespacho);
-                        retorno += $"\n o Despacho {despacho.IdDespachoManifestacao} foi alterado";
-                    }
-                }
-                return retorno;
-            }
-            catch (Exception e)
-            {
-                throw (new Exception(retorno + "\n" + e.StackTrace));
-            }
-        }
+        //        EncaminhamentoRastreioDestinoModel responsavel = task.Result;
+        //        if (responsavel != null)//encontrado
+        //        {
+        //            retorno += $"\n o responsavel{responsavel.Id} - {responsavel.Nome} respondeu pelo encaminhamento {despacho.IdEncaminhamento.ToString()}";
+        //            //verificar se o despacho já foi respondido
+        //            if (despacho.IdSituacaoDespacho == (int)Enums.SituacaoDespacho.Aberto)
+        //            {
+        //                retorno += $"\n o encaminhamento {despacho.IdEncaminhamento.ToString()} esta {despacho.SituacaoDespacho.DescSituacaoDespacho}";
+        //                Task<AgenteManifestacaoModel> taskAgente = _despachoBLL.MontaAgente(responsavel.Id, responsavel.TipoAgente);
+        //                AgenteManifestacaoModel agenteResposta = taskAgente.Result;
+        //                //salva quem respondeu e marca como respondido
+        //                _despachoBLL.ResponderDespacho(despacho.IdDespachoManifestacao);
+        //                //Task taskResponderDespacho = _despachoBLL.AdicionarDespacho(despacho.IdDespachoManifestacao, agenteResposta);
+        //                //Task.WaitAll(taskResponderDespacho);
+        //                retorno += $"\n o Despacho {despacho.IdDespachoManifestacao} foi alterado";
+        //            }
+        //        }
+        //        return retorno;
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        throw (new Exception(retorno + "\n" + e.StackTrace));
+        //    }
+        //}
 
-        public void EncontraDestinatarioHangFireTeste2()
-        {
-            int idDespacho = 39;
-            string retorno = "";
-            try
-            {
-                Task.WaitAll(_despachoBLL.ResponderDespacho(idDespacho));
-            }
-            catch (Exception e)
-            {
-                throw (new Exception(e.StackTrace));
-            }
-        }
+        //public void EncontraDestinatarioHangFireTeste2()
+        //{
+        //    int idDespacho = 39;
+        //    string retorno = "";
+        //    try
+        //    {
+        //        Task.WaitAll(_despachoBLL.ResponderDespacho(idDespacho));
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        throw (new Exception(e.StackTrace));
+        //    }
+        //}
 
         #endregion hangfire
     }
