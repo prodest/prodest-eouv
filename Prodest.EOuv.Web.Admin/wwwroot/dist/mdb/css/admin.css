@@ -65,3 +65,6 @@ body {
 .bg-appgov {
     background: linear-gradient( 135deg,#266fd9,#2359a8 40%,#2359a8);
 }
+.cursor-pointer {
+    cursor: pointer;
+}

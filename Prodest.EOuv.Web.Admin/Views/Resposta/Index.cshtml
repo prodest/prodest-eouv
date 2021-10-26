@@ -1,27 +1,61 @@
-﻿@model IEnumerable<Prodest.EOuv.UI.Apresentacao.RespostaManifestacaoViewModel>
+﻿@{
+    ViewData["Title"] = "Criar Novo Despacho";
 
-@{
-    ViewData["Title"] = "Responder Manifestação";
+}
+
+@section scripts{
+    <script defer src="~/scripts/app/shared/eOuvApi.js" asp-append-version="true"></script>
+    <script defer src="~/scripts/app/pages/resposta/FormularioResposta.js" asp-append-version="true"></script>
+    <script defer src="~/scripts/app/pages/resposta/NovaResposta.js" asp-append-version="true"></script>
 }
 
 <div class="container-fluid p-0">
     <div class="row">
         <div id="app" class="col-12">
-            <section class="mb-4">
-                <div class="card">
-                    <div class="card-header">
-                        Despachos realizados para a Manifestação: @TempData["idManifestacao"]
-                    </div>
-                    <div class="card-body">
-                        <div class="form-outline mb-3">
-                            <div class="form-floating">
-                                <textarea class="form-control" maxlength="2000" placeholder="Leave a comment here" v-model="textoDespacho" id="flTextoDespacho" style="height: 80px"></textarea>
-                                <label for="flTextoDespacho">Texto do Despacho</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <resposta-form></resposta-form>
         </div>
     </div>
 </div>
+
+@section templates{
+    <script type="text/html" id="template-resposta-form">
+
+        <div class="container-fluid p-0">
+            <div class="row">
+                <div id="app" class="col-12">
+                    <section class="mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                Despachos realizados para a Manifestação: @TempData["idManifestacao"]
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <ul class="px-0">
+                                        <li class="list-unstyled" v-for="(doc, index) in documentosEncaminhamento" :key="index">
+                                            <i class="flex-fill check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i> {{doc.documento.registro}} - {{doc.documento.nome}}.{{doc.documento.extensao}}
+                                        </li>
+                                    </ul>
+                                </div>
+                                <hr />
+                                <div class="mb-3">
+                                    <label for="flTextoDespacho">Texto do Despacho</label>
+                                    <textarea class="form-control" v-model="textoResposta" maxlength="2000" placeholder="Informe aqui o texto de resposta à manifestação." id="flTextoDespacho" style="height: 80px"></textarea>
+                                </div>
+                                
+                                <div class="row justify-content-end">
+                                    <div class="col-md-4 col-sm-6 col-lg-2">
+                                        <a href="/Despacho/AcompanharDespachos" class="btn btn-danger btn-block mb-1"><i class="fas fa-times"></i> Cancelar</a>
+                                    </div>
+                                    <div class="col-md-4 col-sm-6 col-lg-2">
+                                        <button type="button" v-on:click="Responder()" class="btn btn-primary btn-block mb-1"><i class="fas fa-paper-plane"></i> Responder</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+
+    </script>
+}

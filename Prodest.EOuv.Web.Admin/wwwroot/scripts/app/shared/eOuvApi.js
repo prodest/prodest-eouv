@@ -24,13 +24,20 @@
         return ret;
     },
 
+
+    async despachar(entry) {
+        let ret = await fetchData.fetchPostJson(`/despacho/Despachar`, entry);
+        return ret;
+    },
+
     async PapeisUsuarioEDocs() {
         let ret = await fetchData.fetchGetJson(`/edocs/BuscarPapeis`);
         return ret;
     },
 
-    async despachar(entry) {
-        let ret = await fetchData.fetchPostJson(`/despacho/Despachar`, entry);
+    async DocumentosEncaminhamentoEDocs() {
+        let ret = await fetchData.fetchGetJson(`/edocs/GetDocumentoEncaminhamento`);
         return ret;
-    }
+    },
+    
 }
