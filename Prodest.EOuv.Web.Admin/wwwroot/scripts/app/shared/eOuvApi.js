@@ -39,5 +39,15 @@
         let ret = await fetchData.fetchGetJson(`/edocs/GetDocumentoEncaminhamento`);
         return ret;
     },
+
+    async ObterResultadosRespostaPorTipologia() {
+        let ret = await fetchData.fetchGetJson(`/resposta/ObterResultadosRespostaPorTipologia`);
+        return ret;
+    },
+
+    async ObterOrgaosCompetenciaFato() {
+        let ret = await fetchData.fetchGetJson(`/resposta/ObterOrgaosCompetenciaFato`);
+        return ret;
+    },
     
 }

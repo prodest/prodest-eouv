@@ -2,16 +2,22 @@
     name: 'RespostaForm',
     template: '#template-resposta-form',
     data() {
-        return {            
+        return {
             textoResposta: '',
-            idManifestacao: null,            
+            idManifestacao: null,
             documentosSelecionados: [],
-            documentosEncaminhamento: []
+            documentosEncaminhamento: [],
+            resultadosRespostaPorTipologia: [],
+            idResultadosRespostaPorTipologia: null,
+            orgaosCompetenciaFato: [],
+            idOrgaosCompetenciaFato: null
         }
     },
 
     mounted() {
-        this.CarregarDocumentosEDocs();        
+        this.CarregarDocumentosEDocs();
+        this.ObterResultadosRespostaPorTipologia();
+        this.ObterOrgaosCompetenciaFato();
     },
 
     methods: {
@@ -20,6 +26,20 @@
             this.documentosEncaminhamento = ret;
 
             console.log(this.documentosEncaminhamento);
-        }
+        },
+
+        async ObterResultadosRespostaPorTipologia() {
+            let ret = await eOuvApi.ObterResultadosRespostaPorTipologia();
+            this.resultadosRespostaPorTipologia = ret;
+            console.log(this.resultadosRespostaPorTipologia);
+        },
+
+        async ObterOrgaosCompetenciaFato() {
+            let ret = await eOuvApi.ObterOrgaosCompetenciaFato();
+            this.orgaosCompetenciaFato = ret;
+            console.log(this.orgaosCompetenciaFato);
+        },
+
+
     }
 };
