@@ -30,6 +30,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="mb-3">
+                                    <label>Documentos gerados durante a resposta:</label>
                                     <ul class="px-0">
                                         <li class="list-unstyled" v-for="(doc, index) in documentosEncaminhamento" :key="index">
                                             <i class="flex-fill check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i> {{doc.documento.registro}} - {{doc.documento.nome}}.{{doc.documento.extensao}}
@@ -37,14 +38,16 @@
                                     </ul>
                                 </div>                                
                                 <div class="mb-3">
-                                    <select class="form-control">
+                                    <label for="slResultadoResposta">Resultado da Resposta:</label>
+                                    <select id="slResultadoResposta" class="form-control form-select-sm">
                                         <option v-for="(tipologia) in resultadosRespostaPorTipologia" :key="tipologia.idResultadoResposta" value="{{tipologia.idResultadoResposta}}">
                                             {{tipologia.descResultadoResposta}}
                                         </option>
                                     </select>
                                 </div>                                
                                 <div class="mb-3">
-                                    <select class="form-control">
+                                    <label for="slOrgao">Competência do Fato:</label>
+                                    <select id="slOrgao" class="form-control form-select-sm">
                                         <option v-for="(orgao, index) in orgaosCompetenciaFato" :key="index" value="{{orgao.siglaOrgao}}">
                                             {{orgao.siglaOrgao}} - {{orgao.nomeFantasia}}
                                         </option>
@@ -52,8 +55,8 @@
                                 </div>
                                 
                                 <div class="mb-3">
-                                    <label for="flTextoDespacho">Texto do Despacho</label>
-                                    <textarea class="form-control" v-model="textoResposta" maxlength="2000" placeholder="Informe aqui o texto de resposta à manifestação." id="flTextoDespacho" style="height: 80px"></textarea>
+                                    <label for="flTextoDespacho">Texto do Despacho:</label>
+                                    <textarea class="form-control form-control-sm" v-model="textoResposta" maxlength="2000" placeholder="Informe aqui o texto de resposta à manifestação." id="flTextoDespacho" style="height: 80px"></textarea>
                                 </div>
 
                                 <div class="row justify-content-end">
