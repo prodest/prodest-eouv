@@ -9,6 +9,11 @@
         return ret;
     },
 
+    async despachar(entry) {
+        let ret = await fetchData.fetchPostJson(`/despacho/Despachar`, entry);
+        return ret;
+    },
+
     async OrgaoseDocs() {
         let ret = await fetchData.fetchGetJson(`/edocs/BuscarOrganizacoes`);
         return ret;
@@ -24,12 +29,6 @@
         return ret;
     },
 
-
-    async despachar(entry) {
-        let ret = await fetchData.fetchPostJson(`/despacho/Despachar`, entry);
-        return ret;
-    },
-
     async PapeisUsuarioEDocs() {
         let ret = await fetchData.fetchGetJson(`/edocs/BuscarPapeis`);
         return ret;
@@ -37,6 +36,11 @@
 
     async DocumentosEncaminhamentoEDocs() {
         let ret = await fetchData.fetchGetJson(`/edocs/GetDocumentoEncaminhamento`);
+        return ret;
+    },
+
+    async RastreioEncaminhamento() {
+        let ret = await fetchData.fetchGetJson(`/edocs/BuscarRastreio`);
         return ret;
     },
 
