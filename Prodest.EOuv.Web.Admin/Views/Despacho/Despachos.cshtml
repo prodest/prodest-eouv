@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Prodest.EOuv.UI.Apresentacao.DespachoManifestacaoViewModel>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Despacho</h1>
+    <p>Tela de com a Lista de Despacho e opção de Criar Novo Despacho</p>
+</div>
+
+<p>
+    <a href="/NovoDespacho" title="Novo Despacho">Novo Despacho</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProtocoloEdocs)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataSolicitacaoDespacho)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PrazoResposta)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdAgenteDestinatario)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Situacao)
+            </th>
+        </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProtocoloEdocs)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataSolicitacaoDespacho)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PrazoResposta)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdAgenteDestinatario)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Situacao)
+            </td>
+            <td>
+                <a asp-action="Detalhes" asp-route-id="@item.IdDespachoManifestacao">Detalhes</a> |
+                <a asp-action="EncerrarDespacho" asp-route-id="@item.IdDespachoManifestacao">Encerrar</a>
+            </td>
+        </tr>
+    }
+</tbody>
+</table>

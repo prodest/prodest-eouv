@@ -17,5 +17,6 @@ namespace Prodest.EOuv.Dominio.Modelo
         Task<DespachoManifestacaoModel> ObterDespacho(int IdDespachoManifestacao);
         Task<DespachoManifestacaoModel> ObterDespachoEDestinatario(int idDespachoManifestacao);
         Task AtualizarDespacho(DespachoManifestacaoModel despachoManifestacao);
+        Task EncerrarDespacho(int idDespacho);
     }
 }

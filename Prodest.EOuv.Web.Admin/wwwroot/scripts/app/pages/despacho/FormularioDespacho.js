@@ -43,7 +43,7 @@ const DespachoForm = {
     },
 
     methods: {
-        CapturarDadosManifestacao(dadosBasicosManifestacao) {            
+        CapturarDadosManifestacao(dadosBasicosManifestacao) {
             this.idManifestacao = dadosBasicosManifestacao.idManifestacao;
         },
         GerarDataPrazoResposta() {
@@ -71,11 +71,12 @@ const DespachoForm = {
                 PrazoResposta: this.prazoResposta,
                 TextoDespacho: this.textoDespacho,
                 FiltroDadosManifestacaoSelecionados: JSON.parse(JSON.stringify(this.dadosManifestacaoSelecionados)),
-                GuidDestinatario: this.destinatarioSelecionado,
+                GuidPapelDestinatario: this.destinatarioSelecionado,
                 GuidPapelResponsavel: this.papelSelecionado
             }
             console.log(entry);
             await eOuvApi.despachar(entry);
+            window.location.href = "AcompanharDespachos/" + this.idManifestacao;
         },
         ToggleDadosManifestacaoSelecionados(e) {
             console.log(e)

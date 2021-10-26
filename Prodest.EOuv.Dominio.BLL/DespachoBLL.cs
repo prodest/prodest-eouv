@@ -48,8 +48,6 @@ namespace Prodest.EOuv.Dominio.BLL
         {
             return await _despachoRepository.montaAgente(idAgente, tipoAgente);
         }
-        
-
 
         public async Task AdicionarDespacho(DespachoManifestacaoModel despacho)
         {
@@ -92,8 +90,8 @@ namespace Prodest.EOuv.Dominio.BLL
         }
 
         private async Task<string> MontarHtmlDetalhesManifestacao(ManifestacaoModel manifestacao)
-        {            
-            string html = await _htmlApiBLL.GerarHtml(manifestacao);            
+        {
+            string html = await _htmlApiBLL.GerarHtml(manifestacao);
             JObject json = JObject.FromObject(manifestacao);//Geração de objeto json de teste a partir da manifestacao
             return html;
         }
@@ -118,14 +116,14 @@ namespace Prodest.EOuv.Dominio.BLL
             var despachoManifestacao = await _despachoRepository.ObterDespacho(idDespacho);
             despachoManifestacao.Situacao = nameof(Enums.SituacaoDespacho.Respondido);
             //despachoManifestacao.AgenteResposta = agenteResposta;
-            //salva ator resposta            
+            //salva ator resposta
             despachoManifestacao.IdAgenteResposta = idAtorResposta;
             await _despachoRepository.AtualizarDespacho(despachoManifestacao);
         }
 
         public async Task ResponderDespacho(int idDespacho)
         {
-            try { 
+            try {
                 //busca Despacho
                 DespachoManifestacaoModel despacho = await ObterDespachoEDestinatario(idDespacho);
 
@@ -157,8 +155,12 @@ namespace Prodest.EOuv.Dominio.BLL
         }
         public async Task AdicionarAgenteResposta(AgenteManifestacaoModel agenteResposta)
         {
-            await _despachoRepository.AdicionarAgenteResposta(agenteResposta);            
+            await _despachoRepository.AdicionarAgenteResposta(agenteResposta);
         }
-        
+
+        public async Task EncerrarDespacho(int idDespacho)
+        {
+            await _despachoRepository.EncerrarDespacho(idDespacho);
+        }
     }
 }

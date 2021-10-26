@@ -17,17 +17,25 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             _manifestacaoWorkService = manifestacaoWorkService;
         }
 
-        [Route("Despacho")]
-        [Route("Despacho/{idManifestacao}")]
-        public async Task<IActionResult> Index(int idManifestacao)
+        public async Task<IActionResult> Index()
         {
-            TempData["idManifestacao"] = idManifestacao;
+            return View();
+        }
+
+        //[Route("{idManifestacao?}")]
+        public async Task<IActionResult> AcompanharDespachos(int idManifestacao)
+        {
+            //TempData["idManifestacao"] = idManifestacao;
             var despachoViewModel = await _despachoWorkService.ObterDespachosPorManifestacao(idManifestacao != 0 ? idManifestacao : 250);
+            //return Json(despachoViewModel);
             return View(despachoViewModel);
         }
 
-        [Route("Despacho/ObterDadosManifestacao")]
-        [Route("Despacho/ObterDadosManifestacao/{idManifestacao}")]
+        public async Task<IActionResult> NovoDespacho()
+        {
+            return View();
+        }
+
         public async Task<IActionResult> ObterDadosManifestacao(int idManifestacao)
         {
             var dadosManifestacao = await _manifestacaoWorkService.ObterDadosCompletosManifestacao(idManifestacao != 0 ? idManifestacao : 583);
@@ -35,13 +43,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             return Json(dadosManifestacao);
         }
 
-        [Route("Despacho/Add")]
-        public IActionResult Add()
-        {
-            return View();
-        }
-
-        [Route("Despacho/Despachar")]
+        //[Route("Despacho/Despachar")]
         public async Task<IActionResult> Despachar([FromBody] DespachoManifestacaoEntry despachoEntry)
         {
             //if (!ModelState.IsValid)
@@ -56,11 +58,17 @@ namespace Prodest.EOuv.Web.Admin.Controllers
 
             await _despachoWorkService.Despachar(despachoEntry);
 
-            return RedirectToAction(nameof(Index), new { IdManifestacao = despachoEntry.IdManifestacao });
+            return Json(despachoEntry.IdManifestacao);
         }
 
         public IActionResult Detalhes()
         {
+            return View();
+        }
+
+        public IActionResult EncerrarDespacho(int idDespacho)
+        {
+            _despachoWorkService.EncerrarDespacho(idDespacho);
             return View();
         }
     }
