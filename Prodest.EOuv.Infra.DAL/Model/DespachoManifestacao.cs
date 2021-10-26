@@ -19,12 +19,13 @@ namespace Prodest.EOuv.Infra.DAL
         public int? IdAgenteDestinatario { get; set; }
         public int? IdAgenteResposta { get; set; }
         public DateTime? DataRespostaDespacho { get; set; }
-        public string Situacao { get; set; }
+        public int? IdSituacaoDespacho { get; set; }
 
         public virtual Manifestacao Manifestacao { get; set; }
         public virtual Orgao Orgao { get; set; }
         public virtual Usuario UsuarioSolicitacaoDespacho { get; set; }
         public virtual AgenteManifestacao AgenteDestinatario { get; set; }
         public virtual AgenteManifestacao AgenteResposta { get; set; }
+        public virtual SituacaoDespacho SituacaoDespacho { get; set; }
     }
 }

@@ -15,13 +15,11 @@ namespace Prodest.EOuv.Infra.DAL
     {
         private readonly EouvContext _eouvContext;
         private readonly IMapper _mapper;
-        private readonly IAcessoCidadaoBLL _AcessoCidadaoBLL;
 
-        public DespachoRepository(EouvContext context, IMapper mapper, IAcessoCidadaoBLL acessoCidadaoBLL)
+        public DespachoRepository(EouvContext context, IMapper mapper)
         {
             _eouvContext = context;
             _mapper = mapper;
-            _AcessoCidadaoBLL = acessoCidadaoBLL;
         }
 
         public async Task<List<DespachoManifestacaoModel>> ObterDespachoPorManifestacao(int idManifestacao)
@@ -47,7 +45,7 @@ namespace Prodest.EOuv.Infra.DAL
 
         public async Task<List<int>> ObterDespachosEmAberto()
         {
-            var idManifestacao = await _eouvContext.DespachoManifestacao.Where(d => d.Situacao == nameof(Enums.SituacaoDespacho.Aberto))
+            var idManifestacao = await _eouvContext.DespachoManifestacao.Where(d => d.IdSituacaoDespacho == (int)Enums.SituacaoDespacho.Aberto)
                                                                               .Select(d => d.IdDespachoManifestacao)
                                                                               .ToListAsync();
             var retorno = _mapper.Map<List<int>>(idManifestacao);
@@ -56,33 +54,14 @@ namespace Prodest.EOuv.Infra.DAL
 
         public async Task<int> AdicionarAgente(AgenteManifestacaoModel agente)
         {
-            try
-            {
-                var agenteManifestacao = _mapper.Map<AgenteManifestacao>(agente);
-                _eouvContext.AgenteManifestacao.Add(agenteManifestacao);
-                await _eouvContext.SaveChangesAsync();
-                return agenteManifestacao.IdAgenteManifestacao;
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            var agenteManifestacao = _mapper.Map<AgenteManifestacao>(agente);
+            _eouvContext.AgenteManifestacao.Add(agenteManifestacao);
+            await _eouvContext.SaveChangesAsync();
+            return agenteManifestacao.IdAgenteManifestacao;
         }
 
         public async Task AtualizarDespacho(DespachoManifestacaoModel despachoManifestacao)
         {
-            _eouvContext.Update(_mapper.Map<DespachoManifestacao>(despachoManifestacao));
-            await _eouvContext.SaveChangesAsync();
-        }
-
-        public async Task ResponderDespacho(int idDespacho, AgenteManifestacaoModel atorResposta)
-        {
-            var despachoManifestacao = await ObterDespacho(idDespacho);
-
-            despachoManifestacao.Situacao = nameof(Enums.SituacaoDespacho.Respondido);
-            despachoManifestacao.AgenteResposta = atorResposta;
-            //salva ator resposta
-            _eouvContext.Add(_mapper.Map<AgenteManifestacao>(atorResposta));
             _eouvContext.Update(_mapper.Map<DespachoManifestacao>(despachoManifestacao));
             await _eouvContext.SaveChangesAsync();
         }
@@ -100,56 +79,6 @@ namespace Prodest.EOuv.Infra.DAL
         {
             _eouvContext.Add(_mapper.Map<DespachoManifestacao>(despachoManifestacao));
             await _eouvContext.SaveChangesAsync();
-        }
-
-        public async Task AdicionarAgenteResposta(AgenteManifestacaoModel agenteResposta)
-        {
-            _eouvContext.Add(_mapper.Map<AgenteManifestacao>(agenteResposta));
-            await _eouvContext.SaveChangesAsync();
-        }
-
-        public async Task EncerrarDespacho(int idDespacho)
-        {
-            DespachoManifestacao despachoManifestacao = await _eouvContext.DespachoManifestacao.Where(d => d.IdDespachoManifestacao == idDespacho).AsNoTracking().FirstOrDefaultAsync();
-            _eouvContext.DespachoManifestacao.Remove(despachoManifestacao);
-
-            await _eouvContext.SaveChangesAsync();
-        }
-
-        public async Task<AgenteManifestacaoModel> montaAgente(string idAgente, int tipoAgente)
-        {
-            AgentePublicoPapelModel papel = await _AcessoCidadaoBLL.GetPapel(new Guid(idAgente));
-            SetorModel setor = null;
-            if (papel != null && !String.IsNullOrEmpty(papel.LotacaoGuid))
-            {
-                setor = await BuscarSetor(papel.LotacaoGuid);
-            }
-            AgenteManifestacaoModel AgenteResposta = new AgenteManifestacaoModel
-            {
-                GuidPapel = new Guid(idAgente),
-                NomePapel = papel.Nome,
-                GuidUsuario = papel.AgentePublicoSub,
-                NomeUsuario = papel.AgentePublicoNome,
-                GuidSetor = new Guid(papel.LotacaoGuid),
-                Tipo = (byte)tipoAgente
-            };
-            if (setor is not null)
-            {
-                AgenteResposta.NomeSetor = setor.NomeSetor;
-                AgenteResposta.SiglaSetor = setor.SiglaSetor;
-                AgenteResposta.GuidOrgao = setor.Orgao.GuidOrgao;
-                AgenteResposta.NomeOrgao = setor.Orgao.RazaoSocial;
-                AgenteResposta.SiglaOrgao = setor.Orgao.SiglaOrgao;
-                /*
-                AgenteResposta.GuidPatriarca = setor.Orgao.Patriaca.Guid;
-                AgenteResposta.NomePatriarca = setor.Orgao.Patriaca.RazaoSocial;
-                AgenteResposta.SiglaPatriarca = setor.Orgao.Patriaca.Sigla;
-                */
-                AgenteResposta.GuidPatriarca = new Guid("fe88eb2a-a1f3-4cb1-a684-87317baf5a57");
-                AgenteResposta.NomePatriarca = "ESTADO DO ESPIRITO SANTO";
-                AgenteResposta.SiglaPatriarca = "GOVES";
-            }
-            return AgenteResposta;
         }
     }
 }

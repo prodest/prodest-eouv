@@ -56,6 +56,7 @@ namespace Prodest.EOuv.Infra.DAL
         public virtual DbSet<ResultadoResposta> ResultadoResposta { get; set; }
         public virtual DbSet<ResultadoRespostaTipologia> ResultadoRespostaTipologia { get; set; }
         public virtual DbSet<Setor> Setor { get; set; }
+        public virtual DbSet<SituacaoDespacho> SituacaoDespacho { get; set; }
         public virtual DbSet<SituacaoInterpelacao> SituacaoInterpelacao { get; set; }
         public virtual DbSet<SituacaoManifestacao> SituacaoManifestacao { get; set; }
         public virtual DbSet<TipoAnexoManifestacao> TipoAnexoManifestacao { get; set; }
@@ -443,23 +444,24 @@ namespace Prodest.EOuv.Infra.DAL
                     .IsUnicode(false)
                     .HasColumnName("ProtocoloEDocs");
 
-                entity.Property(e => e.Situacao)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
                 entity.Property(e => e.TextoSolicitacaoDespacho)
                     .IsRequired()
                     .IsUnicode(false);
 
                 entity.HasOne(d => d.AgenteDestinatario)
                     .WithMany(p => p.DespachoManifestacaoAgenteDestinatario)
-                    .HasForeignKey(d => d.IdAgenteDestinatario)                    
+                    .HasForeignKey(d => d.IdAgenteDestinatario)
                     .HasConstraintName("FK_Ouvidoria.DespachoManifestacaoAgente_IdAgenteDestinatario");
 
                 entity.HasOne(d => d.AgenteResposta)
                     .WithMany(p => p.DespachoManifestacaoAgenteResposta)
-                    .HasForeignKey(d => d.IdAgenteResposta)                    
+                    .HasForeignKey(d => d.IdAgenteResposta)
                     .HasConstraintName("FK_Ouvidoria.DespachoManifestacaoAgente_IdAgenteResposta");
+
+                entity.HasOne(d => d.SituacaoDespacho)
+                    .WithMany(p => p.DespachoManifestacao)
+                    .HasForeignKey(d => d.IdSituacaoDespacho)
+                    .HasConstraintName("FK_Ouvidoria.DespachoManifestacaoSituacaoDespacho_IdSituacaoDespacho");
 
                 entity.HasOne(d => d.Manifestacao)
                     .WithMany(p => p.DespachoManifestacao)
@@ -1297,6 +1299,19 @@ namespace Prodest.EOuv.Infra.DAL
                     .WithMany(p => p.Setor)
                     .HasForeignKey(d => d.IdOrgao)
                     .HasConstraintName("FK_Setor_Orgao");
+            });
+
+            modelBuilder.Entity<SituacaoDespacho>(entity =>
+            {
+                entity.HasKey(e => e.IdSituacaoDespacho)
+                    .HasName("PK__Situacao__453D24EC2CDF0AE8");
+
+                entity.ToTable("SituacaoDespacho", "Ouvidoria");
+
+                entity.Property(e => e.DescSituacaoDespacho)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<SituacaoInterpelacao>(entity =>

@@ -158,11 +158,12 @@ namespace Prodest.EOuv.UI.Apresentacao
         public int IdAgenteDestinatario { get; set; }
         public int IdAgenteResposta { get; set; }
         public DateTime? DataRespostaDespacho { get; set; }
-        public string Situacao { get; set; }
+        public string IdSituacaoDespacho { get; set; }
         public virtual OrgaoViewModel Orgao { get; set; }
         public virtual UsuarioViewModel UsuarioSolicitacaoDespacho { get; set; }
         public virtual AgenteManifestacaoViewModel AgenteDestinatario { get; set; }
         public virtual AgenteManifestacaoViewModel AgenteResposta { get; set; }
+        public virtual SituacaoDespachoViewModel SituacaoDespacho { get; set; }
     }
 
     public partial class NotificacaoManifestacaoViewModel
@@ -312,5 +313,11 @@ namespace Prodest.EOuv.UI.Apresentacao
         public Guid? GuidPatriarca { get; set; }
         public string NomePatriarca { get; set; }
         public string SiglaPatriarca { get; set; }
+    }
+
+    public partial class SituacaoDespachoViewModel
+    {
+        public int IdSituacaoDespacho { get; set; }
+        public string DescSituacaoDespacho { get; set; }
     }
 }
