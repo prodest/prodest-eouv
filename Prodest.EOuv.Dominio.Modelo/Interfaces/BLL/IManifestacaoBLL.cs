@@ -8,6 +8,8 @@ namespace Prodest.EOuv.Dominio.Modelo.Interfaces.BLL
 {
     public interface IManifestacaoBLL
     {
+        Task<ManifestacaoModel> ObterManifestacaoPorId(int idManifestacao);
+
         Task<ManifestacaoModel> ObterDadosCompletosManifestacao(int idManifestacao);
 
         Task<ManifestacaoModel> ObterDadosFiltradosManifestacao(int idManifestacao, FiltroDadosManifestacaoModel filtroDadosManifestacao);
@@ -49,5 +51,9 @@ namespace Prodest.EOuv.Dominio.Modelo.Interfaces.BLL
         Task<List<RecursoNegativaModel>> ObterDadosRecursoNegativa(int idManifestacao);
 
         Task<List<HistoricoManifestacaoModel>> ObterDadosHistorico(int idManifestacao);
+
+        Task<int> AdicionarManifestacao(ManifestacaoModel manifestacao);
+
+        Task<int> AtualizarManifestacao(ManifestacaoModel manifestacao);
     }
 }

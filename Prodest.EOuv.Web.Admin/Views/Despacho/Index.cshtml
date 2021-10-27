@@ -1,24 +1,12 @@
 ﻿@model IEnumerable<Prodest.EOuv.UI.Apresentacao.DespachoManifestacaoViewModel>
 
 @{
-    ViewData["Title"] = "Despachos Realizados";
+    ViewData["Title"] = "Acompanhar Despachos";
 }
 
 <div class="container-fluid p-0">
     <div class="row">
         <div id="app" class="col-12">
-
-            <section class="mb-4">
-                <div class="card">
-                    <div class="card-header">
-                        Despachos realizados para a Manifestação: @TempData["idManifestacao"]
-                    </div>
-                    <div class="card-body">                        
-                        <a class="btn btn-primary float-end" href="/Despacho/Add/@Model"><i class="fas fa-plus"></i> Novo Despacho</a>                                                
-                    </div>
-                </div>
-            </section>            
         </div>
     </div>
 </div>
-

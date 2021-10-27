@@ -22,6 +22,13 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             return RedirectToAction(nameof(AcompanharDespachos), new { id = 583 });
         }
 
+        public async Task<IActionResult> ObterDadosManifestacao(int idManifestacao)
+        {
+            var dadosManifestacao = await _manifestacaoWorkService.ObterDadosCompletosManifestacao(idManifestacao != 0 ? idManifestacao : 583);
+
+            return Json(dadosManifestacao);
+        }
+
         public async Task<IActionResult> AcompanharDespachos(int id)
         {
             var despachoViewModel = await _despachoWorkService.ObterDespachosPorManifestacao(id);
@@ -31,13 +38,6 @@ namespace Prodest.EOuv.Web.Admin.Controllers
         public async Task<IActionResult> NovoDespacho()
         {
             return View();
-        }
-
-        public async Task<IActionResult> ObterDadosManifestacao(int idManifestacao)
-        {
-            var dadosManifestacao = await _manifestacaoWorkService.ObterDadosCompletosManifestacao(idManifestacao != 0 ? idManifestacao : 583);
-
-            return Json(dadosManifestacao);
         }
 
         public async Task<IActionResult> Despachar([FromBody] DespachoManifestacaoEntry despachoEntry)

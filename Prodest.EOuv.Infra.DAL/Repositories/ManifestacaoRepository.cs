@@ -19,6 +19,13 @@ namespace Prodest.EOuv.Infra.DAL
             _mapper = mapper;
         }
 
+        public async Task<ManifestacaoModel> ObterManifestacaoPorId(int idManifestacao)
+        {
+            Manifestacao manifestacao = await _eouvContext.Manifestacao.Where(m => m.IdManifestacao == idManifestacao).AsNoTracking().FirstOrDefaultAsync();
+            var retorno = _mapper.Map<ManifestacaoModel>(manifestacao);
+            return retorno;
+        }
+
         public async Task<ManifestacaoModel> ObterDadosBasicosManifestacao(int idManifestacao)
         {
             Manifestacao manifestacao = await _eouvContext.Manifestacao
@@ -34,9 +41,8 @@ namespace Prodest.EOuv.Infra.DAL
                                                             .Include(m => m.TipoManifestante)
                                                             .Where(m => m.IdManifestacao == idManifestacao).AsNoTracking().FirstOrDefaultAsync();
 
-            var resposta = _mapper.Map<ManifestacaoModel>(manifestacao);
-
-            return resposta;
+            var retorno = _mapper.Map<ManifestacaoModel>(manifestacao);
+            return retorno;
         }
 
         public async Task<PessoaModel> ObterDadosPessoa(int idPessoa)
@@ -247,6 +253,22 @@ namespace Prodest.EOuv.Infra.DAL
                                                                             .Where(m => m.IdManifestacao == idManifestacao).AsNoTracking().ToListAsync();
 
             return _mapper.Map<List<HistoricoManifestacaoModel>>(listaHistoricoManifestacao);
+        }
+
+        public async Task<int> AdicionarManifestacao(ManifestacaoModel manifestacaoModel)
+        {
+            var manifestacao = _mapper.Map<Manifestacao>(manifestacaoModel);
+            _eouvContext.Manifestacao.Add(manifestacao);
+            await _eouvContext.SaveChangesAsync();
+            return manifestacao.IdManifestacao;
+        }
+
+        public async Task<int> AtualizarManifestacao(ManifestacaoModel manifestacaoModel)
+        {
+            var manifestacao = _mapper.Map<Manifestacao>(manifestacaoModel);
+            _eouvContext.Manifestacao.Update(manifestacao);
+            await _eouvContext.SaveChangesAsync();
+            return manifestacao.IdManifestacao;
         }
     }
 }

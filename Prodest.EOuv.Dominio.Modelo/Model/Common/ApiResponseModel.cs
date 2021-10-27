@@ -1,16 +1,16 @@
-﻿namespace Prodest.EOuv.Dominio.Modelo
+﻿namespace Prodest.EOuv.Dominio.Modelo.Common
 {
-    public class ApiResponse<T>
+    public class ApiResponseModel<T>
     {
         public int StatusCode { get; set; }
         public string Message { get; set; }
         public T Data { get; set; }
 
-        public ApiResponse()
+        public ApiResponseModel()
         {
         }
 
-        public ApiResponse(ApiResponse<object> errorResponse)
+        public ApiResponseModel(ApiResponseModel<object> errorResponse)
         {
             StatusCode = errorResponse.StatusCode;
             Message = errorResponse.Message;

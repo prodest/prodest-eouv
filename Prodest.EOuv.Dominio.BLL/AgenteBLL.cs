@@ -21,9 +21,9 @@ namespace Prodest.EOuv.Dominio.BLL
             _acessoCidadaoService = acessoCidadaoService;
         }
 
-        public Task<int> AdicionarAgente(AgenteManifestacaoModel agente)
+        public async Task<int> AdicionarAgente(AgenteManifestacaoModel agente)
         {
-            return _agenteRepository.AdicionarAgente(agente);
+            return await _agenteRepository.AdicionarAgente(agente);
         }
 
         public async Task<AgenteManifestacaoModel> MontaAgente(string idAgente, int tipoAgente)
