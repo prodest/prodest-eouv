@@ -35,14 +35,14 @@
                     </div>
                     <div class="mb-3">
                         <label for="slResultadoResposta">Resultado da Resposta:</label>
-                        <select id="slResultadoResposta" class="form-control form-control-sm">
+                        <select v-model="idResultadosRespostaPorTipologia" id="slResultadoResposta" class="form-control form-control-sm">
                             <optgroup label="Resultados Positivos">
-                                <option v-for="(tipologia) in resultadosRespostaPositiva" :key="tipologia.idResultadoResposta" value="{{tipologia.idResultadoResposta}}">
+                                <option v-for="(tipologia) in resultadosRespostaPositiva" :key="tipologia.idResultadoResposta" v-bind:value="tipologia.idResultadoResposta">
                                     {{tipologia.descResultadoResposta}}
                                 </option>
                             </optgroup>
                             <optgroup label="Resultados Negativos">
-                                <option v-for="(tipologia) in resultadosRespostaNegativa" :key="tipologia.idResultadoResposta" value="{{tipologia.idResultadoResposta}}">
+                                <option v-for="(tipologia) in resultadosRespostaNegativa" :key="tipologia.idResultadoResposta" v-bind:value="tipologia.idResultadoResposta">
                                     {{tipologia.descResultadoResposta}}
                                 </option>
                             </optgroup>
@@ -50,8 +50,8 @@
                     </div>
                     <div class="mb-3">
                         <label for="slOrgao">Competência do Fato:</label>
-                        <select id="slOrgao" class="form-control form-select-sm">
-                            <option v-for="(orgao, index) in orgaosCompetenciaFato" :key="index" value="{{orgao.siglaOrgao}}">
+                        <select v-model="idOrgaosCompetenciaFato" id="slOrgao" class="form-control form-select-sm">
+                            <option v-for="(orgao, index) in orgaosCompetenciaFato" :key="index" v-bind:value="orgao.siglaOrgao">
                                 {{orgao.siglaOrgao}} - {{orgao.nomeFantasia}}
                             </option>
                         </select>

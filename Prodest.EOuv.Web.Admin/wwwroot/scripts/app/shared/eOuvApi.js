@@ -53,5 +53,10 @@
         let ret = await fetchData.fetchGetJson(`/resposta/ObterOrgaosCompetenciaFato`);
         return ret;
     },
+
+    async responder(entry) {
+        let ret = await fetchData.fetchPostJson(`/resposta/ResponderManifestacao`, entry);
+        return ret;
+    },
     
 }

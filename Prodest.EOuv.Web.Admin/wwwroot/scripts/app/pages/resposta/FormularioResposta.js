@@ -49,7 +49,16 @@
             this.orgaosCompetenciaFato = ret;
             console.log(this.orgaosCompetenciaFato);
         },
-
+        async Responder() {
+            let entry = {
+                idResultadosRespostaPorTipologia: this.idResultadosRespostaPorTipologia,                
+                idOrgaosCompetenciaFato: this.idOrgaosCompetenciaFato,
+                textoResposta: this.textoResposta
+            }
+            console.log(entry);
+            //await eOuvApi.responder(entry);
+            //window.location.href = "/Despacho/AcompanharDespachos/" + this.idManifestacao;
+        },
 
     }
 };
