@@ -16,7 +16,7 @@ namespace Prodest.EOuv.Dominio.Modelo.Interfaces.BLL
 
         Task<List<int>> ObterDespachosEmAberto();
 
-        Task<DespachoManifestacaoModel> ObterDespacho(int IdDespachoManifestacao);
+        Task<DespachoManifestacaoModel> ObterDespachoPorId(int IdDespachoManifestacao);
 
         Task<DespachoManifestacaoModel> ObterDespachoEDestinatario(int IdDespachoManifestacao);
 

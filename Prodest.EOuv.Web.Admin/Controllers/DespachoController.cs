@@ -55,7 +55,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
         public IActionResult EncerrarDespachoManualmente(int idDespacho)
         {
             _despachoWorkService.EncerrarDespachoManualmente(idDespacho);
-            return View();
+            return View(nameof(AcompanharDespachos));
         }
     }
 }
