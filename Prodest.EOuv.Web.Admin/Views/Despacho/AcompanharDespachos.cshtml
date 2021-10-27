@@ -4,6 +4,13 @@
     ViewData["Title"] = "Despachos Realizados";
 }
 
+@section scripts{
+    <script defer src="~/scripts/app/shared/eOuvApi.js" asp-append-version="true"></script>
+    <script defer src="~/scripts/app/pages/AcompanhamentoDespacho/RastreioEncaminhamento.js" asp-append-version="true"></script>
+    <script defer src="~/scripts/app/pages/AcompanhamentoDespacho/AcompanhamentoDespacho.js" asp-append-version="true"></script>
+
+}
+
 <div class="container-fluid p-0">
     <div class="row">
         <div id="app" class="col-12">
@@ -68,6 +75,44 @@
                     </div>
                 </div>
             </section>
+
+            <rastreio-encaminhamento></rastreio-encaminhamento>            
         </div>
     </div>
 </div>
+
+@section templates{
+    <script type="text/html" id="template-rastreio-encaminhamento">
+        <section class="mb-4" v-if="rastreioEncaminhamento != null">
+            <div class="card">
+                <div class="card-header">
+                    Rastreio de Encaminhamento E-DOCS:
+                </div>
+                <div class="card-body">
+                    <h6>{{rastreioEncaminhamento.assunto}}</h6>
+                    <h6>{{rastreioEncaminhamento.responsavel.nome}}</h6>
+                    <h6>{{rastreioEncaminhamento.dataHora}}</h6>
+                    <div>
+                        <label>Destinos:</label>                        
+                    </div>
+
+                    <rastreio :encaminhamentos="rastreioEncaminhamento.encaminhamentosPosteriores"></rastreio>
+
+                </div>
+            </div>
+        </section>
+    </script>
+
+    <script type="text/html" id="template-rastreio">
+        <div>
+
+            <h6>{{encaminhamentos.assunto}}</h6>
+            <h6>{{encaminhamentos.responsavel.nome}}</h6>
+            <h6>{{encaminhamentos.dataHora}}</h6>
+            <div>
+                <label>Destinos:</label>             
+            </div>
+            <rastreio v-for="encaminhamento in encaminhamentos.encaminhamentosPosteriores" :encaminhamentos="encaminhamento.encaminhamentosPosteriores"></rastreio>
+        </div>
+    </script>
+}
