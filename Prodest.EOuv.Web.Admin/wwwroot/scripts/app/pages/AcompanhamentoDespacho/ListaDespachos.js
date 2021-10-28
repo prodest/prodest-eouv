@@ -1,7 +1,6 @@
 ﻿const ListaDespachos = {
     name: 'ListaDespachos',
-    template: '#template-lista-despachos',
-    props: ['manifestacao'],
+    template: '#template-lista-despachos',    
     data() {
         return {
             idManifestacao: null,
@@ -19,7 +18,7 @@
 
     methods: {
         async ObterParametrosQueryString() {
-            this.idManifestacao = utils.obterRequestParameter('id')
+            this.idManifestacao = utils.obterRequestParameter('id');            
         },
         async MontarURLRedirecionamento() {
             this.urlNovoDespacho = "Despacho/NovoDespacho?id=" + this.idManifestacao;
