@@ -1,10 +1,11 @@
 ﻿const RespostaForm = {
     name: 'RespostaForm',
     template: '#template-resposta-form',
+    props: ['manifestacao'],
     data() {
         return {
             textoResposta: '',
-            idManifestacao: null,
+            idManifestacao: 0,
             documentosSelecionados: [],
             documentosEncaminhamento: [],
             resultadosRespostaPorTipologia: [],
@@ -52,25 +53,15 @@
 
         async Responder() {
             let entry = {
-                IdManifestacao: this.idManifestacao,
+                IdManifestacao: this.manifestacao,
                 TextoResposta: this.textoResposta,
-                IdResultadoResposta: this.textoResposta,
-                IdOrgaoCompetenciaFato: this.textoResposta,
+                IdResultadoResposta: this.idResultadosRespostaPorTipologia,
+                IdOrgaoCompetenciaFato: this.idOrgaosCompetenciaFato,
                 Anexos: this.textoResposta
             }
             console.log(entry);
             await eOuvApi.Responder(entry);
-        }
-        async Responder() {
-            let entry = {
-                idResultadosRespostaPorTipologia: this.idResultadosRespostaPorTipologia,                
-                idOrgaosCompetenciaFato: this.idOrgaosCompetenciaFato,
-                textoResposta: this.textoResposta
-            }
-            console.log(entry);
-            //await eOuvApi.responder(entry);
-            //window.location.href = "/Despacho/AcompanharDespachos/" + this.idManifestacao;
-        },
+        }        
 
     }
 };

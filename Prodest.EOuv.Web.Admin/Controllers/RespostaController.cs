@@ -37,6 +37,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
 
         public async Task<IActionResult> ResponderManifestacao(int id)
         {
+            TempData["idManifestacao"] = id;
             return View();
         }
 
