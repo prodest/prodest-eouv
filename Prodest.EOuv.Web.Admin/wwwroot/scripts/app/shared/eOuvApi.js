@@ -4,13 +4,13 @@
         return ret;
     },
 
-    async ObterAcompanharDespachos() {
-        let ret = await fetchData.fetchGetJson(`/despacho/AcompanharDespachos/583`);
+    async ObterDespachosPorManifestacao(id) {
+        let ret = await fetchData.fetchGetJson(`/despacho/ObterDespachosPorManifestacao/` + id );
         return ret;
-    },    
+    },
 
-    async obterDadosManifestacao() {
-        let ret = await fetchData.fetchGetJson(`/despacho/ObterDadosManifestacao`);
+    async obterDadosManifestacao(id) {
+        let ret = await fetchData.fetchGetJson(`/despacho/ObterDadosManifestacao/` + id);
         return ret;
     },
 
@@ -63,5 +63,4 @@
         let ret = await fetchData.fetchPostJson(`/resposta/Responder`, entry);
         return ret;
     },
-    
 }

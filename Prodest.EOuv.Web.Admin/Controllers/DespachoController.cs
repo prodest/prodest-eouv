@@ -19,18 +19,17 @@ namespace Prodest.EOuv.Web.Admin.Controllers
 
         public IActionResult Index()
         {
-            return View("AcompanharDespachos");
-            //return RedirectToAction(nameof(AcompanharDespachos), new { id = 583 });
+            return View();
         }
 
-        public async Task<IActionResult> ObterDadosManifestacao(int idManifestacao)
+        public async Task<IActionResult> ObterDadosManifestacao(int id)
         {
-            var dadosManifestacao = await _manifestacaoWorkService.ObterDadosCompletosManifestacao(idManifestacao != 0 ? idManifestacao : 583);
+            var dadosManifestacao = await _manifestacaoWorkService.ObterDadosCompletosManifestacao(id);
 
             return Json(dadosManifestacao);
         }
 
-        public async Task<IActionResult> AcompanharDespachos(int id)
+        public async Task<IActionResult> ObterDespachosPorManifestacao(int id)
         {
             var despachoViewModel = await _despachoWorkService.ObterDespachosPorManifestacao(id);
             return Json(despachoViewModel);
@@ -56,7 +55,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
         public IActionResult EncerrarDespachoManualmente(int idDespacho)
         {
             _despachoWorkService.EncerrarDespachoManualmente(idDespacho);
-            return View(nameof(AcompanharDespachos));
+            return View(nameof(Index));
         }
     }
 }

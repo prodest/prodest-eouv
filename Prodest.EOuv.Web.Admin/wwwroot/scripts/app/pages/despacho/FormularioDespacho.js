@@ -33,7 +33,9 @@ const DespachoForm = {
                 DadosInterpelacao: false,
                 DadosRecursoNegativa: false,
                 DadosHistorico: false
-            }
+            },
+            urlDespachar: null,
+            urlCancelar: null
         }
     },
 
@@ -43,8 +45,13 @@ const DespachoForm = {
     },
 
     methods: {
+        async MontarURLRedirecionamento() {
+            this.urlDespachar = "../Despacho?id=" + this.idManifestacao;
+            this.urlCancelar = "../Despacho?id=" + this.idManifestacao;
+        },
         CapturarDadosManifestacao(dadosBasicosManifestacao) {
             this.idManifestacao = dadosBasicosManifestacao.idManifestacao;
+            this.MontarURLRedirecionamento();
         },
         GerarDataPrazoResposta() {
             let data = new Date();
@@ -76,10 +83,7 @@ const DespachoForm = {
             }
             console.log(entry);
             await eOuvApi.despachar(entry);
-            window.location.href = "/Despacho/AcompanharDespachos/" + this.idManifestacao;
-        },
-        async Cancelar() {
-            window.location.href = "/Despacho/AcompanharDespachos/" + this.idManifestacao;
+            /*            window.location.href = "/Despacho/AcompanharDespachos/" + this.idManifestacao;*/
         },
         ToggleDadosManifestacaoSelecionados(e) {
             console.log(e)

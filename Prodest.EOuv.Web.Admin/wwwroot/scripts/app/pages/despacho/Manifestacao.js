@@ -6,6 +6,7 @@
     data() {
         return {
             titulo: 'Manifestação',
+            idManifestacao: '',
             dadosBasicos: {
                 idManifestacao: null,
                 numProtocolo: '',
@@ -66,12 +67,17 @@
     },
 
     async mounted() {
+        await this.ObterParametrosQueryString();
         await this.obterManifestacao();
     },
 
     methods: {
+        async ObterParametrosQueryString() {
+            this.idManifestacao = utils.obterRequestParameter('id')
+        },
+
         async obterManifestacao() {
-            let ret = await eOuvApi.obterDadosManifestacao();
+            let ret = await eOuvApi.obterDadosManifestacao(this.idManifestacao);
             console.log(ret);
             //Dados Basicos da Manifestacao
             this.titulo += ` (${ret.numProtocolo})`;            
