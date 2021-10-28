@@ -4,6 +4,11 @@
         return ret;
     },
 
+    async ObterAcompanharDespachos() {
+        let ret = await fetchData.fetchGetJson(`/despacho/AcompanharDespachos/583`);
+        return ret;
+    },    
+
     async obterDadosManifestacao() {
         let ret = await fetchData.fetchGetJson(`/despacho/ObterDadosManifestacao`);
         return ret;

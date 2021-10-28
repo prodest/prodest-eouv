@@ -68,3 +68,8 @@ body {
 .cursor-pointer {
     cursor: pointer;
 }
+
+/*Table*/
+.table th{
+    font-weight: bold;
+}
