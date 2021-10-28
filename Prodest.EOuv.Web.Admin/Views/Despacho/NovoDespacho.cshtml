@@ -726,7 +726,6 @@
                                             <tr>
                                                 <th scope="col">Data/Hora</th>
                                                 <th scope="col">Órgão</th>
-                                                <th scope="col">Responsável</th>
                                                 <th scope="col">Situação</th>
                                             </tr>
                                         </thead>
@@ -760,40 +759,46 @@
                         <br />
                         <div class="form-check mr-1 mb-1 px-0" v-for="(papel, index) in papeisUsuario" v-bind:key="index" v-bind:for="papel.id">
                             @*<label>
-                                    <input type="radio" v-on:change="TogglePapelSelecionado($event)" class="form-check-input" v-bind:name="papel.id" v-bind:id="papel.id" autocomplete="off" />
-                                    {{papel.nome}} - {{papel.siglaUnidadePapel}} - {{papel.siglaOrganizacaoPapel}}
-                                </label>*@
+                    <input type="radio" v-on:change="TogglePapelSelecionado($event)" class="form-check-input" v-bind:name="papel.id" v-bind:id="papel.id" autocomplete="off" />
+                    {{papel.nome}} - {{papel.siglaUnidadePapel}} - {{papel.siglaOrganizacaoPapel}}
+                </label>*@
                             <input type="radio" v-on:change="TogglePapelSelecionado($event)" class="btn-check" v-bind:name="papel.id" v-bind:id="papel.id" autocomplete="off">
                             <label class="btn btn-outline-warning btn-sm" v-bind:for="papel.id">{{papel.nome}} - {{papel.siglaUnidadePapel}} - {{papel.siglaOrganizacaoPapel}}</label>
                         </div>
                     </div>
 
+                    <div class="mb-3">
+                        <label class="form-label">Selecione o Destinatário:</label>
+                        <br />
+                        <selecao-destinatarios v-on:selecionar-destinatario="IncluirDestinatarioSelecionado"></selecao-destinatarios>
+                    </div>
+
                     <div class="mb-3 col-md-3">
-                        <label for="flPrazoResposta">Prazo de Resposta</label>
+                        <label class="form-label" for="flPrazoResposta">Prazo de Resposta</label>
                         <input v-model="prazoResposta" v-bind:value="prazoResposta" type="text" class="form-control form-control-sm" id="flPrazoResposta" placeholder="01/01/2021">
                     </div>
 
                     <div class="mb-3">
-                        <label for="flTextoDespacho">Texto do Despacho</label>
+                        <label class="form-label" for="flTextoDespacho">Texto do Despacho</label>
                         <textarea class="form-control form-control-sm" maxlength="2000" placeholder="Informe o texto do despacho aqui." v-model="textoDespacho" id="flTextoDespacho" style="height: 80px"></textarea>
                     </div>
 
-                    <selecao-destinatarios v-on:selecionar-destinatario="IncluirDestinatarioSelecionado"></selecao-destinatarios>
+                    
 
                     @*<div class="form-outline mb-3">
-                                <button class="btn btn-block btn-info" v-on:click="IncluirCampoAnexo"><i class="fas fa-plus"></i> Incluir novo arquivo</button>
-                                <div class="border-1 mt-3" v-if="campoAnexo.length > 0">
-                                    <div class="input-group mb-3" v-for="(campo, index) in campoAnexo" v-bind:key="index">
-                                        <input type="file" class="form-control" id="{{campo}}" aria-describedby="addon-{{campo}}" />
-                                        <span v-on:click="RemoverCampoAnexo(campo)" class="input-group-text border-0 btn btn-danger shadow-0" id="addon-{{campo}}"><i class="fas fa-times"></i></span>
-                                    </div>
-                                </div>
-                            </div>
-                        <hr />*@
+                <button class="btn btn-block btn-info" v-on:click="IncluirCampoAnexo"><i class="fas fa-plus"></i> Incluir novo arquivo</button>
+                <div class="border-1 mt-3" v-if="campoAnexo.length > 0">
+                    <div class="input-group mb-3" v-for="(campo, index) in campoAnexo" v-bind:key="index">
+                        <input type="file" class="form-control" id="{{campo}}" aria-describedby="addon-{{campo}}" />
+                        <span v-on:click="RemoverCampoAnexo(campo)" class="input-group-text border-0 btn btn-danger shadow-0" id="addon-{{campo}}"><i class="fas fa-times"></i></span>
+                    </div>
+                </div>
+            </div>
+        <hr />*@
 
                     <div class="row justify-content-end">
                         <div class="col-md-4 col-sm-6 col-lg-2">
-                            <a href="/Despacho/AcompanharDespachos" class="btn btn-danger btn-block mb-1"><i class="fas fa-times"></i> Cancelar</a>
+                            <a v-on:click="Cancelar()" class="btn btn-danger btn-block mb-1"><i class="fas fa-times"></i> Cancelar</a>
                         </div>
                         <div class="col-md-4 col-sm-6 col-lg-2">
                             <button type="button" v-on:click="Despachar()" class="btn btn-primary btn-block mb-1"><i class="fas fa-share"></i> Despachar</button>
@@ -805,7 +810,7 @@
     </script>
 
     <script type="text/html" id="template-selecao-destinatarios">
-        <div class="form-outline mb-3">
+        <div class="form-outline mb-3 col-md-3">
             <button type="button" v-on:click="CarregarDadosEDocs" class="btn btn-outline-info btn-block"><i class="fas fa-search"></i> Incluir Destinatários</button>
             <div class="row">
                 <div v-if="destinatario != null " class="col-12 mt-2 border-secondary border-1">

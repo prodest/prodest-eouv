@@ -78,6 +78,9 @@ const DespachoForm = {
             await eOuvApi.despachar(entry);
             window.location.href = "/Despacho/AcompanharDespachos/" + this.idManifestacao;
         },
+        async Cancelar() {
+            window.location.href = "/Despacho/AcompanharDespachos/" + this.idManifestacao;
+        },
         ToggleDadosManifestacaoSelecionados(e) {
             console.log(e)
             let item = e.target.parentNode.id;
