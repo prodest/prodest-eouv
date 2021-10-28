@@ -5,6 +5,8 @@ namespace Prodest.EOuv.Dominio.Modelo.Interfaces.DAL
 {
     public interface IManifestacaoRepository
     {
+        Task<ManifestacaoModel> ObterManifestacaoPorId(int idManifestacao);
+
         Task<ManifestacaoModel> ObterDadosBasicosManifestacao(int idManifestacao);
 
         Task<PessoaModel> ObterDadosPessoa(int idPessoa);
@@ -42,5 +44,9 @@ namespace Prodest.EOuv.Dominio.Modelo.Interfaces.DAL
         Task<List<RecursoNegativaModel>> ObterDadosRecursoNegativa(int idManifestacao);
 
         Task<List<HistoricoManifestacaoModel>> ObterDadosHistorico(int idManifestacao);
+
+        Task<int> AdicionarManifestacao(ManifestacaoModel manifestacao);
+
+        Task<int> AtualizarManifestacao(ManifestacaoModel manifestacao);
     }
 }

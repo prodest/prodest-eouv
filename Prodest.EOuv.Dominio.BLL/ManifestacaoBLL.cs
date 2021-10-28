@@ -18,6 +18,11 @@ namespace Prodest.EOuv.Dominio.BLL
             _manifestacaoRepository = manifestacaoRepository;
         }
 
+        public async Task<ManifestacaoModel> ObterManifestacaoPorId(int idManifestacao)
+        {
+            return await _manifestacaoRepository.ObterManifestacaoPorId(idManifestacao);
+        }
+
         public async Task<ManifestacaoModel> ObterDadosCompletosManifestacao(int idManifestacao)
         {
             ManifestacaoModel manifestacaoModel = await ObterDadosBasicosManifestacao(idManifestacao);
@@ -232,6 +237,16 @@ namespace Prodest.EOuv.Dominio.BLL
         public async Task<List<HistoricoManifestacaoModel>> ObterDadosHistorico(int idManifestacao)
         {
             return await _manifestacaoRepository.ObterDadosHistorico(idManifestacao);
+        }
+
+        public async Task<int> AdicionarManifestacao(ManifestacaoModel manifestacao)
+        {
+            return await _manifestacaoRepository.AdicionarManifestacao(manifestacao);
+        }
+
+        public async Task<int> AtualizarManifestacao(ManifestacaoModel manifestacao)
+        {
+            return await _manifestacaoRepository.AtualizarManifestacao(manifestacao);
         }
     }
 }

@@ -39,5 +39,13 @@ namespace Prodest.EOuv.Infra.DAL
 
             return _mapper.Map<List<OrgaoModel>>(listaOrgaosCompetenciaFato);
         }
+
+        public async Task<int> AdicionarResposta(RespostaManifestacaoModel respostaModel)
+        {
+            var resposta = _mapper.Map<RespostaManifestacao>(respostaModel);
+            _eouvContext.RespostaManifestacao.Add(resposta);
+            await _eouvContext.SaveChangesAsync();
+            return resposta.IdRespostaManifestacao;
+        }
     }
 }

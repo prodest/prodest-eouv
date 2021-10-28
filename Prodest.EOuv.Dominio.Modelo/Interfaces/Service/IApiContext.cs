@@ -1,4 +1,5 @@
-﻿using Prodest.EOuv.Shared.Util;
+﻿using Prodest.EOuv.Dominio.Modelo.Common;
+using Prodest.EOuv.Shared.Util;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,7 +23,7 @@ namespace Prodest.EOuv.Dominio.Modelo.Interfaces.Service
 
         Task<(bool isSuccess, Stream data, string errorMessage)> PdfPostRequest(string url, object body);
 
-        Task<ApiResponse<T>> PostAndDownloadAsync<T>(string url, HttpContent content);
+        Task<ApiResponseModel<T>> PostAndDownloadAsync<T>(string url, HttpContent content);
 
         Task<HttpResponseMessage> PostAsync(string url, HttpContent content);
     }

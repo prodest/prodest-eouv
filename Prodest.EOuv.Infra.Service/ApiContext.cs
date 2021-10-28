@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Prodest.EOuv.Dominio.Modelo;
+using Prodest.EOuv.Dominio.Modelo.Common;
 using Prodest.EOuv.Dominio.Modelo.Interfaces.Service;
 using Prodest.EOuv.Shared.Util;
 using Prodest.EOuv.Shared.Utils.Exceptions;
@@ -154,23 +155,23 @@ namespace Prodest.EOuv.Infra
             return (response.IsSuccessStatusCode, output, errorMessage);
         }
 
-        public async Task<ApiResponse<T>> PostAndDownloadAsync<T>(string url, HttpContent content)
+        public async Task<ApiResponseModel<T>> PostAndDownloadAsync<T>(string url, HttpContent content)
         {
             var httpClient = _httpClientFactory.CreateClient("multipart/form-data");
             httpClient.Timeout = TimeSpan.FromSeconds(1200);
 
             var result = await httpClient.PostAsync(url, content);
-            ApiResponse<T> apiResponse;
+            ApiResponseModel<T> apiResponse;
 
             string responseContent = await result.Content.ReadAsStringAsync();
 
             if (result.IsSuccessStatusCode && !string.IsNullOrWhiteSpace(responseContent))
-                apiResponse = JsonConvert.DeserializeObject<ApiResponse<T>>(responseContent);
+                apiResponse = JsonConvert.DeserializeObject<ApiResponseModel<T>>(responseContent);
             else
             {
-                var apiResponseDeserialize = JsonConvert.DeserializeObject<ApiResponse<object>>(responseContent);
+                var apiResponseDeserialize = JsonConvert.DeserializeObject<ApiResponseModel<object>>(responseContent);
                 if (apiResponseDeserialize != null)
-                    apiResponse = new ApiResponse<T>(apiResponseDeserialize);
+                    apiResponse = new ApiResponseModel<T>(apiResponseDeserialize);
                 else
                     throw new Exception($"{result.StatusCode}-{responseContent}");
             }

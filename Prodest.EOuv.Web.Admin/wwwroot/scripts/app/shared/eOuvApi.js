@@ -54,8 +54,8 @@
         return ret;
     },
 
-    async responder(entry) {
-        let ret = await fetchData.fetchPostJson(`/resposta/ResponderManifestacao`, entry);
+    async Responder(entry) {
+        let ret = await fetchData.fetchPostJson(`/resposta/Responder`, entry);
         return ret;
     },
     

@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Prodest.EOuv.UI.Apresentacao.DespachoManifestacaoViewModel>
 
 @{
-    ViewData["Title"] = "Despachos Realizados";
+    ViewData["Title"] = "Acompanhar Despachos";
 }
 
 @section scripts{
@@ -63,8 +63,8 @@
                                             @Html.DisplayFor(modelItem => item.SituacaoDespacho.DescSituacaoDespacho)
                                         </td>
                                         <td>
-                                            <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@item.IdDespachoManifestacao"><i class="fas fa-exchange-alt"></i></a>
-                                            <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.IdDespachoManifestacao"><i class="fas fa-times"></i></a>
+                                            <a class="btn btn-info btn-sm" asp-action="Details" asp-route-idDespacho="@item.IdDespachoManifestacao"><i class="fas fa-exchange-alt"></i></a>
+                                            <a class="btn btn-danger btn-sm" asp-action="EncerrarDespachoManualmente" asp-route-idDespacho="@item.IdDespachoManifestacao"><i class="fas fa-times"></i></a>
                                         </td>
                                     </tr>
                                 }

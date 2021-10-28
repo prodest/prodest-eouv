@@ -49,6 +49,18 @@
             this.orgaosCompetenciaFato = ret;
             console.log(this.orgaosCompetenciaFato);
         },
+
+        async Responder() {
+            let entry = {
+                IdManifestacao: this.idManifestacao,
+                TextoResposta: this.textoResposta,
+                IdResultadoResposta: this.textoResposta,
+                IdOrgaoCompetenciaFato: this.textoResposta,
+                Anexos: this.textoResposta
+            }
+            console.log(entry);
+            await eOuvApi.Responder(entry);
+        }
         async Responder() {
             let entry = {
                 idResultadosRespostaPorTipologia: this.idResultadosRespostaPorTipologia,                

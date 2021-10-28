@@ -39,7 +39,7 @@ namespace Prodest.EOuv.Dominio.BLL
             return await _despachoRepository.ObterDespachosEmAberto();
         }
 
-        public async Task<DespachoManifestacaoModel> ObterDespacho(int IdDespachoManifestacao)
+        public async Task<DespachoManifestacaoModel> ObterDespachoPorId(int IdDespachoManifestacao)
         {
             return await _despachoRepository.ObterDespachoPorId(IdDespachoManifestacao);
         }
@@ -122,8 +122,9 @@ namespace Prodest.EOuv.Dominio.BLL
 
         public async Task EncerrarDespachoManualmente(int idDespacho)
         {
-            DespachoManifestacaoModel despacho = await ObterDespacho(idDespacho);
+            DespachoManifestacaoModel despacho = await ObterDespachoPorId(idDespacho);
             despacho.IdSituacaoDespacho = (int)Enums.SituacaoDespacho.Respondido;
+            despacho.DataRespostaDespacho = DateTime.Now;
             await _despachoRepository.AtualizarDespacho(despacho);
         }
     }
