@@ -51,6 +51,10 @@
             console.log(this.orgaosCompetenciaFato);
         },
 
+        async Cancelar() {
+            window.location.href = "/Despacho/AcompanharDespachos/" + this.idManifestacao;
+        },
+
         async Responder() {
             let entry = {
                 IdManifestacao: this.manifestacao,
