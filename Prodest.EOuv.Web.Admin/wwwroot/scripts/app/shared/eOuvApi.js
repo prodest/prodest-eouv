@@ -1,21 +1,26 @@
 ﻿const eOuvApi = {
     async obterDespachos() {
-        let ret = await fetchData.fetchGetJson(`/despacho/index`);
+        let ret = await fetchData.fetchGetJson(`/Despacho/index`);
         return ret;
     },
 
     async ObterDespachosPorManifestacao(id) {
-        let ret = await fetchData.fetchGetJson(`/despacho/ObterDespachosPorManifestacao/` + id );
+        let ret = await fetchData.fetchGetJson(`/Despacho/ObterDespachosPorManifestacao/` + id);
         return ret;
     },
 
     async obterDadosManifestacao(id) {
-        let ret = await fetchData.fetchGetJson(`/despacho/ObterDadosManifestacao/` + id);
+        let ret = await fetchData.fetchGetJson(`/Despacho/ObterDadosManifestacao/` + id);
         return ret;
     },
 
     async despachar(entry) {
-        let ret = await fetchData.fetchPostJson(`/despacho/Despachar`, entry);
+        let ret = await fetchData.fetchPostJson(`/Despacho/Despachar`, entry);
+        return ret;
+    },
+
+    async EncerrarDespachoManualmente(id) {
+        let ret = await fetchData.fetchPostJson(`/Despacho/EncerrarDespachoManualmente/` + id);
         return ret;
     },
 

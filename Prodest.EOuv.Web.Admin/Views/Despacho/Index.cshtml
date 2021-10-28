@@ -35,16 +35,16 @@
                                 Protocolo
                             </th>
                             <th scope="col">
-                                Data Solicitacao
+                                Data do Despacho
                             </th>
                             <th scope="col">
-                                Prazo Resposta
+                                Prazo de Resposta
                             </th>
                             <th scope="col">
-                                Data Resposta
+                                Data de Finalização
                             </th>
                             <th scope="col">
-                                Situacao
+                                Situação
                             </th>
                             <th scope="col" class="text-center">
                                 Ações
@@ -54,11 +54,11 @@
                     <tbody>
                         <tr v-for="despacho in listaDespachos" :key="despacho.protocoloEdocs">
                             <td>{{despacho.protocoloEdocs}}</td>
-                            <td>{{despacho.dataSolicitacaoDespacho}}</td>
+                            <td>{{despacho.dataSolicitacaoDespachoFormatada}}</td>
                             <td>{{despacho.prazoResposta}}</td>
-                            <td>{{despacho.dataRespostaDespacho}}</td>
-                            <td>{{despacho.situacaoDespacho}}</td>
-                            <td class="text-center"><a class="btn btn-dark btn-sm"><i class="fas fa-stream"></i> Detalhar</a> <a class="btn btn-warning btn-sm"><i class="fas fa-undo"></i> Encerrar</a></td>
+                            <td>{{despacho.dataRespostaDespachoFormatada}}</td>
+                            <td>{{despacho.situacaoDespacho.descSituacaoDespacho}}</td>
+                            <td class="text-center"><a class="btn btn-dark btn-sm" v-on:click="Detalhar()"><i class="fas fa-stream"></i> Detalhar</a> <a class="btn btn-warning btn-sm" v-on:click="EncerrarDespachoManualmente(despacho.idDespachoManifestacao)"><i class="fas fa-undo"></i> Encerrar</a></td>
                         </tr>
                     </tbody>
                 </table>

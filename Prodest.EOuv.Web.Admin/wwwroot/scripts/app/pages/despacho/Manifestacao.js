@@ -93,8 +93,8 @@
             this.dadosBasicos.canalEntrada = ret.canalEntrada.descCanalEntrada;
             this.dadosBasicos.modoResposta = ret.modoResposta.descModoResposta;
             this.dadosBasicos.assunto = ret.assunto.descAssunto;
-            this.dadosBasicos.dataRegistro = ret.dataRegistro;
-            this.dadosBasicos.prazoResposta = ret.prazoResposta;
+            this.dadosBasicos.dataRegistro = ret.dataRegistroFormatada;
+            this.dadosBasicos.prazoResposta = ret.prazoRespostaFormatado;
             this.dadosBasicos.tipoManifestante = ret.tipoManifestante.descTipoManifestante;
 
             this.$emit('capturar-dados-manifestacao', this.dadosBasicos);

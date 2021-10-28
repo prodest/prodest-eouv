@@ -68,6 +68,8 @@ namespace Prodest.EOuv.Shared.Configuracao
             CreateMap<ResultadoResposta, ResultadoRespostaModel>().ReverseMap();
             CreateMap<SituacaoManifestacao, SituacaoManifestacaoModel>().ReverseMap();
             CreateMap<SituacaoManifestacaoModel, SituacaoManifestacaoViewModel>().ReverseMap();
+            CreateMap<SituacaoDespacho, SituacaoDespachoModel>().ReverseMap();
+            CreateMap<SituacaoDespachoModel, SituacaoDespachoViewModel>().ReverseMap();
             CreateMap<TipoIdentificacao, TipoIdentificacaoModel>().ReverseMap();
             CreateMap<TipoIdentificacaoModel, TipoIdentificacaoViewModel>().ReverseMap();
             CreateMap<TipoManifestacao, TipoManifestacaoModel>().ReverseMap();
