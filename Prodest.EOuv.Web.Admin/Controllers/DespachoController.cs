@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Prodest.EOuv.UI.Apresentacao;
+using System;
 using System.Threading.Tasks;
 
 namespace Prodest.EOuv.Web.Admin.Controllers
@@ -24,15 +25,29 @@ namespace Prodest.EOuv.Web.Admin.Controllers
 
         public async Task<IActionResult> ObterDadosManifestacao(int id)
         {
-            var dadosManifestacao = await _manifestacaoWorkService.ObterDadosCompletosManifestacao(id);
+            try
+            {
+                var dadosManifestacao = await _manifestacaoWorkService.ObterDadosCompletosManifestacao(id);
 
-            return Json(dadosManifestacao);
+                return Json(dadosManifestacao);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public async Task<IActionResult> ObterDespachosPorManifestacao(int id)
         {
-            var despachoViewModel = await _despachoWorkService.ObterDespachosPorManifestacao(id);
-            return Json(despachoViewModel);
+            try
+            {
+                var despachoViewModel = await _despachoWorkService.ObterDespachosPorManifestacao(id);
+                return Json(despachoViewModel);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public IActionResult NovoDespacho()
@@ -52,9 +67,9 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             return View();
         }
 
-        public IActionResult EncerrarDespachoManualmente(int idDespacho)
+        public IActionResult EncerrarDespachoManualmente(int id)
         {
-            _despachoWorkService.EncerrarDespachoManualmente(idDespacho);
+            _despachoWorkService.EncerrarDespachoManualmente(id);
             return View(nameof(Index));
         }
     }

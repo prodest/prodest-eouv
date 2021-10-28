@@ -273,7 +273,6 @@
                                                                     <tr>
                                                                         <th scope="col">Prazo Original</th>
                                                                         <th scope="col">Novo Prazo</th>
-                                                                        <th scope="col">Responsável</th>
                                                                         <th scope="col">Órgão</th>
                                                                         <th scope="col">Justificativa</th>
                                                                         <th scope="col">Data da Prorrogação</th>
@@ -281,11 +280,11 @@
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr v-for="(dados, index) in prorrogacaoManifestacao" :key="index">
-                                                                        <td>{{dados.prazoOriginal}}.Date.ToString("dd/MMM/yyyy")</td>
-                                                                        <td>{{dados.novoPrazo}}</td>
+                                                                        <td>{{dados.prazoOriginalFormatado}}</td>
+                                                                        <td>{{dados.novoPrazoFormatado}}</td>
                                                                         <td>{{dados.orgao.siglaOrgao}}</td>
                                                                         <td>{{dados.txtJustificativaProrrogacao}}</td>
-                                                                        <td>{{dados.dataProrrogacao}}</td>
+                                                                        <td>{{dados.dataProrrogacaoFormatada}}</td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
@@ -315,7 +314,7 @@
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr v-for="(dados, index) in encaminhamentoManifestacao" :key="index">
-                                                                        <td>{{dados.dataEncaminhamento}}</td>
+                                                                        <td>{{dados.dataEncaminhamentoFormatada}}</td>
                                                                         <td>{{dados.orgaoOrigem.siglaOrgao}}</td>
                                                                         <td>{{dados.orgaoDestino.siglaOrgao}}</td>
                                                                         <td>{{dados.txtEncaminhamento}}</td>
@@ -355,7 +354,7 @@
                                                                         <td>{{dados.textoSolicitacaoDespacho}}</td>
                                                                         <td>{{index}}</td>
                                                                         <td>{{index}}</td>
-                                                                        <td>{{dados.dataRespostaDespacho}}</td>
+                                                                        <td>{{dados.dataRespostaDespachoFormatada}}</td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
@@ -420,7 +419,7 @@
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr v-for="(dados, index) in anotacaoManifestacao" :key="index">
-                                                                        <td>{{dados.dataAnotacao}}</td>
+                                                                        <td>{{dados.dataAnotacaoFormatada}}</td>
                                                                         <td>{{dados.txtAnotacao}}</td>
                                                                     </tr>
                                                                 </tbody>
@@ -449,7 +448,7 @@
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr v-for="(dados, index) in notificacaoManifestacao" :key="index">
-                                                                        <td>{{dados.dataNotificacao}}</td>
+                                                                        <td>{{dados.dataNotificacaoFormatada}}</td>
                                                                         <td>{{dados.txtNotificacao}}</td>
                                                                     </tr>
                                                                 </tbody>
@@ -510,7 +509,7 @@
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr v-for="(dados, index) in respostaManifestacao" :key="index">
-                                                                        <td>{{dados.dataResposta}}</td>
+                                                                        <td>{{dados.dataRespostaFormatada}}</td>
                                                                         <td>{{dados.orgao.siglaOrgao}}</td>
                                                                         <td>{{dados.txtResposta}}</td>
                                                                     </tr>
@@ -544,9 +543,9 @@
                                                                 <tbody>
                                                                     <tr v-for="(dados, index) in diligenciaManifestacao" :key="index">
                                                                         <td>{{dados.orgao.siglaOrgao}}</td>
-                                                                        <td>{{dados.dataDiligencia}}</td>
+                                                                        <td>{{dados.dataDiligenciaFormatada}}</td>
                                                                         <td>{{dados.txtDiligencia}}</td>
-                                                                        <td>{{dados.dataRespostaDiligencia}}</td>
+                                                                        <td>{{dados.dataRespostaDiligenciaFormatada}}</td>
                                                                         <td>{{dados.txtRespostaDiligencia}}</td>
                                                                     </tr>
                                                                 </tbody>
@@ -577,9 +576,9 @@
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr v-for="(dados, index) in apuracaoManifestacao" :key="index">
-                                                                        <td>{{dados.dataSolicitacaoApuracao}}</td>
+                                                                        <td>{{dados.dataSolicitacaoApuracaoFormatada}}</td>
                                                                         <td>{{dados.txtSolicitacaoApuracao}}</td>
-                                                                        <td>{{dados.dataRespostaApuracao}}</td>
+                                                                        <td>{{dados.dataRespostaApuracaoFormatada}}</td>
                                                                         <td>{{dados.txtRespostaApuracao}}</td>
                                                                     </tr>
                                                                 </tbody>
@@ -608,7 +607,7 @@
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr v-for="(dados, index) in complementoManifestacao" :key="index">
-                                                                        <td>{{dados.dtComplemento}}</td>
+                                                                        <td>{{dados.dtComplementoFormatada}}</td>
                                                                         <td>{{dados.txtComplemento}}</td>
                                                                     </tr>
                                                                 </tbody>
@@ -731,7 +730,7 @@
                                         </thead>
                                         <tbody>
                                             <tr v-for="(dados, index) in historicoManifestacao" :key="index">
-                                                <td>{{dados.dataHistorico}}</td>
+                                                <td>{{dados.dataHistoricoFormatada}}</td>
                                                 <td>{{dados.orgao.siglaOrgao}}</td>
                                                 <td>{{dados.situacaoManifestacao.descSituacaoManifestacao}}</td>
                                             </tr>
@@ -759,9 +758,9 @@
                         <br />
                         <div class="form-check mr-1 mb-1 px-0" v-for="(papel, index) in papeisUsuario" v-bind:key="index" v-bind:for="papel.id">
                             @*<label>
-                    <input type="radio" v-on:change="TogglePapelSelecionado($event)" class="form-check-input" v-bind:name="papel.id" v-bind:id="papel.id" autocomplete="off" />
-                    {{papel.nome}} - {{papel.siglaUnidadePapel}} - {{papel.siglaOrganizacaoPapel}}
-                </label>*@
+                                    <input type="radio" v-on:change="TogglePapelSelecionado($event)" class="form-check-input" v-bind:name="papel.id" v-bind:id="papel.id" autocomplete="off" />
+                                    {{papel.nome}} - {{papel.siglaUnidadePapel}} - {{papel.siglaOrganizacaoPapel}}
+                                </label>*@
                             <input type="radio" v-on:change="TogglePapelSelecionado($event)" class="btn-check" v-bind:name="papel.id" v-bind:id="papel.id" autocomplete="off">
                             <label class="btn btn-outline-warning btn-sm" v-bind:for="papel.id">{{papel.nome}} - {{papel.siglaUnidadePapel}} - {{papel.siglaOrganizacaoPapel}}</label>
                         </div>
@@ -783,18 +782,16 @@
                         <textarea class="form-control form-control-sm" maxlength="2000" placeholder="Informe o texto do despacho aqui." v-model="textoDespacho" id="flTextoDespacho" style="height: 80px"></textarea>
                     </div>
 
-                    
-
                     @*<div class="form-outline mb-3">
-                <button class="btn btn-block btn-info" v-on:click="IncluirCampoAnexo"><i class="fas fa-plus"></i> Incluir novo arquivo</button>
-                <div class="border-1 mt-3" v-if="campoAnexo.length > 0">
-                    <div class="input-group mb-3" v-for="(campo, index) in campoAnexo" v-bind:key="index">
-                        <input type="file" class="form-control" id="{{campo}}" aria-describedby="addon-{{campo}}" />
-                        <span v-on:click="RemoverCampoAnexo(campo)" class="input-group-text border-0 btn btn-danger shadow-0" id="addon-{{campo}}"><i class="fas fa-times"></i></span>
-                    </div>
-                </div>
-            </div>
-        <hr />*@
+                                <button class="btn btn-block btn-info" v-on:click="IncluirCampoAnexo"><i class="fas fa-plus"></i> Incluir novo arquivo</button>
+                                <div class="border-1 mt-3" v-if="campoAnexo.length > 0">
+                                    <div class="input-group mb-3" v-for="(campo, index) in campoAnexo" v-bind:key="index">
+                                        <input type="file" class="form-control" id="{{campo}}" aria-describedby="addon-{{campo}}" />
+                                        <span v-on:click="RemoverCampoAnexo(campo)" class="input-group-text border-0 btn btn-danger shadow-0" id="addon-{{campo}}"><i class="fas fa-times"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        <hr />*@
 
                     <div class="row justify-content-end">
                         <div class="col-md-4 col-sm-6 col-lg-2">

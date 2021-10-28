@@ -23,7 +23,19 @@ namespace Prodest.EOuv.UI.Apresentacao
         public virtual OrgaoViewModel OrgaoInteresse { get; set; }
         public virtual AssuntoViewModel Assunto { get; set; }
         public DateTime DataRegistro { get; set; }
-        public DateTime? PrazoResposta { get; set; }
+
+        public string DataRegistroFormatada
+        {
+            get { return DataRegistro.ToString("dd/MM/yyyy"); }
+        }
+
+        public DateTime PrazoResposta { get; set; }
+
+        public string PrazoRespostaFormatado
+        {
+            get { return PrazoResposta.ToString("dd/MM/yyyy"); }
+        }
+
         public virtual UsuarioViewModel UsuarioCadastrador { get; set; }
         public virtual CanalEntradaViewModel CanalEntrada { get; set; }
         public virtual ModoRespostaViewModel ModoResposta { get; set; }
@@ -75,6 +87,12 @@ namespace Prodest.EOuv.UI.Apresentacao
     {
         public string TxtComplemento { get; set; }
         public DateTime DtComplemento { get; set; }
+
+        public string DtComplementoFormatada
+        {
+            get { return DtComplemento.ToString("dd/MM/yyyy"); }
+        }
+
         //public List<AnexoManifestacaoViewModel> AnexoComplemento { get; set; }
     }
 
@@ -103,19 +121,48 @@ namespace Prodest.EOuv.UI.Apresentacao
     public partial class ProrrogacaoManifestacaoViewModel
     {
         public DateTime PrazoOriginal { get; set; }
-        public string NovoPrazo { get; set; }
+
+        public string PrazoOriginalFormatado
+        {
+            get { return PrazoOriginal.ToString("dd/MM/yyyy"); }
+        }
+
+        public DateTime NovoPrazo { get; set; }
+
+        public string NovoPrazoFormatado
+        {
+            get { return NovoPrazo.ToString("dd/MM/yyyy"); }
+        }
+
         public OrgaoViewModel Orgao { get; set; }
         public string TxtJustificativaProrrogacao { get; set; }
-        public string DataProrrogacao { get; set; }
+        public DateTime DataProrrogacao { get; set; }
+
+        public string DataProrrogacaoFormatada
+        {
+            get { return DataProrrogacao.ToString("dd/MM/yyyy"); }
+        }
     }
 
     public partial class DiligenciaManifestacaoViewModel
     {
         public string TxtDiligencia { get; set; }
         public OrgaoViewModel Orgao { get; set; }
-        public string DataDiligencia { get; set; }
+        public DateTime DataDiligencia { get; set; }
+
+        public string DataDiligenciaFormatada
+        {
+            get { return DataDiligencia.ToString("dd/MM/yyyy"); }
+        }
+
         public string TxtRespostaDiligencia { get; set; }
-        public string DataRespostaDiligencia { get; set; }
+        public DateTime DataRespostaDiligencia { get; set; }
+
+        public string DataRespostaDiligenciaFormatada
+        {
+            get { return DataRespostaDiligencia.ToString("dd/MM/yyyy"); }
+        }
+
         //public List<AnexoManifestacaoViewModel> AnexoRespostaDiligencia { get; set; }
     }
 
@@ -124,23 +171,46 @@ namespace Prodest.EOuv.UI.Apresentacao
         public OrgaoViewModel OrgaoOrigem { get; set; }
         public OrgaoViewModel OrgaoDestino { get; set; }
         public string TxtEncaminhamento { get; set; }
-        public string DataEncaminhamento { get; set; }
+        public DateTime DataEncaminhamento { get; set; }
+
+        public string DataEncaminhamentoFormatada
+        {
+            get { return DataEncaminhamento.ToString("dd/MM/yyyy"); }
+        }
     }
 
     public partial class RespostaManifestacaoViewModel
     {
         public string TxtResposta { get; set; }
         public OrgaoViewModel Orgao { get; set; }
-        public string DataResposta { get; set; }
+        public DateTime DataResposta { get; set; }
+
+        public string DataRespostaFormatada
+        {
+            get { return DataResposta.ToString("dd/MM/yyyy"); }
+        }
+
         //public List<AnexoManifestacaoViewModel> AnexoResposta { get; set; }
     }
 
     public partial class ApuracaoManifestacaoViewModel
     {
         public string TxtSolicitacaoApuracao { get; set; }
-        public string DataSolicitacaoApuracao { get; set; }
+        public DateTime DataSolicitacaoApuracao { get; set; }
+
+        public string DataSolicitacaoApuracaoFormatada
+        {
+            get { return DataSolicitacaoApuracao.ToString("dd/MM/yyyy"); }
+        }
+
         public string TxtRespostaApuracao { get; set; }
-        public string DataRespostaApuracao { get; set; }
+        public DateTime DataRespostaApuracao { get; set; }
+
+        public string DataRespostaApuracaoFormatada
+        {
+            get { return DataRespostaApuracao.ToString("dd/MM/yyyy"); }
+        }
+
         //public List<AnexoManifestacaoViewModel> AnexoApuracao { get; set; }
     }
 
@@ -152,12 +222,30 @@ namespace Prodest.EOuv.UI.Apresentacao
         public string TextoSolicitacaoDespacho { get; set; }
         public int IdUsuarioSolicitacaoDespacho { get; set; }
         public DateTime DataSolicitacaoDespacho { get; set; }
+
+        public string DataSolicitacaoDespachoFormatada
+        {
+            get { return DataSolicitacaoDespacho.ToString("dd/MM/yyyy"); }
+        }
+
         public DateTime PrazoResposta { get; set; }
+
+        public string PrazoRespostaFormatado
+        {
+            get { return PrazoResposta.ToString("dd/MM/yyyy"); }
+        }
+
         public string ProtocoloEdocs { get; set; }
         public Guid? IdEncaminhamento { get; set; }
         public int IdAgenteDestinatario { get; set; }
         public int IdAgenteResposta { get; set; }
-        public DateTime? DataRespostaDespacho { get; set; }
+        public DateTime DataRespostaDespacho { get; set; }
+
+        public string DataRespostaDespachoFormatada
+        {
+            get { return DataRespostaDespacho.ToString("dd/MM/yyyy"); }
+        }
+
         public string IdSituacaoDespacho { get; set; }
         public virtual OrgaoViewModel Orgao { get; set; }
         public virtual UsuarioViewModel UsuarioSolicitacaoDespacho { get; set; }
@@ -169,29 +257,58 @@ namespace Prodest.EOuv.UI.Apresentacao
     public partial class NotificacaoManifestacaoViewModel
     {
         public string TxtNotificacao { get; set; }
-        public string DataNotificacao { get; set; }
+        public DateTime DataNotificacao { get; set; }
+
+        public string DataNotificacaoFormatada
+        {
+            get { return DataNotificacao.ToString("dd/MM/yyyy"); }
+        }
+
         //public List<AnexoManifestacaoViewModel> AnexoNotificacao { get; set; }
     }
 
     public partial class AnotacaoManifestacaoViewModel
     {
         public string TxtAnotacao { get; set; }
-        public string DataAnotacao { get; set; }
+        public DateTime DataAnotacao { get; set; }
+
+        public string DataAnotacaoFormatada
+        {
+            get { return DataAnotacao.ToString("dd/MM/yyyy"); }
+        }
     }
 
     public partial class InterpelacaoManifestacaoViewModel
     {
         public string TxtInterpelacao { get; set; }
-        public string DataInterpelacao { get; set; }
+        public DateTime DataInterpelacao { get; set; }
+
+        public string DataInterpelacaoFormatada
+        {
+            get { return DataInterpelacao.ToString("dd/MM/yyyy"); }
+        }
+
         public string TxtRespostaInterpelacao { get; set; }
         public OrgaoViewModel OrgaoResposta { get; set; }
-        public string DataRespostaInterpelacao { get; set; }
+        public DateTime DataRespostaInterpelacao { get; set; }
+
+        public string DataRespostaInterpelacaoFormatada
+        {
+            get { return DataRespostaInterpelacao.ToString("dd/MM/yyyy"); }
+        }
+
         //public List<AnexoManifestacaoViewModel> AnexoInterpelacao { get; set; }
     }
 
     public partial class ReclamacaoOmissaoViewModel
     {
-        public string DataReclamacaoOmissao { get; set; }
+        public DateTime DataReclamacaoOmissao { get; set; }
+
+        public string DataReclamacaoOmissaoFormatada
+        {
+            get { return DataReclamacaoOmissao.ToString("dd/MM/yyyy"); }
+        }
+
         public ManifestacaoSimplificadaViewModel ManifestacaoFilha { get; set; }
         public ManifestacaoSimplificadaViewModel ManifestacaoPai { get; set; }
     }
@@ -202,24 +319,45 @@ namespace Prodest.EOuv.UI.Apresentacao
         public string TxtRecursoNegativa { get; set; }
 
         //public List<AnexoManifestacaoViewModel> AnexoRecurso { get; set; }
-        public string DataRecursoNegativa { get; set; }
+        public DateTime DataRecursoNegativa { get; set; }
+
+        public string DataRecursoNegativaFormatada
+        {
+            get { return DataRecursoNegativa.ToString("dd/MM/yyyy"); }
+        }
 
         public string TxtRespostaRecursoNegativa { get; set; }
 
         //public List<AnexoManifestacaoViewModel> AnexoRespostaRecurso { get; set; }
-        public string DataRespostaRecursoNegativa { get; set; }
+        public DateTime DataRespostaRecursoNegativa { get; set; }
+
+        public string DataRespostaRecursoNegativaFormatada
+        {
+            get { return DataRespostaRecursoNegativa.ToString("dd/MM/yyyy"); }
+        }
     }
 
     public partial class DesdobramentoManifestacaoViewModel
     {
         public virtual ManifestacaoSimplificadaViewModel ManifestacaoFilha { get; set; }
         public OrgaoViewModel Orgao { get; set; }
-        public string DataDesdobramento { get; set; }
+        public DateTime DataDesdobramento { get; set; }
+
+        public string DataDesdobramentoFormatada
+        {
+            get { return DataDesdobramento.ToString("dd/MM/yyyy"); }
+        }
     }
 
     public partial class HistoricoManifestacaoViewModel
     {
-        public string DataHistorico { get; set; }
+        public DateTime DataHistorico { get; set; }
+
+        public string DataHistoricoFormatada
+        {
+            get { return DataHistorico.ToString("dd/MM/yyyy"); }
+        }
+
         public OrgaoViewModel Orgao { get; set; }
         public SituacaoManifestacaoViewModel SituacaoManifestacao { get; set; }
     }
