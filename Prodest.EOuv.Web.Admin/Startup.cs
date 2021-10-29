@@ -22,6 +22,10 @@ using Audit.EntityFramework.Providers;
 using Audit.Core;
 using System.Linq;
 using Elastic.Apm.NetCoreAll;
+using System.Security.Claims;
+using Prodest.EOuv.Dominio.Modelo.Interfaces.Service;
+using System.Collections.Generic;
+using Prodest.EOuv.Infra.Service;
 
 namespace Prodest.EOuv.Web.Admin
 {
@@ -125,15 +129,80 @@ namespace Prodest.EOuv.Web.Admin
 
             #region[=== Acesso Cidadão ===]
             services.AddAuthentication(options =>
-                {
-                    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = "oidc";
-                })
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = "oidc";
+            })
                 .AddCookie(options =>
                 {
                     options.Cookie.Name = "prodest-eouv-admin";
                     options.Cookie.SameSite = SameSiteMode.None;
                     options.ExpireTimeSpan = TimeSpan.FromMinutes(06);
+                    options.Events = new CookieAuthenticationEvents
+                    {
+                        OnSignedIn = async context =>
+                        {
+                            try
+                            {
+                                Guid idUsuario = context.Principal.Claims
+                                    .Where(c => c.Type.ToLower().Equals("subnovo"))
+                                    .Select(c => new Guid(c.Value))
+                                    .FirstOrDefault();
+
+                                IServiceProvider serviceProvider = context.HttpContext.RequestServices;
+                                //IHierarchicalCache hierarchicalCache = serviceProvider.GetRequiredService<IHierarchicalCache>();
+
+                                //await hierarchicalCache.RemoveKeyAsync($"cidadao-{idUsuario}");
+                                //await hierarchicalCache.RemoveKeyAsync($"cidadao-verificacao-de-conta-{idUsuario}");
+                            }
+                            catch (Exception e)
+                            {
+                                //e.Log(context.HttpContext);
+
+                                throw;
+                            }
+
+                        },
+                        OnValidatePrincipal = async context =>
+                        {
+                            try
+                            {
+                                IServiceProvider serviceProvider = context.HttpContext.RequestServices;
+                                var teste = context;
+
+                                IUsuarioProvider usuarioService = context.HttpContext.RequestServices.GetRequiredService<IUsuarioProvider>();
+                                await usuarioService.SetCurrent(context.Principal);
+
+                                //ISistemaService sistemaService = serviceProvider.GetRequiredService<ISistemaService>();
+
+
+                                IPermissaoService permissaoService = serviceProvider.GetRequiredService<IPermissaoService>();
+                                ICollection<KeyValuePair<string, string>> permissoes = await permissaoService.SearchByUsuarioAsync();
+
+                                if (permissoes != null && permissoes.Any())
+                                {
+                                    ClaimsIdentity ci = new ClaimsIdentity(context.Principal.Identity.AuthenticationType);
+
+                                    ci.AddClaims(permissoes
+                                        .Select(p => new Claim(p.Key, p.Value))
+                                        .ToList());
+
+                                    context.Principal.AddIdentity(ci);
+                                }
+
+                                //ClaimsIdentity ci = new ClaimsIdentity(context.Principal.Identity.AuthenticationType);
+
+                                //ci.AddClaim(new Claim("Role", "Desenvolvedor"));
+                                //context.Principal.AddIdentity(ci);
+                            }
+                            catch (Exception e)
+                            {
+                                //e.Log(context.HttpContext);
+
+                                throw;
+                            }
+                        }
+                    };
                 })
                 .AddOpenIdConnect("oidc", options =>
                 {
@@ -161,6 +230,12 @@ namespace Prodest.EOuv.Web.Admin
                     };
                 });
             #endregion
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Desenvolvedor", policy => policy.RequireClaim("Role", "Desenvolvedor"));
+            }
+            );
 
             services.AddMvc(options =>
             {
