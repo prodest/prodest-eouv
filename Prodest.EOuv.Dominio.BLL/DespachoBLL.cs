@@ -93,9 +93,16 @@ namespace Prodest.EOuv.Dominio.BLL
             despachoModel.IdSituacaoDespacho = (int)Enums.SituacaoDespacho.Aberto;
 
             //TODO: Definir Tipo Agente
-            AgenteManifestacaoModel agenteDestinatario = await _agenteBLL.MontaAgente(destinatario, (int)Enums.AgenteTipo.Unidade);
+
+            //Se Agente = Papel
+
+            //Se Agente = Grupo
+
+            //Se Agente = Setor
+
+            AgenteManifestacaoModel agenteDestinatario = await _agenteBLL.MontaAgenteSetor(destinatario);
             var idAgenteDestinatario = await _agenteBLL.AdicionarAgente(agenteDestinatario);
-            despachoModel.IdAgenteResposta = idAgenteDestinatario;
+            despachoModel.IdAgenteDestinatario = idAgenteDestinatario;
             await _despachoRepository.AdicionarDespacho(despachoModel);
         }
 
@@ -110,7 +117,7 @@ namespace Prodest.EOuv.Dominio.BLL
             {
                 if (despachoModel.IdSituacaoDespacho == (int)Enums.SituacaoDespacho.Aberto)
                 {
-                    AgenteManifestacaoModel agenteResposta = await _agenteBLL.MontaAgente(responsavel.Id, responsavel.TipoAgente);
+                    AgenteManifestacaoModel agenteResposta = await _agenteBLL.MontaAgenteUsuario(responsavel.Id);
 
                     var idAgenteResposta = await _agenteBLL.AdicionarAgente(agenteResposta);
                     despachoModel.IdSituacaoDespacho = (int)Enums.SituacaoDespacho.Respondido;

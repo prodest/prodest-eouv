@@ -3,6 +3,7 @@ using Prodest.EOuv.Dominio.Modelo.Interfaces.BLL;
 using Prodest.EOuv.Dominio.Modelo.Interfaces.DAL;
 using Prodest.EOuv.Dominio.Modelo.Interfaces.Service;
 using Prodest.EOuv.Dominio.Modelo.Model;
+using Prodest.EOuv.Shared.Util;
 using System;
 using System.Threading.Tasks;
 
@@ -26,7 +27,32 @@ namespace Prodest.EOuv.Dominio.BLL
             return await _agenteRepository.AdicionarAgente(agente);
         }
 
-        public async Task<AgenteManifestacaoModel> MontaAgente(string idAgente, int tipoAgente)
+        public async Task<AgenteManifestacaoModel> MontaAgenteGrupo(string idAgente)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<AgenteManifestacaoModel> MontaAgenteSetor(string idAgente)
+        {
+            SetorModel setor = await _setorRepository.BuscarSetor(idAgente);
+
+            AgenteManifestacaoModel agente = new AgenteManifestacaoModel();
+
+            if (setor != null)
+            {
+                agente.GuidSetor = new Guid(idAgente);
+                agente.NomeSetor = setor.NomeSetor;
+                agente.SiglaSetor = setor.SiglaSetor;
+                agente.GuidOrgao = setor.Orgao.GuidOrgao;
+                agente.NomeOrgao = setor.Orgao.RazaoSocial;
+                agente.SiglaOrgao = setor.Orgao.SiglaOrgao;
+                agente.TipoAgente = (int)Enums.AgenteTipo.Unidade;
+            }
+
+            return agente;
+        }
+
+        public async Task<AgenteManifestacaoModel> MontaAgenteUsuario(string idAgente)
         {
             AgentePublicoPapelModel papel = await _acessoCidadaoService.GetPapel(idAgente);
             SetorModel setor = null;
@@ -34,33 +60,33 @@ namespace Prodest.EOuv.Dominio.BLL
             {
                 setor = await _setorRepository.BuscarSetor(papel.LotacaoGuid);
             }
-            AgenteManifestacaoModel AgenteResposta = new AgenteManifestacaoModel
+            AgenteManifestacaoModel agente = new AgenteManifestacaoModel
             {
                 GuidPapel = new Guid(idAgente),
                 NomePapel = papel.Nome,
                 GuidUsuario = papel.AgentePublicoSub,
                 NomeUsuario = papel.AgentePublicoNome,
                 GuidSetor = new Guid(papel.LotacaoGuid),
-                Tipo = (byte)tipoAgente
+                TipoAgente = (int)Enums.AgenteTipo.Papel
             };
             if (setor is not null)
             {
-                AgenteResposta.NomeSetor = setor.NomeSetor;
-                AgenteResposta.SiglaSetor = setor.SiglaSetor;
-                AgenteResposta.GuidOrgao = setor.Orgao.GuidOrgao;
-                AgenteResposta.NomeOrgao = setor.Orgao.RazaoSocial;
-                AgenteResposta.SiglaOrgao = setor.Orgao.SiglaOrgao;
+                agente.NomeSetor = setor.NomeSetor;
+                agente.SiglaSetor = setor.SiglaSetor;
+                agente.GuidOrgao = setor.Orgao.GuidOrgao;
+                agente.NomeOrgao = setor.Orgao.RazaoSocial;
+                agente.SiglaOrgao = setor.Orgao.SiglaOrgao;
                 /*
                 //TODO: Adicionar Dados do Patriarca na API de Carga do Organograma no eOuv antigo
                 AgenteResposta.GuidPatriarca = setor.Orgao.Patriaca.Guid;
                 AgenteResposta.NomePatriarca = setor.Orgao.Patriaca.RazaoSocial;
                 AgenteResposta.SiglaPatriarca = setor.Orgao.Patriaca.Sigla;
                 */
-                AgenteResposta.GuidPatriarca = new Guid("fe88eb2a-a1f3-4cb1-a684-87317baf5a57");
-                AgenteResposta.NomePatriarca = "ESTADO DO ESPIRITO SANTO";
-                AgenteResposta.SiglaPatriarca = "GOVES";
+                agente.GuidPatriarca = new Guid("fe88eb2a-a1f3-4cb1-a684-87317baf5a57");
+                agente.NomePatriarca = "ESTADO DO ESPIRITO SANTO";
+                agente.SiglaPatriarca = "GOVES";
             }
-            return AgenteResposta;
+            return agente;
         }
     }
 }

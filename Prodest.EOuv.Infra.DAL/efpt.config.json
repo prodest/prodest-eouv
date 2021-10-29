@@ -1,0 +1,41 @@
+﻿{
+   "CodeGenerationMode": 0,
+   "ContextClassName": "EouvContext",
+   "ContextNamespace": "Temp",
+   "DefaultDacpacSchema": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "ModelNamespace": "Temp",
+   "OutputContextPath": "Temp",
+   "OutputPath": "Temp",
+   "ProjectRootNamespace": "Prodest.EOuv.Infra.DAL",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 0,
+   "Tables": [
+      {
+         "Name": "[Ouvidoria].[AgenteManifestacao]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[Ouvidoria].[DespachoManifestacao]",
+         "ObjectType": 0
+      }
+   ],
+   "UiHint": "ITISRVDSDB06.eOuv",
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": false,
+   "UseDbContextSplitting": false,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseInflector": false,
+   "UseLegacyPluralizer": false,
+   "UseNoConstructor": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UseSchemaFolders": false,
+   "UseSpatial": false
+}

@@ -90,6 +90,10 @@ namespace Prodest.EOuv.Infra.DAL
                     .HasMaxLength(200)
                     .IsUnicode(false);
 
+                entity.Property(e => e.NomeGrupo)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.NomeOrgao)
                     .HasMaxLength(200)
                     .IsUnicode(false);
