@@ -35,13 +35,14 @@ const DespachoForm = {
                 DadosHistorico: false
             },
             urlDespachar: null,
-            urlCancelar: null
+            urlCancelar: null,
+            prazoAtendimentoManifestacao: null,
+            dataAtual: null
         }
     },
 
     mounted() {
         this.CarregarPapeisUsuario();
-        this.GerarDataPrazoResposta();
     },
 
     methods: {
@@ -51,12 +52,22 @@ const DespachoForm = {
         },
         CapturarDadosManifestacao(dadosBasicosManifestacao) {
             this.idManifestacao = dadosBasicosManifestacao.idManifestacao;
+            console.log(dadosBasicosManifestacao.prazoResposta);
+            this.prazoAtendimentoManifestacao = dadosBasicosManifestacao.prazoResposta;            
             this.MontarURLRedirecionamento();
+
+            this.GerarDataPrazoResposta();            
         },
         GerarDataPrazoResposta() {
             let data = new Date();
             data.setDate(data.getDate() + PrazoEmDias);
-            this.prazoResposta = utils.DataFormatada(data);
+
+            let fimAtendimento = new Date(utils.ConvertStringToDate(this.prazoAtendimentoManifestacao));
+
+            this.prazoResposta = utils.DataDiaMesAno(new Date()); //utils.DataDiaMesAno(data);
+
+            this.dataAtual = utils.DataDiaMesAno(new Date());
+            utils.CriarDatePickerPorClasse(document.getElementsByClassName('data-eouv'), new Date(), fimAtendimento);
         },
         IncluirCampoAnexo() {
             this.idCampoAnexo++;
