@@ -26,6 +26,7 @@ using System.Security.Claims;
 using Prodest.EOuv.Dominio.Modelo.Interfaces.Service;
 using System.Collections.Generic;
 using Prodest.EOuv.Infra.Service;
+using Prodest.Cache.Extensions.DependencyInjection;
 
 namespace Prodest.EOuv.Web.Admin
 {
@@ -127,6 +128,8 @@ namespace Prodest.EOuv.Web.Admin
                 options.KnownProxies.Clear();
             });
 
+            services.AddHierarchicalCache(Configuration.GetConnectionString("RedisConnection"));
+
             #region[=== Acesso Cidadão ===]
             services.AddAuthentication(options =>
             {
@@ -173,9 +176,6 @@ namespace Prodest.EOuv.Web.Admin
                                 IUsuarioProvider usuarioService = context.HttpContext.RequestServices.GetRequiredService<IUsuarioProvider>();
                                 await usuarioService.SetCurrent(context.Principal);
 
-                                //ISistemaService sistemaService = serviceProvider.GetRequiredService<ISistemaService>();
-
-
                                 IPermissaoService permissaoService = serviceProvider.GetRequiredService<IPermissaoService>();
                                 ICollection<KeyValuePair<string, string>> permissoes = await permissaoService.SearchByUsuarioAsync();
 
@@ -189,11 +189,6 @@ namespace Prodest.EOuv.Web.Admin
 
                                     context.Principal.AddIdentity(ci);
                                 }
-
-                                //ClaimsIdentity ci = new ClaimsIdentity(context.Principal.Identity.AuthenticationType);
-
-                                //ci.AddClaim(new Claim("Role", "Desenvolvedor"));
-                                //context.Principal.AddIdentity(ci);
                             }
                             catch (Exception e)
                             {
@@ -233,7 +228,14 @@ namespace Prodest.EOuv.Web.Admin
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("Desenvolvedor", policy => policy.RequireClaim("Role", "Desenvolvedor"));
+                //options.AddPolicy("Desenvolvedor", policy => policy.RequireClaim("Role", "Desenvolvedor")|| (policy.RequireClaim("Role", "Desenvolvedor")));
+                options.AddPolicy("Gestor", policy => policy.RequireClaim("Role", "Gestor"));
+
+                options.AddPolicy("Desenvolvedor", policy => policy.RequireAssertion(
+                context =>
+                       context.User.HasClaim(claim => (claim.Type.Equals("Role") && claim.Value.Equals("Desenvolvedor")))
+                    //Acao$Manifestação de Ouvidoria, Despachar
+                    || context.User.HasClaim(claim => (claim.Type.Equals("Acao$Manifestação de Ouvidoria") && claim.Value.Equals("Despachar")))));
             }
             );
 

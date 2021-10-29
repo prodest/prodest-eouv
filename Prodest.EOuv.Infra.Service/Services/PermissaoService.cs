@@ -11,13 +11,12 @@ namespace Prodest.EOuv.Infra.Service
     {
         private readonly IUsuarioLogadoModel Usuario;
 
-        private readonly IUsuarioProvider UsuarioProvider;
+        private readonly IUsuarioProvider _usuarioProvider;
 
         public PermissaoService(IUsuarioProvider usuarioProvider)
         {
             Usuario = usuarioProvider.GetCurrent();
-            UsuarioProvider = usuarioProvider;
-            Usuario = usuarioProvider.GetCurrent();
+            _usuarioProvider = usuarioProvider;
         }
 
         public async Task<ICollection<KeyValuePair<string, string>>> SearchByUsuarioAsync()
@@ -25,16 +24,10 @@ namespace Prodest.EOuv.Infra.Service
             return await SearchByUsuarioAsync(Usuario.IdExterno.Value, true);
         }
 
-        //public async Task<ICollection<AgenteModel>> GetAvailableAssinaturasAsync()
-        //{
-        //    List<AgenteModel> agentes = new List<AgenteModel>(Usuario.GetAvailableAssinaturas());
-
-        //    return agentes;
-        //}
 
         public async Task<ICollection<KeyValuePair<string, string>>> SearchByUsuarioAsync(Guid idUsuario, bool cache = true)
         {
-            UsuarioLogadoModel cidadao = (UsuarioLogadoModel)await UsuarioProvider.ObterCidadaoPorId(idUsuario);
+            UsuarioLogadoModel cidadao = (UsuarioLogadoModel)await _usuarioProvider.ObterCidadaoPorId(idUsuario);
 
             ICollection<KeyValuePair<string, string>> permissoes = null;
 
@@ -44,11 +37,5 @@ namespace Prodest.EOuv.Infra.Service
             return permissoes;
         }
 
-        //public async Task<ICollection<PerfilSistemaModel>> GetPerfisBySistemaIdAsync(Guid idSistema, bool trazerRecursos)
-        //{
-        //    ICollection<PerfilSistemaModel> perfis = await UnitOfWork.Repositories.Sistemas.SearchBySistemaIdAsync(idSistema, trazerRecursos);
-
-        //    return perfis;
-        //}
     }
 }

@@ -7,8 +7,6 @@ namespace Prodest.EOuv.Dominio.Modelo.Interfaces.Service
     public interface IPermissaoService
     {
         Task<ICollection<KeyValuePair<string, string>>> SearchByUsuarioAsync();
-        //Task<ICollection<AgenteModel>> GetAvailableAssinaturasAsync();
         Task<ICollection<KeyValuePair<string, string>>> SearchByUsuarioAsync(Guid idUsuario, bool cache = true);
-        //Task<ICollection<PerfilSistemaModel>> GetPerfisBySistemaIdAsync(Guid sistemaId, bool trazerRecursos);
     }
 }

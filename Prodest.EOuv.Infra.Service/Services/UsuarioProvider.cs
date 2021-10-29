@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Prodest.Cache.Extensions.Caching.Hierarchical;
 using Prodest.EOuv.Dominio.Modelo;
 using Prodest.EOuv.Dominio.Modelo.Interfaces.Service;
 using Prodest.EOuv.Dominio.Modelo.Model;
@@ -16,7 +17,7 @@ namespace Prodest.EOuv.Infra.Service
     {
 
         private readonly IMapper _mapper;
-        //private readonly IHierarchicalCache HierarchicalCache;
+        private readonly IHierarchicalCache _hierarchicalCache;
         private readonly IAcessoCidadaoService AcessoCidadaoService;
        //private readonly IVerificacaoRepository Verificacao;
        // private readonly ISistemaRepository Sistemas;
@@ -34,7 +35,7 @@ namespace Prodest.EOuv.Infra.Service
         public IEnumerable<Claim> Claims { get; private set; }
 
         public UsuarioProvider(
-            //IHierarchicalCache hierarchicalCache,
+            HierarchicalCache hierarchicalCache,
             IAcessoCidadaoService acessoCidadaoService,
             IMapper mapper
         //ISistemaRepository sistemas, IVerificacaoRepository verificacao,
@@ -45,7 +46,7 @@ namespace Prodest.EOuv.Infra.Service
         //IOrganizacaoRepository organizacaoRepository
         )
         {
-            //HierarchicalCache = hierarchicalCache;
+            _hierarchicalCache = hierarchicalCache;
             AcessoCidadaoService = acessoCidadaoService;
             _mapper = mapper;
             //Sistemas = sistemas;
@@ -79,26 +80,27 @@ namespace Prodest.EOuv.Infra.Service
 
         public async Task<IUsuarioLogadoModel> ObterCidadaoPorId(Guid idCidadao)
         {
-            //UsuarioLogadoModel cidadao = await HierarchicalCache.GetOrCreateAsync(
-            //    $"cidadao-{idCidadao}",
-            //    TimeSpan.FromMinutes(30),
-            //    async () =>
-            //    {
-            //        UsuarioLogadoModel cidadaoRetorno =
-            //            await AcessoCidadaoService.BuscaUsuarioAsync(idCidadao);
-
-            //        await PreencherUsuarioAsync(cidadaoRetorno);
-
-            //        return cidadaoRetorno;
-            //    }
-            //);
-
-            UsuarioLogadoModel cidadao =
+            UsuarioLogadoModel cidadao = await _hierarchicalCache.GetOrCreateAsync(
+                $"cidadao-{idCidadao}",
+                TimeSpan.FromMinutes(30),
+                //timespan.fromminutes(30),
+                async () =>
+                {
+                    UsuarioLogadoModel cidadao =
                        await AcessoCidadaoService.GetUsuarioAsync(idCidadao);
-            await PreencherUsuarioAsync(cidadao);
+                    await PreencherUsuarioAsync(cidadao);
 
-
+                    return cidadao;
+                }
+            );
             return cidadao;
+
+            //UsuarioLogadoModel cidadao =
+            //           await AcessoCidadaoService.GetUsuarioAsync(idCidadao);
+            //await PreencherUsuarioAsync(cidadao);
+
+
+            //return cidadao;
         }
 
         private async Task<UsuarioLogadoModel> FillCurrentUserAsync(Guid idUsuarioLogado)
