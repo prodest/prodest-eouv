@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Prodest.EOuv.Dominio.Modelo.Interfaces.DAL
@@ -16,5 +17,7 @@ namespace Prodest.EOuv.Dominio.Modelo.Interfaces.DAL
         Task AdicionarDespacho(DespachoManifestacaoModel despachoManifestacao);
 
         Task AtualizarDespacho(DespachoManifestacaoModel despachoManifestacao);
+
+        Task<List<Guid?>> ObterIdEncaminhamentoDespachoPorManifestacao(int idManifestacao);
     }
 }

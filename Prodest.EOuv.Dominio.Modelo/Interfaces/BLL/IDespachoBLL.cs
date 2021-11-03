@@ -23,5 +23,7 @@ namespace Prodest.EOuv.Dominio.Modelo.Interfaces.BLL
         Task ResponderDespacho(int idDespacho);
 
         Task EncerrarDespachoManualmente(int idDespacho);
+
+        Task<List<DocumentoControladoModel>> ObterDocumentosDespachoPorManifestacao(int idManifestacao);
     }
 }

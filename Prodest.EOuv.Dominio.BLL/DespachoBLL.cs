@@ -49,6 +49,23 @@ namespace Prodest.EOuv.Dominio.BLL
             return await _despachoRepository.ObterDespachoEDestinatario(IdDespachoManifestacao);
         }
 
+        public async Task<List<DocumentoControladoModel>> ObterDocumentosDespachoPorManifestacao(int idManifestacao)
+        {
+            var listaEncaminhamentosDespachos = await _despachoRepository.ObterIdEncaminhamentoDespachoPorManifestacao(idManifestacao);
+            List<DocumentoControladoModel> documentos = new List<DocumentoControladoModel>();
+
+            foreach (var idEncaminhamento in listaEncaminhamentosDespachos)
+            {
+                var listaDocumentos = await _edocsService.GetDocumentoEncaminhamento(idEncaminhamento.ToString());
+                foreach (var item in listaDocumentos)
+                {
+                    documentos.Add(item);
+                }
+            }
+
+            return documentos;
+        }
+
         public async Task AdicionarDespacho(DespachoManifestacaoModel despacho)
         {
             despacho.IdManifestacao = 366;
@@ -130,7 +147,7 @@ namespace Prodest.EOuv.Dominio.BLL
         public async Task EncerrarDespachoManualmente(int idDespacho)
         {
             DespachoManifestacaoModel despacho = await ObterDespachoPorId(idDespacho);
-            despacho.IdSituacaoDespacho = (int)Enums.SituacaoDespacho.Respondido;
+            despacho.IdSituacaoDespacho = (int)Enums.SituacaoDespacho.EncerradoManualmente;
             despacho.DataRespostaDespacho = DateTime.Now;
             await _despachoRepository.AtualizarDespacho(despacho);
         }

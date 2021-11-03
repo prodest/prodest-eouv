@@ -50,6 +50,21 @@ namespace Prodest.EOuv.Infra.DAL
             return null;
         }
 
+        public async Task<List<Guid?>> ObterIdEncaminhamentoDespachoPorManifestacao(int idManifestacao)
+        {
+            try
+            {
+                List<Guid?> listaIdEncaminhamentoDespachoManifestacao = await _eouvContext.DespachoManifestacao.Where(d => d.IdManifestacao == idManifestacao)
+                                                                                        .Select(d => d.IdEncaminhamento)
+                                                                                        .ToListAsync();
+                var retorno = listaIdEncaminhamentoDespachoManifestacao;
+                return retorno;
+            }
+            catch (Exception ex)
+            { }
+            return null;
+        }
+
         public async Task<DespachoManifestacaoModel> ObterDespachoEDestinatario(int IdDespachoManifestacao)
         {
             var despachoManifestacao = await _eouvContext.DespachoManifestacao.Where(d => d.IdDespachoManifestacao == IdDespachoManifestacao)

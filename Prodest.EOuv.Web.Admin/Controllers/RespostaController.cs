@@ -12,15 +12,17 @@ namespace Prodest.EOuv.Web.Admin.Controllers
     public class RespostaController : Controller
     {
         private readonly IRespostaWorkService _respostaWorkService;
+        private readonly IDespachoWorkService _despachoWorkService;
 
-        public RespostaController(IRespostaWorkService respostaWorkService)
+        public RespostaController(IRespostaWorkService respostaWorkService, IDespachoWorkService despachoWorkService)
         {
             _respostaWorkService = respostaWorkService;
+            _despachoWorkService = despachoWorkService;
         }
 
         public IActionResult Index()
         {
-            return RedirectToAction(nameof(ResponderManifestacao), new { id = 583 });
+            return View();
         }
 
         public async Task<IActionResult> ObterResultadosRespostaPorTipologia()
@@ -35,9 +37,8 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             return Json(listaOrgaosCompetenciaFato);
         }
 
-        public async Task<IActionResult> ResponderManifestacao(int id)
+        public async Task<IActionResult> ResponderManifestacao()
         {
-            TempData["idManifestacao"] = id;
             return View();
         }
 
@@ -52,6 +53,12 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             await _respostaWorkService.ResponderManifestacao(respostaEntry);
 
             return Json(respostaEntry.IdManifestacao);
+        }
+
+        public async Task<IActionResult> ObterDocumentosEncaminhamentoEDocs(int id)
+        {
+            var listaDocumentos = await _despachoWorkService.ObterDocumentosEncaminhamentoEDocs(id);
+            return Json(listaDocumentos);
         }
     }
 }

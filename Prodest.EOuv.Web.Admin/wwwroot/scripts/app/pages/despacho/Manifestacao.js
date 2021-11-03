@@ -67,12 +67,12 @@
     },
 
     async mounted() {
-        await this.ObterParametrosQueryString();
+        this.ObterParametrosQueryString();
         await this.obterManifestacao();
     },
 
     methods: {
-        async ObterParametrosQueryString() {
+        ObterParametrosQueryString() {
             this.idManifestacao = utils.obterRequestParameter('id')
         },
 
