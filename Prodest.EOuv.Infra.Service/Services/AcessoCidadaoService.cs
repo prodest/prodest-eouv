@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
-using Prodest.EOuv.Dominio.Modelo;
 using Prodest.EOuv.Dominio.Modelo.Interfaces.Service;
 using Prodest.EOuv.Dominio.Modelo.Model;
+using Prodest.EOuv.Dominio.Modelo.Model.AcessoCidadao;
 using Prodest.EOuv.Shared.Util;
 using Prodest.EOuv.Shared.Utils;
 
@@ -15,23 +16,28 @@ namespace Prodest.EOuv.Infra.Service
     public class AcessoCidadaoService : IAcessoCidadaoService
     {
         private readonly string _baseUrl;
+        private readonly string _baseUrlRestrito;
         private readonly int _cacheExpirationHours;
         private readonly IMemoryCache _memoryCache;
         private readonly IApiContext _apiContext;
         private readonly IOrganogramaService _organogramaService;
+        private readonly IMapper _mapper;
 
         public AcessoCidadaoService(
             IConfiguration configuration,
             IMemoryCache memoryCache,
             IApiContext apiContext,
-            IOrganogramaService organogramaService
+            IOrganogramaService organogramaService,
+            IMapper mapper
         )
         {
             _baseUrl = configuration.GetValue<string>("ApiUrls:AcessoCidadao");
+            _baseUrlRestrito = configuration.GetValue<string>("ApiUrls:AcessoCidadaoRestrito");
             _cacheExpirationHours = configuration.GetValue<int>("CacheExpirationHours:ApiAcessoCidadao");
             _memoryCache = memoryCache;
             _apiContext = apiContext;
             _organogramaService = organogramaService;
+            _mapper = mapper;
         }
 
         // ======================
@@ -109,6 +115,124 @@ namespace Prodest.EOuv.Infra.Service
             }
 
             return ret.ToArray();
+        }
+
+        public async Task<List<PapelLogado>> GetPapeisPorCidadaoAsync(Guid idCidadao)
+        {
+            List<PapelLogadoModel> retorno;
+
+            string url = $"{_baseUrl}/agentepublico/{idCidadao.ToString()}/papeis";
+
+            List<PapelLogado> papeis = await GetRequest<List<PapelLogado>>(url);
+
+            return papeis;
+        }
+
+        public async Task<UsuarioLogadoModel> GetUsuarioAsync(Guid id)
+        {
+            UsuarioLogadoModel retorno;
+            string url = $"{_baseUrlRestrito}/cidadao/{id.ToString()}";
+
+            UsuarioLogado usuario = await GetRequest<UsuarioLogado>(url);
+
+            retorno = _mapper.Map<UsuarioLogadoModel>(usuario);
+
+
+            return retorno;
+        }
+
+        public async Task<ICollection<(ICollection<PerfilLogadoModel> perfis, Guid papel)>> SearchPerfisPorPapelByUsuarioAsync(Guid idCidadao)
+        {
+            ICollection<(ICollection<PerfilLogadoModel> perfis, Guid papel)> perfisPorPapel =
+                new List<(ICollection<PerfilLogadoModel> perfis, Guid papel)>();
+
+            string url = $"{_baseUrlRestrito}/usuario/{idCidadao.ToString()}/permissoes";
+
+
+            Permissao permissaoAC = await GetRequest<Permissao>(url);
+
+            if (permissaoAC?.Papeis?.Count > 0)
+            {
+                foreach (PapelPermissao papelPermissaoAC in permissaoAC.Papeis)
+                {
+                    if (!string.IsNullOrWhiteSpace(papelPermissaoAC.LotacaoGuid))
+                    {
+                        ICollection<PerfilLogadoModel> perfis = null;
+
+                        if (papelPermissaoAC?.Perfis?.Count > 0)
+                        {
+                            perfis = new List<PerfilLogadoModel>();
+
+                            foreach (var perfilAC in papelPermissaoAC.Perfis)
+                            {
+                                //Obterndo a Localização do Perfil do Papel
+                                ICollection<Guid> localizacoesPerfil = new List<Guid>();
+
+                                if (perfilAC?.Orgaos?.Count > 0)
+                                {
+                                    List<Guid> orgaos = perfilAC.Orgaos
+                                        .GroupBy(o => o.Guid)
+                                        .Select(o => new Guid(o.Key))
+                                        .ToList();
+
+                                    if (orgaos?.Count > 0)
+                                        localizacoesPerfil = orgaos;
+                                }
+
+                                //Obtendo os recursos do Perfil
+                                ICollection<RecursoModel> recursos = null;
+                                if (perfilAC.Recursos != null && perfilAC.Recursos.Any())
+                                {
+                                    recursos = new List<RecursoModel>();
+
+                                    foreach (RecursoModel recurso in perfilAC.Recursos)
+                                    {
+                                        if (recurso != null)
+                                        {
+                                            ICollection<AcaoModel> acoes = null;
+
+                                            if (recurso.Acoes != null && recurso.Acoes.Any())
+                                            {
+                                                acoes = recurso.Acoes
+                                                    .Select(a => new AcaoModel
+                                                    {
+                                                        IdentificadorExterno = new Guid(a.Guid),
+                                                        Nome = a.Nome,
+                                                        Descricao = a.Descricao
+                                                    })
+                                                    .ToList();
+                                            }
+
+                                            recursos.Add(new RecursoModel
+                                            {
+                                                IdentificadorExterno = new Guid(recurso.Guid),
+                                                Nome = recurso.Nome,
+                                                Descricao = recurso.Descricao,
+                                                Acoes = acoes.ToArray()
+                                            }); 
+                                        }
+                                    }
+                                }
+
+                                PerfilLogadoModel perfil = new PerfilLogadoModel
+                                {
+                                    IdExterno = new Guid(perfilAC.Guid),
+                                    Nome = perfilAC.Nome,
+                                    Descricao = perfilAC.Descricao,
+                                    //IdsLocalizacoes = localizacoesPerfil,
+                                    Recursos = recursos.ToArray()
+                                };
+
+                                perfis.Add(perfil);
+                            }
+                        }
+
+                        perfisPorPapel.Add((perfis, new Guid(papelPermissaoAC.Guid)));
+                    }
+                }
+            }
+
+            return perfisPorPapel;
         }
 
         // ======================
