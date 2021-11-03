@@ -58,13 +58,16 @@
                             <td>{{despacho.prazoRespostaFormat}}</td>
                             <td>{{despacho.dataRespostaDespachoFormat}}</td>
                             <td>{{despacho.situacaoDespacho.descSituacaoDespacho}}</td>
-                            <td class="text-center"><a class="btn btn-dark btn-sm" v-on:click="Detalhar()"><i class="fas fa-stream"></i> Detalhar</a> <a class="btn btn-warning btn-sm" v-if="despacho.dataRespostaDespachoFormat == ''" v-on:click="EncerrarDespachoManualmente(despacho.idDespachoManifestacao)"><i class="fas fa-undo"></i> Encerrar</a></td>
+                            <td class="text-center">
+                            <a class="btn btn-dark btn-sm" v-on:click="Detalhar()"><i class="fas fa-stream"></i> Detalhar</a> 
+                            <a class="btn btn-warning btn-sm" v-if="despacho.dataRespostaDespachoFormat == ''" v-on:click="EncerrarDespachoManualmente(despacho.idDespachoManifestacao)"><i class="fas fa-undo"></i> Encerrar</a></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
             <div class="card-footer">
-                <a class="btn btn-success btn-sm float-end" v-bind:href="urlResponderManifestacao"><i class="fas fa-edit"></i> Responder Manifestação</a>
+                <a class="btn btn-success float-end" v-if="LiberarResposta" v-bind:href="urlResponderManifestacao"><i class="fas fa-edit"></i> Responder Manifestação</a>
+                <a class="btn btn-success float-end disabled" v-if="!LiberarResposta" v-bind:href="urlResponderManifestacao"><i class="fas fa-edit"></i> Responder Manifestação</a>
             </div>
         </div>
     </script>

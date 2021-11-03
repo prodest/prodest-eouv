@@ -8,6 +8,7 @@
             listaDespachos: null,
             urlNovoDespacho: null,
             urlResponderManifestacao: null,
+            liberarResposta: false
         }
     },
 
@@ -28,13 +29,22 @@
         async CarregarListaDespachos() {
             let ret = await eOuvApi.ObterDespachosPorManifestacao(this.idManifestacao);
             this.listaDespachos = ret;
+            this.LiberarResposta(this.listaDespachos);
             console.log(this.listaDespachos);
         },
         Detalhar() {
         },
         async EncerrarDespachoManualmente(id) {
             await eOuvApi.EncerrarDespachoManualmente(id);
-            window.location.href = "/Despacho?id=" + this.idManifestacao;
+            this.CarregarListaDespachos();
+            //window.location.href = "/Despacho?id=" + this.idManifestacao;
+        },
+        LiberarResposta(listaDespachos) {
+            let novalista = this.listaDespachos.filter(this.DespachosEncerrados);
+            this.liberarResposta = novalista.length > 0 ? false : true;
+        },
+        DespachosEncerrados(item) {
+            return item.dataSolicitacaoDespachoFormat != '';
         },
     }
 };

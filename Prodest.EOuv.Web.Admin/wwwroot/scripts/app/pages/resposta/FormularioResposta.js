@@ -47,7 +47,7 @@
             let ret = await eOuvApi.ObterResultadosRespostaPorTipologia();
             this.resultadosRespostaPorTipologia = ret;
             this.resultadosRespostaPositiva = this.resultadosRespostaPorTipologia.filter(this.ApenasPositivo);
-            this.resultadosRespostaNegativa = this.resultadosRespostaPorTipologia.filter(this.ApenasNegativo);
+            this.resultadosRespostaNegativa = this.resultadosRespostaPorTipologia.filter(this.ApenasNegativo);            
         },
 
         async ObterOrgaosCompetenciaFato() {
@@ -61,6 +61,26 @@
         },
 
         async Responder() {
+            (function () {
+                'use strict'
+
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.querySelectorAll('.needs-validation')
+
+                // Loop over them and prevent submission
+                Array.prototype.slice.call(forms)
+                    .forEach(function (form) {
+                        form.addEventListener('submit', function (event) {
+                            if (!form.checkValidity()) {
+                                event.preventDefault()
+                                event.stopPropagation()
+                            }
+
+                            form.classList.add('was-validated')
+                        }, false)
+                    })
+            })();
+
             let entry = {
                 IdManifestacao: this.manifestacao,
                 TextoResposta: this.textoResposta,
@@ -69,7 +89,8 @@
                 Anexos: this.textoResposta
             }
             console.log(entry);
-            await eOuvApi.Responder(entry);
+            return false;
+            //await eOuvApi.Responder(entry);
         }
     }
 };
