@@ -79,8 +79,7 @@
         for (let i = 0; i < listaElemento.length; i++) {
             console.log(listaElemento[i]);
             let options = {
-                clearBtn: true,
-                todayBtn: true,
+                clearBtn: true,                
                 todayHighlight: true,
                 daysOfWeekDisabled: [0, 6],
                 format: 'dd/mm/yyyy'
@@ -91,7 +90,7 @@
             }
             if (fim != null) {
                 options.maxDate = fim;
-            }
+            }           
 
             options.language = "pt-BR";
 

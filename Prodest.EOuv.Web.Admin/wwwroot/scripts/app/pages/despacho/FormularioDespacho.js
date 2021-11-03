@@ -42,7 +42,7 @@ const DespachoForm = {
     },
 
     mounted() {
-        this.CarregarPapeisUsuario();
+        this.CarregarPapeisUsuario();        
     },
 
     methods: {
@@ -62,13 +62,13 @@ const DespachoForm = {
             let data = new Date();
             data.setDate(data.getDate() + PrazoEmDias);
 
-            let fimAtendimento = new Date(utils.ConvertStringToDate(this.prazoAtendimentoManifestacao));
-
-            this.prazoResposta = utils.DataDiaMesAno(new Date()); //utils.DataDiaMesAno(data);
+            let fimAtendimento = new Date(utils.ConvertStringToDate(this.prazoAtendimentoManifestacao));            
 
             this.dataAtual = utils.DataDiaMesAno(new Date());
             utils.CriarDatePickerPorClasse(document.getElementsByClassName('data-eouv'), new Date(), fimAtendimento);
+            this.prazoResposta = this.dataAtual;
         },
+
         IncluirCampoAnexo() {
             this.idCampoAnexo++;
             this.campoAnexo.push('file-' + (this.idCampoAnexo));
@@ -81,7 +81,30 @@ const DespachoForm = {
             let ret = await eOuvApi.PapeisUsuarioEDocs();
             this.papeisUsuario = ret;
         },
-        async Despachar() {
+        async Despachar(e) {
+
+            (function () {
+                'use strict'
+
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.querySelectorAll('.needs-validation')
+
+                // Loop over them and prevent submission
+                Array.prototype.slice.call(forms)
+                    .forEach(function (form) {
+                        form.addEventListener('submit', function (event) {
+                            if (!form.checkValidity()) {
+                                event.preventDefault()
+                                event.stopPropagation()
+                            }
+
+                            form.classList.add('was-validated')
+                        }, false)
+                    })
+            })();
+
+
+            //e.preventDefault();
             let entry = {
                 IdManifestacao: this.idManifestacao,
                 IdOrgao: 0,
@@ -91,10 +114,15 @@ const DespachoForm = {
                 FiltroDadosManifestacaoSelecionados: JSON.parse(JSON.stringify(this.dadosManifestacaoSelecionados)),
                 GuidPapelDestinatario: this.destinatarioSelecionado,
                 GuidPapelResponsavel: this.papelSelecionado
-            }
+            }            
             console.log(entry);
-            await eOuvApi.despachar(entry);
+
+            return false;
+            //await eOuvApi.despachar(entry);
             /*            window.location.href = "/Despacho/AcompanharDespachos/" + this.idManifestacao;*/
+        },
+        GetDate(e) {
+            this.prazoResposta = e.target.value;
         },
         ToggleDadosManifestacaoSelecionados(e) {
             console.log(e)
