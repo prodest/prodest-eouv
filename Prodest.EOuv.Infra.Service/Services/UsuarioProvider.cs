@@ -35,7 +35,7 @@ namespace Prodest.EOuv.Infra.Service
         public IEnumerable<Claim> Claims { get; private set; }
 
         public UsuarioProvider(
-            HierarchicalCache hierarchicalCache,
+            IHierarchicalCache hierarchicalCache,
             IAcessoCidadaoService acessoCidadaoService,
             IMapper mapper
         //ISistemaRepository sistemas, IVerificacaoRepository verificacao,

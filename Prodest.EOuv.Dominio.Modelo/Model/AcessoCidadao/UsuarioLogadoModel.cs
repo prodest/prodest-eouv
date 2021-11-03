@@ -43,7 +43,7 @@ namespace Prodest.EOuv.Dominio.Modelo.Model.AcessoCidadao
                             {
                                 if (perfil != null)
                                 {
-                                    permissoes.Add(new KeyValuePair<string, string>("Role", perfil.Nome));
+                                    permissoes.Add(new KeyValuePair<string, string>("Role", perfil.IdExterno.ToString()));
 
                                     if (perfil.Recursos != null && perfil.Recursos.Any())
                                     {
@@ -51,7 +51,7 @@ namespace Prodest.EOuv.Dominio.Modelo.Model.AcessoCidadao
                                         {
                                             if (recurso != null)
                                             {
-                                                KeyValuePair<string, string> permissaoRecurso = new KeyValuePair<string, string>("Recurso", recurso.Nome);
+                                                KeyValuePair<string, string> permissaoRecurso = new KeyValuePair<string, string>("Recurso", recurso.IdentificadorExterno.ToString());
                                                 permissoes.Add(permissaoRecurso);
 
                                                 if (recurso.Acoes != null && recurso.Acoes.Any())
@@ -60,7 +60,7 @@ namespace Prodest.EOuv.Dominio.Modelo.Model.AcessoCidadao
                                                     {
                                                         if (acao != null)
                                                         {
-                                                            KeyValuePair<string, string> permissaoRecursoAcao = new KeyValuePair<string, string>($"Acao${recurso.Nome}", acao.Nome);
+                                                            KeyValuePair<string, string> permissaoRecursoAcao = new KeyValuePair<string, string>($"Acao${recurso.Nome}", acao.IdentificadorExterno.ToString());
                                                             permissoes.Add(permissaoRecursoAcao);
                                                         }
                                                     }

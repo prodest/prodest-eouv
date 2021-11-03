@@ -8,7 +8,6 @@ using Prodest.EOuv.Infra.Service;
 using Prodest.EOuv.Dominio.Modelo.Interfaces.Service;
 using Prodest.EOuv.Dominio.Modelo.Interfaces.BLL;
 using Prodest.EOuv.Dominio.Modelo.Interfaces.DAL;
-using Prodest.Cache.Extensions.Caching.Hierarchical;
 
 namespace Prodest.EOuv.Shared.Configuracao
 {
@@ -37,7 +36,6 @@ namespace Prodest.EOuv.Shared.Configuracao
             services.AddScoped<IRespostaRepository, RespostaRepository>();
             services.AddScoped<IAgenteRepository, AgenteRepository>();
             services.AddScoped<ISetorRepository, SetorRepository>();
-            services.AddScoped<IHierarchicalCache, HierarchicalCache>();
             services.AddScoped<IUsuarioProvider, UsuarioProvider>();
             services.AddScoped<IPermissaoService, PermissaoService>();      
         }

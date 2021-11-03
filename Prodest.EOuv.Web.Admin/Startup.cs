@@ -27,6 +27,7 @@ using Prodest.EOuv.Dominio.Modelo.Interfaces.Service;
 using System.Collections.Generic;
 using Prodest.EOuv.Infra.Service;
 using Prodest.Cache.Extensions.DependencyInjection;
+using Prodest.Cache.Extensions.Caching.Hierarchical;
 
 namespace Prodest.EOuv.Web.Admin
 {
@@ -113,6 +114,7 @@ namespace Prodest.EOuv.Web.Admin
             services.AddControllersWithViews();
             services.AddSingleton(Configuration);
             services.AddDbContext<EouvContext>();
+            services.AddHierarchicalCache(Configuration.GetConnectionString("RedisConnection"));
             services.InjetarDependencias();
             services.AddHttpContextAccessor();
             services.AddHttpClient();
@@ -128,7 +130,6 @@ namespace Prodest.EOuv.Web.Admin
                 options.KnownProxies.Clear();
             });
 
-            services.AddHierarchicalCache(Configuration.GetConnectionString("RedisConnection"));
 
             #region[=== Acesso Cidadão ===]
             services.AddAuthentication(options =>
@@ -153,10 +154,10 @@ namespace Prodest.EOuv.Web.Admin
                                     .FirstOrDefault();
 
                                 IServiceProvider serviceProvider = context.HttpContext.RequestServices;
-                                //IHierarchicalCache hierarchicalCache = serviceProvider.GetRequiredService<IHierarchicalCache>();
+                                IHierarchicalCache hierarchicalCache = serviceProvider.GetRequiredService<IHierarchicalCache>();
 
-                                //await hierarchicalCache.RemoveKeyAsync($"cidadao-{idUsuario}");
-                                //await hierarchicalCache.RemoveKeyAsync($"cidadao-verificacao-de-conta-{idUsuario}");
+                                await hierarchicalCache.RemoveKeyAsync($"cidadao-{idUsuario}");
+                                await hierarchicalCache.RemoveKeyAsync($"cidadao-verificacao-de-conta-{idUsuario}");
                             }
                             catch (Exception e)
                             {
@@ -229,13 +230,13 @@ namespace Prodest.EOuv.Web.Admin
             services.AddAuthorization(options =>
             {
                 //options.AddPolicy("Desenvolvedor", policy => policy.RequireClaim("Role", "Desenvolvedor")|| (policy.RequireClaim("Role", "Desenvolvedor")));
-                options.AddPolicy("Gestor", policy => policy.RequireClaim("Role", "Gestor"));
+                options.AddPolicy("Gestor", policy => policy.RequireClaim("Role", "ef6e936b-e90b-4112-bba1-0ec1793c0aaa"));// id do Gestor no AcessoCidadao
 
                 options.AddPolicy("Desenvolvedor", policy => policy.RequireAssertion(
                 context =>
-                       context.User.HasClaim(claim => (claim.Type.Equals("Role") && claim.Value.Equals("Desenvolvedor")))
+                       context.User.HasClaim(claim => (claim.Type.Equals("Role") && claim.Value.Equals("Desenvolvedor"))) //de teste essa role não existe
                     //Acao$Manifestação de Ouvidoria, Despachar
-                    || context.User.HasClaim(claim => (claim.Type.Equals("Acao$Manifestação de Ouvidoria") && claim.Value.Equals("Despachar")))));
+                    || context.User.HasClaim(claim => (claim.Type.Equals("Acao$Manifestação de Ouvidoria") && claim.Value.Equals("a8d67f7e-5f59-44fa-ab01-a3ac53fc6227"))))); //id do Gestor no Despachar AcessoCidadao
             }
             );
 
