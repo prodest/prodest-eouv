@@ -9,8 +9,8 @@
         return ret;
     },
 
-    async obterDadosManifestacao(id) {
-        let ret = await fetchData.fetchGetJson(`/Despacho/ObterDadosManifestacao/` + id);
+    async obterDadosCompletosManifestacao(id) {
+        let ret = await fetchData.fetchGetJson(`/Despacho/ObterDadosCompletosManifestacao/` + id);
         return ret;
     },
 

@@ -43,6 +43,7 @@ namespace Prodest.EOuv.Shared.Configuracao
             CreateMap<AnotacaoManifestacaoModel, AnotacaoManifestacaoViewModel>();
             CreateMap<ReclamacaoOmissao, ReclamacaoOmissaoModel>().ReverseMap();
             CreateMap<ReclamacaoOmissaoModel, ReclamacaoOmissaoViewModel>();
+            CreateMap<RecursoNegativa, RecursoNegativaModel>();
             CreateMap<RecursoNegativaModel, RecursoNegativaViewModel>();
             CreateMap<HistoricoManifestacao, HistoricoManifestacaoModel>().ReverseMap();
             CreateMap<HistoricoManifestacaoModel, HistoricoManifestacaoViewModel>().ReverseMap();
@@ -67,6 +68,7 @@ namespace Prodest.EOuv.Shared.Configuracao
             CreateMap<Pessoa, PessoaModel>().ReverseMap();
             CreateMap<PessoaModel, PessoaViewModel>().ReverseMap();
             CreateMap<ResultadoResposta, ResultadoRespostaModel>().ReverseMap();
+            CreateMap<ResultadoRespostaModel, ResultadoRespostaViewModel>().ReverseMap();
             CreateMap<SituacaoManifestacao, SituacaoManifestacaoModel>().ReverseMap();
             CreateMap<SituacaoManifestacaoModel, SituacaoManifestacaoViewModel>().ReverseMap();
             CreateMap<SituacaoDespacho, SituacaoDespachoModel>().ReverseMap();

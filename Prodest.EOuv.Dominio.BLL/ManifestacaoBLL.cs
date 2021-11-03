@@ -47,6 +47,7 @@ namespace Prodest.EOuv.Dominio.BLL
             manifestacaoModel.EncaminhamentoManifestacao = await ObterDadosEncaminhamento(idManifestacao);
             manifestacaoModel.RespostaManifestacao = await ObterDadosResposta(idManifestacao);
             manifestacaoModel.ApuracaoManifestacao = await ObterDadosApuracao(idManifestacao);
+            manifestacaoModel.DespachoManifestacao = await ObterDadosDespacho(idManifestacao);
             manifestacaoModel.NotificacaoManifestacao = await ObterDadosNotificacao(idManifestacao);
             manifestacaoModel.AnotacaoManifestacao = await ObterDadosAnotacao(idManifestacao);
             manifestacaoModel.InterpelacaoManifestacao = await ObterDadosInterpelacao(idManifestacao);

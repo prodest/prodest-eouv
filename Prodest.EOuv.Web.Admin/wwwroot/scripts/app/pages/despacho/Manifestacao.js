@@ -77,7 +77,7 @@
         },
 
         async obterManifestacao() {
-            let ret = await eOuvApi.obterDadosManifestacao(this.idManifestacao);
+            let ret = await eOuvApi.obterDadosCompletosManifestacao(this.idManifestacao);
             console.log(ret);
             //Dados Basicos da Manifestacao
             this.titulo += ` (${ret.numProtocolo})`;
@@ -89,7 +89,7 @@
             this.dadosBasicos.orgaoAtual.siglaOrgao = ret.orgaoResponsavel.siglaOrgao;
             this.dadosBasicos.orgaoDestinatario.nomeFantasia = ret.orgaoInteresse.nomeFantasia;
             this.dadosBasicos.orgaoDestinatario.siglaOrgao = ret.orgaoInteresse.siglaOrgao;
-            this.dadosBasicos.usuarioCadastrador = ret.usuarioCadastrador;
+            this.dadosBasicos.usuarioCadastrador = ret.registradoPorFormat;
             this.dadosBasicos.canalEntrada = ret.canalEntrada.descCanalEntrada;
             this.dadosBasicos.modoResposta = ret.modoResposta.descModoResposta;
             this.dadosBasicos.assunto = ret.assunto.descAssunto;
@@ -100,25 +100,34 @@
             this.$emit('capturar-dados-manifestacao', this.dadosBasicos);
 
             //Teor da Manifestacao
-            this.PreencheTeorManifestacao(ret.textoManifestacao, ret.localFato);
+            this.PreencherTeorManifestacao(ret.textoManifestacao, ret.municipioLocalFatoFormat);
 
             //Dados do Manifestante
             this.PreencherDadosManifestante(ret.pessoa);
 
-            //Dados de Histórico
-            ret.historicoManifestacao.forEach(this.PreencherHistoricoManifestacao);
+            //Dados Complementos
+            ret.complementoManifestacao.forEach(this.PreencherComplementoManifestacao);
 
-            //Dados da Resposta
-            ret.respostaManifestacao.forEach(this.PreencherRespostaManifestacao)
-
-            //Dados Despacho
-            ret.despachoManifestacao.forEach(this.PreencherDespachoManifestacao);
+            //Dados Anexos
+            ret.anexoManifestacao.forEach(this.PreencherAnexoManifestacao);
 
             //Dados Prorrogação
             ret.prorrogacaoManifestacao.forEach(this.PreencherProrrogacaoManifestacao);
 
+            //Dados Diligência
+            ret.diligenciaManifestacao.forEach(this.PreencherDiligenciaManifestacao);
+
             //Dados Encaminhamentos
             ret.encaminhamentoManifestacao.forEach(this.PreencherEncaminhamentoManifestacao);
+
+            //Dados da Resposta
+            ret.respostaManifestacao.forEach(this.PreencherRespostaManifestacao)
+
+            //Dados Apuração
+            ret.apuracaoManifestacao.forEach(this.PreencherApuracaoManifestacao);
+
+            //Dados Despacho
+            ret.despachoManifestacao.forEach(this.PreencherDespachoManifestacao);
 
             //Dados Notificações
             ret.notificacaoManifestacao.forEach(this.PreencherNotificacoes);
@@ -126,20 +135,23 @@
             //Dados Anotações
             ret.anotacaoManifestacao.forEach(this.PreencherAnotacaoManifestacao);
 
-            //Dados Anotações
-            ret.diligenciaManifestacao.forEach(this.PreencherDiligenciaManifestacao);
+            //Dados Interpelação
+            ret.interpelacaoManifestacao.forEach(this.PreencherInterpelacaoManifestacao);
 
-            //Dados Apuração
-            ret.apuracaoManifestacao.forEach(this.PreencherApuracaoManifestacao);
+            //Dados Reclamação de Omissão
+            ret.reclamacaoOmissao.forEach(this.PreencherReclamacaoOmissao);
 
-            //Dados Complementos
-            ret.complementoManifestacao.forEach(this.PreencherComplementoManifestacao);
+            //Dados Recurso Negativa
+            ret.recursoNegativa.forEach(this.PreencherRecursoNegativa);
 
-            //Dados Anexos
-            ret.anexoManifestacao.forEach(this.PreencherAnexoManifestacao);
+            //Dados Desdrobramento
+            ret.desdobramentoManifestacao.forEach(this.PreencherDesdobramentoManifestacao);
+
+            //Dados de Histórico
+            ret.historicoManifestacao.forEach(this.PreencherHistoricoManifestacao);
         },
 
-        async PreencheTeorManifestacao(txtManifestacao, local) {
+        async PreencherTeorManifestacao(txtManifestacao, local) {
             //Dados da Manifestante
             this.teorManifestacao.textoManifestacao = txtManifestacao;
             this.teorManifestacao.localFato = local;
@@ -149,7 +161,7 @@
             //Dados da Manifestante
             this.dadosManifestante.nome = item.nome;
             this.dadosManifestante.cpf = item.cpf;
-            this.dadosManifestante.genero = item.sexo;
+            this.dadosManifestante.genero = item.sexoFormat;
             this.dadosManifestante.telefone = item.telefone;
             this.dadosManifestante.email = item.email;
             this.dadosManifestante.cnpj = item.cnpj;
@@ -163,8 +175,32 @@
             this.dadosManifestante.bairro = item.bairro;
         },
 
+        async PreencherComplementoManifestacao(item) {
+            this.complementoManifestacao.push(item);
+        },
+
+        async PreencherAnexoManifestacao(item) {
+            this.anexoManifestacao.push(item);
+        },
+
+        async PreencherProrrogacaoManifestacao(item) {
+            this.prorrogacaoManifestacao.push(item);
+        },
+
+        async PreencherDiligenciaManifestacao(item) {
+            this.diligenciaManifestacao.push(item);
+        },
+
+        async PreencherEncaminhamentoManifestacao(item) {
+            this.encaminhamentoManifestacao.push(item);
+        },
+
         async PreencherRespostaManifestacao(item,) {
             this.respostaManifestacao.push(item);
+        },
+
+        async PreencherApuracaoManifestacao(item) {
+            this.apuracaoManifestacao.push(item);
         },
 
         async PreencherDespachoManifestacao(item) {
@@ -175,52 +211,24 @@
             this.notificacaoManifestacao.push(item);
         },
 
-        async PreencheReclamacaoOmissao(item) {
-            this.reclamacaoOmissao.push(item);
-        },
-
-        async PreencheRecursoNegativa(item) {
-            this.recursoNegativa.push(item);
-        },
-
-        async PreencheReclamacaoOmissao(item) {
-            this.reclamacaoOmissao.push(item);
-        },
-
-        async PreencherProrrogacaoManifestacao(item) {
-            this.prorrogacaoManifestacao.push(item);
-        },
-
-        async PreencheInterpelacaoManifestacao(item) {
-            this.interpelacaoManifestacao.push(item);
-        },
-
         async PreencherAnotacaoManifestacao(item) {
             this.anotacaoManifestacao.push(item);
         },
 
-        async PreencherAnexoManifestacao(item) {
-            this.anexoManifestacao.push(item);
+        async PreencherInterpelacaoManifestacao(item) {
+            this.interpelacaoManifestacao.push(item);
         },
 
-        async PreencherApuracaoManifestacao(item) {
-            this.apuracaoManifestacao.push(item);
+        async PreencherReclamacaoOmissao(item) {
+            this.reclamacaoOmissao.push(item);
         },
 
-        async PreencherComplementoManifestacao(item) {
-            this.complementoManifestacao.push(item);
+        async PreencherRecursoNegativa(item) {
+            this.recursoNegativa.push(item);
         },
 
         async PreencherDesdobramentoManifestacao(item) {
             this.desdobramentoManifestacao.push(item);
-        },
-
-        async PreencherDiligenciaManifestacao(item) {
-            this.diligenciaManifestacao.push(item);
-        },
-
-        async PreencherEncaminhamentoManifestacao(item) {
-            this.encaminhamentoManifestacao.push(item);
         },
 
         async PreencherHistoricoManifestacao(item) {

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Prodest.EOuv.Dominio.Modelo;
 using Prodest.EOuv.Dominio.Modelo.Interfaces.DAL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -237,11 +238,19 @@ namespace Prodest.EOuv.Infra.DAL
 
         public async Task<List<RecursoNegativaModel>> ObterDadosRecursoNegativa(int idManifestacao)
         {
-            List<RecursoNegativa> listaRecursoNegativa = await _eouvContext.RecursoNegativa
-                                                                            .Include(m => m.UsuarioResposta)
-                                                                            .Where(m => m.IdManifestacao == idManifestacao).AsNoTracking().ToListAsync();
+            try
+            {
+                List<RecursoNegativa> listaRecursoNegativa = await _eouvContext.RecursoNegativa
+                                                                                .Include(m => m.UsuarioResposta)
+                                                                                .Where(m => m.IdManifestacao == idManifestacao).AsNoTracking().ToListAsync();
 
-            return _mapper.Map<List<RecursoNegativaModel>>(listaRecursoNegativa);
+                var retorno = _mapper.Map<List<RecursoNegativaModel>>(listaRecursoNegativa);
+                return retorno;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public async Task<List<HistoricoManifestacaoModel>> ObterDadosHistorico(int idManifestacao)

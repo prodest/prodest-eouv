@@ -67,7 +67,7 @@ namespace Prodest.EOuv.Shared.Util
             EncerradoManualmente = 3
         }
 
-        public enum AgenteTipo
+        public enum TipoAgente
         {
             Cidadao = 1,
             Papel = 2,

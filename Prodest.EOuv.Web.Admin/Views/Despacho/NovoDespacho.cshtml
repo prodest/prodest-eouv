@@ -66,13 +66,13 @@
                                         <div class="col-md-4">
                                             <span class="fw-bold">Órgão Atual</span>
                                             <br />
-                                            <span>{{dadosBasicos.orgaoAtual.nomeFantasia}}</span>
+                                            <span>{{dadosBasicos.orgaoAtual.siglaOrgao}}</span>
                                         </div>
 
                                         <div class="col-md-4">
                                             <span class="fw-bold">Órgão Destinatário</span>
                                             <br />
-                                            <span>{{dadosBasicos.orgaoDestinatario.nomeFantasia}}</span>
+                                            <span>{{dadosBasicos.orgaoDestinatario.siglaOrgao}}</span>
                                         </div>
 
                                         <div class="col-md-4">
@@ -339,21 +339,19 @@
                                                             <table class="table table-striped table-bordered table-sm">
                                                                 <thead class="table-light">
                                                                     <tr>
-                                                                        <th scope="col">Órgão</th>
-                                                                        <th scope="col">Setor Destino</th>
+                                                                        <th scope="col">Protocolo Edocs</th>
+                                                                        <th scope="col">Data Despacho</th>
+                                                                        <th scope="col">Destinatário</th>
                                                                         <th scope="col">Texto do Despacho</th>
-                                                                        <th scope="col">Resposta do Despacho</th>
-                                                                        <th scope="col">Usuário</th>
-                                                                        <th scope="col">Data do Despacho</th>
+                                                                        <th scope="col">Situação</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr v-for="(dados, index) in despachoManifestacao" :key="index">
-                                                                        <td>{{index}}</td>
-                                                                        <td>{{dados.siglaSetorDestinatarioEdocs}}</td>
+                                                                        <td>{{dados.protocoloEdocs}}</td>
+                                                                        <td>{{dados.dataSolicitacaoDespachoFormat}}</td>
+                                                                        <td>{{dados.agenteDestinatarioFormat}}</td>
                                                                         <td>{{dados.textoSolicitacaoDespacho}}</td>
-                                                                        <td>{{index}}</td>
-                                                                        <td>{{index}}</td>
                                                                         <td>{{dados.dataRespostaDespachoFormat}}</td>
                                                                     </tr>
                                                                 </tbody>
@@ -376,22 +374,16 @@
                                                             <table class="table table-striped table-bordered table-sm">
                                                                 <thead class="table-light">
                                                                     <tr>
+                                                                        <th scope="col">Manifestação Filha</th>
                                                                         <th scope="col">Órgão</th>
-                                                                        <th scope="col">Setor Destino</th>
-                                                                        <th scope="col">Texto do Despacho</th>
-                                                                        <th scope="col">Resposta do Despacho</th>
-                                                                        <th scope="col">Usuário</th>
-                                                                        <th scope="col">Data do Despacho</th>
+                                                                        <th scope="col">Data do Desdobramento</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr v-for="(dados, index) in desdobramentoManifestacao" :key="index">
-                                                                        <td>{{index}}</td>
-                                                                        <td>{{dados.siglaSetorDestinatarioEdocs}}</td>
-                                                                        <td>{{dados.textoSolicitacaoDespacho}}</td>
-                                                                        <td>{{index}}</td>
-                                                                        <td>{{index}}</td>
-                                                                        <td>{{dados.dataRespostaDespacho}}</td>
+                                                                        <td>{{dados.ManifestacaoFilha.NumProtocolo}}</td>
+                                                                        <td>{{dados.Orgao.SiglaOrgao}}</td>
+                                                                        <td>{{dados.DataDesdobramentoFormat}}</td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
@@ -471,16 +463,14 @@
                                                             <table class="table table-striped table-bordered table-sm">
                                                                 <thead class="table-light">
                                                                     <tr>
-                                                                        <th scope="col">Órgão</th>
-                                                                        <th scope="col">Setor Destino</th>
-                                                                        <th scope="col">Texto do Despacho</th>
-                                                                        <th scope="col">Resposta do Despacho</th>
-                                                                        <th scope="col">Usuário</th>
-                                                                        <th scope="col">Data do Despacho</th>
+                                                                        <th scope="col">ManifestacaoFilha.NumProtocolo</th>
+                                                                        <th scope="col">Data do Reclamação de Omissão</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr v-for="(dados, index) in reclamacaoOmissao" :key="index">
+                                                                        <td>{{dados.ManifestacaoFilha.NumProtocolo}}</td>
+                                                                        <td>{{dados.dataReclamacaoOmissaoFormat}}</td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
@@ -502,7 +492,7 @@
                                                             <table class="table table-striped table-bordered table-sm">
                                                                 <thead class="table-light">
                                                                     <tr>
-                                                                        <th scope="col">Data</th>
+                                                                        <th scope="col">Data da Resposta</th>
                                                                         <th scope="col">Órgão</th>
                                                                         <th scope="col">Resposta</th>
                                                                     </tr>
@@ -617,7 +607,7 @@
                                                 </div>
 
                                                 <!--Dados Anexos-->
-                                                <div v-if="anexoManifestacao.length > 0" class="accordion-item">
+                                                <!--<div v-if="anexoManifestacao.length > 0" class="accordion-item">
                                                     <h2 class="accordion-header d-flex" id="DadosAnexo">
                                                         <i class="flex-fill check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
                                                         <button class="flex-fill accordion-button collapsed" type="button" data-mdb-toggle="collapse"
@@ -643,7 +633,7 @@
                                                             </table>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div>-->
 
                                                 <!--Dados Interpelação-->
                                                 <div v-if="interpelacaoManifestacao.length > 0" class="accordion-item">
@@ -660,13 +650,19 @@
                                                                 <thead class="table-light">
                                                                     <tr>
                                                                         <th scope="col">Data</th>
-                                                                        <th scope="col">Interpelacao</th>
+                                                                        <th scope="col">Texto Interpelação</th>
+                                                                        <th scope="col">Orgão Resposta</th>
+                                                                        <th scope="col">Data Resposta</th>
+                                                                        <th scope="col">Texto Resposta</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr v-for="(dados, index) in interpelacaoManifestacao" :key="index">
-                                                                        <td>{{dados.dtComplemento}}</td>
-                                                                        <td>{{dados.txtComplemento}}</td>
+                                                                        <td>{{dados.dataInterpelacaoFormat}}</td>
+                                                                        <td>{{dados.txtInterpelacao}}</td>
+                                                                        <td>{{dados.OrgaoResposta.SiglaOrgao}}</td>
+                                                                        <td>{{dados.dataRespostaInterpelacaoFormat}}</td>
+                                                                        <td>{{dados.txtRespostaInterpelacao}}</td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
@@ -688,14 +684,20 @@
                                                             <table class="table table-striped table-bordered table-sm">
                                                                 <thead class="table-light">
                                                                     <tr>
-                                                                        <th scope="col">Data</th>
-                                                                        <th scope="col">Interpelacao</th>
+                                                                        <th scope="col">Número Recurso</th>
+                                                                        <th scope="col">Data Recurso</th>
+                                                                        <th scope="col">Texto Recurso</th>
+                                                                        <th scope="col">Data Resposta Recurso</th>
+                                                                        <th scope="col">Texto Resposta Recurso</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr v-for="(dados, index) in recursoNegativa" :key="index">
-                                                                        <td>{{dados.dtComplemento}}</td>
-                                                                        <td>{{dados.txtComplemento}}</td>
+                                                                        <td>{{dados.numeroRecurso}}</td>
+                                                                        <td>{{dados.dataRecursoNegativaFormat}}</td>
+                                                                        <td>{{dados.txtRecursoNegativa}}</td>
+                                                                        <td>{{dados.dataRespostaRecursoNegativaFormat}}</td>
+                                                                        <td>{{dados.txtRespostaRecursoNegativa}}</td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
@@ -757,9 +759,8 @@
                         <div class="card-body">
                             <div class="row">
 
-
                                 <div class="col-md-12 position-relative mb-5">
-                                    <label class="form-label" for="customAnexo">Com qual Cargo/Função você irá Encaminhar?</label>                                    
+                                    <label class="form-label" for="customAnexo">Com qual Cargo/Função você irá Encaminhar?</label>
                                     <div class="form-check px-0" v-for="(papel, index) in papeisUsuario" v-bind:key="index" v-bind:for="papel.id">
                                         <input type="radio" v-on:change="TogglePapelSelecionado($event)" required class="btn-check" name="papel" v-bind:id="papel.id" autocomplete="off">
                                         <label class="btn btn-outline-warning btn-sm m-1" v-bind:for="papel.id">{{papel.nome}} - {{papel.siglaUnidadePapel}} - {{papel.siglaOrganizacaoPapel}}</label>
@@ -797,8 +798,6 @@
                                     <div class="invalid-tooltip">Texto do despacho é obrigatório!</div>
                                 </div>
 
-
-
                                 @*<div class="form-outline mb-3">
                                             <button class="btn btn-block btn-info" v-on:click="IncluirCampoAnexo"><i class="fas fa-plus"></i> Incluir novo arquivo</button>
                                             <div class="border-1 mt-3" v-if="campoAnexo.length > 0">
@@ -809,7 +808,6 @@
                                             </div>
                                         </div>
                                     <hr />*@
-
                             </div>
                         </div>
                         <div class="card-footer py-3">
@@ -838,7 +836,6 @@
                 <input required v-if="destinatario == null" onkeydown="return false;" v-on:click="CarregarDadosEDocs" type="text" id="" class="form-control mb-0">
                 <div class="invalid-tooltip">Destinatário é obrigatório!</div>
             </div>
-
 
             @*<div class="row">
                 <div v-if="destinatario != null " class="col-12 mt-2 border-secondary border-1">
