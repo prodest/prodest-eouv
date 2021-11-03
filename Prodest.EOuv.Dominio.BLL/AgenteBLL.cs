@@ -46,7 +46,7 @@ namespace Prodest.EOuv.Dominio.BLL
                 agente.GuidOrgao = setor.Orgao.GuidOrgao;
                 agente.NomeOrgao = setor.Orgao.RazaoSocial;
                 agente.SiglaOrgao = setor.Orgao.SiglaOrgao;
-                agente.TipoAgente = (int)Enums.AgenteTipo.Unidade;
+                agente.TipoAgente = (int)Enums.TipoAgente.Unidade;
             }
 
             return agente;
@@ -67,7 +67,7 @@ namespace Prodest.EOuv.Dominio.BLL
                 GuidUsuario = papel.AgentePublicoSub,
                 NomeUsuario = papel.AgentePublicoNome,
                 GuidSetor = new Guid(papel.LotacaoGuid),
-                TipoAgente = (int)Enums.AgenteTipo.Papel
+                TipoAgente = (int)Enums.TipoAgente.Papel
             };
             if (setor is not null)
             {

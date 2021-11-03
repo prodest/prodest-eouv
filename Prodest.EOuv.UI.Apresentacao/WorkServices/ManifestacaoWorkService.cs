@@ -12,6 +12,7 @@ namespace Prodest.EOuv.UI.Apresentacao
     public interface IManifestacaoWorkService
     {
         Task<ManifestacaoViewModel> ObterDadosCompletosManifestacao(int idManifestacao);
+        Task<ManifestacaoViewModel> ObterManifestacaoPorId(int idManifestacao);
     }
 
     public class ManifestacaoWorkService : IManifestacaoWorkService
@@ -28,6 +29,13 @@ namespace Prodest.EOuv.UI.Apresentacao
         public async Task<ManifestacaoViewModel> ObterDadosCompletosManifestacao(int idManifestacao)
         {
             ManifestacaoModel manifestacaoModel = await _manifestacaoBLL.ObterDadosCompletosManifestacao(idManifestacao);
+            ManifestacaoViewModel manifestacaoViewModel = _mapper.Map<ManifestacaoViewModel>(manifestacaoModel);
+            return manifestacaoViewModel;
+        }
+
+        public async Task<ManifestacaoViewModel> ObterManifestacaoPorId(int idManifestacao)
+        {
+            ManifestacaoModel manifestacaoModel = await _manifestacaoBLL.ObterManifestacaoPorId(idManifestacao);
             ManifestacaoViewModel manifestacaoViewModel = _mapper.Map<ManifestacaoViewModel>(manifestacaoModel);
             return manifestacaoViewModel;
         }

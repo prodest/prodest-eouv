@@ -23,7 +23,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             return View();
         }
 
-        public async Task<IActionResult> ObterDadosManifestacao(int id)
+        public async Task<IActionResult> ObterDadosCompletosManifestacao(int id)
         {
             try
             {

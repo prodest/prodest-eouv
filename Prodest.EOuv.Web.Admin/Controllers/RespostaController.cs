@@ -13,16 +13,24 @@ namespace Prodest.EOuv.Web.Admin.Controllers
     {
         private readonly IRespostaWorkService _respostaWorkService;
         private readonly IDespachoWorkService _despachoWorkService;
+        private readonly IManifestacaoWorkService _manifestacaoWorkService;
 
-        public RespostaController(IRespostaWorkService respostaWorkService, IDespachoWorkService despachoWorkService)
+        public RespostaController(IRespostaWorkService respostaWorkService, IDespachoWorkService despachoWorkService, IManifestacaoWorkService manifestacaoWorkService)
         {
             _respostaWorkService = respostaWorkService;
             _despachoWorkService = despachoWorkService;
+            _manifestacaoWorkService = manifestacaoWorkService;
         }
 
         public IActionResult Index()
         {
             return View();
+        }
+
+        public async Task<IActionResult> ObterManifestacaoPorId(int id)
+        {
+            ManifestacaoViewModel manifestacao = await _manifestacaoWorkService.ObterManifestacaoPorId(id);
+            return Json(manifestacao);
         }
 
         public async Task<IActionResult> ObterResultadosRespostaPorTipologia()

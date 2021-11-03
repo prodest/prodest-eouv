@@ -1,4 +1,5 @@
 ﻿using Prodest.EOuv.Dominio.Modelo;
+using Prodest.EOuv.Shared.Util;
 using Prodest.EOuv.UI.Apresentacao;
 using System;
 using System.Collections.Generic;
@@ -37,6 +38,12 @@ namespace Prodest.EOuv.UI.Apresentacao
         }
 
         public virtual UsuarioViewModel UsuarioCadastrador { get; set; }
+
+        public string RegistradoPorFormat
+        {
+            get { return UsuarioCadastrador != null ? UsuarioCadastrador.Pessoa.Nome : "Cidadão"; }
+        }
+
         public virtual CanalEntradaViewModel CanalEntrada { get; set; }
         public virtual ModoRespostaViewModel ModoResposta { get; set; }
 
@@ -44,6 +51,12 @@ namespace Prodest.EOuv.UI.Apresentacao
         public string TextoManifestacao { get; set; }
 
         public virtual MunicipioViewModel Municipio { get; set; }
+
+        public string MunicipioLocalFatoFormat
+        {
+            get { return Municipio != null ? Municipio.DescMunicipio : "Todo o Estado"; }
+        }
+
         public List<AnexoManifestacaoViewModel> AnexoManifestacao { get; set; }
         public List<ComplementoManifestacaoViewModel> ComplementoManifestacao { get; set; }
 
@@ -108,6 +121,12 @@ namespace Prodest.EOuv.UI.Apresentacao
         public string Complemento { get; set; }
         public string Bairro { get; set; }
         public string Sexo { get; set; }
+
+        public string SexoFormat
+        {
+            get { return Sexo == "M" ? "Masculino" : "Feminino"; }
+        }
+
         public string Telefone { get; set; }
         public virtual MunicipioViewModel Municipio { get; set; }
     }
@@ -255,6 +274,29 @@ namespace Prodest.EOuv.UI.Apresentacao
         public virtual AgenteManifestacaoViewModel AgenteDestinatario { get; set; }
         public virtual AgenteManifestacaoViewModel AgenteResposta { get; set; }
         public virtual SituacaoDespachoViewModel SituacaoDespacho { get; set; }
+
+        public string AgenteDestinatarioFormat
+        {
+            get
+            {
+                if (AgenteDestinatario != null)
+                {
+                    if (AgenteDestinatario.TipoAgente == (int)Enums.TipoAgente.Papel)
+                    {
+                        return AgenteDestinatario.NomeUsuario;
+                    }
+                    else if (AgenteDestinatario.TipoAgente == (int)Enums.TipoAgente.Grupo)
+                    {
+                        return AgenteDestinatario.NomeGrupo;
+                    }
+                    else if (AgenteDestinatario.TipoAgente == (int)Enums.TipoAgente.Unidade)
+                    {
+                        return AgenteDestinatario.NomeSetor;
+                    }
+                }
+                return "";
+            }
+        }
     }
 
     public partial class NotificacaoManifestacaoViewModel
