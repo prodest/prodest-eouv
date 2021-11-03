@@ -10,10 +10,7 @@ namespace Prodest.EOuv.Dominio.Modelo.Model.AcessoCidadao
         public string AgentePublicoNome { get; set; }
         public string Nome { get; set; }
         public string LotacaoGuid { get; set; }
-
         public UsuarioLogadoModel Servidor { get; set; }
-        //public GrupoModel MembroGrupo { get; set; }
-
         public ICollection<PerfilLogadoModel> Perfis { get; set; }
         public Guid? IdExterno { get; set; }
     }

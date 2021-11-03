@@ -229,7 +229,6 @@ namespace Prodest.EOuv.Web.Admin
 
             services.AddAuthorization(options =>
             {
-                //options.AddPolicy("Desenvolvedor", policy => policy.RequireClaim("Role", "Desenvolvedor")|| (policy.RequireClaim("Role", "Desenvolvedor")));
                 options.AddPolicy("Gestor", policy => policy.RequireClaim("Role", "ef6e936b-e90b-4112-bba1-0ec1793c0aaa"));// id do Gestor no AcessoCidadao
 
                 options.AddPolicy("Desenvolvedor", policy => policy.RequireAssertion(
