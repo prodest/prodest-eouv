@@ -224,9 +224,9 @@ namespace Prodest.EOuv.Web.Admin.Controllers
         //    return protocolo;
         //}
 
-        public JsonResult GetDocumentoEncaminhamento()
+        public JsonResult GetDocumentoEncaminhamento(string id)
         {
-            System.Threading.Tasks.Task<DocumentoControladoModel[]> task = _edocsService.GetDocumentoEncaminhamento("89565801-9382-4785-94f8-cd35d4ab39d2");// Documento
+            System.Threading.Tasks.Task<DocumentoControladoModel[]> task = _edocsService.GetDocumentoEncaminhamento(id);// Documento
 
             Task.WaitAll(task);
 

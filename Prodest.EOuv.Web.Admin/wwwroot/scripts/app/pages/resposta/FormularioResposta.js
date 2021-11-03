@@ -18,14 +18,19 @@
     },
 
     mounted() {
+        this.ObterParametrosQueryString();
         this.CarregarDocumentosEDocs();
         this.ObterResultadosRespostaPorTipologia();
         this.ObterOrgaosCompetenciaFato();
     },
 
     methods: {
+        ObterParametrosQueryString() {
+            this.idManifestacao = utils.obterRequestParameter('id')
+        },
+
         async CarregarDocumentosEDocs() {
-            let ret = await eOuvApi.DocumentosEncaminhamentoEDocs();
+            let ret = await eOuvApi.ObterDocumentosEncaminhamentoEDocs(this.idManifestacao);
             this.documentosEncaminhamento = ret;
             console.log(this.documentosEncaminhamento);
         },
@@ -40,9 +45,9 @@
 
         async ObterResultadosRespostaPorTipologia() {
             let ret = await eOuvApi.ObterResultadosRespostaPorTipologia();
-            this.resultadosRespostaPorTipologia = ret;            
-            this.resultadosRespostaPositiva = this.resultadosRespostaPorTipologia.filter(this.ApenasPositivo);            
-            this.resultadosRespostaNegativa = this.resultadosRespostaPorTipologia.filter(this.ApenasNegativo);            
+            this.resultadosRespostaPorTipologia = ret;
+            this.resultadosRespostaPositiva = this.resultadosRespostaPorTipologia.filter(this.ApenasPositivo);
+            this.resultadosRespostaNegativa = this.resultadosRespostaPorTipologia.filter(this.ApenasNegativo);
         },
 
         async ObterOrgaosCompetenciaFato() {
@@ -65,7 +70,6 @@
             }
             console.log(entry);
             await eOuvApi.Responder(entry);
-        }        
-
+        }
     }
 };

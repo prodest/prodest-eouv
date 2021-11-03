@@ -44,13 +44,13 @@
         return ret;
     },
 
-    async DocumentosEncaminhamentoEDocs() {
-        let ret = await fetchData.fetchGetJson(`/edocs/GetDocumentoEncaminhamento`);
+    async RastreioEncaminhamento() {
+        let ret = await fetchData.fetchGetJson(`/edocs/BuscarRastreio`);
         return ret;
     },
 
-    async RastreioEncaminhamento() {
-        let ret = await fetchData.fetchGetJson(`/edocs/BuscarRastreio`);
+    async ObterDocumentosEncaminhamentoEDocs(id) {
+        let ret = await fetchData.fetchGetJson(`/resposta/ObterDocumentosEncaminhamentoEDocs/` + id);
         return ret;
     },
 

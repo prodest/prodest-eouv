@@ -16,6 +16,8 @@ namespace Prodest.EOuv.UI.Apresentacao
         Task Despachar(DespachoManifestacaoEntry despachoEntry);
 
         Task EncerrarDespachoManualmente(int idDespacho);
+
+        Task<List<DocumentoControladoModel>> ObterDocumentosEncaminhamentoEDocs(int idManifestacao);
     }
 
     public class DespachoWorkService : IDespachoWorkService
@@ -34,6 +36,12 @@ namespace Prodest.EOuv.UI.Apresentacao
             var despachoModel = await _despachoBLL.ObterDespachosPorManifestacao(idManifestacao);
             var despachoViewModel = _mapper.Map<List<DespachoManifestacaoViewModel>>(despachoModel);
             return despachoViewModel;
+        }
+
+        public async Task<List<DocumentoControladoModel>> ObterDocumentosEncaminhamentoEDocs(int idManifestacao)
+        {
+            var listaDocumentos = await _despachoBLL.ObterDocumentosDespachoPorManifestacao(idManifestacao);
+            return listaDocumentos;
         }
 
         public async Task AdicionarDespacho(DespachoManifestacaoViewModel despachoViewModel)
