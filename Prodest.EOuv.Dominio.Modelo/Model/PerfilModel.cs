@@ -16,6 +16,6 @@ namespace Prodest.EOuv.Dominio.Modelo
         public string DescPerfil { get; set; }
 
         public virtual ICollection<ItemInterfacePerfilModel> ItemInterfacePerfil { get; set; }
-        public virtual ICollection<UsuarioModel> Usuario { get; set; }
+        public virtual ICollection<UsuarioModel> Usuario { get; set; }        
     }
 }

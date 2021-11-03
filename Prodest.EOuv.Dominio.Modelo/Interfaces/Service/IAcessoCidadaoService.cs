@@ -1,4 +1,5 @@
 ﻿using Prodest.EOuv.Dominio.Modelo.Model;
+using Prodest.EOuv.Dominio.Modelo.Model.AcessoCidadao;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -23,5 +24,10 @@ namespace Prodest.EOuv.Dominio.Modelo.Interfaces.Service
         Task<AgentePublicoPapelModel[]> GetAgentePublico(string id, string busca);
 
         Task<UnidadeModel[]> GetUnidadesPerfilAdministrador(Guid id);
+
+        Task<ICollection<(ICollection<PerfilLogadoModel> perfis, Guid papel)>> SearchPerfisPorPapelByUsuarioAsync(Guid idCidadao);
+
+        Task<UsuarioLogadoModel> GetUsuarioAsync(Guid id);
+        Task<List<PapelLogado>> GetPapeisPorCidadaoAsync(Guid idCidadao);
     }
 }

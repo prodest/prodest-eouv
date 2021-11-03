@@ -22,6 +22,12 @@ using Audit.EntityFramework.Providers;
 using Audit.Core;
 using System.Linq;
 using Elastic.Apm.NetCoreAll;
+using System.Security.Claims;
+using Prodest.EOuv.Dominio.Modelo.Interfaces.Service;
+using System.Collections.Generic;
+using Prodest.EOuv.Infra.Service;
+using Prodest.Cache.Extensions.DependencyInjection;
+using Prodest.Cache.Extensions.Caching.Hierarchical;
 
 namespace Prodest.EOuv.Web.Admin
 {
@@ -108,6 +114,7 @@ namespace Prodest.EOuv.Web.Admin
             services.AddControllersWithViews();
             services.AddSingleton(Configuration);
             services.AddDbContext<EouvContext>();
+            services.AddHierarchicalCache(Configuration.GetConnectionString("RedisConnection"));
             services.InjetarDependencias();
             services.AddHttpContextAccessor();
             services.AddHttpClient();
@@ -123,17 +130,75 @@ namespace Prodest.EOuv.Web.Admin
                 options.KnownProxies.Clear();
             });
 
+
             #region[=== Acesso Cidadão ===]
             services.AddAuthentication(options =>
-                {
-                    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = "oidc";
-                })
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = "oidc";
+            })
                 .AddCookie(options =>
                 {
                     options.Cookie.Name = "prodest-eouv-admin";
                     options.Cookie.SameSite = SameSiteMode.None;
                     options.ExpireTimeSpan = TimeSpan.FromMinutes(06);
+                    options.Events = new CookieAuthenticationEvents
+                    {
+                        OnSignedIn = async context =>
+                        {
+                            try
+                            {
+                                Guid idUsuario = context.Principal.Claims
+                                    .Where(c => c.Type.ToLower().Equals("subnovo"))
+                                    .Select(c => new Guid(c.Value))
+                                    .FirstOrDefault();
+
+                                IServiceProvider serviceProvider = context.HttpContext.RequestServices;
+                                IHierarchicalCache hierarchicalCache = serviceProvider.GetRequiredService<IHierarchicalCache>();
+
+                                await hierarchicalCache.RemoveKeyAsync($"cidadao-{idUsuario}");
+                                await hierarchicalCache.RemoveKeyAsync($"cidadao-verificacao-de-conta-{idUsuario}");
+                            }
+                            catch (Exception e)
+                            {
+                                //e.Log(context.HttpContext);
+
+                                throw;
+                            }
+
+                        },
+                        OnValidatePrincipal = async context =>
+                        {
+                            try
+                            {
+                                IServiceProvider serviceProvider = context.HttpContext.RequestServices;
+                                var teste = context;
+
+                                IUsuarioProvider usuarioService = context.HttpContext.RequestServices.GetRequiredService<IUsuarioProvider>();
+                                await usuarioService.SetCurrent(context.Principal);
+
+                                IPermissaoService permissaoService = serviceProvider.GetRequiredService<IPermissaoService>();
+                                ICollection<KeyValuePair<string, string>> permissoes = await permissaoService.SearchByUsuarioAsync();
+
+                                if (permissoes != null && permissoes.Any())
+                                {
+                                    ClaimsIdentity ci = new ClaimsIdentity(context.Principal.Identity.AuthenticationType);
+
+                                    ci.AddClaims(permissoes
+                                        .Select(p => new Claim(p.Key, p.Value))
+                                        .ToList());
+
+                                    context.Principal.AddIdentity(ci);
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                //e.Log(context.HttpContext);
+
+                                throw;
+                            }
+                        }
+                    };
                 })
                 .AddOpenIdConnect("oidc", options =>
                 {
@@ -161,6 +226,18 @@ namespace Prodest.EOuv.Web.Admin
                     };
                 });
             #endregion
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Gestor", policy => policy.RequireClaim("Role", "ef6e936b-e90b-4112-bba1-0ec1793c0aaa"));// id do Gestor no AcessoCidadao
+
+                options.AddPolicy("Desenvolvedor", policy => policy.RequireAssertion(
+                context =>
+                       context.User.HasClaim(claim => (claim.Type.Equals("Role") && claim.Value.Equals("Desenvolvedor"))) //de teste essa role não existe
+                    //Acao$Manifestação de Ouvidoria, Despachar
+                    || context.User.HasClaim(claim => (claim.Type.Equals("Acao$Manifestação de Ouvidoria") && claim.Value.Equals("a8d67f7e-5f59-44fa-ab01-a3ac53fc6227"))))); //id do Gestor no Despachar AcessoCidadao
+            }
+            );
 
             services.AddMvc(options =>
             {

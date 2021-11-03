@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Prodest.EOuv.Dominio.Modelo;
 using Prodest.EOuv.Dominio.Modelo.Model.Entries;
+using Prodest.EOuv.Dominio.Modelo.Model.AcessoCidadao;
 using Prodest.EOuv.Infra.DAL;
 using Prodest.EOuv.UI.Apresentacao;
 using System;
@@ -42,6 +43,7 @@ namespace Prodest.EOuv.Shared.Configuracao
             CreateMap<AnotacaoManifestacaoModel, AnotacaoManifestacaoViewModel>();
             CreateMap<ReclamacaoOmissao, ReclamacaoOmissaoModel>().ReverseMap();
             CreateMap<ReclamacaoOmissaoModel, ReclamacaoOmissaoViewModel>();
+            CreateMap<RecursoNegativa, RecursoNegativaModel>();
             CreateMap<RecursoNegativaModel, RecursoNegativaViewModel>();
             CreateMap<HistoricoManifestacao, HistoricoManifestacaoModel>().ReverseMap();
             CreateMap<HistoricoManifestacaoModel, HistoricoManifestacaoViewModel>().ReverseMap();
@@ -66,6 +68,7 @@ namespace Prodest.EOuv.Shared.Configuracao
             CreateMap<Pessoa, PessoaModel>().ReverseMap();
             CreateMap<PessoaModel, PessoaViewModel>().ReverseMap();
             CreateMap<ResultadoResposta, ResultadoRespostaModel>().ReverseMap();
+            CreateMap<ResultadoRespostaModel, ResultadoRespostaViewModel>().ReverseMap();
             CreateMap<SituacaoManifestacao, SituacaoManifestacaoModel>().ReverseMap();
             CreateMap<SituacaoManifestacaoModel, SituacaoManifestacaoViewModel>().ReverseMap();
             CreateMap<SituacaoDespacho, SituacaoDespachoModel>().ReverseMap();
@@ -82,6 +85,11 @@ namespace Prodest.EOuv.Shared.Configuracao
             CreateMap<AgenteManifestacaoModel, AgenteManifestacaoViewModel>().ReverseMap();
             CreateMap<ResultadoResposta, ResultadoRespostaModel>().ReverseMap();
             CreateMap<ResultadoRespostaModel, ResultadoRespostaViewModel>().ReverseMap();
+            CreateMap<UsuarioLogado, UsuarioLogadoModel>()
+                .ForMember(x => x.IdExterno, opt => opt.MapFrom(src => src.Sub)).ReverseMap();
+            CreateMap<PapelLogado, PapelLogadoModel>()
+                .ForMember(x => x.IdExterno, opt => opt.MapFrom(src => src.Guid))
+                .ForMember(x => x.TipoPapel, opt => opt.MapFrom(src => src.Tipo)).ReverseMap();
 
             //Mapeamento de objetos customizados
             CreateMap<FiltroDadosManifestacaoSelecionadosEntry, FiltroDadosManifestacaoModel>().ReverseMap();

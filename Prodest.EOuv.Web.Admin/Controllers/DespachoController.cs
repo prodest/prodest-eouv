@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 namespace Prodest.EOuv.Web.Admin.Controllers
 {
     [Authorize]
+
+    //[Authorize(Policy = "Desenvolvedor")]
     public class DespachoController : Controller
     {
         private readonly IDespachoWorkService _despachoWorkService;
@@ -23,7 +25,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             return View();
         }
 
-        public async Task<IActionResult> ObterDadosManifestacao(int id)
+        public async Task<IActionResult> ObterDadosCompletosManifestacao(int id)
         {
             try
             {

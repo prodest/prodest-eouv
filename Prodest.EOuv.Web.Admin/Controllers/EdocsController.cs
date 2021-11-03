@@ -15,6 +15,8 @@ using System.Threading.Tasks;
 namespace Prodest.EOuv.Web.Admin.Controllers
 {
     [Authorize]
+    //[Authorize(Policy = "Gestor")]
+
     public class EdocsController : Controller
     {
         private readonly IDespachoWorkService _despachoWorkService;
