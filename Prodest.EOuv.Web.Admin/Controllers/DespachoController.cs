@@ -57,9 +57,15 @@ namespace Prodest.EOuv.Web.Admin.Controllers
 
         public async Task<IActionResult> Despachar([FromBody] DespachoManifestacaoEntry despachoEntry)
         {
-            await _despachoWorkService.Despachar(despachoEntry);
-
-            return Json(despachoEntry.IdManifestacao);
+            try
+            {
+                await _despachoWorkService.Despachar(despachoEntry);
+                return Json(despachoEntry.IdManifestacao);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public IActionResult Detalhes()
@@ -67,10 +73,17 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             return View();
         }
 
-        public IActionResult EncerrarDespachoManualmente(int id)
+        public async Task<IActionResult> EncerrarDespachoManualmente(int id)
         {
-            _despachoWorkService.EncerrarDespachoManualmente(id);
-            return View(nameof(Index));
+            try
+            {
+                await _despachoWorkService.EncerrarDespachoManualmente(id);
+            return Json(id);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

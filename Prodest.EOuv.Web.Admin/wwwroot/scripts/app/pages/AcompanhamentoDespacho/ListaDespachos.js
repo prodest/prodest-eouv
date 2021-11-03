@@ -38,6 +38,7 @@
         },
         async EncerrarDespachoManualmente(id) {
             await eOuvApi.EncerrarDespachoManualmente(id);
+            window.location.href = "/Despacho?id=" + this.idManifestacao;
         },
     }
 };

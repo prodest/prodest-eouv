@@ -80,7 +80,7 @@
             let ret = await eOuvApi.obterDadosManifestacao(this.idManifestacao);
             console.log(ret);
             //Dados Basicos da Manifestacao
-            this.titulo += ` (${ret.numProtocolo})`;            
+            this.titulo += ` (${ret.numProtocolo})`;
             this.dadosBasicos.idManifestacao = ret.idManifestacao;
             this.dadosBasicos.numProtocolo = ret.numProtocolo;
             this.dadosBasicos.tipoManifestacao = ret.tipoManifestacao.descTipoManifestacao;
@@ -93,8 +93,8 @@
             this.dadosBasicos.canalEntrada = ret.canalEntrada.descCanalEntrada;
             this.dadosBasicos.modoResposta = ret.modoResposta.descModoResposta;
             this.dadosBasicos.assunto = ret.assunto.descAssunto;
-            this.dadosBasicos.dataRegistro = ret.dataRegistroFormatada;
-            this.dadosBasicos.prazoResposta = ret.prazoRespostaFormatado;
+            this.dadosBasicos.dataRegistro = ret.dataRegistroFormat;
+            this.dadosBasicos.prazoResposta = ret.prazoRespostaFormat;
             this.dadosBasicos.tipoManifestante = ret.tipoManifestante.descTipoManifestante;
 
             this.$emit('capturar-dados-manifestacao', this.dadosBasicos);
@@ -242,6 +242,6 @@
         ToggleCheck(e) {
             e.target.classList.toggle('fa-square');
             e.target.classList.toggle('fa-check-square');
-        },       
+        },
     }
 };

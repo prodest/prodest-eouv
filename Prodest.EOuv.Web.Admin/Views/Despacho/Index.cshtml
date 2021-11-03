@@ -24,7 +24,7 @@
     <script type="text/html" id="template-lista-despachos">
         <div class="card">
             <div class="card-header">
-                Despachos realizados para a Manifestação: {{idManifestacao}}
+                Manifestação: {{idManifestacao}}
                 <a class="btn btn-primary btn-sm float-end" v-bind:href="urlNovoDespacho"><i class="fas fa-plus"></i> Novo Despacho</a>
             </div>
             <div class="card-body table-responsive">
@@ -54,11 +54,11 @@
                     <tbody>
                         <tr v-for="despacho in listaDespachos" :key="despacho.protocoloEdocs">
                             <td>{{despacho.protocoloEdocs}}</td>
-                            <td>{{despacho.dataSolicitacaoDespachoFormatada}}</td>
-                            <td>{{despacho.prazoResposta}}</td>
-                            <td>{{despacho.dataRespostaDespachoFormatada}}</td>
+                            <td>{{despacho.dataSolicitacaoDespachoFormat}}</td>
+                            <td>{{despacho.prazoRespostaFormat}}</td>
+                            <td>{{despacho.dataRespostaDespachoFormat}}</td>
                             <td>{{despacho.situacaoDespacho.descSituacaoDespacho}}</td>
-                            <td class="text-center"><a class="btn btn-dark btn-sm" v-on:click="Detalhar()"><i class="fas fa-stream"></i> Detalhar</a> <a class="btn btn-warning btn-sm" v-on:click="EncerrarDespachoManualmente(despacho.idDespachoManifestacao)"><i class="fas fa-undo"></i> Encerrar</a></td>
+                            <td class="text-center"><a class="btn btn-dark btn-sm" v-on:click="Detalhar()"><i class="fas fa-stream"></i> Detalhar</a> <a class="btn btn-warning btn-sm" v-if="despacho.dataRespostaDespachoFormat == ''" v-on:click="EncerrarDespachoManualmente(despacho.idDespachoManifestacao)"><i class="fas fa-undo"></i> Encerrar</a></td>
                         </tr>
                     </tbody>
                 </table>

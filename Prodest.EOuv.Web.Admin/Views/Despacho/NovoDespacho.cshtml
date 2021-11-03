@@ -280,11 +280,11 @@
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr v-for="(dados, index) in prorrogacaoManifestacao" :key="index">
-                                                                        <td>{{dados.prazoOriginalFormatado}}</td>
-                                                                        <td>{{dados.novoPrazoFormatado}}</td>
+                                                                        <td>{{dados.prazoOriginalFormat}}</td>
+                                                                        <td>{{dados.novoPrazoFormat}}</td>
                                                                         <td>{{dados.orgao.siglaOrgao}}</td>
                                                                         <td>{{dados.txtJustificativaProrrogacao}}</td>
-                                                                        <td>{{dados.dataProrrogacaoFormatada}}</td>
+                                                                        <td>{{dados.dataProrrogacaoFormat}}</td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
@@ -314,7 +314,7 @@
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr v-for="(dados, index) in encaminhamentoManifestacao" :key="index">
-                                                                        <td>{{dados.dataEncaminhamentoFormatada}}</td>
+                                                                        <td>{{dados.dataEncaminhamentoFormat}}</td>
                                                                         <td>{{dados.orgaoOrigem.siglaOrgao}}</td>
                                                                         <td>{{dados.orgaoDestino.siglaOrgao}}</td>
                                                                         <td>{{dados.txtEncaminhamento}}</td>
@@ -354,7 +354,7 @@
                                                                         <td>{{dados.textoSolicitacaoDespacho}}</td>
                                                                         <td>{{index}}</td>
                                                                         <td>{{index}}</td>
-                                                                        <td>{{dados.dataRespostaDespachoFormatada}}</td>
+                                                                        <td>{{dados.dataRespostaDespachoFormat}}</td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
@@ -419,7 +419,7 @@
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr v-for="(dados, index) in anotacaoManifestacao" :key="index">
-                                                                        <td>{{dados.dataAnotacaoFormatada}}</td>
+                                                                        <td>{{dados.dataAnotacaoFormat}}</td>
                                                                         <td>{{dados.txtAnotacao}}</td>
                                                                     </tr>
                                                                 </tbody>
@@ -448,7 +448,7 @@
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr v-for="(dados, index) in notificacaoManifestacao" :key="index">
-                                                                        <td>{{dados.dataNotificacaoFormatada}}</td>
+                                                                        <td>{{dados.dataNotificacaoFormat}}</td>
                                                                         <td>{{dados.txtNotificacao}}</td>
                                                                     </tr>
                                                                 </tbody>
@@ -509,7 +509,7 @@
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr v-for="(dados, index) in respostaManifestacao" :key="index">
-                                                                        <td>{{dados.dataRespostaFormatada}}</td>
+                                                                        <td>{{dados.dataRespostaFormat}}</td>
                                                                         <td>{{dados.orgao.siglaOrgao}}</td>
                                                                         <td>{{dados.txtResposta}}</td>
                                                                     </tr>
@@ -543,9 +543,9 @@
                                                                 <tbody>
                                                                     <tr v-for="(dados, index) in diligenciaManifestacao" :key="index">
                                                                         <td>{{dados.orgao.siglaOrgao}}</td>
-                                                                        <td>{{dados.dataDiligenciaFormatada}}</td>
+                                                                        <td>{{dados.dataDiligenciaFormat}}</td>
                                                                         <td>{{dados.txtDiligencia}}</td>
-                                                                        <td>{{dados.dataRespostaDiligenciaFormatada}}</td>
+                                                                        <td>{{dados.dataRespostaDiligenciaFormat}}</td>
                                                                         <td>{{dados.txtRespostaDiligencia}}</td>
                                                                     </tr>
                                                                 </tbody>
@@ -576,9 +576,9 @@
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr v-for="(dados, index) in apuracaoManifestacao" :key="index">
-                                                                        <td>{{dados.dataSolicitacaoApuracaoFormatada}}</td>
+                                                                        <td>{{dados.dataSolicitacaoApuracaoFormat}}</td>
                                                                         <td>{{dados.txtSolicitacaoApuracao}}</td>
-                                                                        <td>{{dados.dataRespostaApuracaoFormatada}}</td>
+                                                                        <td>{{dados.dataRespostaApuracaoFormat}}</td>
                                                                         <td>{{dados.txtRespostaApuracao}}</td>
                                                                     </tr>
                                                                 </tbody>
@@ -607,7 +607,7 @@
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr v-for="(dados, index) in complementoManifestacao" :key="index">
-                                                                        <td>{{dados.dtComplementoFormatada}}</td>
+                                                                        <td>{{dados.dtComplementoFormat}}</td>
                                                                         <td>{{dados.txtComplemento}}</td>
                                                                     </tr>
                                                                 </tbody>
@@ -730,7 +730,7 @@
                                         </thead>
                                         <tbody>
                                             <tr v-for="(dados, index) in historicoManifestacao" :key="index">
-                                                <td>{{dados.dataHistoricoFormatada}}</td>
+                                                <td>{{dados.dataHistoricoFormat}}</td>
                                                 <td>{{dados.orgao.siglaOrgao}}</td>
                                                 <td>{{dados.situacaoManifestacao.descSituacaoManifestacao}}</td>
                                             </tr>
