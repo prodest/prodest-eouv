@@ -78,9 +78,9 @@ namespace Prodest.EOuv.UI.Apresentacao
         public List<NotificacaoManifestacaoViewModel> NotificacaoManifestacao { get; set; }
         public List<AnotacaoManifestacaoViewModel> AnotacaoManifestacao { get; set; }
         public List<InterpelacaoManifestacaoViewModel> InterpelacaoManifestacao { get; set; }
-        public List<ReclamacaoOmissaoViewModel> ReclamacaoOmissao { get; set; }
+        public List<ReclamacaoOmissaoViewModel> ReclamacaoOmissaoManifestacaoPai { get; set; }
         public List<RecursoNegativaViewModel> RecursoNegativa { get; set; }
-        public List<DesdobramentoManifestacaoViewModel> DesdobramentoManifestacao { get; set; }
+        public List<DesdobramentoManifestacaoViewModel> DesdobramentoManifestacaoManifestacaoPai { get; set; }
         public List<HistoricoManifestacaoViewModel> HistoricoManifestacao { get; set; }
     }
 
@@ -104,6 +104,14 @@ namespace Prodest.EOuv.UI.Apresentacao
         public string DtComplementoFormat
         {
             get { return DtComplemento.ToString("dd/MM/yyyy"); }
+        }
+
+        public UsuarioViewModel UsuarioLeitura { get; set; }
+        public DateTime DtLeitura { get; set; }
+
+        public string DtLeituraFormat
+        {
+            get { return DtLeitura.ToString("dd/MM/yyyy"); }
         }
 
         //public List<AnexoManifestacaoViewModel> AnexoComplemento { get; set; }
@@ -342,6 +350,8 @@ namespace Prodest.EOuv.UI.Apresentacao
             get { return DataRespostaInterpelacao.ToString("dd/MM/yyyy"); }
         }
 
+        public SituacaoInterpelacaoViewModel SituacaoInterpelacao { get; set; }
+
         //public List<AnexoManifestacaoViewModel> AnexoInterpelacao { get; set; }
     }
 
@@ -505,5 +515,11 @@ namespace Prodest.EOuv.UI.Apresentacao
     {
         public int IdSituacaoDespacho { get; set; }
         public string DescSituacaoDespacho { get; set; }
+    }
+
+    public partial class SituacaoInterpelacaoViewModel
+    {
+        public int IdSituacaoInterpelacao { get; set; }
+        public string DescSituacaoInterpelacao { get; set; }
     }
 }

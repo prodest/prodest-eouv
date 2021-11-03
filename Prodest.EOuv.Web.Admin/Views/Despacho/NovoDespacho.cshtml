@@ -68,13 +68,13 @@
                                         <div class="col-md-4">
                                             <span class="fw-bold">Órgão Atual</span>
                                             <br />
-                                            <span>{{dadosBasicos.orgaoAtual.siglaOrgao}}</span>
+                                            <span>{{dadosBasicos.orgaoAtual?.siglaOrgao}}</span>
                                         </div>
 
                                         <div class="col-md-4">
                                             <span class="fw-bold">Órgão Destinatário</span>
                                             <br />
-                                            <span>{{dadosBasicos.orgaoDestinatario.siglaOrgao}}</span>
+                                            <span>{{dadosBasicos.orgaoDestinatario?.siglaOrgao}}</span>
                                         </div>
 
                                         <div class="col-md-4">
@@ -259,6 +259,40 @@
                                         </h2>
                                         <div id="panel-DadosAnalise" class="accordion-collapse collapse hide" aria-labelledby="DadosAnalise">
                                             <div class="accordion p-3" id="accordionPanelsDadosAnalise">
+
+                                                <!--Dados de Complementos-->
+                                                <div v-if="complementoManifestacao.length > 0" class="accordion-item">
+                                                    <h2 class="accordion-header d-flex" id="DadosComplemento">
+                                                        <i class="flex-fill check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
+                                                        <button class="flex-fill accordion-button collapsed" type="button" data-mdb-toggle="collapse"
+                                                                data-mdb-target="#panel-DadosComplemento" aria-expanded="true" aria-controls="panel-DadosComplemento">
+                                                            Dados de Complementos da Manifestação
+                                                        </button>
+                                                    </h2>
+                                                    <div id="panel-DadosComplemento" class="accordion-collapse collapse hide" aria-labelledby="DadosComplemento">
+                                                        <div class="accordion-body">
+                                                            <table class="table table-striped table-bordered table-sm">
+                                                                <thead class="table-light">
+                                                                    <tr>
+                                                                        <th scope="col">Data Complemento</th>
+                                                                        <th scope="col">Texto Complemento</th>
+                                                                        <th scope="col">Usuário Leitura</th>
+                                                                        <th scope="col">Data Leitura</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr v-for="(dados, index) in complementoManifestacao" :key="index">
+                                                                        <td>{{dados.dtComplementoFormat}}</td>
+                                                                        <td>{{dados.txtComplemento}}</td>
+                                                                        <td>{{dados.usuarioLeitura?.pessoa?.nome}}</td>
+                                                                        <td>{{dados.dtLeituraFormat}}</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                                 <!--Dados de Prorrogação-->
                                                 <div v-if="prorrogacaoManifestacao.length > 0" class="accordion-item">
                                                     <h2 class="accordion-header d-flex" id="DadosProrrogacao">
@@ -284,9 +318,44 @@
                                                                     <tr v-for="(dados, index) in prorrogacaoManifestacao" :key="index">
                                                                         <td>{{dados.prazoOriginalFormat}}</td>
                                                                         <td>{{dados.novoPrazoFormat}}</td>
-                                                                        <td>{{dados.orgao.siglaOrgao}}</td>
+                                                                        <td>{{dados.orgao?.siglaOrgao}}</td>
                                                                         <td>{{dados.txtJustificativaProrrogacao}}</td>
                                                                         <td>{{dados.dataProrrogacaoFormat}}</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!--Dados de Diligências-->
+                                                <div v-if="diligenciaManifestacao.length > 0" class="accordion-item">
+                                                    <h2 class="accordion-header d-flex" id="DadosDiligencia">
+                                                        <i class="flex-fill check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
+                                                        <button class="flex-fill accordion-button collapsed" type="button" data-mdb-toggle="collapse"
+                                                                data-mdb-target="#panel-DadosDiligencia" aria-expanded="true" aria-controls="panel-DadosDiligencia">
+                                                            Dados de Diligências
+                                                        </button>
+                                                    </h2>
+                                                    <div id="panel-DadosDiligencia" class="accordion-collapse collapse hide" aria-labelledby="DadosDiligencia">
+                                                        <div class="accordion-body">
+                                                            <table class="table table-striped table-bordered table-sm">
+                                                                <thead class="table-light">
+                                                                    <tr>
+                                                                        <th scope="col">Órgão</th>
+                                                                        <th scope="col">Data Diligência</th>
+                                                                        <th scope="col">Diligência</th>
+                                                                        <th scope="col">Data Resposta</th>
+                                                                        <th scope="col">Resposta</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr v-for="(dados, index) in diligenciaManifestacao" :key="index">
+                                                                        <td>{{dados.orgao?.siglaOrgao}}</td>
+                                                                        <td>{{dados.dataDiligenciaFormat}}</td>
+                                                                        <td>{{dados.txtDiligencia}}</td>
+                                                                        <td>{{dados.dataRespostaDiligenciaFormat}}</td>
+                                                                        <td>{{dados.txtRespostaDiligencia}}</td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
@@ -317,9 +386,75 @@
                                                                 <tbody>
                                                                     <tr v-for="(dados, index) in encaminhamentoManifestacao" :key="index">
                                                                         <td>{{dados.dataEncaminhamentoFormat}}</td>
-                                                                        <td>{{dados.orgaoOrigem.siglaOrgao}}</td>
-                                                                        <td>{{dados.orgaoDestino.siglaOrgao}}</td>
+                                                                        <td>{{dados.orgaoOrigem?.siglaOrgao}}</td>
+                                                                        <td>{{dados.orgaoDestino?.siglaOrgao}}</td>
                                                                         <td>{{dados.txtEncaminhamento}}</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!--Dados de Resposta-->
+                                                <div v-if="respostaManifestacao.length > 0" class="accordion-item">
+                                                    <h2 class="accordion-header d-flex" id="DadosResposta">
+                                                        <i class="flex-fill check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
+                                                        <button class="flex-fill accordion-button collapsed" type="button" data-mdb-toggle="collapse"
+                                                                data-mdb-target="#panel-DadosResposta" aria-expanded="true" aria-controls="panel-DadosResposta">
+                                                            Dados de Resposta da Manifestação
+                                                        </button>
+                                                    </h2>
+                                                    <div id="panel-DadosResposta" class="accordion-collapse collapse hide" aria-labelledby="DadosResposta">
+                                                        <div class="accordion-body">
+                                                            <table class="table table-striped table-bordered table-sm">
+                                                                <thead class="table-light">
+                                                                    <tr>
+                                                                        <th scope="col">Data da Resposta</th>
+                                                                        <th scope="col">Órgão</th>
+                                                                        <th scope="col">Resposta</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr v-for="(dados, index) in respostaManifestacao" :key="index">
+                                                                        <td>{{dados.dataRespostaFormat}}</td>
+                                                                        <td>{{dados.orgao?.siglaOrgao}}</td>
+                                                                        <td>{{dados.txtResposta}}</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+
+                                                <!--Dados de Apuração-->
+                                                <div v-if="apuracaoManifestacao.length > 0" class="accordion-item">
+                                                    <h2 class="accordion-header d-flex" id="DadosApuracao">
+                                                        <i class="flex-fill check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
+                                                        <button class="flex-fill accordion-button collapsed" type="button" data-mdb-toggle="collapse"
+                                                                data-mdb-target="#panel-DadosApuracao" aria-expanded="true" aria-controls="panel-DadosApuracao">
+                                                            Dados de Apuração
+                                                        </button>
+                                                    </h2>
+                                                    <div id="panel-DadosApuracao" class="accordion-collapse collapse hide" aria-labelledby="DadosApuracao">
+                                                        <div class="accordion-body">
+                                                            <table class="table table-striped table-bordered table-sm">
+                                                                <thead class="table-light">
+                                                                    <tr>
+                                                                        <th scope="col">Data Solicitação</th>
+                                                                        <th scope="col">Texto Solicitação</th>
+                                                                        <th scope="col">Data Resposta</th>
+                                                                        <th scope="col">Texto Resposta</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr v-for="(dados, index) in apuracaoManifestacao" :key="index">
+                                                                        <td>{{dados.dataSolicitacaoApuracaoFormat}}</td>
+                                                                        <td>{{dados.txtSolicitacaoApuracao}}</td>
+                                                                        <td>{{dados.dataRespostaApuracaoFormat}}</td>
+                                                                        <td>{{dados.txtRespostaApuracao}}</td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
@@ -362,30 +497,28 @@
                                                     </div>
                                                 </div>
 
-                                                <!--Dados de Desdobramentos-->
-                                                <div v-if="desdobramentoManifestacao.length > 0" class="accordion-item">
-                                                    <h2 class="accordion-header d-flex" id="DadosDesdobramento">
+                                                <!--Dados de Notificações-->
+                                                <div v-if="notificacaoManifestacao.length > 0" class="accordion-item">
+                                                    <h2 class="accordion-header d-flex" id="DadosNotificacao">
                                                         <i class="flex-fill check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
                                                         <button class="flex-fill accordion-button collapsed" type="button" data-mdb-toggle="collapse"
-                                                                data-mdb-target="#panel-DadosDesdobramento" aria-expanded="true" aria-controls="panel-DadosDesdobramento">
-                                                            Dados de Desdobramentos
+                                                                data-mdb-target="#panel-DadosNotificacao" aria-expanded="true" aria-controls="panel-DadosNotificacao">
+                                                            Dados de Notificações
                                                         </button>
                                                     </h2>
-                                                    <div id="panel-DadosDesdobramento" class="accordion-collapse collapse hide" aria-labelledby="DadosDesdobramento">
+                                                    <div id="panel-DadosNotificacao" class="accordion-collapse collapse hide" aria-labelledby="DadosNotificacao">
                                                         <div class="accordion-body">
                                                             <table class="table table-striped table-bordered table-sm">
                                                                 <thead class="table-light">
                                                                     <tr>
-                                                                        <th scope="col">Manifestação Filha</th>
-                                                                        <th scope="col">Órgão</th>
-                                                                        <th scope="col">Data do Desdobramento</th>
+                                                                        <th scope="col">Data</th>
+                                                                        <th scope="col">Notificação</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <tr v-for="(dados, index) in desdobramentoManifestacao" :key="index">
-                                                                        <td>{{dados.ManifestacaoFilha.NumProtocolo}}</td>
-                                                                        <td>{{dados.Orgao.SiglaOrgao}}</td>
-                                                                        <td>{{dados.DataDesdobramentoFormat}}</td>
+                                                                    <tr v-for="(dados, index) in notificacaoManifestacao" :key="index">
+                                                                        <td>{{dados.dataNotificacaoFormat}}</td>
+                                                                        <td>{{dados.txtNotificacao}}</td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
@@ -422,220 +555,6 @@
                                                     </div>
                                                 </div>
 
-                                                <!--Dados de Notificações-->
-                                                <div v-if="notificacaoManifestacao.length > 0" class="accordion-item">
-                                                    <h2 class="accordion-header d-flex" id="DadosNotificacao">
-                                                        <i class="flex-fill check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                                        <button class="flex-fill accordion-button collapsed" type="button" data-mdb-toggle="collapse"
-                                                                data-mdb-target="#panel-DadosNotificacao" aria-expanded="true" aria-controls="panel-DadosNotificacao">
-                                                            Dados de Notificações
-                                                        </button>
-                                                    </h2>
-                                                    <div id="panel-DadosNotificacao" class="accordion-collapse collapse hide" aria-labelledby="DadosNotificacao">
-                                                        <div class="accordion-body">
-                                                            <table class="table table-striped table-bordered table-sm">
-                                                                <thead class="table-light">
-                                                                    <tr>
-                                                                        <th scope="col">Data</th>
-                                                                        <th scope="col">Notificação</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr v-for="(dados, index) in notificacaoManifestacao" :key="index">
-                                                                        <td>{{dados.dataNotificacaoFormat}}</td>
-                                                                        <td>{{dados.txtNotificacao}}</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <!--Dados de Reclamação de Omissão-->
-                                                <div v-if="reclamacaoOmissao.length > 0" class="accordion-item">
-                                                    <h2 class="accordion-header d-flex" id="DadosReclamacaoOmissao">
-                                                        <i class="flex-fill check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                                        <button class="flex-fill accordion-button collapsed" type="button" data-mdb-toggle="collapse"
-                                                                data-mdb-target="#panel-DadosReclamacaoOmissao" aria-expanded="true" aria-controls="panel-DadosReclamacaoOmissao">
-                                                            Dados de Reclamação de Omissão
-                                                        </button>
-                                                    </h2>
-                                                    <div id="panel-DadosReclamacaoOmissao" class="accordion-collapse collapse hide" aria-labelledby="DadosReclamacaoOmissao">
-                                                        <div class="accordion-body">
-                                                            <table class="table table-striped table-bordered table-sm">
-                                                                <thead class="table-light">
-                                                                    <tr>
-                                                                        <th scope="col">ManifestacaoFilha.NumProtocolo</th>
-                                                                        <th scope="col">Data do Reclamação de Omissão</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr v-for="(dados, index) in reclamacaoOmissao" :key="index">
-                                                                        <td>{{dados.ManifestacaoFilha.NumProtocolo}}</td>
-                                                                        <td>{{dados.dataReclamacaoOmissaoFormat}}</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <!--Dados de Resposta-->
-                                                <div v-if="respostaManifestacao.length > 0" class="accordion-item">
-                                                    <h2 class="accordion-header d-flex" id="DadosResposta">
-                                                        <i class="flex-fill check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                                        <button class="flex-fill accordion-button collapsed" type="button" data-mdb-toggle="collapse"
-                                                                data-mdb-target="#panel-DadosResposta" aria-expanded="true" aria-controls="panel-DadosResposta">
-                                                            Dados de Resposta da Manifestação
-                                                        </button>
-                                                    </h2>
-                                                    <div id="panel-DadosResposta" class="accordion-collapse collapse hide" aria-labelledby="DadosResposta">
-                                                        <div class="accordion-body">
-                                                            <table class="table table-striped table-bordered table-sm">
-                                                                <thead class="table-light">
-                                                                    <tr>
-                                                                        <th scope="col">Data da Resposta</th>
-                                                                        <th scope="col">Órgão</th>
-                                                                        <th scope="col">Resposta</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr v-for="(dados, index) in respostaManifestacao" :key="index">
-                                                                        <td>{{dados.dataRespostaFormat}}</td>
-                                                                        <td>{{dados.orgao.siglaOrgao}}</td>
-                                                                        <td>{{dados.txtResposta}}</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <!--Dados de Diligências-->
-                                                <div v-if="diligenciaManifestacao.length > 0" class="accordion-item">
-                                                    <h2 class="accordion-header d-flex" id="DadosDiligencia">
-                                                        <i class="flex-fill check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                                        <button class="flex-fill accordion-button collapsed" type="button" data-mdb-toggle="collapse"
-                                                                data-mdb-target="#panel-DadosDiligencia" aria-expanded="true" aria-controls="panel-DadosDiligencia">
-                                                            Dados de Diligências
-                                                        </button>
-                                                    </h2>
-                                                    <div id="panel-DadosDiligencia" class="accordion-collapse collapse hide" aria-labelledby="DadosDiligencia">
-                                                        <div class="accordion-body">
-                                                            <table class="table table-striped table-bordered table-sm">
-                                                                <thead class="table-light">
-                                                                    <tr>
-                                                                        <th scope="col">Órgão</th>
-                                                                        <th scope="col">Data Diligência</th>
-                                                                        <th scope="col">Diligência</th>
-                                                                        <th scope="col">Data Resposta</th>
-                                                                        <th scope="col">Resposta</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr v-for="(dados, index) in diligenciaManifestacao" :key="index">
-                                                                        <td>{{dados.orgao.siglaOrgao}}</td>
-                                                                        <td>{{dados.dataDiligenciaFormat}}</td>
-                                                                        <td>{{dados.txtDiligencia}}</td>
-                                                                        <td>{{dados.dataRespostaDiligenciaFormat}}</td>
-                                                                        <td>{{dados.txtRespostaDiligencia}}</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <!--Dados de Apuração-->
-                                                <div v-if="apuracaoManifestacao.length > 0" class="accordion-item">
-                                                    <h2 class="accordion-header d-flex" id="DadosApuracao">
-                                                        <i class="flex-fill check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                                        <button class="flex-fill accordion-button collapsed" type="button" data-mdb-toggle="collapse"
-                                                                data-mdb-target="#panel-DadosApuracao" aria-expanded="true" aria-controls="panel-DadosApuracao">
-                                                            Dados de Apuração
-                                                        </button>
-                                                    </h2>
-                                                    <div id="panel-DadosApuracao" class="accordion-collapse collapse hide" aria-labelledby="DadosApuracao">
-                                                        <div class="accordion-body">
-                                                            <table class="table table-striped table-bordered table-sm">
-                                                                <thead class="table-light">
-                                                                    <tr>
-                                                                        <th scope="col">Data Solicitação</th>
-                                                                        <th scope="col">Solicitação</th>
-                                                                        <th scope="col">Data Resposta</th>
-                                                                        <th scope="col">Resposta</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr v-for="(dados, index) in apuracaoManifestacao" :key="index">
-                                                                        <td>{{dados.dataSolicitacaoApuracaoFormat}}</td>
-                                                                        <td>{{dados.txtSolicitacaoApuracao}}</td>
-                                                                        <td>{{dados.dataRespostaApuracaoFormat}}</td>
-                                                                        <td>{{dados.txtRespostaApuracao}}</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <!--Dados de Complementos-->
-                                                <div v-if="complementoManifestacao.length > 0" class="accordion-item">
-                                                    <h2 class="accordion-header d-flex" id="DadosComplemento">
-                                                        <i class="flex-fill check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                                        <button class="flex-fill accordion-button collapsed" type="button" data-mdb-toggle="collapse"
-                                                                data-mdb-target="#panel-DadosComplemento" aria-expanded="true" aria-controls="panel-DadosComplemento">
-                                                            Dados de Complementos da Manifestação
-                                                        </button>
-                                                    </h2>
-                                                    <div id="panel-DadosComplemento" class="accordion-collapse collapse hide" aria-labelledby="DadosComplemento">
-                                                        <div class="accordion-body">
-                                                            <table class="table table-striped table-bordered table-sm">
-                                                                <thead class="table-light">
-                                                                    <tr>
-                                                                        <th scope="col">Data</th>
-                                                                        <th scope="col">Notificação</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr v-for="(dados, index) in complementoManifestacao" :key="index">
-                                                                        <td>{{dados.dtComplementoFormat}}</td>
-                                                                        <td>{{dados.txtComplemento}}</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <!--Dados Anexos-->
-                                                <!--<div v-if="anexoManifestacao.length > 0" class="accordion-item">
-                                                    <h2 class="accordion-header d-flex" id="DadosAnexo">
-                                                        <i class="flex-fill check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                                        <button class="flex-fill accordion-button collapsed" type="button" data-mdb-toggle="collapse"
-                                                                data-mdb-target="#panel-DadosAnexo" aria-expanded="true" aria-controls="panel-DadosAnexo">
-                                                            Dados de Anexos
-                                                        </button>
-                                                    </h2>
-                                                    <div id="panel-DadosAnexo" class="accordion-collapse collapse hide" aria-labelledby="DadosAnexo">
-                                                        <div class="accordion-body">
-                                                            <table class="table table-striped table-bordered table-sm">
-                                                                <thead class="table-light">
-                                                                    <tr>
-                                                                        <th scope="col">Data</th>
-                                                                        <th scope="col">Notificação</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr v-for="(dados, index) in anexoManifestacao" :key="index">
-                                                                        <td>{{dados.dtComplemento}}</td>
-                                                                        <td>{{dados.txtComplemento}}</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>-->
                                                 <!--Dados Interpelação-->
                                                 <div v-if="interpelacaoManifestacao.length > 0" class="accordion-item">
                                                     <h2 class="accordion-header d-flex" id="DadosInterpelacao">
@@ -661,9 +580,41 @@
                                                                     <tr v-for="(dados, index) in interpelacaoManifestacao" :key="index">
                                                                         <td>{{dados.dataInterpelacaoFormat}}</td>
                                                                         <td>{{dados.txtInterpelacao}}</td>
-                                                                        <td>{{dados.OrgaoResposta.SiglaOrgao}}</td>
+                                                                        <td>{{dados.orgaoResposta?.siglaOrgao}}</td>
                                                                         <td>{{dados.dataRespostaInterpelacaoFormat}}</td>
                                                                         <td>{{dados.txtRespostaInterpelacao}}</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+
+
+                                                <!--Dados de Reclamação de Omissão-->
+                                                <div v-if="reclamacaoOmissao.length > 0" class="accordion-item">
+                                                    <h2 class="accordion-header d-flex" id="DadosReclamacaoOmissao">
+                                                        <i class="flex-fill check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
+                                                        <button class="flex-fill accordion-button collapsed" type="button" data-mdb-toggle="collapse"
+                                                                data-mdb-target="#panel-DadosReclamacaoOmissao" aria-expanded="true" aria-controls="panel-DadosReclamacaoOmissao">
+                                                            Dados de Reclamação de Omissão
+                                                        </button>
+                                                    </h2>
+                                                    <div id="panel-DadosReclamacaoOmissao" class="accordion-collapse collapse hide" aria-labelledby="DadosReclamacaoOmissao">
+                                                        <div class="accordion-body">
+                                                            <table class="table table-striped table-bordered table-sm">
+                                                                <thead class="table-light">
+                                                                    <tr>
+                                                                        <th scope="col">ManifestacaoFilha.NumProtocolo</th>
+                                                                        <th scope="col">Data do Reclamação de Omissão</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr v-for="(dados, index) in reclamacaoOmissao" :key="index">
+                                                                        <td>{{dados.manifestacaoFilha?.numProtocolo}}</td>
+                                                                        <td>{{dados.dataReclamacaoOmissaoFormat}}</td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
@@ -705,6 +656,102 @@
                                                         </div>
                                                     </div>
                                                 </div>
+
+                                                <!--Dados de Desdobramentos-->
+                                                <div v-if="desdobramentoManifestacao.length > 0" class="accordion-item">
+                                                    <h2 class="accordion-header d-flex" id="DadosDesdobramento">
+                                                        <i class="flex-fill check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
+                                                        <button class="flex-fill accordion-button collapsed" type="button" data-mdb-toggle="collapse"
+                                                                data-mdb-target="#panel-DadosDesdobramento" aria-expanded="true" aria-controls="panel-DadosDesdobramento">
+                                                            Dados de Desdobramentos
+                                                        </button>
+                                                    </h2>
+                                                    <div id="panel-DadosDesdobramento" class="accordion-collapse collapse hide" aria-labelledby="DadosDesdobramento">
+                                                        <div class="accordion-body">
+                                                            <table class="table table-striped table-bordered table-sm">
+                                                                <thead class="table-light">
+                                                                    <tr>
+                                                                        <th scope="col">Manifestação Filha</th>
+                                                                        <th scope="col">Órgão</th>
+                                                                        <th scope="col">Data do Desdobramento</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr v-for="(dados, index) in desdobramentoManifestacao" :key="index">
+                                                                        <td>{{dados.manifestacaoFilha?.numProtocolo}}</td>
+                                                                        <td>{{dados.orgao?.siglaOrgao}}</td>
+                                                                        <td>{{dados.dataDesdobramentoFormat}}</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!--Dados Anexos-->
+                                                <!--<div v-if="anexoManifestacao.length > 0" class="accordion-item">
+                                                    <h2 class="accordion-header d-flex" id="DadosAnexo">
+                                                        <i class="flex-fill check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
+                                                        <button class="flex-fill accordion-button collapsed" type="button" data-mdb-toggle="collapse"
+                                                                data-mdb-target="#panel-DadosAnexo" aria-expanded="true" aria-controls="panel-DadosAnexo">
+                                                            Dados de Anexos
+                                                        </button>
+                                                    </h2>
+                                                    <div id="panel-DadosAnexo" class="accordion-collapse collapse hide" aria-labelledby="DadosAnexo">
+                                                        <div class="accordion-body">
+                                                            <table class="table table-striped table-bordered table-sm">
+                                                                <thead class="table-light">
+                                                                    <tr>
+                                                                        <th scope="col">Data</th>
+                                                                        <th scope="col">Notificação</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr v-for="(dados, index) in anexoManifestacao" :key="index">
+                                                                        <td>{{dados.dtComplemento}}</td>
+                                                                        <td>{{dados.txtComplemento}}</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>-->
+
+                                                <!--Dados Interpelação-->
+                                                <div v-if="interpelacaoManifestacao.length > 0" class="accordion-item">
+                                                    <h2 class="accordion-header d-flex" id="DadosInterpelacao">
+                                                        <i class="flex-fill check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
+                                                        <button class="flex-fill accordion-button collapsed" type="button" data-mdb-toggle="collapse"
+                                                                data-mdb-target="#panel-DadosInterpelacao" aria-expanded="true" aria-controls="panel-DadosInterpelacao">
+                                                            Dados de Interpelação
+                                                        </button>
+                                                    </h2>
+                                                    <div id="panel-DadosInterpelacao" class="accordion-collapse collapse hide" aria-labelledby="DadosInterpelacao">
+                                                        <div class="accordion-body">
+                                                            <table class="table table-striped table-bordered table-sm">
+                                                                <thead class="table-light">
+                                                                    <tr>
+                                                                        <th scope="col">Data</th>
+                                                                        <th scope="col">Texto Interpelação</th>
+                                                                        <th scope="col">Orgão Resposta</th>
+                                                                        <th scope="col">Data Resposta</th>
+                                                                        <th scope="col">Texto Resposta</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr v-for="(dados, index) in interpelacaoManifestacao" :key="index">
+                                                                        <td>{{dados.dataInterpelacaoFormat}}</td>
+                                                                        <td>{{dados.txtInterpelacao}}</td>
+                                                                        <td>{{dados.OrgaoResposta.SiglaOrgao}}</td>
+                                                                        <td>{{dados.dataRespostaInterpelacaoFormat}}</td>
+                                                                        <td>{{dados.txtRespostaInterpelacao}}</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -734,7 +781,7 @@
                                         <tbody>
                                             <tr v-for="(dados, index) in historicoManifestacao" :key="index">
                                                 <td>{{dados.dataHistoricoFormat}}</td>
-                                                <td>{{dados.orgao.siglaOrgao}}</td>
+                                                <td>{{dados.orgao?.siglaOrgao}}</td>
                                                 <td>{{dados.situacaoManifestacao.descSituacaoManifestacao}}</td>
                                             </tr>
                                         </tbody>

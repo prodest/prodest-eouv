@@ -95,7 +95,7 @@
             this.dadosBasicos.assunto = ret.assunto.descAssunto;
             this.dadosBasicos.dataRegistro = ret.dataRegistroFormat;
             this.dadosBasicos.prazoResposta = ret.prazoRespostaFormat;
-            this.dadosBasicos.tipoManifestante = ret.tipoManifestante.descTipoManifestante;
+            this.dadosBasicos.tipoManifestante = ret.tipoManifestante != null ? ret.tipoManifestante.descTipoManifestante : "";
 
             this.$emit('capturar-dados-manifestacao', this.dadosBasicos);
 
@@ -103,7 +103,9 @@
             this.PreencherTeorManifestacao(ret.textoManifestacao, ret.municipioLocalFatoFormat);
 
             //Dados do Manifestante
-            this.PreencherDadosManifestante(ret.pessoa);
+            if (ret.tipoManifestante != null) {
+                this.PreencherDadosManifestante(ret.pessoa);
+            }
 
             //Dados Complementos
             ret.complementoManifestacao?.forEach(this.PreencherComplementoManifestacao);
