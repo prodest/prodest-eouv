@@ -636,7 +636,6 @@
                                                         </div>
                                                     </div>
                                                 </div>-->
-
                                                 <!--Dados Interpelação-->
                                                 <div v-if="interpelacaoManifestacao.length > 0" class="accordion-item">
                                                     <h2 class="accordion-header d-flex" id="DadosInterpelacao">
@@ -760,31 +759,20 @@
                     <div class="card-body">
                         <div class="row">
 
-
-                            <div class="col-md-12 position-relative mb-5">
+                            <div class="col-md-12 position-relative mb-4">
                                 <label class="form-label" for="customAnexo">Com qual Cargo/Função você irá Encaminhar?</label>
                                 <div class="form-check px-0" v-for="(papel, index) in papeisUsuario" v-bind:key="index" v-bind:for="papel.id">
                                     <input type="radio" v-on:change="TogglePapelSelecionado($event)" required class="btn-check" name="papel" v-bind:id="papel.id" autocomplete="off">
                                     <label class="btn btn-outline-warning btn-sm m-1" v-bind:for="papel.id">{{papel.nome}} - {{papel.siglaUnidadePapel}} - {{papel.siglaOrganizacaoPapel}}</label>
-                                    @*<input type="radio" v-on:change="TogglePapelSelecionado($event)" required id="teste1" class="btn-check" name="papel" autocomplete="off">
-                                        <label class="btn btn-outline-warning btn-sm m-1" for="teste1">ANALISTA DE TECNOLOGIA DA INFORMACAO - SGPRJ - PRODEST</label>
-                                        <input type="radio" v-on:change="TogglePapelSelecionado($event)" required id="teste2" class="btn-check" name="papel" autocomplete="off">
-                                        <label class="btn btn-outline-warning btn-sm m-1" for="teste2">ANALISTA DE TECNOLOGIA DA INFORMACAO - SGPRJ - PRODEST</label>
-                                        <input type="radio" v-on:change="TogglePapelSelecionado($event)" required id="teste3" class="btn-check" name="papel" autocomplete="off">
-                                        <label class="btn btn-outline-warning btn-sm m-1" for="teste3">ANALISTA DE TECNOLOGIA DA INFORMACAO - SGPRJ - PRODEST</label>
-                                        <input type="radio" v-on:change="TogglePapelSelecionado($event)" required id="teste4" class="btn-check" name="papel" autocomplete="off">
-                                        <label class="btn btn-outline-warning btn-sm m-1" for="teste4">ANALISTA DE TECNOLOGIA DA INFORMACAO - SGPRJ - PRODEST</label>
-                                        <input type="radio" v-on:change="TogglePapelSelecionado($event)" required id="teste5" class="btn-check" name="papel" autocomplete="off">
-                                        <label class="btn btn-outline-warning btn-sm m-1" for="teste5">ANALISTA DE TECNOLOGIA DA INFORMACAO - SGPRJ - PRODEST</label>*@
                                     <div class="invalid-feedback mt-1">Cargo/Função é obrigatório!</div>
                                 </div>
                             </div>
 
-                            <div class="col-md-4 position-relative mb-3">
-                                <label class="form-label">Selecione o Destinatário:</label>                                
+                            <div class="col-md-4 position-relative mb-2">
+                                <label class="form-label">Selecione o Destinatário:</label>
                                 <selecao-destinatarios v-on:selecionar-destinatario="IncluirDestinatarioSelecionado"></selecao-destinatarios>
                             </div>
-                        
+
                             <div class="col-md-4 position-relative">
                                 <label class="form-label" for="flPrazoResposta">Prazo de Resposta</label>
                                 <div class="input-group has-validation">
@@ -794,40 +782,47 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-12 position-relative mt-5 mb-5">
+                            <div class="col-md-12 position-relative mb-3">
                                 <label class="form-label" for="flTextoDespacho">Texto do Despacho</label>
                                 <textarea class="form-control" required maxlength="8000" rows="5" placeholder="Informe o texto do despacho aqui." v-model="textoDespacho" id="flTextoDespacho"></textarea>
                                 <div class="invalid-feedback">Texto do despacho é obrigatório!</div>
                             </div>
 
-
-
-                                @*<div class="form-outline mb-3">
-                                            <button class="btn btn-block btn-info" v-on:click="IncluirCampoAnexo"><i class="fas fa-plus"></i> Incluir novo arquivo</button>
-                                            <div class="border-1 mt-3" v-if="campoAnexo.length > 0">
-                                                <div class="input-group mb-3" v-for="(campo, index) in campoAnexo" v-bind:key="index">
-                                                    <input type="file" class="form-control" id="{{campo}}" aria-describedby="addon-{{campo}}" />
-                                                    <span v-on:click="RemoverCampoAnexo(campo)" class="input-group-text border-0 btn btn-danger shadow-0" id="addon-{{campo}}"><i class="fas fa-times"></i></span>
-                                                </div>
+                            @*<div class="form-outline mb-3">
+                                        <button class="btn btn-block btn-info" v-on:click="IncluirCampoAnexo"><i class="fas fa-plus"></i> Incluir novo arquivo</button>
+                                        <div class="border-1 mt-3" v-if="campoAnexo.length > 0">
+                                            <div class="input-group mb-3" v-for="(campo, index) in campoAnexo" v-bind:key="index">
+                                                <input type="file" class="form-control" id="{{campo}}" aria-describedby="addon-{{campo}}" />
+                                                <span v-on:click="RemoverCampoAnexo(campo)" class="input-group-text border-0 btn btn-danger shadow-0" id="addon-{{campo}}"><i class="fas fa-times"></i></span>
                                             </div>
                                         </div>
-                                    <hr />*@
+                                    </div>
+                                <hr />*@
 
-                            </div>
+                            @*<div class="form-outline mb-3">
+                                        <button class="btn btn-block btn-info" v-on:click="IncluirCampoAnexo"><i class="fas fa-plus"></i> Incluir novo arquivo</button>
+                                        <div class="border-1 mt-3" v-if="campoAnexo.length > 0">
+                                            <div class="input-group mb-3" v-for="(campo, index) in campoAnexo" v-bind:key="index">
+                                                <input type="file" class="form-control" id="{{campo}}" aria-describedby="addon-{{campo}}" />
+                                                <span v-on:click="RemoverCampoAnexo(campo)" class="input-group-text border-0 btn btn-danger shadow-0" id="addon-{{campo}}"><i class="fas fa-times"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <hr />*@
                         </div>
-                        <div class="card-footer py-3">
-                            <div class="row justify-content-end">
-                                <div class="col-md-4 col-sm-6 col-lg-2">
-                                    <a v-bind:href="urlCancelar" class="btn btn-danger btn-block mb-1"><i class="fas fa-times"></i> Cancelar</a>
-                                </div>
-                                <div class="col-md-4 col-sm-6 col-lg-2">
-                                    <button type="submit" v-on:click="Despachar($event)" class="btn btn-primary btn-block mb-1"><i class="fas fa-share"></i> Despachar</button>
-                                </div>
+                    </div>
+                    <div class="card-footer py-3">
+                        <div class="row justify-content-end">
+                            <div class="col-md-4 col-sm-6 col-lg-2">
+                                <a v-bind:href="urlCancelar" class="btn btn-danger btn-block mb-1"><i class="fas fa-times"></i> Cancelar</a>
+                            </div>
+                            <div class="col-md-4 col-sm-6 col-lg-2">
+                                <button type="submit" v-on:click="Despachar($event)" class="btn btn-primary btn-block mb-1"><i class="fas fa-share"></i> Despachar</button>
                             </div>
                         </div>
                     </div>
-                </section>
-            </form>
+                </div>
+            </section>
         </div>
     </script>
 
