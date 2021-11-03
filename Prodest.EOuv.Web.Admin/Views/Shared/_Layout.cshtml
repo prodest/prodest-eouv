@@ -10,11 +10,9 @@
     <!-- Custom styles -->
     <link rel="stylesheet" href="~/dist/mdb/css/admin.css" />
     <link rel="stylesheet" href="~/dist/fontawesome-free-5.15.3-web/css/all.min.css" />
-    <link rel="stylesheet" href="~/lib/vanillajs-datepicker/dist/css/datepicker-bs5.min.css" />
+    <link rel="stylesheet" href="~/lib/vanillajs-datepicker/dist/css/datepicker.css" />
 
     <script defer src="~/dist/vue-3.2.6/vue.global.js"></script>
-
-    <script defer src="~/scripts/app/shared/eOuvDatePicker.js" asp-append-version="true"></script>
     <script defer src="~/scripts/common/fetchData.js" asp-append-version="true"></script>
     <script defer src="~/scripts/common/bootstrapHelper.js" asp-append-version="true"></script>
     <script defer src="~/scripts/common/mascaras.js" asp-append-version="true"></script>
@@ -22,7 +20,8 @@
     <script defer src="~/scripts/common/vue/vueBase.js" asp-append-version="true"></script>
     <script defer src="~/scripts/common/vue/vueReusaveis.js" asp-append-version="true"></script>
     <script defer src="~/scripts/common/mensagemSistema.js" asp-append-version="true"></script>
-    <script defer src="~/lib/vanillajs-datepicker/dist/js/datepicker-full.min.js" asp-append-version="true"></script>
+    <script defer src="~/lib/vanillajs-datepicker/dist/js/datepicker-full.js" asp-append-version="true"></script>
+    <script defer src="~/lib/vanillajs-datepicker/dist/js/locales/pt-BR.js" asp-append-version="true"></script>    
 
     <script defer src="/scripts/app/navbar/NavBarUsuario.js"></script>
 
@@ -91,10 +90,10 @@
                     Despachos
                     <ul class="sidenav-collapse px-0">
                         <li class="sidenav-item list-unstyled">
-                            <a href="/despacho/AcompanharDespachos" title="Despachos" class="sidenav-link ripple-surface text-white"><i class="fas fa-caret-right"></i> Despachos Realizados</a>
+                            <a href="/despacho?id=583" title="Despachos" class="sidenav-link ripple-surface text-white"><i class="fas fa-caret-right"></i> Despachos Realizados</a>
                         </li>
                         <li class="sidenav-item list-unstyled">
-                            <a href="/Despacho/novodespacho" title="Novo Despacho" class="sidenav-link ripple-surface text-white"><i class="fas fa-caret-right"></i> Novo Despacho</a>
+                            <a href="/Despacho/novodespacho?id=583" title="Novo Despacho" class="sidenav-link ripple-surface text-white"><i class="fas fa-caret-right"></i> Novo Despacho</a>
                         </li>
                     </ul>
                 </li>
@@ -117,10 +116,3 @@
     @RenderSection("templates", false)
 </body>
 </html>
-
-<script type="text/html" id="template-date-picker">
-    <div class="input-group input-group-sm mb-3">
-        <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
-        <input v-model:id="idelemento" type="text" class="form-control">
-    </div>
-</script>

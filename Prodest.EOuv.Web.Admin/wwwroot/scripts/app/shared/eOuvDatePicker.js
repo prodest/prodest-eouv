@@ -22,7 +22,7 @@
                 //endDate:,
                 //startDate:,
                 format: 'dd/mm/yyyy',
-                language:'pr-BR'
+                language:'pt-Br'
             });
         },
 

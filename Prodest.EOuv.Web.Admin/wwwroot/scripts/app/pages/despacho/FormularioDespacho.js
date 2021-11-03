@@ -34,28 +34,41 @@ const DespachoForm = {
                 DadosRecursoNegativa: false,
                 DadosHistorico: false
             },
-            urlCancelar: null
+            urlDespachar: null,
+            urlCancelar: null,
+            prazoAtendimentoManifestacao: null,
+            dataAtual: null
         }
     },
 
     mounted() {
-        this.CarregarPapeisUsuario();
-        this.GerarDataPrazoResposta();
+        this.CarregarPapeisUsuario();        
     },
 
     methods: {
         async MontarURLRedirecionamento() {
+            this.urlDespachar = "../Despacho?id=" + this.idManifestacao;
             this.urlCancelar = "../Despacho?id=" + this.idManifestacao;
         },
         CapturarDadosManifestacao(dadosBasicosManifestacao) {
             this.idManifestacao = dadosBasicosManifestacao.idManifestacao;
+            console.log(dadosBasicosManifestacao.prazoResposta);
+            this.prazoAtendimentoManifestacao = dadosBasicosManifestacao.prazoResposta;            
             this.MontarURLRedirecionamento();
+
+            this.GerarDataPrazoResposta();            
         },
         GerarDataPrazoResposta() {
             let data = new Date();
             data.setDate(data.getDate() + PrazoEmDias);
-            this.prazoResposta = utils.DataFormatada(data);
+
+            let fimAtendimento = new Date(utils.ConvertStringToDate(this.prazoAtendimentoManifestacao));            
+
+            this.dataAtual = utils.DataDiaMesAno(new Date());
+            utils.CriarDatePickerPorClasse(document.getElementsByClassName('data-eouv'), new Date(), fimAtendimento);
+            this.prazoResposta = this.dataAtual;
         },
+
         IncluirCampoAnexo() {
             this.idCampoAnexo++;
             this.campoAnexo.push('file-' + (this.idCampoAnexo));
@@ -68,7 +81,30 @@ const DespachoForm = {
             let ret = await eOuvApi.PapeisUsuarioEDocs();
             this.papeisUsuario = ret;
         },
-        async Despachar() {
+        async Despachar(e) {
+
+            (function () {
+                'use strict'
+
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.querySelectorAll('.needs-validation')
+
+                // Loop over them and prevent submission
+                Array.prototype.slice.call(forms)
+                    .forEach(function (form) {
+                        form.addEventListener('submit', function (event) {
+                            if (!form.checkValidity()) {
+                                event.preventDefault()
+                                event.stopPropagation()
+                            }
+
+                            form.classList.add('was-validated')
+                        }, false)
+                    })
+            })();
+
+
+            //e.preventDefault();
             let entry = {
                 IdManifestacao: this.idManifestacao,
                 IdOrgao: 0,
@@ -78,10 +114,15 @@ const DespachoForm = {
                 FiltroDadosManifestacaoSelecionados: JSON.parse(JSON.stringify(this.dadosManifestacaoSelecionados)),
                 GuidPapelDestinatario: this.destinatarioSelecionado,
                 GuidPapelResponsavel: this.papelSelecionado
-            }
+            }            
             console.log(entry);
-            await eOuvApi.despachar(entry);
-            window.location.href = "../Despacho?id=" + this.idManifestacao;
+
+            return false;
+            //await eOuvApi.despachar(entry);
+            /*            window.location.href = "/Despacho/AcompanharDespachos/" + this.idManifestacao;*/
+        },
+        GetDate(e) {
+            this.prazoResposta = e.target.value;
         },
         ToggleDadosManifestacaoSelecionados(e) {
             console.log(e)
