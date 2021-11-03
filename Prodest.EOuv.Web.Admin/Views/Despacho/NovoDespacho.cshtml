@@ -770,9 +770,9 @@
                         <label class="form-label">Selecione o Destinatário:</label>
                         <br />
                         <selecao-destinatarios v-on:selecionar-destinatario="IncluirDestinatarioSelecionado"></selecao-destinatarios>
-                    </div>
-
+                    </div>                    
                     <div class="mb-3 col-md-3">
+                        <date-picker idelemento="prazoResposta"></date-picker>
                         <label class="form-label" for="flPrazoResposta">Prazo de Resposta</label>
                         <input v-model="prazoResposta" v-bind:value="prazoResposta" type="text" class="form-control form-control-sm" id="flPrazoResposta" placeholder="01/01/2021">
                     </div>
@@ -781,6 +781,8 @@
                         <label class="form-label" for="flTextoDespacho">Texto do Despacho</label>
                         <textarea class="form-control form-control-sm" maxlength="2000" placeholder="Informe o texto do despacho aqui." v-model="textoDespacho" id="flTextoDespacho" style="height: 80px"></textarea>
                     </div>
+
+
 
                     @*<div class="form-outline mb-3">
                                 <button class="btn btn-block btn-info" v-on:click="IncluirCampoAnexo"><i class="fas fa-plus"></i> Incluir novo arquivo</button>
