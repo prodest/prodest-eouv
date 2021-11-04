@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Prodest.EOuv.Web.Admin.Controllers
 {
 
-    //[Authorize(Policy = "Desenvolvedor")]
+    [Authorize(Policy = "Despachar")]
     public class DespachoController : Controller
     {
         private readonly IDespachoWorkService _despachoWorkService;

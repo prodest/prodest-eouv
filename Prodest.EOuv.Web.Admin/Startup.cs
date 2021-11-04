@@ -230,9 +230,13 @@ namespace Prodest.EOuv.Web.Admin
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("Gestor", policy => policy.RequireClaim("Role", "ef6e936b-e90b-4112-bba1-0ec1793c0aaa"));// id do Gestor no AcessoCidadao
+                options.AddPolicy("Representante de Ouvidoria", policy => policy.RequireClaim("Role", "ca47b98f-cbda-4a32-bf67-e7387bfd616c"));// id do Representante de Ouvidoria no AcessoCidadao
+                options.AddPolicy("Despachar", policy => policy.RequireAssertion(
+                    context => context.User.HasClaim(claim => (claim.Type.Equals("Role") && claim.Value.Equals("ef6e936b-e90b-4112-bba1-0ec1793c0aaa")))
+                    || context.User.HasClaim(claim => (claim.Type.Equals("Role") && claim.Value.Equals("ca47b98f-cbda-4a32-bf67-e7387bfd616c")))));
 
                 options.AddPolicy("Desenvolvedor", policy => policy.RequireAssertion(
-                context =>
+                context => 
                        context.User.HasClaim(claim => (claim.Type.Equals("Role") && claim.Value.Equals("Desenvolvedor"))) //de teste essa role não existe
                     //Acao$Manifestação de Ouvidoria, Despachar
                     || context.User.HasClaim(claim => (claim.Type.Equals("Acao$Manifestação de Ouvidoria") && claim.Value.Equals("a8d67f7e-5f59-44fa-ab01-a3ac53fc6227"))))); //id do Gestor no Despachar AcessoCidadao
