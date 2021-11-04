@@ -12,7 +12,9 @@
 <div class="container-fluid p-0">
     <div class="row">
         <div id="app" class="col-12">
-            <resposta-form></resposta-form>
+            <form class="needs-validation g-3" method="post" novalidate>
+                <resposta-form></resposta-form>
+            </form>
         </div>
     </div>
 </div>
@@ -25,49 +27,55 @@
                     Manifestação: {{manifestacao?.numProtocolo}}
                 </div>
                 <div class="card-body">
-                    <div class="mb-3">
-                        <p class="small m-0">Documentos gerados pelos encaminhamento via E-DOCS:</p>
-                        <ul class="p-0 m-0">
-                            <li class="list-unstyled btn btn-outline-info btn-sm mx-1 mb-1" v-on:click="IncluirDocumento($event)" v-for="(doc, index) in documentosEncaminhamento" :key="index">
-                                <i class="far fa-file"></i> {{doc.documento.registro}} - {{doc.documento.nome}}.{{doc.documento.extensao}}
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="mb-3">
-                        <label for="slResultadoResposta">Resultado da Resposta:</label>
-                        <select v-model="idResultadosRespostaPorTipologia" id="slResultadoResposta" class="form-control form-control-sm">
-                            <optgroup label="Resultados Positivos">
-                                <option v-for="(tipologia) in resultadosRespostaPositiva" :key="tipologia.idResultadoResposta" v-bind:value="tipologia.idResultadoResposta">
-                                    {{tipologia.descResultadoResposta}}
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <p class="small m-0">Documentos gerados pelos encaminhamento via E-DOCS:</p>
+                            <ul class="p-0 m-0">
+                                <li class="list-unstyled btn btn-outline-info btn-sm mx-1 mb-1" v-on:click="IncluirDocumento($event)" v-for="(doc, index) in documentosEncaminhamento" :key="index">
+                                    <i class="far fa-file"></i> {{doc.documento.registro}} - {{doc.documento.nome}}.{{doc.documento.extensao}}
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-12 mb-4">
+                            <label for="slResultadoResposta">Resultado da Resposta:</label>
+                            <select required data-mdb-filter="true" v-model="idResultadosRespostaPorTipologia" id="slResultadoResposta" class="form-control mb-0">
+                                <optgroup label="Resultados Positivos">
+                                    <option v-for="(tipologia) in resultadosRespostaPositiva" :key="tipologia.idResultadoResposta" v-bind:value="tipologia.idResultadoResposta">
+                                        {{tipologia.descResultadoResposta}}
+                                    </option>
+                                </optgroup>
+                                <optgroup label="Resultados Negativos">
+                                    <option v-for="(tipologia) in resultadosRespostaNegativa" :key="tipologia.idResultadoResposta" v-bind:value="tipologia.idResultadoResposta">
+                                        {{tipologia.descResultadoResposta}}
+                                    </option>
+                                </optgroup>
+                            </select>
+                            <div class="invalid-feedback mt-1">Resultado da resposta é obrigatório!</div>
+                        </div>
+                        <div class="col-md-12 position-relative mb-4">
+                            <label for="slOrgao">Competência do Fato:</label>
+                            <select required v-model="idOrgaosCompetenciaFato" id="slOrgao" class="form-control mb-0">
+                                <option v-for="(orgao, index) in orgaosCompetenciaFato" :key="index" v-bind:value="orgao.siglaOrgao">
+                                    {{orgao.siglaOrgao}} - {{orgao.nomeFantasia}}
                                 </option>
-                            </optgroup>
-                            <optgroup label="Resultados Negativos">
-                                <option v-for="(tipologia) in resultadosRespostaNegativa" :key="tipologia.idResultadoResposta" v-bind:value="tipologia.idResultadoResposta">
-                                    {{tipologia.descResultadoResposta}}
-                                </option>
-                            </optgroup>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="slOrgao">Competência do Fato:</label>
-                        <select v-model="idOrgaosCompetenciaFato" id="slOrgao" class="form-control form-select-sm">
-                            <option v-for="(orgao, index) in orgaosCompetenciaFato" :key="index" v-bind:value="orgao.siglaOrgao">
-                                {{orgao.siglaOrgao}} - {{orgao.nomeFantasia}}
-                            </option>
-                        </select>
-                    </div>
+                            </select>
+                            <div class="invalid-feedback mt-1">Competência do Fato é obrigatório!</div>
+                        </div>
 
-                    <div class="mb-3">
-                        <label for="flTextoDespacho">Texto do Despacho:</label>
-                        <textarea class="form-control form-control-sm" v-model="textoResposta" maxlength="2000" placeholder="Informe aqui o texto de resposta à manifestação." id="flTextoDespacho" style="height: 80px"></textarea>
+                        <div class="col-md-12 position-relative mb-4">
+                            <label for="flTextoDespacho">Texto de Resposta:</label>
+                            <textarea required class="form-control mb-0" v-model="textoResposta" maxlength="8000" placeholder="Informe aqui o texto de resposta à manifestação." id="flTextoDespacho" rows="5"></textarea>
+                            <div class="invalid-feedback mt-1">Texto de resposta é obrigatório!</div>
+                        </div>
                     </div>
-
+                </div>
+                <div class="card-footer">
                     <div class="row justify-content-end">
                         <div class="col-md-4 col-sm-6 col-lg-2">
                             <a v-on:click="Cancelar()" class="btn btn-danger btn-block mb-1"><i class="fas fa-times"></i> Cancelar</a>
                         </div>
                         <div class="col-md-4 col-sm-6 col-lg-2">
-                            <button type="button" v-on:click="Responder()" class="btn btn-primary btn-block mb-1"><i class="fas fa-paper-plane"></i> Responder</button>
+                            <button type="submit" v-on:click="Responder()" class="btn btn-primary btn-block mb-1"><i class="fas fa-paper-plane"></i> Responder</button>
                         </div>
                     </div>
                 </div>

@@ -108,49 +108,49 @@
             }
 
             //Dados Complementos
-            ret.complementoManifestacao.forEach(this.PreencherComplementoManifestacao);
+            ret.complementoManifestacao?.forEach(this.PreencherComplementoManifestacao);
 
             //Dados Anexos
-            ret.anexoManifestacao.forEach(this.PreencherAnexoManifestacao);
+            ret.anexoManifestacao?.forEach(this.PreencherAnexoManifestacao);
 
             //Dados Prorrogação
-            ret.prorrogacaoManifestacao.forEach(this.PreencherProrrogacaoManifestacao);
+            ret.prorrogacaoManifestacao?.forEach(this.PreencherProrrogacaoManifestacao);
 
             //Dados Diligência
-            ret.diligenciaManifestacao.forEach(this.PreencherDiligenciaManifestacao);
+            ret.diligenciaManifestacao?.forEach(this.PreencherDiligenciaManifestacao);
 
             //Dados Encaminhamentos
-            ret.encaminhamentoManifestacao.forEach(this.PreencherEncaminhamentoManifestacao);
+            ret.encaminhamentoManifestacao?.forEach(this.PreencherEncaminhamentoManifestacao);
 
             //Dados da Resposta
-            ret.respostaManifestacao.forEach(this.PreencherRespostaManifestacao)
+            ret.respostaManifestacao?.forEach(this.PreencherRespostaManifestacao)
 
             //Dados Apuração
-            ret.apuracaoManifestacao.forEach(this.PreencherApuracaoManifestacao);
+            ret.apuracaoManifestacao?.forEach(this.PreencherApuracaoManifestacao);
 
             //Dados Despacho
-            ret.despachoManifestacao.forEach(this.PreencherDespachoManifestacao);
+            ret.despachoManifestacao?.forEach(this.PreencherDespachoManifestacao);
 
             //Dados Notificações
-            ret.notificacaoManifestacao.forEach(this.PreencherNotificacoes);
+            ret.notificacaoManifestacao?.forEach(this.PreencherNotificacoes);
 
             //Dados Anotações
-            ret.anotacaoManifestacao.forEach(this.PreencherAnotacaoManifestacao);
+            ret.anotacaoManifestacao?.forEach(this.PreencherAnotacaoManifestacao);
 
             //Dados Interpelação
-            ret.interpelacaoManifestacao.forEach(this.PreencherInterpelacaoManifestacao);
+            ret.interpelacaoManifestacao?.forEach(this.PreencherInterpelacaoManifestacao);
 
             //Dados Reclamação de Omissão
-            ret.reclamacaoOmissaoManifestacaoPai.forEach(this.PreencherReclamacaoOmissao);
+            ret.reclamacaoOmissao?.forEach(this.PreencherReclamacaoOmissao);
 
             //Dados Recurso Negativa
-            ret.recursoNegativa.forEach(this.PreencherRecursoNegativa);
+            ret.recursoNegativa?.forEach(this.PreencherRecursoNegativa);
 
             //Dados Desdrobramento
-            ret.desdobramentoManifestacaoManifestacaoPai.forEach(this.PreencherDesdobramentoManifestacao);
+            ret.desdobramentoManifestacao?.forEach(this.PreencherDesdobramentoManifestacao);
 
             //Dados de Histórico
-            ret.historicoManifestacao.forEach(this.PreencherHistoricoManifestacao);
+            ret.historicoManifestacao?.forEach(this.PreencherHistoricoManifestacao);
         },
 
         async PreencherTeorManifestacao(txtManifestacao, local) {

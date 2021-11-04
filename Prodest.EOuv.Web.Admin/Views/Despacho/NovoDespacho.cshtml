@@ -15,8 +15,10 @@
 <div class="container-fluid p-0">
     <div class="row">
         <div id="app" class="col-12">
-            <despacho-form></despacho-form>
-            <selecao-papel></selecao-papel>
+            <form class="needs-validation g-3" method="post" novalidate>
+                <despacho-form></despacho-form>
+                <selecao-papel></selecao-papel>
+            </form>
         </div>
     </div>
 </div>
@@ -688,33 +690,67 @@
 
                                                 <!--Dados Anexos-->
                                                 <!--<div v-if="anexoManifestacao.length > 0" class="accordion-item">
-        <h2 class="accordion-header d-flex" id="DadosAnexo">
-            <i class="flex-fill check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-            <button class="flex-fill accordion-button collapsed" type="button" data-mdb-toggle="collapse"
-                    data-mdb-target="#panel-DadosAnexo" aria-expanded="true" aria-controls="panel-DadosAnexo">
-                Dados de Anexos
-            </button>
-        </h2>
-        <div id="panel-DadosAnexo" class="accordion-collapse collapse hide" aria-labelledby="DadosAnexo">
-            <div class="accordion-body">
-                <table class="table table-striped table-bordered table-sm">
-                    <thead class="table-light">
-                        <tr>
-                            <th scope="col">Data</th>
-                            <th scope="col">Notificação</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="(dados, index) in anexoManifestacao" :key="index">
-                            <td>{{dados.dtComplemento}}</td>
-                            <td>{{dados.txtComplemento}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>-->
+                                                    <h2 class="accordion-header d-flex" id="DadosAnexo">
+                                                        <i class="flex-fill check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
+                                                        <button class="flex-fill accordion-button collapsed" type="button" data-mdb-toggle="collapse"
+                                                                data-mdb-target="#panel-DadosAnexo" aria-expanded="true" aria-controls="panel-DadosAnexo">
+                                                            Dados de Anexos
+                                                        </button>
+                                                    </h2>
+                                                    <div id="panel-DadosAnexo" class="accordion-collapse collapse hide" aria-labelledby="DadosAnexo">
+                                                        <div class="accordion-body">
+                                                            <table class="table table-striped table-bordered table-sm">
+                                                                <thead class="table-light">
+                                                                    <tr>
+                                                                        <th scope="col">Data</th>
+                                                                        <th scope="col">Notificação</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr v-for="(dados, index) in anexoManifestacao" :key="index">
+                                                                        <td>{{dados.dtComplemento}}</td>
+                                                                        <td>{{dados.txtComplemento}}</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>-->
 
+                                                <!--Dados Interpelação-->
+                                                <div v-if="interpelacaoManifestacao.length > 0" class="accordion-item">
+                                                    <h2 class="accordion-header d-flex" id="DadosInterpelacao">
+                                                        <i class="flex-fill check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
+                                                        <button class="flex-fill accordion-button collapsed" type="button" data-mdb-toggle="collapse"
+                                                                data-mdb-target="#panel-DadosInterpelacao" aria-expanded="true" aria-controls="panel-DadosInterpelacao">
+                                                            Dados de Interpelação
+                                                        </button>
+                                                    </h2>
+                                                    <div id="panel-DadosInterpelacao" class="accordion-collapse collapse hide" aria-labelledby="DadosInterpelacao">
+                                                        <div class="accordion-body">
+                                                            <table class="table table-striped table-bordered table-sm">
+                                                                <thead class="table-light">
+                                                                    <tr>
+                                                                        <th scope="col">Data</th>
+                                                                        <th scope="col">Texto Interpelação</th>
+                                                                        <th scope="col">Orgão Resposta</th>
+                                                                        <th scope="col">Data Resposta</th>
+                                                                        <th scope="col">Texto Resposta</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr v-for="(dados, index) in interpelacaoManifestacao" :key="index">
+                                                                        <td>{{dados.dataInterpelacaoFormat}}</td>
+                                                                        <td>{{dados.txtInterpelacao}}</td>
+                                                                        <td>{{dados.OrgaoResposta.SiglaOrgao}}</td>
+                                                                        <td>{{dados.dataRespostaInterpelacaoFormat}}</td>
+                                                                        <td>{{dados.txtRespostaInterpelacao}}</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
                                             </div>
                                         </div>
@@ -761,80 +797,79 @@
 
     <script type="text/html" id="template-despacho-form">
         <div>
-            <form class="needs-validation g-3" method="post" novalidate>
-                <despacho-manifestacao v-on:capturar-dados-manifestacao="CapturarDadosManifestacao" v-on:selecionar-dado-manifestacao="ToggleDadosManifestacaoSelecionados($event)"></despacho-manifestacao>
-                <section class="mb-4">
-                    <div class="card">
-                        <div class="card-header py-3">
-                            <h5 class="mb-0">Formulário de Despacho</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
+            <despacho-manifestacao v-on:capturar-dados-manifestacao="CapturarDadosManifestacao" v-on:selecionar-dado-manifestacao="ToggleDadosManifestacaoSelecionados($event)"></despacho-manifestacao>
+            <section class="mb-4">
+                <div class="card">
+                    <div class="card-header py-3">
+                        <h5 class="mb-0">Formulário de Despacho</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
 
-                                <div class="col-md-12 position-relative mb-5">
-                                    <label class="form-label" for="customAnexo">Com qual Cargo/Função você irá Encaminhar?</label>
-                                    <div class="form-check px-0" v-for="(papel, index) in papeisUsuario" v-bind:key="index" v-bind:for="papel.id">
-                                        <input type="radio" v-on:change="TogglePapelSelecionado($event)" required class="btn-check" name="papel" v-bind:id="papel.id" autocomplete="off">
-                                        <label class="btn btn-outline-warning btn-sm m-1" v-bind:for="papel.id">{{papel.nome}} - {{papel.siglaUnidadePapel}} - {{papel.siglaOrganizacaoPapel}}</label>
-                                        @*<input type="radio" v-on:change="TogglePapelSelecionado($event)" required id="teste1" class="btn-check" name="papel" autocomplete="off">
-                                        <label class="btn btn-outline-warning btn-sm m-1" for="teste1">ANALISTA DE TECNOLOGIA DA INFORMACAO - SGPRJ - PRODEST</label>
-                                        <input type="radio" v-on:change="TogglePapelSelecionado($event)" required id="teste2" class="btn-check" name="papel" autocomplete="off">
-                                        <label class="btn btn-outline-warning btn-sm m-1" for="teste2">ANALISTA DE TECNOLOGIA DA INFORMACAO - SGPRJ - PRODEST</label>
-                                        <input type="radio" v-on:change="TogglePapelSelecionado($event)" required id="teste3" class="btn-check" name="papel" autocomplete="off">
-                                        <label class="btn btn-outline-warning btn-sm m-1" for="teste3">ANALISTA DE TECNOLOGIA DA INFORMACAO - SGPRJ - PRODEST</label>
-                                        <input type="radio" v-on:change="TogglePapelSelecionado($event)" required id="teste4" class="btn-check" name="papel" autocomplete="off">
-                                        <label class="btn btn-outline-warning btn-sm m-1" for="teste4">ANALISTA DE TECNOLOGIA DA INFORMACAO - SGPRJ - PRODEST</label>
-                                        <input type="radio" v-on:change="TogglePapelSelecionado($event)" required id="teste5" class="btn-check" name="papel" autocomplete="off">
-                                        <label class="btn btn-outline-warning btn-sm m-1" for="teste5">ANALISTA DE TECNOLOGIA DA INFORMACAO - SGPRJ - PRODEST</label>*@
-                                        <div class="invalid-tooltip">Cargo/Função é obrigatório!</div>
-                                    </div>
+                            <div class="col-md-12 position-relative mb-4">
+                                <label class="form-label" for="customAnexo">Com qual Cargo/Função você irá Encaminhar?</label>
+                                <div class="form-check px-0" v-for="(papel, index) in papeisUsuario" v-bind:key="index" v-bind:for="papel.id">
+                                    <input type="radio" v-on:change="TogglePapelSelecionado($event)" required class="btn-check" name="papel" v-bind:id="papel.id" autocomplete="off">
+                                    <label class="btn btn-outline-warning btn-sm m-1" v-bind:for="papel.id">{{papel.nome}} - {{papel.siglaUnidadePapel}} - {{papel.siglaOrganizacaoPapel}}</label>
+                                    <div class="invalid-feedback mt-1">Cargo/Função é obrigatório!</div>
                                 </div>
+                            </div>
 
-                                <div class="col-md-4 position-relative mb-3">
-                                    <label class="form-label">Selecione o Destinatário:</label>
-                                    <br />
-                                    <selecao-destinatarios v-on:selecionar-destinatario="IncluirDestinatarioSelecionado"></selecao-destinatarios>
-                                </div>
-                                <div class="col-md-4 position-relative mb-3">
-                                    <label class="form-label" for="flPrazoResposta">Prazo de Resposta</label>
-                                    <div class="input-group mb-3 has-validation">
-                                        <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
-                                        <input required v-on:blur="GetDate" v-model="prazoResposta" type="text" id="flPrazoResposta" class="form-control data-eouv mb-0">
-                                        <div class="invalid-tooltip">Prazo de resposta é obrigatório!</div>
-                                    </div>
-                                </div>
+                            <div class="col-md-4 position-relative mb-2">
+                                <label class="form-label">Selecione o Destinatário:</label>
+                                <selecao-destinatarios v-on:selecionar-destinatario="IncluirDestinatarioSelecionado"></selecao-destinatarios>
+                            </div>
 
-                                <div class="col-md-12 position-relative mb-4">
-                                    <label class="form-label" for="flTextoDespacho">Texto do Despacho</label>
-                                    <textarea class="form-control mb-0" required maxlength="8000" rows="5" placeholder="Informe o texto do despacho aqui." v-model="textoDespacho" id="flTextoDespacho"></textarea>
-                                    <div class="invalid-tooltip">Texto do despacho é obrigatório!</div>
+                            <div class="col-md-4 position-relative">
+                                <label class="form-label" for="flPrazoResposta">Prazo de Resposta</label>
+                                <div class="input-group has-validation">
+                                    <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                    <input required v-on:blur="GetDate" v-model="prazoResposta" type="text" id="flPrazoResposta" class="form-control data-eouv mb-0">
+                                    <div class="invalid-feedback mt-5">Prazo de resposta é obrigatório!</div>
                                 </div>
+                            </div>
 
-                                @*<div class="form-outline mb-3">
-                                            <button class="btn btn-block btn-info" v-on:click="IncluirCampoAnexo"><i class="fas fa-plus"></i> Incluir novo arquivo</button>
-                                            <div class="border-1 mt-3" v-if="campoAnexo.length > 0">
-                                                <div class="input-group mb-3" v-for="(campo, index) in campoAnexo" v-bind:key="index">
-                                                    <input type="file" class="form-control" id="{{campo}}" aria-describedby="addon-{{campo}}" />
-                                                    <span v-on:click="RemoverCampoAnexo(campo)" class="input-group-text border-0 btn btn-danger shadow-0" id="addon-{{campo}}"><i class="fas fa-times"></i></span>
-                                                </div>
+                            <div class="col-md-12 position-relative mb-3">
+                                <label class="form-label" for="flTextoDespacho">Texto do Despacho</label>
+                                <textarea class="form-control" required maxlength="8000" rows="5" placeholder="Informe o texto do despacho aqui." v-model="textoDespacho" id="flTextoDespacho"></textarea>
+                                <div class="invalid-feedback">Texto do despacho é obrigatório!</div>
+                            </div>
+
+                            @*<div class="form-outline mb-3">
+                                        <button class="btn btn-block btn-info" v-on:click="IncluirCampoAnexo"><i class="fas fa-plus"></i> Incluir novo arquivo</button>
+                                        <div class="border-1 mt-3" v-if="campoAnexo.length > 0">
+                                            <div class="input-group mb-3" v-for="(campo, index) in campoAnexo" v-bind:key="index">
+                                                <input type="file" class="form-control" id="{{campo}}" aria-describedby="addon-{{campo}}" />
+                                                <span v-on:click="RemoverCampoAnexo(campo)" class="input-group-text border-0 btn btn-danger shadow-0" id="addon-{{campo}}"><i class="fas fa-times"></i></span>
                                             </div>
                                         </div>
-                                    <hr />*@
-                            </div>
+                                    </div>
+                                <hr />*@
+
+                            @*<div class="form-outline mb-3">
+                                        <button class="btn btn-block btn-info" v-on:click="IncluirCampoAnexo"><i class="fas fa-plus"></i> Incluir novo arquivo</button>
+                                        <div class="border-1 mt-3" v-if="campoAnexo.length > 0">
+                                            <div class="input-group mb-3" v-for="(campo, index) in campoAnexo" v-bind:key="index">
+                                                <input type="file" class="form-control" id="{{campo}}" aria-describedby="addon-{{campo}}" />
+                                                <span v-on:click="RemoverCampoAnexo(campo)" class="input-group-text border-0 btn btn-danger shadow-0" id="addon-{{campo}}"><i class="fas fa-times"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <hr />*@
                         </div>
-                        <div class="card-footer py-3">
-                            <div class="row justify-content-end">
-                                <div class="col-md-4 col-sm-6 col-lg-2">
-                                    <a v-bind:href="urlCancelar" class="btn btn-danger btn-block mb-1"><i class="fas fa-times"></i> Cancelar</a>
-                                </div>
-                                <div class="col-md-4 col-sm-6 col-lg-2">
-                                    <button type="submit" v-on:click="Despachar($event)" class="btn btn-primary btn-block mb-1"><i class="fas fa-share"></i> Despachar</button>
-                                </div>
+                    </div>
+                    <div class="card-footer py-3">
+                        <div class="row justify-content-end">
+                            <div class="col-md-4 col-sm-6 col-lg-2">
+                                <a v-bind:href="urlCancelar" class="btn btn-danger btn-block mb-1"><i class="fas fa-times"></i> Cancelar</a>
+                            </div>
+                            <div class="col-md-4 col-sm-6 col-lg-2">
+                                <button type="submit" v-on:click="Despachar($event)" class="btn btn-primary btn-block mb-1"><i class="fas fa-share"></i> Despachar</button>
                             </div>
                         </div>
                     </div>
-                </section>
-            </form>
+                </div>
+            </section>
         </div>
     </script>
 
@@ -846,14 +881,14 @@
                 <span class="input-group-text" v-on:click="CarregarDadosEDocs"><i class="fas fa-search"></i></span>
                 <input required v-if="destinatario != null" onkeydown="return false;" v-model="destinatario.nome" v-bind:value="destinatario.nome" v-on:click="CarregarDadosEDocs" type="text" id="" class="form-control mb-0">
                 <input required v-if="destinatario == null" onkeydown="return false;" v-on:click="CarregarDadosEDocs" type="text" id="" class="form-control mb-0">
-                <div class="invalid-tooltip">Destinatário é obrigatório!</div>
+                <div class="invalid-feedback">Destinatário é obrigatório!</div>
             </div>
 
             @*<div class="row">
-                <div v-if="destinatario != null " class="col-12 mt-2 border-secondary border-1">
-                    <span class="badge bg-success text-white m-1">{{destinatario.nome}} <i class="fas fa-times-circle" v-on:click="RemoverDestinatario()"></i></span>
-                </div>
-            </div>*@
+                    <div v-if="destinatario != null " class="col-12 mt-2 border-secondary border-1">
+                        <span class="badge bg-success text-white m-1">{{destinatario.nome}} <i class="fas fa-times-circle" v-on:click="RemoverDestinatario()"></i></span>
+                    </div>
+                </div>*@
             <div class="modal fade modal-dialog-scrollable"
                  ref="destinatariosModal"
                  tabindex="-1"
