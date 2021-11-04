@@ -9,9 +9,12 @@
             titulo: 'Seleção de Destinatários',            
             listaSetores: [],
             listaGrupos: [],
+            listaComissoes: [],            
+            listaAgentes: [],
             modal: null,
             modalDestinatarios: null,
-            destinatario:null
+            destinatario: null,
+            agentePesquisa: ''
         }
     },
 
@@ -23,6 +26,7 @@
         async CarregarDadosEDocs() {
             await this.GetGrupos();
             await this.GetSetores();
+            await this.GetComissoes();
             this.VerificaCarregamentoTodos();
         },
 
@@ -48,6 +52,20 @@
                 this.listaGrupos = JSON.parse(JSON.stringify(ret));
                 console.log(this.listaGrupos.length);
             }
+        },
+
+        async GetComissoes() {
+            if (!this.listaComissoes.length > 0) {
+                let ret = await eOuvApi.ComissoeseDocs();
+                this.listaComissoes = JSON.parse(JSON.stringify(ret));
+                console.log(this.listaComissoes.length);
+            }
+        },
+
+        async GetAgentes() {            
+            let ret = await eOuvApi.AgentesDocs(this.agentePesquisa);
+            this.listaAgentes = JSON.parse(JSON.stringify(ret));
+            console.log(this.listaAgentes);
         },
 
         VerificaCarregamentoTodos() {

@@ -83,43 +83,25 @@ const DespachoForm = {
         },
         async Despachar(e) {
 
-            (function () {
-                'use strict'
+            let form = document.querySelector('.needs-validation');
+            form.classList.add('was-validated');
 
-                // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                var forms = document.querySelectorAll('.needs-validation')
+            if (form.checkValidity()) {
+                let entry = {
+                    IdManifestacao: this.idManifestacao,
+                    IdOrgao: 0,
+                    IdUsuarioSolicitacao: 0,
+                    PrazoResposta: this.prazoResposta,
+                    TextoDespacho: this.textoDespacho,
+                    FiltroDadosManifestacaoSelecionados: JSON.parse(JSON.stringify(this.dadosManifestacaoSelecionados)),
+                    GuidPapelDestinatario: this.destinatarioSelecionado,
+                    GuidPapelResponsavel: this.papelSelecionado
+                }
+                console.log(entry);
 
-                // Loop over them and prevent submission
-                Array.prototype.slice.call(forms)
-                    .forEach(function (form) {
-                        form.addEventListener('submit', function (event) {
-                            if (!form.checkValidity()) {
-                                event.preventDefault()
-                                event.stopPropagation()
-                            }
-
-                            form.classList.add('was-validated')
-                        }, false)
-                    })
-            })();
-
-
-            //e.preventDefault();
-            let entry = {
-                IdManifestacao: this.idManifestacao,
-                IdOrgao: 0,
-                IdUsuarioSolicitacao: 0,
-                PrazoResposta: this.prazoResposta,
-                TextoDespacho: this.textoDespacho,
-                FiltroDadosManifestacaoSelecionados: JSON.parse(JSON.stringify(this.dadosManifestacaoSelecionados)),
-                GuidPapelDestinatario: this.destinatarioSelecionado,
-                GuidPapelResponsavel: this.papelSelecionado
-            }            
-            console.log(entry);
-
-            return false;
-            //await eOuvApi.despachar(entry);
-            /*            window.location.href = "/Despacho/AcompanharDespachos/" + this.idManifestacao;*/
+                await eOuvApi.despachar(entry);
+                window.location.href = "/Despacho/AcompanharDespachos/" + this.idManifestacao;
+            }
         },
         GetDate(e) {
             this.prazoResposta = e.target.value;

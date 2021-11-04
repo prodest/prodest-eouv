@@ -44,6 +44,16 @@
         return ret;
     },
 
+    async ComissoeseDocs() {
+        let ret = await fetchData.fetchGetJson(`/edocs/BuscarComissoes`);
+        return ret;
+    },
+
+    async AgentesDocs(nome) {
+        let ret = await fetchData.fetchGetJson(`/edocs/BuscarAgentes?nome=${nome}`);
+        return ret;
+    },    
+
     async PapeisUsuarioEDocs() {
         let ret = await fetchData.fetchGetJson(`/edocs/BuscarPapeis`);
         return ret;

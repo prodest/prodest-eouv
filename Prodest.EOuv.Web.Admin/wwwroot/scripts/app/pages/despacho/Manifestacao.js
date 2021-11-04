@@ -138,7 +138,7 @@
             ret.anotacaoManifestacao?.forEach(this.PreencherAnotacaoManifestacao);
 
             //Dados Interpelação
-            ret.interpelacaoManifestacao?.forEach(this.PreencherInterpelacaoManifestacao);
+            ret.interpelacaoManifestacao?.forEach(this.PreencherInterpelacaoManifestacao);            
 
             //Dados Reclamação de Omissão
             ret.reclamacaoOmissao?.forEach(this.PreencherReclamacaoOmissao);
