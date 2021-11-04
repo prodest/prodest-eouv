@@ -100,7 +100,7 @@ namespace Prodest.EOuv.Dominio.BLL
             string idDocumento = await _edocsService.CapturarDocumento(arquivoPdfCapturar, papelResponsavel, nomeArquivo);
 
             //Encaminhar via E-Docs
-            string idEncaminhamento = await _edocsService.EncaminharDocumento(idDocumento, "Demanda de Ouvidoria", despachoModel.TextoSolicitacaoDespacho, papelResponsavel, destinatario);
+            string idEncaminhamento = await _edocsService.EncaminharDocumento(idDocumento, "Demanda de Ouvidoria", despachoModel.TextoSolicitacaoDespacho, papelResponsavel, guidDestinatario);
 
             //Salvar Despacho no Eouv com IdEvento (sem IdEncaminhamento por enquanto)
             despachoModel.ProtocoloEdocs = await _edocsService.GetProtocoloEncaminhamento(idEncaminhamento);
@@ -109,15 +109,23 @@ namespace Prodest.EOuv.Dominio.BLL
             despachoModel.IdUsuarioSolicitacaoDespacho = (int)manifestacao.IdUsuarioAnalise;
             despachoModel.IdSituacaoDespacho = (int)Enums.SituacaoDespacho.Aberto;
 
-            //TODO: Definir Tipo Agente
-
+            AgenteManifestacaoModel agenteDestinatario = new AgenteManifestacaoModel();
             //Se Agente = Papel
-
+            if (tipoDestinatario == (int)Enums.TipoAgente.Papel)
+            {
+                agenteDestinatario = await _agenteBLL.MontaAgenteUsuario(guidDestinatario);
+            }
             //Se Agente = Grupo
-
+            else if (tipoDestinatario == (int)Enums.TipoAgente.Grupo)
+            {
+                agenteDestinatario = await _agenteBLL.MontaAgenteGrupoComissao(guidDestinatario);
+            }
             //Se Agente = Setor
+            else
+            {
+                agenteDestinatario = await _agenteBLL.MontaAgenteSetor(guidDestinatario);
+            }
 
-            AgenteManifestacaoModel agenteDestinatario = await _agenteBLL.MontaAgenteSetor(destinatario);
             var idAgenteDestinatario = await _agenteBLL.AdicionarAgente(agenteDestinatario);
             despachoModel.IdAgenteDestinatario = idAgenteDestinatario;
             await _despachoRepository.AdicionarDespacho(despachoModel);
