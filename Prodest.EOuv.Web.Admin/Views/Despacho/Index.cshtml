@@ -41,6 +41,9 @@
                                 Prazo de Resposta
                             </th>
                             <th scope="col">
+                                Destinatário
+                            </th>
+                            <th scope="col">
                                 Data de Finalização
                             </th>
                             <th scope="col">
@@ -56,11 +59,13 @@
                             <td>{{despacho.protocoloEdocs}}</td>
                             <td>{{despacho.dataSolicitacaoDespachoFormat}}</td>
                             <td>{{despacho.prazoRespostaFormat}}</td>
+                            <td>{{despacho.destinatarioFormat}}</td>
                             <td>{{despacho.dataRespostaDespachoFormat}}</td>
                             <td>{{despacho.situacaoDespacho.descSituacaoDespacho}}</td>
                             <td class="text-center">
-                            <a class="btn btn-dark btn-sm" v-on:click="Detalhar()"><i class="fas fa-stream"></i> Detalhar</a> 
-                            <a class="btn btn-warning btn-sm" v-if="despacho.dataRespostaDespachoFormat == ''" v-on:click="EncerrarDespachoManualmente(despacho.idDespachoManifestacao)"><i class="fas fa-undo"></i> Encerrar</a></td>
+                                <a class="btn btn-dark btn-sm" v-on:click="Detalhar()"><i class="fas fa-stream"></i> Detalhar</a>
+                                <a class="btn btn-warning btn-sm" v-if="despacho.dataRespostaDespachoFormat == ''" v-on:click="EncerrarDespachoManualmente(despacho.idDespachoManifestacao)"><i class="fas fa-undo"></i> Encerrar</a>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

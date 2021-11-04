@@ -61,6 +61,8 @@ namespace Prodest.EOuv.Dominio.BLL
                 agente.TipoAgente = (int)Enums.TipoAgente.Grupo;
             }
 
+            //TODO: Buscar informações de Setor e Orgao do Grupo
+
             return agente;
         }
 

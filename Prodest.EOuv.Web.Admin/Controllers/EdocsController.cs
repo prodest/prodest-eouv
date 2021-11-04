@@ -34,18 +34,18 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             _despachoBLL = despachoBLL;
         }
 
-        public FileContentResult Pdf()
-        {
-            var teste = "<html> <head>     <title></title> </head> <body>     <div class='text-center'>         <h1 class='display-4'>EOuv</h1>         <p>Sistema de Ouvidoria do Espírito Santo</p>     </div> </body> </html>";
+        //public FileContentResult Pdf()
+        //{
+        //    var teste = "<html> <head>     <title></title> </head> <body>     <div class='text-center'>         <h1 class='display-4'>EOuv</h1>         <p>Sistema de Ouvidoria do Espírito Santo</p>     </div> </body> </html>";
 
-            Task<byte[]> task = _pdfApiService.GerarPdfByHtml(teste);
-            Task.WaitAll(task);
-            var resultado = task.Result;
+        //    Task<byte[]> task = _pdfApiService.GerarPdfByHtml(teste);
+        //    Task.WaitAll(task);
+        //    var resultado = task.Result;
 
-            //System.IO.File.WriteAllBytes(@"C:\Temp\hello.pdf", resultado);
+        //    //System.IO.File.WriteAllBytes(@"C:\Temp\hello.pdf", resultado);
 
-            return File(resultado, "application/pdf");
-        }
+        //    return File(resultado, "application/pdf");
+        //}
 
         public JsonResult BuscarPatriarca()
         {
@@ -118,78 +118,78 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             return Json(papel);
         }
 
-        public JsonResult BuscarPlanosAtivos()
-        {
-            Task<PlanoModel[]> task = _edocsService.GetPlanosAtivos("fe88eb2a-a1f3-4cb1-a684-87317baf5a57");// ESGOV
+        //public JsonResult BuscarPlanosAtivos()
+        //{
+        //    Task<PlanoModel[]> task = _edocsService.GetPlanosAtivos("fe88eb2a-a1f3-4cb1-a684-87317baf5a57");// ESGOV
 
-            Task.WaitAll(task);
+        //    Task.WaitAll(task);
 
-            PlanoModel[] planos = task.Result;
-            return Json(planos);
-        }
+        //    PlanoModel[] planos = task.Result;
+        //    return Json(planos);
+        //}
 
-        public JsonResult BuscarClassesAtivas()
-        {
-            System.Threading.Tasks.Task<ClasseModel[]> task = _edocsService.GetClassesAtivas("c4496f9f-e366-4383-945f-de3fe5762c3a");// "nome": "PLANO DE CLASSIFICAÇÃO DE DOCUMENTOS: ATIVIDADES-MEIO"
+        //public JsonResult BuscarClassesAtivas()
+        //{
+        //    System.Threading.Tasks.Task<ClasseModel[]> task = _edocsService.GetClassesAtivas("c4496f9f-e366-4383-945f-de3fe5762c3a");// "nome": "PLANO DE CLASSIFICAÇÃO DE DOCUMENTOS: ATIVIDADES-MEIO"
 
-            Task.WaitAll(task);
+        //    Task.WaitAll(task);
 
-            ClasseModel[] planos = task.Result;
-            return Json(planos);
-        }
+        //    ClasseModel[] planos = task.Result;
+        //    return Json(planos);
+        //}
 
-        public EventoModel BuscarEvento(string id)
-        {
-            System.Threading.Tasks.Task<EventoModel> task = BuscarEventoConcluidoAsync(id);
+        //public EventoModel BuscarEvento(string id)
+        //{
+        //    System.Threading.Tasks.Task<EventoModel> task = BuscarEventoConcluidoAsync(id);
 
-            Task.WaitAll(task);
+        //    Task.WaitAll(task);
 
-            EventoModel evento = task.Result;
-            return evento;
-        }
+        //    EventoModel evento = task.Result;
+        //    return evento;
+        //}
 
-        public async Task<EventoModel> BuscarEventoConcluidoAsync(string id,
-            int? tries = 30,
-            int? delayMs = 1000)
-        {
-            var evento = new EventoModel();
+        //public async Task<EventoModel> BuscarEventoConcluidoAsync(string id,
+        //    int? tries = 30,
+        //    int? delayMs = 1000)
+        //{
+        //    var evento = new EventoModel();
 
-            // realiza polling na API do E-Docs até que o Evento esteja disponível
-            do
-            {
-                await Task.Delay(delayMs.Value);
-                evento = await _edocsService.GetEvento(id);
-                tries--;
-            } while (evento.Situacao.ToUpper() != nameof(Enums.EventoSituacao.Concluido).ToUpper() && tries > 0);
+        //    // realiza polling na API do E-Docs até que o Evento esteja disponível
+        //    do
+        //    {
+        //        await Task.Delay(delayMs.Value);
+        //        evento = await _edocsService.GetEvento(id);
+        //        tries--;
+        //    } while (evento.Situacao.ToUpper() != nameof(Enums.EventoSituacao.Concluido).ToUpper() && tries > 0);
 
-            if (evento.Situacao.ToUpper() != nameof(Enums.EventoSituacao.Concluido).ToUpper() && tries == 0)
-            {
-                // caso o número máximo de tentativas seja extrapolado
-                throw new EDocsApiException();
-            }
+        //    if (evento.Situacao.ToUpper() != nameof(Enums.EventoSituacao.Concluido).ToUpper() && tries == 0)
+        //    {
+        //        // caso o número máximo de tentativas seja extrapolado
+        //        throw new EDocsApiException();
+        //    }
 
-            return evento;
-        }
+        //    return evento;
+        //}
 
-        public JsonResult BuscarFundamentosLegais()
-        {
-            System.Threading.Tasks.Task<FundamentoLegalModel[]> task = _edocsService.GetFundamentosLegais("fe88eb2a-a1f3-4cb1-a684-87317baf5a57");// ESGOV
+        //public JsonResult BuscarFundamentosLegais()
+        //{
+        //    System.Threading.Tasks.Task<FundamentoLegalModel[]> task = _edocsService.GetFundamentosLegais("fe88eb2a-a1f3-4cb1-a684-87317baf5a57");// ESGOV
 
-            Task.WaitAll(task);
+        //    Task.WaitAll(task);
 
-            FundamentoLegalModel[] planos = task.Result;
-            return Json(planos);
-        }
+        //    FundamentoLegalModel[] planos = task.Result;
+        //    return Json(planos);
+        //}
 
-        public JsonResult GetConjuntoAgentesPublicos()
-        {
-            System.Threading.Tasks.Task<AgentePublicoModel[]> task = _acessoCidadaoService.GetConjuntoAgentesPublicos("ec00931d-74a2-4877-9b93-95ce029ba7f6");// analista
+        //public JsonResult GetConjuntoAgentesPublicos()
+        //{
+        //    System.Threading.Tasks.Task<AgentePublicoModel[]> task = _acessoCidadaoService.GetConjuntoAgentesPublicos("ec00931d-74a2-4877-9b93-95ce029ba7f6");// analista
 
-            Task.WaitAll(task);
+        //    Task.WaitAll(task);
 
-            AgentePublicoModel[] planos = task.Result;
-            return Json(planos);
-        }
+        //    AgentePublicoModel[] planos = task.Result;
+        //    return Json(planos);
+        //}
 
         public string GetDocumentoDownloadUrl()
         {
@@ -206,16 +206,16 @@ namespace Prodest.EOuv.Web.Admin.Controllers
         //    string idProtocolo = "2021-RXRGDG";
         //    return GetEncaminhamentoPorProtocolo(idProtocolo);
         //}
-        public JsonResult GetEncaminhamentoPorProtocolo(string id)
-        {//Retorna o encaminhamento inicial do protocolo
-            string idProtocolo = id;
-            System.Threading.Tasks.Task<EncaminhamentoModel> task = _edocsService.GetEncaminhamentoPorProtocolo(idProtocolo);
+        //public JsonResult GetEncaminhamentoPorProtocolo(string id)
+        //{//Retorna o encaminhamento inicial do protocolo
+        //    string idProtocolo = id;
+        //    System.Threading.Tasks.Task<EncaminhamentoModel> task = _edocsService.GetEncaminhamentoPorProtocolo(idProtocolo);
 
-            Task.WaitAll(task);
+        //    Task.WaitAll(task);
 
-            EncaminhamentoModel idEncaminhamento = task.Result;
-            return Json(idEncaminhamento);
-        }
+        //    EncaminhamentoModel idEncaminhamento = task.Result;
+        //    return Json(idEncaminhamento);
+        //}
 
         //public string GetProtocoloEncaminhamento()
         //{//Retorna o encaminhamento inicial do protocolo
@@ -228,15 +228,15 @@ namespace Prodest.EOuv.Web.Admin.Controllers
         //    return protocolo;
         //}
 
-        public JsonResult GetDocumentoEncaminhamento(string id)
-        {
-            System.Threading.Tasks.Task<DocumentoControladoModel[]> task = _edocsService.GetDocumentoEncaminhamento(id);// Documento
+        //public JsonResult GetDocumentoEncaminhamento(string id)
+        //{
+        //    System.Threading.Tasks.Task<DocumentoControladoModel[]> task = _edocsService.GetDocumentoEncaminhamento(id);// Documento
 
-            Task.WaitAll(task);
+        //    Task.WaitAll(task);
 
-            DocumentoControladoModel[] documentos = task.Result;
-            return Json(documentos);
-        }
+        //    DocumentoControladoModel[] documentos = task.Result;
+        //    return Json(documentos);
+        //}
 
         public JsonResult BuscarRastreio()
         {
@@ -248,50 +248,48 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             return Json(rastreio);
         }
 
-        public JsonResult EncontraDestinatarioHangFire()
-        {
-            System.Threading.Tasks.Task<EncaminhamentoRastreioDestinoModel> task = _edocsService.ResponsavelPorResponderAoDestinatario("89565801-9382-4785-94f8-cd35d4ab39d2", new[] { "43ccc355-87e9-4f14-8812-6469f8f0c81b", new Guid().ToString(), new Guid().ToString() });// Encaminhamento, grupo
-            //System.Threading.Tasks.Task<bool> task = _edocsBLL.EncontraDestinatario("89565801-9382-4785-94f8-cd35d4ab39d2", new[]{ new Guid().ToString(), new Guid().ToString()});// Encaminhamento, grupo
+        //public JsonResult EncontraDestinatarioHangFire()
+        //{
+        //    System.Threading.Tasks.Task<EncaminhamentoRastreioDestinoModel> task = _edocsService.ResponsavelPorResponderAoDestinatario("89565801-9382-4785-94f8-cd35d4ab39d2", new[] { "43ccc355-87e9-4f14-8812-6469f8f0c81b", new Guid().ToString(), new Guid().ToString() });// Encaminhamento, grupo
+        //    //System.Threading.Tasks.Task<bool> task = _edocsBLL.EncontraDestinatario("89565801-9382-4785-94f8-cd35d4ab39d2", new[]{ new Guid().ToString(), new Guid().ToString()});// Encaminhamento, grupo
 
-            Task.WaitAll(task);
+        //    Task.WaitAll(task);
 
-            EncaminhamentoRastreioDestinoModel encontrado = task.Result;
-            return Json(encontrado);
-        }
+        //    EncaminhamentoRastreioDestinoModel encontrado = task.Result;
+        //    return Json(encontrado);
+        //}
 
-        public JsonResult GetPapelAcessoCidadao()
-        {
-            //"Roberto Marconi de Macedo Filho - ANALISTA DE TECNOLOGIA DA INFORMACAO - SGPRJ - PRODEST - GOVES",
-            System.Threading.Tasks.Task<AgentePublicoPapelModel> task = _acessoCidadaoService.GetPapel("6e5834fd-f6c2-4352-b802-51e32af3f9ef");// Encaminhamento, grupo
-            //System.Threading.Tasks.Task<bool> task = _edocsBLL.EncontraDestinatario("89565801-9382-4785-94f8-cd35d4ab39d2", new[]{ new Guid().ToString(), new Guid().ToString()});// Encaminhamento, grupo
+        //public JsonResult GetPapelAcessoCidadao()
+        //{
+        //    //"Roberto Marconi de Macedo Filho - ANALISTA DE TECNOLOGIA DA INFORMACAO - SGPRJ - PRODEST - GOVES",
+        //    System.Threading.Tasks.Task<AgentePublicoPapelModel> task = _acessoCidadaoService.GetPapel("6e5834fd-f6c2-4352-b802-51e32af3f9ef");// Encaminhamento, grupo
+        //    //System.Threading.Tasks.Task<bool> task = _edocsBLL.EncontraDestinatario("89565801-9382-4785-94f8-cd35d4ab39d2", new[]{ new Guid().ToString(), new Guid().ToString()});// Encaminhamento, grupo
 
-            Task.WaitAll(task);
+        //    Task.WaitAll(task);
 
-            AgentePublicoPapelModel encontrado = task.Result;
-            return Json(encontrado);
-        }
+        //    AgentePublicoPapelModel encontrado = task.Result;
+        //    return Json(encontrado);
+        //}
 
-        public JsonResult GetGrupo()
-        {
-            //"Roberto Marconi de Macedo Filho - ANALISTA DE TECNOLOGIA DA INFORMACAO - SGPRJ - PRODEST - GOVES",
-            System.Threading.Tasks.Task<AgentePublicoPapelModel> task = _acessoCidadaoService.GetGrupo("73640fbc-f2ff-42a7-9796-306bb49788eb");// Encaminhamento, grupo
-            //System.Threading.Tasks.Task<bool> task = _edocsBLL.EncontraDestinatario("89565801-9382-4785-94f8-cd35d4ab39d2", new[]{ new Guid().ToString(), new Guid().ToString()});// Encaminhamento, grupo
+        //public JsonResult GetGrupo()
+        //{
+        //    System.Threading.Tasks.Task<AgentePublicoPapelModel> task = _acessoCidadaoService.GetGrupo("73640fbc-f2ff-42a7-9796-306bb49788eb");// Encaminhamento, grupo
 
-            Task.WaitAll(task);
+        //    Task.WaitAll(task);
 
-            AgentePublicoPapelModel encontrado = task.Result;
-            return Json(encontrado);
-        }
+        //    AgentePublicoPapelModel encontrado = task.Result;
+        //    return Json(encontrado);
+        //}
 
-        public JsonResult BuscarRastreioCompleto()
-        {
-            System.Threading.Tasks.Task<EncaminhamentoRastreioModel> task = _edocsService.GetRastreioCompleto("89565801-9382-4785-94f8-cd35d4ab39d2");// Documento
+        //public JsonResult BuscarRastreioCompleto()
+        //{
+        //    System.Threading.Tasks.Task<EncaminhamentoRastreioModel> task = _edocsService.GetRastreioCompleto("89565801-9382-4785-94f8-cd35d4ab39d2");// Documento
 
-            Task.WaitAll(task);
+        //    Task.WaitAll(task);
 
-            EncaminhamentoRastreioModel rastreio = task.Result;
-            return Json(rastreio);
-        }
+        //    EncaminhamentoRastreioModel rastreio = task.Result;
+        //    return Json(rastreio);
+        //}
 
         #region hangfire
 

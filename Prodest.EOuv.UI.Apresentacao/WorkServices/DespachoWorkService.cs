@@ -11,8 +11,6 @@ namespace Prodest.EOuv.UI.Apresentacao
     {
         Task<List<DespachoManifestacaoViewModel>> ObterDespachosPorManifestacao(int idManifestacao);
 
-        Task AdicionarDespacho(DespachoManifestacaoViewModel despachoViewModel);
-
         Task Despachar(DespachoManifestacaoEntry despachoEntry);
 
         Task EncerrarDespachoManualmente(int idDespacho);
@@ -42,12 +40,6 @@ namespace Prodest.EOuv.UI.Apresentacao
         {
             var listaDocumentos = await _despachoBLL.ObterDocumentosDespachoPorManifestacao(idManifestacao);
             return listaDocumentos;
-        }
-
-        public async Task AdicionarDespacho(DespachoManifestacaoViewModel despachoViewModel)
-        {
-            var despachoModel = _mapper.Map<DespachoManifestacaoModel>(despachoViewModel);
-            await _despachoBLL.AdicionarDespacho(despachoModel);
         }
 
         public async Task Despachar(DespachoManifestacaoEntry despachoEntry)

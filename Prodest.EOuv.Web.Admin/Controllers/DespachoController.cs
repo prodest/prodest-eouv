@@ -6,36 +6,19 @@ using System.Threading.Tasks;
 
 namespace Prodest.EOuv.Web.Admin.Controllers
 {
-
     [Authorize(Policy = "Despachar")]
     public class DespachoController : Controller
     {
         private readonly IDespachoWorkService _despachoWorkService;
-        private readonly IManifestacaoWorkService _manifestacaoWorkService;
 
-        public DespachoController(IDespachoWorkService despachoWorkService, IManifestacaoWorkService manifestacaoWorkService)
+        public DespachoController(IDespachoWorkService despachoWorkService)
         {
             _despachoWorkService = despachoWorkService;
-            _manifestacaoWorkService = manifestacaoWorkService;
         }
 
         public IActionResult Index()
         {
             return View();
-        }
-
-        public async Task<IActionResult> ObterDadosCompletosManifestacao(int id)
-        {
-            try
-            {
-                var dadosManifestacao = await _manifestacaoWorkService.ObterDadosCompletosManifestacao(id);
-
-                return Json(dadosManifestacao);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
         }
 
         public async Task<IActionResult> ObterDespachosPorManifestacao(int id)
@@ -79,7 +62,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             try
             {
                 await _despachoWorkService.EncerrarDespachoManualmente(id);
-            return Json(id);
+                return Json(id);
             }
             catch (Exception ex)
             {
