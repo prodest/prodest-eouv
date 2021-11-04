@@ -17,6 +17,14 @@ namespace Prodest.EOuv.UI.Apresentacao
         public string NumProtocolo { get; set; }
         public int IdOrgaoResponsavel { get; set; }
         public int? IdUsuarioAnalise { get; set; }
+        public int IdTipoManifestacao { get; set; }
+        public int IdTipoIdentificacao { get; set; }
+        public int? IdTipoManifestante { get; set; }
+        public int IdAssunto { get; set; }
+        public int IdOrgaoInteresse { get; set; }
+        public int? IdCanalEntrada { get; set; }
+        public int? IdModoResposta { get; set; }
+        public int IdSituacaoManifestacao { get; set; }
 
         public virtual TipoManifestacaoViewModel TipoManifestacao { get; set; }
         public virtual SituacaoManifestacaoViewModel SituacaoManifestacao { get; set; }

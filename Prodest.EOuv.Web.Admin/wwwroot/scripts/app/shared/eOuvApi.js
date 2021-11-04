@@ -14,6 +14,11 @@
         return ret;
     },
 
+    async obterManifestacaoPorId(id) {
+        let ret = await fetchData.fetchGetJson(`/Resposta/ObterManifestacaoPorId/` + id);
+        return ret;
+    },
+
     async despachar(entry) {
         let ret = await fetchData.fetchPostJson(`/Despacho/Despachar`, entry);
         return ret;
@@ -54,8 +59,8 @@
         return ret;
     },
 
-    async ObterResultadosRespostaPorTipologia() {
-        let ret = await fetchData.fetchGetJson(`/resposta/ObterResultadosRespostaPorTipologia`);
+    async ObterResultadosRespostaPorTipologia(id) {
+        let ret = await fetchData.fetchGetJson(`/resposta/ObterResultadosRespostaPorTipologia/` + id);
         return ret;
     },
 

@@ -6,6 +6,7 @@
         return {
             textoResposta: '',
             idManifestacao: 0,
+            manifestacao: null,
             documentosSelecionados: [],
             documentosEncaminhamento: [],
             resultadosRespostaPorTipologia: [],
@@ -17,8 +18,9 @@
         }
     },
 
-    mounted() {
+    async mounted() {
         this.ObterParametrosQueryString();
+        await this.ObterManifestacaoPorId();
         this.CarregarDocumentosEDocs();
         this.ObterResultadosRespostaPorTipologia();
         this.ObterOrgaosCompetenciaFato();
@@ -27,6 +29,10 @@
     methods: {
         ObterParametrosQueryString() {
             this.idManifestacao = utils.obterRequestParameter('id')
+        },
+
+        async ObterManifestacaoPorId() {
+            this.manifestacao = await eOuvApi.obterManifestacaoPorId(this.idManifestacao);
         },
 
         async CarregarDocumentosEDocs() {
@@ -44,7 +50,7 @@
         },
 
         async ObterResultadosRespostaPorTipologia() {
-            let ret = await eOuvApi.ObterResultadosRespostaPorTipologia();
+            let ret = await eOuvApi.ObterResultadosRespostaPorTipologia(this.manifestacao?.idTipoManifestacao);
             this.resultadosRespostaPorTipologia = ret;
             this.resultadosRespostaPositiva = this.resultadosRespostaPorTipologia.filter(this.ApenasPositivo);
             this.resultadosRespostaNegativa = this.resultadosRespostaPorTipologia.filter(this.ApenasNegativo);

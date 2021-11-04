@@ -33,9 +33,9 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             return Json(manifestacao);
         }
 
-        public async Task<IActionResult> ObterResultadosRespostaPorTipologia()
+        public async Task<IActionResult> ObterResultadosRespostaPorTipologia(int id)
         {
-            List<ResultadoRespostaViewModel> listaResultadosResposta = await _respostaWorkService.ObterResultadosRespostaPorTipologia(1);
+            List<ResultadoRespostaViewModel> listaResultadosResposta = await _respostaWorkService.ObterResultadosRespostaPorTipologia(id);
             return Json(listaResultadosResposta);
         }
 

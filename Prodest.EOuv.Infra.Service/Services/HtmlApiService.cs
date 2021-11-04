@@ -28,7 +28,6 @@ namespace Prodest.EOuv.Infra.Service
         {
             try
             {
-                Teste obj2 = new Teste { Codigo = 4, Descricao = "Teste 4" };
                 //var Json = JsonSerializer.Serialize(obj);
                 var Json = JsonConvert.SerializeObject(obj);
 

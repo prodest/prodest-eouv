@@ -7,15 +7,8 @@ namespace DocumentModels.Controllers
 {
     public class RenderController : Controller
     {
-        public class Teste
-        {
-            public int Codigo { get; set; }
-            public string Descricao { get; set; }
-        }
-
         public IActionResult ResumoManifestacao([FromBody] ManifestacaoViewModel manifestacao)
         {
-            ManifestacaoViewModel manifestacao2 = new ManifestacaoViewModel();
             return View(manifestacao);
         }
 
