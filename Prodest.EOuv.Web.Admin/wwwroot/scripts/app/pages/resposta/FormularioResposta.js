@@ -33,6 +33,7 @@
 
         async ObterManifestacaoPorId() {
             this.manifestacao = await eOuvApi.obterManifestacaoPorId(this.idManifestacao);
+            this.idOrgaosCompetenciaFato = this.manifestacao.idOrgaoResponsavel;
         },
 
         async CarregarDocumentosEDocs() {

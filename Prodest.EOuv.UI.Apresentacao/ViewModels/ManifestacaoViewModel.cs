@@ -427,6 +427,7 @@ namespace Prodest.EOuv.UI.Apresentacao
 
     public partial class OrgaoViewModel
     {
+        public int IdOrgao { get; set; }
         public Guid GuidOrgao { get; set; }
         public string SiglaOrgao { get; set; }
         public string NomeFantasia { get; set; }

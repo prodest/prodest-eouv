@@ -50,9 +50,8 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Responder()//[FromBody] RespostaManifestacaoEntry respostaEntry)
+        public async Task<IActionResult> Responder([FromBody] RespostaManifestacaoEntry respostaEntry)
         {
-            RespostaManifestacaoEntry respostaEntry = new RespostaManifestacaoEntry();
             respostaEntry.IdManifestacao = 583;
             respostaEntry.IdResultadoResposta = 8;
             respostaEntry.IdOrgaoCompetenciaFato = 862;
