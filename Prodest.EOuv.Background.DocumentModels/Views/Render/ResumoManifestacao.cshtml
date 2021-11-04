@@ -1,7 +1,5 @@
 ﻿@model Prodest.EOuv.UI.Apresentacao.ManifestacaoViewModel
-@{
-    ViewData["Title"] = "Dados da Manifestação";
-}
+@{ ViewData["Title"] = "Dados da Manifestação"; }
 <style>
     body {
         font-family: Arial;
@@ -34,15 +32,18 @@
     th {
         text-align: left;
         border-spacing: 20px
-    }    
+    }
+
     tr.titulo-1 {
-        font-size: 1.1rem;        
+        font-size: 1.1rem;
         background-color: #ddd;
     }
+
         tr.titulo-1 th {
             padding: 5px;
             text-align: center;
         }
+
     tr.titulo-2 {
         font-size: 1.1rem;
         color: #fff;
@@ -51,8 +52,9 @@
 
         tr.titulo-2 th {
             padding: 5px;
-            text-align:center;
+            text-align: center;
         }
+
     tr.titulo-3 {
         font-size: 1.1rem;
         color: #fff;
@@ -66,13 +68,13 @@
 <table>
     <tr>
         <th>
-            <img src="~/images/brasao-GovernoES.png" alt="Governo do Estado do Espírito Santo"/>
+            <img src="~/images/brasao-GovernoES.png" alt="Governo do Estado do Espírito Santo" />
         </th>
         <th><h1>e-OUV - Sistema de Ouvidoria do Estado do Espírito Santo</h1></th>
     </tr>
 </table>
 <table>
-    <tr class="titulo-1">        
+    <tr class="titulo-1">
         <th>e-OUV - Sistema de Ouvidoria do Estado do Espírito Santo</th>
     </tr>
 </table>
@@ -223,6 +225,67 @@
         <tr>
             <td colspan="2">@Model.Pessoa?.Complemento</td>
             <td colspan="2">@Model.Pessoa?.Bairro</td>
+
         </tr>
+    </tbody>
+</table>
+
+
+<table>
+    <tr class="titulo-2">
+        <th>DADOS DA ANÁLISE DA MANIFESTAÇÃO</th>
+    </tr>
+</table>
+
+<!--Dados de Resposta-->
+<table>
+    <thead>
+        <tr class="titulo-3">
+            <th colspan="4">Dados de Resposta</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var resposta in @Model.RespostaManifestacao) { 
+            <tr>
+                <th colspan="2">Usuário</th>
+                <th colspan="1">Órgão</th>
+                <th colspan="1">Data</th>
+            </tr>
+            <tr>
+                <td colspan="2">??????????????????????????????????????????????????????????????????????? ?????????????????????? ?????????????????? ??????????? ?????</td>
+                <td colspan="1">@resposta.Orgao.SiglaOrgao</td>
+                <td colspan="1">@resposta.DataRespostaFormat</td>
+            </tr>
+
+            <tr>
+                <th colspan="4">Resposta</th>
+            </tr>
+            <tr>
+                <td colspan="4">@resposta.TxtResposta</td>
+            </tr>        
+        
+            @if (@Model.AnexoManifestacao.Count > 0)
+            {
+                <tr >
+                    <th colspan="2">Nome do Anexo</th>
+                    <th colspan="2">Data do Anexo</th>
+                </tr>
+                
+                @foreach (var anexo in @Model.AnexoManifestacao)
+                {
+                    <tr>
+                        <td colspan="2">@anexo.NomeArquivo</td>
+                        <td colspan="2">??/??/????</td>
+                    </tr>
+                }
+            }
+            
+            <tr>
+                <th colspan="4">
+                    <hr/>
+                </th>
+            </tr>
+
+        }
     </tbody>
 </table>
