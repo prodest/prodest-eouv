@@ -262,7 +262,19 @@ namespace Prodest.EOuv.Web.Admin.Controllers
         public JsonResult GetPapelAcessoCidadao()
         {
             //"Roberto Marconi de Macedo Filho - ANALISTA DE TECNOLOGIA DA INFORMACAO - SGPRJ - PRODEST - GOVES",
-            System.Threading.Tasks.Task<AgentePublicoPapelModel> task = _acessoCidadaoService.GetPapel("90dab47e-e5ef-481e-8d0f-8a90d9390f4d");// Encaminhamento, grupo
+            System.Threading.Tasks.Task<AgentePublicoPapelModel> task = _acessoCidadaoService.GetPapel("6e5834fd-f6c2-4352-b802-51e32af3f9ef");// Encaminhamento, grupo
+            //System.Threading.Tasks.Task<bool> task = _edocsBLL.EncontraDestinatario("89565801-9382-4785-94f8-cd35d4ab39d2", new[]{ new Guid().ToString(), new Guid().ToString()});// Encaminhamento, grupo
+
+            Task.WaitAll(task);
+
+            AgentePublicoPapelModel encontrado = task.Result;
+            return Json(encontrado);
+        }
+
+        public JsonResult GetGrupo()
+        {
+            //"Roberto Marconi de Macedo Filho - ANALISTA DE TECNOLOGIA DA INFORMACAO - SGPRJ - PRODEST - GOVES",
+            System.Threading.Tasks.Task<AgentePublicoPapelModel> task = _acessoCidadaoService.GetGrupo("73640fbc-f2ff-42a7-9796-306bb49788eb");// Encaminhamento, grupo
             //System.Threading.Tasks.Task<bool> task = _edocsBLL.EncontraDestinatario("89565801-9382-4785-94f8-cd35d4ab39d2", new[]{ new Guid().ToString(), new Guid().ToString()});// Encaminhamento, grupo
 
             Task.WaitAll(task);

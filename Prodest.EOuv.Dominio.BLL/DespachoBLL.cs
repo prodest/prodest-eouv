@@ -76,7 +76,7 @@ namespace Prodest.EOuv.Dominio.BLL
             await _despachoRepository.AdicionarDespacho(despacho);
         }
 
-        public async Task Despachar(DespachoManifestacaoModel despachoModel, string destinatario, string papelResponsavel, FiltroDadosManifestacaoModel filtroDadosManifestacao)
+        public async Task Despachar(DespachoManifestacaoModel despachoModel, string guidDestinatario, int tipoDestinatario, string papelResponsavel, FiltroDadosManifestacaoModel filtroDadosManifestacao)
         {
             //Validar regras de negócio
             //Validar se o prazo está OK
