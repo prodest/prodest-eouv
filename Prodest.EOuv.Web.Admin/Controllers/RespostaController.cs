@@ -52,13 +52,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
 
         public async Task<IActionResult> Responder([FromBody] RespostaManifestacaoEntry respostaEntry)
         {
-            respostaEntry.IdManifestacao = 583;
-            respostaEntry.IdResultadoResposta = 8;
-            respostaEntry.IdOrgaoCompetenciaFato = 862;
-            respostaEntry.TextoResposta = "TESTE DE RESPOSTA!!!";
-
             await _respostaWorkService.ResponderManifestacao(respostaEntry);
-
             return Json(respostaEntry.IdManifestacao);
         }
 

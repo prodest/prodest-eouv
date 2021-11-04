@@ -54,7 +54,7 @@
             let ret = await eOuvApi.ObterResultadosRespostaPorTipologia(this.manifestacao?.idTipoManifestacao);
             this.resultadosRespostaPorTipologia = ret;
             this.resultadosRespostaPositiva = this.resultadosRespostaPorTipologia.filter(this.ApenasPositivo);
-            this.resultadosRespostaNegativa = this.resultadosRespostaPorTipologia.filter(this.ApenasNegativo);            
+            this.resultadosRespostaNegativa = this.resultadosRespostaPorTipologia.filter(this.ApenasNegativo);
         },
 
         async ObterOrgaosCompetenciaFato() {
@@ -67,37 +67,33 @@
             window.location.href = "/Despacho/AcompanharDespachos/" + this.idManifestacao;
         },
 
-        async Responder() {
-            (function () {
-                'use strict'
+        async Responder(event) {
 
-                // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                var forms = document.querySelectorAll('.needs-validation')
+            let form = document.querySelector('.needs-validation');
+            form.classList.add('was-validated');
 
-                // Loop over them and prevent submission
-                Array.prototype.slice.call(forms)
-                    .forEach(function (form) {
-                        form.addEventListener('submit', function (event) {
-                            if (!form.checkValidity()) {
-                                event.preventDefault()
-                                event.stopPropagation()
-                            }
+            if (form.checkValidity()) {
+                let entry = {
+                    IdManifestacao: this.manifestacao.idManifestacao,
+                    TextoResposta: this.textoResposta,
+                    IdResultadoResposta: this.idResultadosRespostaPorTipologia,
+                    IdOrgaoCompetenciaFato: this.idOrgaosCompetenciaFato,
+                    Anexos: this.documentosSelecionados
+                }
+                console.log(entry);
 
-                            form.classList.add('was-validated')
-                        }, false)
-                    })
-            })();
-
-            let entry = {
-                IdManifestacao: this.manifestacao,
-                TextoResposta: this.textoResposta,
-                IdResultadoResposta: this.idResultadosRespostaPorTipologia,
-                IdOrgaoCompetenciaFato: this.idOrgaosCompetenciaFato,
-                Anexos: this.textoResposta
+                await eOuvApi.Responder(entry);
             }
-            console.log(entry);
-            return false;
-            //await eOuvApi.Responder(entry);
+
+        },
+
+        SelecionarDocumento(evento) {
+            if (evento.target.checked) {
+                this.documentosSelecionados.push(evento.target.id);
+            }
+            else {
+                this.documentosSelecionados = utils.RemoverItemArray(this.documentosSelecionados, evento.target.id);
+            }
         }
     }
 };
