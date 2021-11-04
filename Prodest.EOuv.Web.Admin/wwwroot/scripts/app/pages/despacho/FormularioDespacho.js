@@ -13,6 +13,7 @@ const DespachoForm = {
             prazoResposta: null,
             textoDespacho: '',
             idManifestacao: null,
+            tipoDestinatario: null,
             destinatarioSelecionado: null,
             dadosManifestacaoSelecionados: {
                 DadosBasicos: true,
@@ -95,7 +96,8 @@ const DespachoForm = {
                     TextoDespacho: this.textoDespacho,
                     FiltroDadosManifestacaoSelecionados: JSON.parse(JSON.stringify(this.dadosManifestacaoSelecionados)),
                     GuidPapelDestinatario: this.destinatarioSelecionado,
-                    GuidPapelResponsavel: this.papelSelecionado
+                    GuidPapelResponsavel: this.papelSelecionado,
+                    TipoDestinatario: this.tipoDestinatario
                 }
                 console.log(entry);
 
@@ -122,6 +124,7 @@ const DespachoForm = {
         IncluirDestinatarioSelecionado(destinatario) {
             console.log(destinatario);
             this.destinatarioSelecionado = destinatario.id;
+            this.tipoDestinatario = destinatario.tipo;
         }
     }
 };
