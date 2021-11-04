@@ -30,9 +30,10 @@
                     <div class="row">
                         <div class="col-md-12 mb-3">
                             <p class="small m-0">Documentos gerados pelos encaminhamento via E-DOCS:</p>
-                            <ul class="p-0 m-0">
-                                <li class="list-unstyled btn btn-outline-info btn-sm mx-1 mb-1" v-on:click="IncluirDocumento($event)" v-for="(doc, index) in documentosEncaminhamento" :key="index">
-                                    <i class="far fa-file"></i> {{doc.documento.registro}} - {{doc.documento.nome}}.{{doc.documento.extensao}}
+                            <ul class="p-0 m-0 list-inline">
+                                <li class="list-unstyled list-inline-item mx-1 mb-1" v-for="(doc, index) in documentosEncaminhamento" :key="index">                                    
+                                    <input type="checkbox" v-on:change="SelecionarDocumento" class="btn-check" v-bind:id="doc.documento.id" autocomplete="off">
+                                    <label class="btn btn-outline-primary" v-bind:for="doc.documento.id"><i class="far fa-file"></i> {{doc.documento.registro}} - {{doc.documento.nome}}.{{doc.documento.extensao}}</label>
                                 </li>
                             </ul>
                         </div>
@@ -75,7 +76,7 @@
                             <a v-on:click="Cancelar()" class="btn btn-danger btn-block mb-1"><i class="fas fa-times"></i> Cancelar</a>
                         </div>
                         <div class="col-md-4 col-sm-6 col-lg-2">
-                            <button type="submit" v-on:click="Responder()" class="btn btn-primary btn-block mb-1"><i class="fas fa-paper-plane"></i> Responder</button>
+                            <button type="button" v-on:click="Responder" class="btn btn-primary btn-block mb-1"><i class="fas fa-paper-plane"></i> Responder</button>
                         </div>
                     </div>
                 </div>
