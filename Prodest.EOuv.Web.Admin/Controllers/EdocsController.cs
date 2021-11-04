@@ -57,13 +57,15 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             return Json(patriarca);
         }
 
-        public JsonResult BuscarAgentes(String nome)
+        public JsonResult BuscarAgentes(string nome)
         {
-            Task<AgentePublicoPapelModel[]> task = _acessoCidadaoService.GetAgentePublico("3ca6ea0e-ca14-46fa-a911-22e616303722", nome);// Prodest
+            Task<List<AgentePublicoPapelModel>> task = _acessoCidadaoService.GetAgentePublico("3ca6ea0e-ca14-46fa-a911-22e616303722", nome);// Prodest
 
             Task.WaitAll(task);
 
-            AgentePublicoPapelModel[] agente = task.Result;
+            List<AgentePublicoPapelModel> agente = task.Result;
+
+            agente.Sort((x, y) => x.AgentePublicoNome.CompareTo(y.AgentePublicoNome));
             return Json(agente);
         }
 

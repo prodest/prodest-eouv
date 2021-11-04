@@ -21,13 +21,14 @@ namespace Prodest.EOuv.Dominio.Modelo.Interfaces.Service
 
         Task<PermissaoUsuarioModel> GetPermissaoUsuario(string id);
 
-        Task<AgentePublicoPapelModel[]> GetAgentePublico(string id, string busca);
+        Task<List<AgentePublicoPapelModel>> GetAgentePublico(string id, string busca);
 
         Task<UnidadeModel[]> GetUnidadesPerfilAdministrador(Guid id);
 
         Task<ICollection<(ICollection<PerfilLogadoModel> perfis, Guid papel)>> SearchPerfisPorPapelByUsuarioAsync(Guid idCidadao);
 
         Task<UsuarioLogadoModel> GetUsuarioAsync(Guid id);
+
         Task<List<PapelLogado>> GetPapeisPorCidadaoAsync(Guid idCidadao);
     }
 }
