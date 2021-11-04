@@ -875,9 +875,9 @@
                                     <a class="nav-link active"
                                        id="setor-tab"
                                        data-mdb-toggle="tab"
-                                       href="#setor"
+                                       href="#setores"
                                        role="tab"
-                                       aria-controls="setor"
+                                       aria-controls="setores"
                                        aria-selected="false">Setor</a>
                                 </li>
                                 <li class="nav-item" role="presentation">
@@ -912,27 +912,39 @@
                             <!-- Tabs content -->
                             <div class="tab-content overflow-auto" style="max-height:400px" id="ex2-content">
                                 <div class="tab-pane fade show active"
-                                     id="setor"
+                                     id="setores"
                                      role="tabpanel"
-                                     aria-labelledby="setor">
+                                     aria-labelledby="setores">
+                                    <div class="input-group mb-3">
+                                        <input type="text" v-on:keydown="FiltrarSetores" v-model="setorPesquisa" class="form-control" placeholder="Filtrar setores" aria-describedby="btn-pesquisar-setor">
+                                        <button v-on:click="FiltrarSetores" class="btn btn-primary" type="button" id="btn-pesquisar-setor"><i class="fas fa-search"></i></button>
+                                    </div>
                                     <ul class="list-unstyled">
-                                        <li v-for="(setor, index) in listaSetores" :key="index" class="cursor-pointer text-uppercase" v-on:click="AdicionarDestinatario(setor.id, setor.nome)"><i class="fas fa-puzzle-piece"></i> {{setor.nome}}</li>
+                                        <li v-for="(setor, index) in listaSetores" :key="index" class="cursor-pointer text-uppercase" v-on:click="AdicionarDestinatario(setor.id, setor.nome, 4)"><i class="fas fa-puzzle-piece"></i> {{setor.nome}}</li>
                                     </ul>
                                 </div>
                                 <div class="tab-pane fade overflow-auto"
                                      id="grupos"
                                      role="tabpanel"
                                      aria-labelledby="grupos">
+                                    <div class="input-group mb-3">
+                                        <input type="text" v-on:keydown="FiltrarGrupos" v-model="grupoPesquisa" class="form-control" placeholder="Filtrar grupos" aria-describedby="btn-pesquisar-grupos">
+                                        <button v-on:click="FiltrarGrupos" class="btn btn-primary" type="button" id="btn-pesquisar-grupos"><i class="fas fa-search"></i></button>
+                                    </div>
                                     <ul class="list-unstyled">
-                                        <li v-for="(grupo, index) in listaGrupos" :key="index" class="cursor-pointer text-uppercase" v-on:click="AdicionarDestinatario(grupo.id, grupo.nome)"><i class="fas fa-users"></i> {{grupo.nome}}</li>
+                                        <li v-for="(grupo, index) in listaGrupos" :key="index" class="cursor-pointer text-uppercase" v-on:click="AdicionarDestinatario(grupo.id, grupo.nome, 3)"><i class="fas fa-users"></i> {{grupo.nome}}</li>
                                     </ul>
                                 </div>
                                 <div class="tab-pane fade overflow-auto"
                                      id="comissoes"
                                      role="tabpanel"
                                      aria-labelledby="comissoes">
+                                    <div class="input-group mb-3">
+                                        <input type="text" v-on:keydown="FiltrarComissoes" v-model="comissaoPesquisa" class="form-control" placeholder="Filtrar comissões" aria-describedby="btn-pesquisar-comissoes">
+                                        <button v-on:click="FiltrarComissoes" class="btn btn-primary" type="button" id="btn-pesquisar-comissoes"><i class="fas fa-search"></i></button>
+                                    </div>
                                     <ul class="list-unstyled">
-                                        <li v-for="(comissao, index) in listaComissoes" :key="index" class="cursor-pointer text-uppercase" v-on:click="AdicionarDestinatario(grupo.id, grupo.nome)"><i class="fas fa-users"></i> {{comissao.nome}}</li>
+                                        <li v-for="(comissao, index) in listaComissoes" :key="index" class="cursor-pointer text-uppercase" v-on:click="AdicionarDestinatario(comissao.id, comissao.nome, 3)"><i class="fas fa-users"></i> {{comissao.nome}}</li>
                                     </ul>
                                 </div>
                                 <div class="tab-pane fade overflow-auto"
@@ -941,10 +953,10 @@
                                      aria-labelledby="agentes">                                    
                                     <div class="input-group mb-3">
                                         <input type="text" v-model="agentePesquisa" class="form-control" placeholder="Pesquisar servidor" aria-describedby="btn-pesquisar-agente">
-                                        <button v-on:click="GetAgentes" class="btn btn-outline-secondary" type="button" id="btn-pesquisar-agente"><i class="fas fa-search"></i></button>
+                                        <button v-on:click="GetAgentes" class="btn btn-primary" type="button" id="btn-pesquisar-agente"><i class="fas fa-search"></i></button>
                                     </div>
                                     <ul class="list-unstyled">
-                                        <li v-for="(agente, index) in listaAgentes" :key="index" class="cursor-pointer text-uppercase" v-on:click="AdicionarDestinatario(agente.id, agente.agentePublicoNome)">
+                                        <li v-for="(agente, index) in listaAgentes" :key="index" class="cursor-pointer text-uppercase" v-on:click="AdicionarDestinatario(agente.id, agente.agentePublicoNome, 2)">
                                             <i class="fas fa-user"></i> {{agente.agentePublicoNome}} <small>({{agente.nome}})</small>
                                         </li>
                                     </ul>
@@ -957,7 +969,7 @@
                                 </div>
                                 <div class="card-body">
                                     <div v-if="destinatario != null " class="col-12 mt-2 border-secondary border-1">
-                                        <span class="badge bg-success text-white m-1">{{destinatario.nome}} <i class="fas fa-times-circle" v-on:click="RemoverDestinatario()"></i></span>
+                                        <span class="badge bg-success text-white m-1 text-uppercase">{{destinatario.nome}} <i class="fas fa-times-circle" v-on:click="RemoverDestinatario()"></i></span>
                                     </div>
                                 </div>
                             </div>

@@ -48,6 +48,15 @@
     },
 
     /*
+     * Remove item que não corresponda ao termo pesquisado.
+     */
+    RemoverItemArrayPesquisa(arr, value) {
+        return arr.filter(function (ele) {
+            return ele.nome.toUpperCase().includes(value.toUpperCase());
+        });
+    },
+
+    /*
      * Formata a data passada como parâmetro
      */
     DataDiaMesAno(data) {
