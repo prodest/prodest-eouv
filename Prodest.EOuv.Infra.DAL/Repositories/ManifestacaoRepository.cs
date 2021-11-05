@@ -126,7 +126,7 @@ namespace Prodest.EOuv.Infra.DAL
         public async Task<List<RespostaManifestacaoModel>> ObterDadosResposta(int idManifestacao)
         {
             List<RespostaManifestacao> listaRespostaManifestacao = await _eouvContext.RespostaManifestacao
-                                                                            .Include(m => m.Usuario)
+                                                                            .Include(m => m.Usuario).ThenInclude(m => m.Pessoa)
                                                                             .Include(m => m.Orgao)
                                                                             .Where(m => m.IdManifestacao == idManifestacao).AsNoTracking().ToListAsync();
 
@@ -136,7 +136,7 @@ namespace Prodest.EOuv.Infra.DAL
         public async Task<List<ProrrogacaoManifestacaoModel>> ObterDadosProrrogacao(int idManifestacao)
         {
             List<ProrrogacaoManifestacao> listaProrrogacaoManifestacao = await _eouvContext.ProrrogacaoManifestacao
-                                                                            .Include(m => m.Usuario)
+                                                                            .Include(m => m.Usuario).ThenInclude(m => m.Pessoa)
                                                                             .Include(m => m.Orgao)
                                                                             .Where(m => m.IdManifestacao == idManifestacao).AsNoTracking().ToListAsync();
 
@@ -149,7 +149,7 @@ namespace Prodest.EOuv.Infra.DAL
                                                                             .Include(m => m.UsuarioSolicitacaoApuracao)
                                                                             .Include(m => m.OrgaoOrigem)
                                                                             .Include(m => m.OrgaoDestino)
-                                                                            .Include(m => m.UsuarioRespostaApuracao)
+                                                                            .Include(m => m.UsuarioRespostaApuracao).ThenInclude(m => m.Pessoa)
                                                                             .Where(m => m.IdManifestacao == idManifestacao).AsNoTracking().ToListAsync();
 
             return _mapper.Map<List<ApuracaoManifestacaoModel>>(listaApuracaoManifestacao);
@@ -158,7 +158,7 @@ namespace Prodest.EOuv.Infra.DAL
         public async Task<List<EncaminhamentoManifestacaoModel>> ObterDadosEncaminhamento(int idManifestacao)
         {
             List<EncaminhamentoManifestacao> listaEncaminhamentoManifestacao = await _eouvContext.EncaminhamentoManifestacao
-                                                                            .Include(m => m.Usuario)
+                                                                            .Include(m => m.Usuario).ThenInclude(m => m.Pessoa)
                                                                             .Include(m => m.OrgaoOrigem)
                                                                             .Include(m => m.OrgaoDestino)
                                                                             .Where(m => m.IdManifestacao == idManifestacao).AsNoTracking().ToListAsync();
@@ -179,7 +179,7 @@ namespace Prodest.EOuv.Infra.DAL
         public async Task<List<DesdobramentoManifestacaoModel>> ObterDadosDesdobramento(int idManifestacao)
         {
             List<DesdobramentoManifestacao> listaDesdobramentoManifestacao = await _eouvContext.DesdobramentoManifestacao
-                                                                            .Include(m => m.Usuario)
+                                                                            .Include(m => m.Usuario).ThenInclude(m => m.Pessoa)
                                                                             .Include(m => m.Orgao)
                                                                             .Include(m => m.ManifestacaoFilha)
                                                                             .Where(m => m.IdManifestacaoPai == idManifestacao).AsNoTracking().ToListAsync();
@@ -190,7 +190,7 @@ namespace Prodest.EOuv.Infra.DAL
         public async Task<List<DiligenciaManifestacaoModel>> ObterDadosDiligencia(int idManifestacao)
         {
             List<DiligenciaManifestacao> listaDiligenciaManifestacao = await _eouvContext.DiligenciaManifestacao
-                                                                            .Include(m => m.Usuario)
+                                                                            .Include(m => m.Usuario).ThenInclude(m => m.Pessoa)
                                                                             .Include(m => m.Orgao)
                                                                             .Where(m => m.IdManifestacao == idManifestacao).AsNoTracking().ToListAsync();
 
@@ -219,7 +219,7 @@ namespace Prodest.EOuv.Infra.DAL
         public async Task<List<NotificacaoManifestacaoModel>> ObterDadosNotificacao(int idManifestacao)
         {
             List<NotificacaoManifestacao> listaNotificacaoManifestacao = await _eouvContext.NotificacaoManifestacao
-                                                                                .Include(m => m.Usuario)
+                                                                                .Include(m => m.Usuario).ThenInclude(m => m.Pessoa)
                                                                                 .Include(m => m.Orgao)
                                                                                 .Where(m => m.IdManifestacao == idManifestacao).AsNoTracking().ToListAsync();
 
@@ -229,7 +229,7 @@ namespace Prodest.EOuv.Infra.DAL
         public async Task<List<AnotacaoManifestacaoModel>> ObterDadosAnotacao(int idManifestacao)
         {
             List<AnotacaoManifestacao> listaAnotacaoManifestacao = await _eouvContext.AnotacaoManifestacao
-                                                                            .Include(m => m.Usuario)
+                                                                            .Include(m => m.Usuario).ThenInclude(m => m.Pessoa)
                                                                             .Where(m => m.IdManifestacao == idManifestacao).AsNoTracking().ToListAsync();
 
             return _mapper.Map<List<AnotacaoManifestacaoModel>>(listaAnotacaoManifestacao);
@@ -265,7 +265,7 @@ namespace Prodest.EOuv.Infra.DAL
         public async Task<List<HistoricoManifestacaoModel>> ObterDadosHistorico(int idManifestacao)
         {
             List<HistoricoManifestacao> listaHistoricoManifestacao = await _eouvContext.HistoricoManifestacao
-                                                                            .Include(m => m.Usuario)
+                                                                            .Include(m => m.Usuario).ThenInclude(m => m.Pessoa)
                                                                             .Include(m => m.Orgao)
                                                                             .Include(m => m.SituacaoManifestacao)
                                                                             .Where(m => m.IdManifestacao == idManifestacao).AsNoTracking().ToListAsync();

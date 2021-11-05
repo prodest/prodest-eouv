@@ -29,8 +29,7 @@
         async CarregarListaDespachos() {
             let ret = await eOuvApi.ObterDespachosPorManifestacao(this.idManifestacao);
             this.listaDespachos = ret;
-            this.LiberarResposta(this.listaDespachos);
-            console.log(this.listaDespachos);
+            this.VerificarLiberarResposta(this.listaDespachos);                        
         },
         Detalhar() {
         },
@@ -39,7 +38,7 @@
             this.CarregarListaDespachos();
             //window.location.href = "/Despacho?id=" + this.idManifestacao;
         },
-        LiberarResposta(listaDespachos) {
+        VerificarLiberarResposta(listaDespachos) {
             let novalista = this.listaDespachos.filter(this.DespachosEncerrados);
             this.liberarResposta = novalista.length > 0 ? false : true;
         },
