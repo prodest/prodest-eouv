@@ -101,7 +101,7 @@ const DespachoForm = {
                 console.log(entry);
 
                 await eOuvApi.despachar(entry);
-                window.location.href = "/Despacho?" + this.idManifestacao;
+                window.location.href = "../Despacho?id=" + this.idManifestacao;
             }
         },
         GetDate(e) {
