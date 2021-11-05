@@ -292,12 +292,40 @@ namespace Prodest.EOuv.UI.Apresentacao
             }
         }
 
+
         public string IdSituacaoDespacho { get; set; }
         public virtual OrgaoViewModel Orgao { get; set; }
         public virtual UsuarioViewModel UsuarioSolicitacaoDespacho { get; set; }
         public virtual AgenteManifestacaoViewModel AgenteDestinatario { get; set; }
         public virtual AgenteManifestacaoViewModel AgenteResposta { get; set; }
         public virtual SituacaoDespachoViewModel SituacaoDespacho { get; set; }
+
+        public string DestinatarioFormat
+        {
+            get
+            {
+                if (AgenteDestinatario != null)
+                {
+                    if (AgenteDestinatario.TipoAgente == (int)Enums.TipoAgente.Papel)
+                    {
+                        return AgenteDestinatario.NomeUsuario + "(" + AgenteDestinatario.NomePapel + ")";
+                    }
+                    else if (AgenteDestinatario.TipoAgente == (int)Enums.TipoAgente.Grupo)
+                    {
+                        return AgenteDestinatario.NomeGrupo;
+                    }
+                    else if (AgenteDestinatario.TipoAgente == (int)Enums.TipoAgente.Unidade)
+                    {
+                        return AgenteDestinatario.NomeSetor;
+                    }
+                    return "";
+                }
+                else
+                {
+                    return "";
+                }
+            }
+        }
 
         public string AgenteDestinatarioFormat
         {

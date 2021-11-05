@@ -53,6 +53,15 @@ namespace Prodest.EOuv.Infra.Service
             });
         }
 
+        public async Task<AgentePublicoPapelModel> GetGrupo(string id)
+        {
+            return await _memoryCache.GetOrCreateAsync($"{nameof(GetAgentePublicoPapeis)}::{id}", async entry =>
+            {
+                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(_cacheExpirationHours);
+                return await GetRequest<AgentePublicoPapelModel>($"{_baseUrl}/grupo/{id}");
+            });
+        }
+
         public async Task<AgentePublicoPapelModel> GetPapel(string id)
         {
             return await _memoryCache.GetOrCreateAsync($"{nameof(GetPapel)}::{id}", async entry =>

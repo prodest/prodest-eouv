@@ -30,5 +30,7 @@ namespace Prodest.EOuv.Dominio.Modelo.Interfaces.Service
         Task<UsuarioLogadoModel> GetUsuarioAsync(Guid id);
 
         Task<List<PapelLogado>> GetPapeisPorCidadaoAsync(Guid idCidadao);
+
+        Task<AgentePublicoPapelModel> GetGrupo(string id);
     }
 }

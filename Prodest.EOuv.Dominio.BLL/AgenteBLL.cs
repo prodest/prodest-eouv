@@ -5,6 +5,7 @@ using Prodest.EOuv.Dominio.Modelo.Interfaces.Service;
 using Prodest.EOuv.Dominio.Modelo.Model;
 using Prodest.EOuv.Shared.Util;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Prodest.EOuv.Dominio.BLL
@@ -27,11 +28,6 @@ namespace Prodest.EOuv.Dominio.BLL
             return await _agenteRepository.AdicionarAgente(agente);
         }
 
-        public async Task<AgenteManifestacaoModel> MontaAgenteGrupo(string idAgente)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<AgenteManifestacaoModel> MontaAgenteSetor(string idAgente)
         {
             SetorModel setor = await _setorRepository.BuscarSetor(idAgente);
@@ -48,6 +44,24 @@ namespace Prodest.EOuv.Dominio.BLL
                 agente.SiglaOrgao = setor.Orgao.SiglaOrgao;
                 agente.TipoAgente = (int)Enums.TipoAgente.Unidade;
             }
+
+            return agente;
+        }
+
+        public async Task<AgenteManifestacaoModel> MontaAgenteGrupoComissao(string idAgente)
+        {
+            AgentePublicoPapelModel grupo = await _acessoCidadaoService.GetGrupo(idAgente);
+
+            AgenteManifestacaoModel agente = new AgenteManifestacaoModel();
+
+            if (grupo != null)
+            {
+                agente.GuidGrupo = new Guid(idAgente);
+                agente.NomeGrupo = grupo.Nome;
+                agente.TipoAgente = (int)Enums.TipoAgente.Grupo;
+            }
+
+            //TODO: Buscar informações de Setor e Orgao do Grupo
 
             return agente;
         }

@@ -6,7 +6,7 @@ namespace Prodest.EOuv.Dominio.Modelo.Interfaces.BLL
     {
         Task<AgenteManifestacaoModel> MontaAgenteUsuario(string idAgente);
 
-        Task<AgenteManifestacaoModel> MontaAgenteGrupo(string idAgente);
+        Task<AgenteManifestacaoModel> MontaAgenteGrupoComissao(string idAgente);
 
         Task<AgenteManifestacaoModel> MontaAgenteSetor(string idAgente);
 

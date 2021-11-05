@@ -11,8 +11,6 @@ namespace Prodest.EOuv.UI.Apresentacao
     {
         Task<List<DespachoManifestacaoViewModel>> ObterDespachosPorManifestacao(int idManifestacao);
 
-        Task AdicionarDespacho(DespachoManifestacaoViewModel despachoViewModel);
-
         Task Despachar(DespachoManifestacaoEntry despachoEntry);
 
         Task EncerrarDespachoManualmente(int idDespacho);
@@ -44,12 +42,6 @@ namespace Prodest.EOuv.UI.Apresentacao
             return listaDocumentos;
         }
 
-        public async Task AdicionarDespacho(DespachoManifestacaoViewModel despachoViewModel)
-        {
-            var despachoModel = _mapper.Map<DespachoManifestacaoModel>(despachoViewModel);
-            await _despachoBLL.AdicionarDespacho(despachoModel);
-        }
-
         public async Task Despachar(DespachoManifestacaoEntry despachoEntry)
         {
             //TODO: validações de tela
@@ -61,6 +53,7 @@ namespace Prodest.EOuv.UI.Apresentacao
 
             //Converter Entry para Model
             DespachoManifestacaoModel despachoModel = new DespachoManifestacaoModel();
+
             despachoModel.IdManifestacao = despachoEntry.IdManifestacao;
             despachoModel.DataSolicitacaoDespacho = Convert.ToDateTime(DateTime.Now);
             despachoModel.PrazoResposta = Convert.ToDateTime(despachoEntry.PrazoResposta);
@@ -68,10 +61,11 @@ namespace Prodest.EOuv.UI.Apresentacao
 
             var filtroDadosSelecionados = _mapper.Map<FiltroDadosManifestacaoModel>(despachoEntry.FiltroDadosManifestacaoSelecionados);
 
-            string papelResponsavel = despachoEntry.GuidPapelResponsavel; //"6470bd19-c178-4824-8edc-e8c3ef22a536";
-            string papelDestinatario = despachoEntry.GuidPapelDestinatario; //"90dab47e-e5ef-481e-8d0f-8a90d9390f4d";
+            string papelResponsavel = despachoEntry.GuidPapelResponsavel;
+            string papelDestinatario = despachoEntry.GuidPapelDestinatario;
+            int tipoDestinatario = despachoEntry.TipoDestinatario;
 
-            await _despachoBLL.Despachar(despachoModel, papelDestinatario, papelResponsavel, filtroDadosSelecionados);
+            await _despachoBLL.Despachar(despachoModel, papelDestinatario, tipoDestinatario, papelResponsavel, filtroDadosSelecionados);
         }
 
         public async Task EncerrarDespachoManualmente(int idDespacho)
