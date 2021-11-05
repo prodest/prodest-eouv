@@ -956,7 +956,7 @@
                                         <button v-on:click="GetAgentes" class="btn btn-primary" type="button" id="btn-pesquisar-agente"><i class="fas fa-search"></i></button>
                                     </div>
                                     <ul class="list-unstyled">
-                                        <li v-for="(agente, index) in listaAgentes" :key="index" class="cursor-pointer text-uppercase" v-on:click="AdicionarDestinatario(agente.id, agente.agentePublicoNome, 2)">
+                                        <li v-for="(agente, index) in listaAgentes" :key="index" class="cursor-pointer text-uppercase" v-on:click="AdicionarDestinatario(agente.guid, agente.agentePublicoNome, 2)">
                                             <i class="fas fa-user"></i> {{agente.agentePublicoNome}} <small>({{agente.nome}})</small>
                                         </li>
                                     </ul>

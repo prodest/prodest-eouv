@@ -65,6 +65,8 @@
                 let ret = await eOuvApi.ComissoeseDocs();
                 this.comissoes = JSON.parse(JSON.stringify(ret));
                 this.listaComissoes = this.comissoes;
+
+                console.log(this.comissoes);
             }
         },
 

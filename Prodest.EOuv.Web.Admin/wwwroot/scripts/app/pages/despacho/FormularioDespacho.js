@@ -101,8 +101,8 @@ const DespachoForm = {
                 }
                 console.log(entry);
 
-                await eOuvApi.despachar(entry);
-                window.location.href = "/Despacho/AcompanharDespachos/" + this.idManifestacao;
+                //await eOuvApi.despachar(entry);
+                //window.location.href = "/Despacho/AcompanharDespachos/" + this.idManifestacao;
             }
         },
         GetDate(e) {
