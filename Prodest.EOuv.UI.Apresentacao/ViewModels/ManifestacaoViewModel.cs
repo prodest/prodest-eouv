@@ -332,7 +332,7 @@ namespace Prodest.EOuv.UI.Apresentacao
         {
             get { return DataNotificacao.ToString("dd/MM/yyyy"); }
         }
-
+        public OrgaoViewModel Orgao { get; set; }
         public UsuarioViewModel Usuario { get; set; }
         //public List<AnexoManifestacaoViewModel> AnexoNotificacao { get; set; }
     }
@@ -437,6 +437,7 @@ namespace Prodest.EOuv.UI.Apresentacao
         }
 
         public OrgaoViewModel Orgao { get; set; }
+        public UsuarioViewModel Usuario { get; set; }
         public SituacaoManifestacaoViewModel SituacaoManifestacao { get; set; }
     }
 
