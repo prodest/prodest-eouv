@@ -10,9 +10,7 @@ namespace Prodest.EOuv.Dominio.Modelo.Interfaces.BLL
     {
         Task<List<DespachoManifestacaoModel>> ObterDespachosPorManifestacao(int idManifestacao);
 
-        Task AdicionarDespacho(DespachoManifestacaoModel despacho);
-
-        Task Despachar(DespachoManifestacaoModel despachoModel, string guidDestinatario, int tipoDestinatario, string papelResponsavel, FiltroDadosManifestacaoModel listaDadosSelecionados);
+        Task<(bool, string)> Despachar(DespachoManifestacaoModel despachoModel, string guidDestinatario, int tipoDestinatario, string papelResponsavel, FiltroDadosManifestacaoModel listaDadosSelecionados);
 
         Task<List<int>> ObterDespachosEmAberto();
 
