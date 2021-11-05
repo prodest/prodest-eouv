@@ -3,6 +3,7 @@ using Prodest.EOuv.Dominio.Modelo;
 using Prodest.EOuv.Dominio.Modelo.Interfaces.BLL;
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Prodest.EOuv.UI.Apresentacao
@@ -11,7 +12,7 @@ namespace Prodest.EOuv.UI.Apresentacao
     {
         Task<List<DespachoManifestacaoViewModel>> ObterDespachosPorManifestacao(int idManifestacao);
 
-        Task Despachar(DespachoManifestacaoEntry despachoEntry);
+        Task<JsonReturnViewModel> Despachar(DespachoManifestacaoEntry despachoEntry);
 
         Task EncerrarDespachoManualmente(int idDespacho);
 
@@ -42,30 +43,73 @@ namespace Prodest.EOuv.UI.Apresentacao
             return listaDocumentos;
         }
 
-        public async Task Despachar(DespachoManifestacaoEntry despachoEntry)
+        public async Task<JsonReturnViewModel> Despachar(DespachoManifestacaoEntry despachoEntry)
         {
-            //TODO: validações de tela
-            //Validar campo prazo preenchido
-            //Validar campo texto preenchido
-            //Validar anexos
-            //Validar destinatario preenchido
-            //Validar papel responsavel preenchido
+            var jsonRetorno = new JsonReturnViewModel();
 
-            //Converter Entry para Model
-            DespachoManifestacaoModel despachoModel = new DespachoManifestacaoModel();
+            (bool ok, string mensagens) validacoesTela = ValidarCamposDespachar(despachoEntry);
 
-            despachoModel.IdManifestacao = despachoEntry.IdManifestacao;
-            despachoModel.DataSolicitacaoDespacho = Convert.ToDateTime(DateTime.Now);
-            despachoModel.PrazoResposta = Convert.ToDateTime(despachoEntry.PrazoResposta);
-            despachoModel.TextoSolicitacaoDespacho = despachoEntry.TextoDespacho;
+            if (validacoesTela.ok)
+            {
+                //Converter Entry para Model
+                DespachoManifestacaoModel despachoModel = new DespachoManifestacaoModel();
 
-            var filtroDadosSelecionados = _mapper.Map<FiltroDadosManifestacaoModel>(despachoEntry.FiltroDadosManifestacaoSelecionados);
+                despachoModel.IdManifestacao = despachoEntry.IdManifestacao;
+                despachoModel.DataSolicitacaoDespacho = Convert.ToDateTime(DateTime.Now);
+                despachoModel.PrazoResposta = Convert.ToDateTime(despachoEntry.PrazoResposta);
+                despachoModel.TextoSolicitacaoDespacho = despachoEntry.TextoDespacho;
 
-            string papelResponsavel = despachoEntry.GuidPapelResponsavel;
-            string papelDestinatario = despachoEntry.GuidPapelDestinatario;
-            int tipoDestinatario = despachoEntry.TipoDestinatario;
+                var filtroDadosSelecionados = _mapper.Map<FiltroDadosManifestacaoModel>(despachoEntry.FiltroDadosManifestacaoSelecionados);
 
-            await _despachoBLL.Despachar(despachoModel, papelDestinatario, tipoDestinatario, papelResponsavel, filtroDadosSelecionados);
+                string papelResponsavel = despachoEntry.GuidPapelResponsavel;
+                string papelDestinatario = despachoEntry.GuidPapelDestinatario;
+                int tipoDestinatario = despachoEntry.TipoDestinatario;
+
+                (bool okNegocio, string mensagemNegocio) = await _despachoBLL.Despachar(despachoModel, papelDestinatario, tipoDestinatario, papelResponsavel, filtroDadosSelecionados);
+
+                jsonRetorno.Ok = okNegocio;
+                jsonRetorno.Mensagem = mensagemNegocio;
+            }
+            else
+            {
+                StringBuilder validationSummary = new StringBuilder();
+                validationSummary.AppendLine("Foram encontrados os seguintes problemas:");
+                validationSummary.AppendLine();
+                validationSummary.AppendLine(validacoesTela.mensagens);
+
+                jsonRetorno.Mensagem = validationSummary.ToString();
+            }
+
+            return jsonRetorno;
+        }
+
+        private (bool ok, string mensagens) ValidarCamposDespachar(DespachoManifestacaoEntry despachoEntry)
+        {
+            bool ok = true;
+            StringBuilder validationSummary = new StringBuilder();
+
+            if (string.IsNullOrWhiteSpace(despachoEntry.GuidPapelResponsavel))
+            {
+                validationSummary.AppendLine("O Papel do Responsável deve ser informado!");
+                ok = false;
+            }
+            if (string.IsNullOrWhiteSpace(despachoEntry.GuidPapelDestinatario))
+            {
+                validationSummary.AppendLine("O Destinatário deve ser informado!");
+                ok = false;
+            }
+            if (string.IsNullOrWhiteSpace(despachoEntry.PrazoResposta))
+            {
+                validationSummary.AppendLine("O Prazo de Resposta deve ser informado!");
+                ok = false;
+            }
+            if (string.IsNullOrWhiteSpace(despachoEntry.TextoDespacho))
+            {
+                validationSummary.AppendLine("O Texto de Despacho deve ser informado!");
+                ok = false;
+            }
+
+            return (ok, validationSummary.ToString());
         }
 
         public async Task EncerrarDespachoManualmente(int idDespacho)
