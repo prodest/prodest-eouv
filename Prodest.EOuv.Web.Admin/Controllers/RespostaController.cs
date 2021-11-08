@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Prodest.EOuv.UI.Apresentacao;
+using Prodest.EOuv.Web.Admin.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,34 +26,37 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             return View();
         }
 
-
-        public async Task<IActionResult> ObterResultadosRespostaPorTipologia(int id)
-        {
-            List<ResultadoRespostaViewModel> listaResultadosResposta = await _respostaWorkService.ObterResultadosRespostaPorTipologia(id);
-            return Json(listaResultadosResposta);
-        }
-
-        public async Task<IActionResult> ObterOrgaosCompetenciaFato()
-        {
-            List<OrgaoViewModel> listaOrgaosCompetenciaFato = await _respostaWorkService.ObterOrgaosCompetenciaFato();
-            return Json(listaOrgaosCompetenciaFato);
-        }
-
         public async Task<IActionResult> ResponderManifestacao()
         {
             return View();
         }
 
-        public async Task<IActionResult> Responder([FromBody] RespostaManifestacaoEntry respostaEntry)
+        [AjaxResponseExceptionFilter]
+        public async Task<IActionResult> ObterResultadosRespostaPorTipologia(int id)
         {
-            await _respostaWorkService.ResponderManifestacao(respostaEntry);
-            return Json(respostaEntry.IdManifestacao);
+            JsonReturnViewModel jsonReturn = await _respostaWorkService.ObterResultadosRespostaPorTipologia(id);
+            return Json(jsonReturn);
         }
 
+        [AjaxResponseExceptionFilter]
+        public async Task<IActionResult> ObterOrgaosCompetenciaFato()
+        {
+            JsonReturnViewModel jsonReturn = await _respostaWorkService.ObterOrgaosCompetenciaFato();
+            return Json(jsonReturn);
+        }
+
+        [AjaxResponseExceptionFilter]
+        public async Task<IActionResult> Responder([FromBody] RespostaManifestacaoEntry respostaEntry)
+        {
+            JsonReturnViewModel jsonReturn = await _respostaWorkService.ResponderManifestacao(respostaEntry);
+            return Json(jsonReturn);
+        }
+
+        [AjaxResponseExceptionFilter]
         public async Task<IActionResult> ObterDocumentosEncaminhamentoEDocs(int id)
         {
-            var listaDocumentos = await _despachoWorkService.ObterDocumentosEncaminhamentoEDocs(id);
-            return Json(listaDocumentos);
+            JsonReturnViewModel jsonReturn = await _despachoWorkService.ObterDocumentosEncaminhamentoEDocs(id);
+            return Json(jsonReturn);
         }
     }
 }

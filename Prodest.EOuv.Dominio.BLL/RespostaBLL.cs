@@ -4,6 +4,7 @@ using Prodest.EOuv.Dominio.Modelo.Interfaces.DAL;
 using Prodest.EOuv.Dominio.Modelo.Model.Entries;
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Prodest.EOuv.Dominio.BLL
@@ -29,24 +30,56 @@ namespace Prodest.EOuv.Dominio.BLL
             return await _respostaRepository.ObterOrgaosCompetenciaFato();
         }
 
-        public async Task ResponderManifestacao(RespostaManifestacaoEntryModel respostaEntryModel)
+        public async Task<(bool, string)> ResponderManifestacao(RespostaManifestacaoEntryModel respostaEntryModel)
         {
-            var manifestacao = await _manifestacaoBLL.ObterManifestacaoPorId(respostaEntryModel.IdManifestacao);
+            //Validar regras de negócio
+            (bool ok, string mensagens) validacoesNegocio = ValidarNegocioResponder(respostaEntryModel);
 
-            RespostaManifestacaoModel respostaModel = new RespostaManifestacaoModel();
-            respostaModel.IdManifestacao = respostaEntryModel.IdManifestacao;
-            respostaModel.TxtResposta = respostaEntryModel.TextoResposta;
-            respostaModel.IdUsuario = 29; //TODO: Buscar usuário autenticado
-            respostaModel.IdOrgao = 877; //TODO: Buscar orgão do usuário autenticado
-            respostaModel.DataResposta = DateTime.Now;
-            respostaModel.PrazoResposta = manifestacao.PrazoResposta;
+            if (validacoesNegocio.ok)
+            {
+                var manifestacao = await _manifestacaoBLL.ObterManifestacaoPorId(respostaEntryModel.IdManifestacao);
 
-            await _respostaRepository.AdicionarResposta(respostaModel);
+                RespostaManifestacaoModel respostaModel = new RespostaManifestacaoModel();
+                respostaModel.IdManifestacao = respostaEntryModel.IdManifestacao;
+                respostaModel.TxtResposta = respostaEntryModel.TextoResposta;
+                respostaModel.IdUsuario = 29; //TODO: Buscar usuário autenticado
+                respostaModel.IdOrgao = 877; //TODO: Buscar orgão do usuário autenticado
+                respostaModel.DataResposta = DateTime.Now;
+                respostaModel.PrazoResposta = manifestacao.PrazoResposta;
 
-            manifestacao.IdResultadoResposta = respostaEntryModel.IdResultadoResposta;
-            manifestacao.IdOrgaoInteresse = respostaEntryModel.IdOrgaoCompetenciaFato;
+                await _respostaRepository.AdicionarResposta(respostaModel);
 
-            await _manifestacaoBLL.AtualizarManifestacao(manifestacao);
+                manifestacao.IdResultadoResposta = respostaEntryModel.IdResultadoResposta;
+                manifestacao.IdOrgaoInteresse = respostaEntryModel.IdOrgaoCompetenciaFato;
+
+                await _manifestacaoBLL.AtualizarManifestacao(manifestacao);
+
+                return (true, "Manifestação respondida com sucesso!");
+            }
+            else
+            {
+                StringBuilder validationSummary = new StringBuilder();
+                validationSummary.AppendLine(validacoesNegocio.mensagens);
+
+                return (false, validationSummary.ToString());
+            }
+        }
+
+        private (bool ok, string mensagens) ValidarNegocioResponder(RespostaManifestacaoEntryModel respostaEntryModel)
+        {
+            bool ok = true;
+            StringBuilder validationSummary = new StringBuilder();
+
+            //TODO: Validar se o usuário responsável possui acesso a manifestação
+            //Validar o Orgao de Competencia
+
+            //if (despachoModel.)
+            //{
+            //    validationSummary.AppendLine("O Papel do Responsável deve ser informado!");
+            //    ok = false;
+            //}
+
+            return (ok, validationSummary.ToString());
         }
     }
 }
