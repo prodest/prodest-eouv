@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Prodest.EOuv.UI.Apresentacao;
+using Prodest.EOuv.Web.Admin.Filters;
 using System;
 using System.Threading.Tasks;
 
@@ -21,35 +22,9 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             return View();
         }
 
-        public async Task<IActionResult> ObterDespachosPorManifestacao(int id)
-        {
-            try
-            {
-                var despachoViewModel = await _despachoWorkService.ObterDespachosPorManifestacao(id);
-                return Json(despachoViewModel);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
         public IActionResult NovoDespacho()
         {
             return View();
-        }
-
-        public async Task<IActionResult> Despachar([FromBody] DespachoManifestacaoEntry despachoEntry)
-        {
-            try
-            {
-                await _despachoWorkService.Despachar(despachoEntry);
-                return Json(despachoEntry.IdManifestacao);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
         }
 
         public IActionResult Detalhes()
@@ -57,17 +32,25 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             return View();
         }
 
+        [AjaxResponseExceptionFilterAttribute]
+        public async Task<IActionResult> ObterDespachosPorManifestacao(int id)
+        {
+            var despachoViewModel = await _despachoWorkService.ObterDespachosPorManifestacao(id);
+            return Json(despachoViewModel);
+        }
+
+        [AjaxResponseExceptionFilter]
+        public async Task<IActionResult> Despachar([FromBody] DespachoManifestacaoEntry despachoEntry)
+        {
+            JsonReturnViewModel jsonReturn = await _despachoWorkService.Despachar(despachoEntry);
+            return Json(jsonReturn);
+        }
+
+        [AjaxResponseExceptionFilterAttribute]
         public async Task<IActionResult> EncerrarDespachoManualmente(int id)
         {
-            try
-            {
-                await _despachoWorkService.EncerrarDespachoManualmente(id);
-                return Json(id);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            await _despachoWorkService.EncerrarDespachoManualmente(id);
+            return Json(id);
         }
     }
 }

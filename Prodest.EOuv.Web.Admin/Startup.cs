@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using Prodest.EOuv.Infra.Service;
 using Prodest.Cache.Extensions.DependencyInjection;
 using Prodest.Cache.Extensions.Caching.Hierarchical;
+using Prodest.EOuv.Shared.Utils;
 
 namespace Prodest.EOuv.Web.Admin
 {
@@ -199,6 +200,10 @@ namespace Prodest.EOuv.Web.Admin
                             }
                         }
                     };
+
+                    options.Events.OnRedirectToAccessDenied = CookieEvents.DontRedirectApiRequestToForbidden;
+                    options.SlidingExpiration = false;
+                    options.ExpireTimeSpan = TimeSpan.FromSeconds(Configuration.GetValue<int>("AcessoCidadao:ExpireTimeSpanSeconds"));
                 })
                 .AddOpenIdConnect("oidc", options =>
                 {

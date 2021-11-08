@@ -5,6 +5,7 @@ using Prodest.EOuv.Dominio.Modelo.Interfaces.Service;
 using Prodest.EOuv.Shared.Util;
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Prodest.EOuv.Dominio.BLL
@@ -66,69 +67,100 @@ namespace Prodest.EOuv.Dominio.BLL
             return documentos;
         }
 
-        public async Task AdicionarDespacho(DespachoManifestacaoModel despacho)
-        {
-            despacho.IdManifestacao = 366;
-            despacho.IdOrgao = 843;
-            despacho.IdUsuarioSolicitacaoDespacho = 29;
-            despacho.DataSolicitacaoDespacho = DateTime.Now;
-
-            await _despachoRepository.AdicionarDespacho(despacho);
-        }
-
-        public async Task Despachar(DespachoManifestacaoModel despachoModel, string guidDestinatario, int tipoDestinatario, string papelResponsavel, FiltroDadosManifestacaoModel filtroDadosManifestacao)
+        public async Task<(bool, string)> Despachar(DespachoManifestacaoModel despachoModel, string guidDestinatario, int tipoDestinatario, string papelResponsavel, FiltroDadosManifestacaoModel filtroDadosManifestacao)
         {
             //Validar regras de negócio
-            //Validar se o prazo está OK
-            //Validar se o texto está OK
-            //Validar se os anexos está OK
-            //Validar se o destinatario está ok
-            //Validar se o papel está ok
+            (bool ok, string mensagens) validacoesNegocio = ValidarNegocioDespachar(despachoModel);
 
-            //Buscar Dados filtrados da Manifestação
-            ManifestacaoModel manifestacao = await _manifestacaoBLL.ObterDadosFiltradosManifestacao(despachoModel.IdManifestacao, filtroDadosManifestacao);
-
-            string nomeArquivo = "Manifestação " + manifestacao.NumProtocolo;
-
-            //Gerar página HTML
-            string html = await _htmlApiService.GerarHtml(manifestacao);
-
-            //Gerar PDF a partir do HTML
-            byte[] arquivoPdfCapturar = await _pdfApiService.GerarPdfByHtml(html);
-
-            //Capturar arquivo PDF no E-Docs
-            string idDocumento = await _edocsService.CapturarDocumento(arquivoPdfCapturar, papelResponsavel, nomeArquivo);
-
-            //Encaminhar via E-Docs
-            string idEncaminhamento = await _edocsService.EncaminharDocumento(idDocumento, "Demanda de Ouvidoria", despachoModel.TextoSolicitacaoDespacho, papelResponsavel, guidDestinatario);
-
-            //Salvar Despacho no Eouv com IdEvento (sem IdEncaminhamento por enquanto)
-            despachoModel.ProtocoloEdocs = await _edocsService.GetProtocoloEncaminhamento(idEncaminhamento);
-            despachoModel.IdEncaminhamento = new Guid(idEncaminhamento);
-            despachoModel.IdOrgao = manifestacao.IdOrgaoResponsavel;
-            despachoModel.IdUsuarioSolicitacaoDespacho = (int)manifestacao.IdUsuarioAnalise;
-            despachoModel.IdSituacaoDespacho = (int)Enums.SituacaoDespacho.Aberto;
-
-            AgenteManifestacaoModel agenteDestinatario = new AgenteManifestacaoModel();
-            //Se Agente = Papel
-            if (tipoDestinatario == (int)Enums.TipoAgente.Papel)
+            if (validacoesNegocio.ok)
             {
-                agenteDestinatario = await _agenteBLL.MontaAgenteUsuario(guidDestinatario);
+                //Buscar Dados filtrados da Manifestação
+                ManifestacaoModel manifestacao = await _manifestacaoBLL.ObterDadosFiltradosManifestacao(despachoModel.IdManifestacao, filtroDadosManifestacao);
+
+                string nomeArquivo = "Manifestação " + manifestacao.NumProtocolo;
+
+                //Gerar página HTML
+                string html = await _htmlApiService.GerarHtml(manifestacao);
+
+                //Gerar PDF a partir do HTML
+                byte[] arquivoPdfCapturar = await _pdfApiService.GerarPdfByHtml(html);
+
+                //Capturar arquivo PDF no E-Docs
+                string idDocumento = await _edocsService.CapturarDocumento(arquivoPdfCapturar, papelResponsavel, nomeArquivo);
+
+                //Encaminhar via E-Docs
+                string idEncaminhamento = await _edocsService.EncaminharDocumento(idDocumento, "Demanda de Ouvidoria", despachoModel.TextoSolicitacaoDespacho, papelResponsavel, guidDestinatario);
+
+                //Salvar Despacho no Eouv com IdEvento (sem IdEncaminhamento por enquanto)
+                despachoModel.ProtocoloEdocs = await _edocsService.GetProtocoloEncaminhamento(idEncaminhamento);
+                despachoModel.IdEncaminhamento = new Guid(idEncaminhamento);
+                despachoModel.IdOrgao = manifestacao.IdOrgaoResponsavel;
+                despachoModel.IdUsuarioSolicitacaoDespacho = (int)manifestacao.IdUsuarioAnalise;
+                despachoModel.IdSituacaoDespacho = (int)Enums.SituacaoDespacho.Aberto;
+
+                AgenteManifestacaoModel agenteDestinatario = new AgenteManifestacaoModel();
+                //Se Agente = Papel
+                if (tipoDestinatario == (int)Enums.TipoAgente.Papel)
+                {
+                    agenteDestinatario = await _agenteBLL.MontaAgenteUsuario(guidDestinatario);
+                }
+                //Se Agente = Grupo
+                else if (tipoDestinatario == (int)Enums.TipoAgente.Grupo)
+                {
+                    agenteDestinatario = await _agenteBLL.MontaAgenteGrupoComissao(guidDestinatario);
+                }
+                //Se Agente = Setor
+                else
+                {
+                    agenteDestinatario = await _agenteBLL.MontaAgenteSetor(guidDestinatario);
+                }
+
+                var idAgenteDestinatario = await _agenteBLL.AdicionarAgente(agenteDestinatario);
+                despachoModel.IdAgenteDestinatario = idAgenteDestinatario;
+                await _despachoRepository.AdicionarDespacho(despachoModel);
+
+                return (true, "Despacho encaminhado com sucesso!");
             }
-            //Se Agente = Grupo
-            else if (tipoDestinatario == (int)Enums.TipoAgente.Grupo)
-            {
-                agenteDestinatario = await _agenteBLL.MontaAgenteGrupoComissao(guidDestinatario);
-            }
-            //Se Agente = Setor
             else
             {
-                agenteDestinatario = await _agenteBLL.MontaAgenteSetor(guidDestinatario);
-            }
+                StringBuilder validationSummary = new StringBuilder();
+                validationSummary.AppendLine(validacoesNegocio.mensagens);
 
-            var idAgenteDestinatario = await _agenteBLL.AdicionarAgente(agenteDestinatario);
-            despachoModel.IdAgenteDestinatario = idAgenteDestinatario;
-            await _despachoRepository.AdicionarDespacho(despachoModel);
+                return (false, validationSummary.ToString());
+            }
+        }
+
+        private (bool ok, string mensagens) ValidarNegocioDespachar(DespachoManifestacaoModel despachoModel)
+        {
+            bool ok = true;
+            StringBuilder validationSummary = new StringBuilder();
+
+            //Validar se o prazo está dentro do prazo máximo da manifestação
+            //Validar se o usuário responsável possui acesso a manifestação
+            //Validar se o destinatário é do mesmo órgão da manifestação
+
+            //if (despachoModel.)
+            //{
+            //    validationSummary.AppendLine("O Papel do Responsável deve ser informado!");
+            //    ok = false;
+            //}
+            //if (string.IsNullOrWhiteSpace(despachoEntry.GuidPapelDestinatario))
+            //{
+            //    validationSummary.AppendLine("O Destinatário deve ser informado!");
+            //    ok = false;
+            //}
+            //if (string.IsNullOrWhiteSpace(despachoEntry.PrazoResposta))
+            //{
+            //    validationSummary.AppendLine("O Prazo de Resposta deve ser informado!");
+            //    ok = false;
+            //}
+            //if (string.IsNullOrWhiteSpace(despachoEntry.TextoDespacho))
+            //{
+            //    validationSummary.AppendLine("O Texto de Despacho deve ser informado!");
+            //    ok = false;
+            //}
+
+            return (ok, validationSummary.ToString());
         }
 
         public async Task ResponderDespacho(int idDespacho)

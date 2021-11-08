@@ -1,7 +1,5 @@
 ﻿@model Prodest.EOuv.UI.Apresentacao.ManifestacaoViewModel
-@{
-    ViewData["Title"] = "Dados da Manifestação";
-}
+@{ ViewData["Title"] = "Dados da Manifestação"; }
 <style>
     body {
         font-family: Arial;
@@ -9,7 +7,7 @@
     }
 
     table {
-        width: 776px;
+        width: 746px;
         vertical-align: top;
         border-spacing: 5px;
     }
@@ -34,15 +32,18 @@
     th {
         text-align: left;
         border-spacing: 20px
-    }    
+    }
+
     tr.titulo-1 {
-        font-size: 1.1rem;        
+        font-size: 1.1rem;
         background-color: #ddd;
     }
+
         tr.titulo-1 th {
             padding: 5px;
             text-align: center;
         }
+
     tr.titulo-2 {
         font-size: 1.1rem;
         color: #fff;
@@ -51,8 +52,9 @@
 
         tr.titulo-2 th {
             padding: 5px;
-            text-align:center;
+            text-align: center;
         }
+
     tr.titulo-3 {
         font-size: 1.1rem;
         color: #fff;
@@ -66,13 +68,13 @@
 <table>
     <tr>
         <th>
-            <img src="~/images/brasao-GovernoES.png" alt="Governo do Estado do Espírito Santo"/>
+            <img src="~/images/brasao-GovernoES.png" alt="Governo do Estado do Espírito Santo" />
         </th>
         <th><h1>e-OUV - Sistema de Ouvidoria do Estado do Espírito Santo</h1></th>
     </tr>
 </table>
 <table>
-    <tr class="titulo-1">        
+    <tr class="titulo-1">
         <th>e-OUV - Sistema de Ouvidoria do Estado do Espírito Santo</th>
     </tr>
 </table>
@@ -223,6 +225,563 @@
         <tr>
             <td colspan="2">@Model.Pessoa?.Complemento</td>
             <td colspan="2">@Model.Pessoa?.Bairro</td>
+
         </tr>
     </tbody>
 </table>
+
+
+<table>
+    <tr class="titulo-2">
+        <th>DADOS DA ANÁLISE DA MANIFESTAÇÃO</th>
+    </tr>
+</table>
+
+<!--Dados de Resposta-->
+<table>
+    <thead>
+        <tr class="titulo-3">
+            <th colspan="4">Dados de Resposta</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var resposta in @Model.RespostaManifestacao)
+        {
+            <tr>
+                <th colspan="2">Usuário</th>
+                <th colspan="1">Órgão</th>
+                <th colspan="1">Data</th>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    @if (@resposta.Usuario != null && @resposta.Usuario.Pessoa != null)
+                    {
+                        @resposta.Usuario.Pessoa.Nome                
+                    }
+                </td>
+                <td colspan="1">@resposta.Orgao.SiglaOrgao</td>
+                <td colspan="1">@resposta.DataRespostaFormat</td>
+            </tr>
+
+            <tr>
+                <th colspan="4">Resposta</th>
+            </tr>
+            <tr>
+                <td colspan="4">@resposta.TxtResposta</td>
+            </tr>
+
+            @if (@Model.AnexoManifestacao.Count > 0)
+            {
+                <tr>
+                    <th colspan="2">Nome do Anexo</th>
+                    <th colspan="2">Data do Anexo</th>
+                </tr>
+
+                @foreach (var anexo in @Model.AnexoManifestacao)
+                {
+                    <tr>
+                        <td colspan="2">@anexo.NomeArquivo</td>
+                        <td colspan="2">??/??/????</td>
+                    </tr>
+                }
+            }
+
+            <tr>
+                <th colspan="4">
+                    <hr />
+                </th>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!--Dados de Prorrogação-->
+@if (@Model.ProrrogacaoManifestacao.Count > 0)
+{
+<table>
+    <thead>
+        <tr class="titulo-3">
+            <th colspan="4">Dados de Prorrogação</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var prorrogacao in @Model.ProrrogacaoManifestacao)
+        {
+            <tr>
+                <th colspan="1">Prazo Original</th>
+                <th colspan="1">Novo Prazo</th>
+                <th colspan="1">Data da Prorrogação</th>
+            </tr>
+            <tr>
+                <td colspan="1">@prorrogacao.PrazoOriginalFormat</td>
+                <td colspan="1">@prorrogacao.NovoPrazoFormat</td>
+                <td colspan="1">@prorrogacao.DataProrrogacaoFormat</td>
+            </tr>
+
+            <tr>
+                <th colspan="1">Órgão</th>
+                <th colspan="2">Responsável</th>
+            </tr>
+            <tr>
+                <td colspan="1">@prorrogacao.Orgao.SiglaOrgao</td>
+                <td colspan="2">
+                    @if (prorrogacao.Usuario != null && prorrogacao.Usuario.Pessoa != null)
+                    {
+                        @prorrogacao.Usuario.Pessoa.Nome
+                    }
+                </td>
+            </tr>
+            <tr>
+                <th colspan="3">Justificativa</th>
+            </tr>
+            <tr>
+                <td colspan="3">@prorrogacao.TxtJustificativaProrrogacao</td>
+            </tr>
+            <tr>
+                <th colspan="4">
+                    <hr />
+                </th>
+            </tr>
+        }
+    </tbody>
+</table>
+}
+
+<!--Dados de Apuração-->
+@if (@Model.ApuracaoManifestacao.Count > 0)
+{
+<table>
+    <thead>
+        <tr class="titulo-3">
+            <th colspan="4">Dados de Apuração</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var apuracao in @Model.ApuracaoManifestacao)
+        {
+            <tr>
+                <th colspan="1">Data da Solicitação</th>
+                <th colspan="2">Usuário Solicitação</th>
+            </tr>
+            <tr>
+                <td colspan="1">@apuracao.DataSolicitacaoApuracaoFormat</td>
+                <td colspan="2">??????</td>
+            </tr>
+            <tr>
+                <th colspan="3">Solicitação Apuração</th>                
+            </tr>
+            <tr>
+                <td colspan="3">@apuracao.TxtSolicitacaoApuracao</td>                
+            </tr>
+            <tr>
+                <th colspan="1">Data da Resposta</th>
+                <th colspan="2">Usuário Resposta</th>
+            </tr>
+            <tr>
+                <td colspan="1">@apuracao.DataRespostaApuracaoFormat</td>
+                <td colspan="2">??????</td>
+            </tr>
+            <tr>
+                <th colspan="3">Resposta Apuração</th>                
+            </tr>
+            <tr>
+                <td colspan="3">@apuracao.TxtRespostaApuracao</td>                
+            </tr>
+            <tr>
+                <th colspan="4">
+                    <hr />
+                </th>
+            </tr>
+        }
+    </tbody>
+</table>
+}
+
+<!--Dados de Emcaminhamento-->
+@if (@Model.EncaminhamentoManifestacao.Count > 0)
+{
+<table>
+    <thead>
+        <tr class="titulo-3">
+            <th colspan="5">Dados de Emcaminhamento</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var encaminhamento in @Model.EncaminhamentoManifestacao)
+        {
+            <tr>
+                <th colspan="1">Órgão Origem</th>
+                <th colspan="1">Órgão Destino</th>
+                <th colspan="2">Usuário</th>
+                <th colspan="1">Data do Encaminhamento</th>
+            </tr>
+            <tr>
+                <td colspan="1">@encaminhamento.OrgaoOrigem.SiglaOrgao</td>
+                <td colspan="1">@encaminhamento.OrgaoDestino.SiglaOrgao</td>                
+                <td colspan="2">
+                @if (@encaminhamento.Usuario != null && @encaminhamento.Usuario.Pessoa != null)
+                {
+                    @encaminhamento.Usuario.Pessoa.Nome
+                }
+                </td>
+                <td colspan="1">@encaminhamento.DataEncaminhamentoFormat</td>
+            </tr>
+            <tr>
+                <th colspan="5">Encaminhamento</th>                
+            </tr>
+            <tr>
+                <td colspan="5">@encaminhamento.TxtEncaminhamento</td>                
+            </tr>
+            <tr>
+                <th colspan="5">
+                    <hr />
+                </th>
+            </tr>
+        }
+    </tbody>
+</table>
+}
+
+<table>
+    <tr class="titulo-2">
+        <th>DADOS DE DESPACHO</th>
+    </tr>
+</table>
+
+<!--Dados de Desdobramento-->
+@if (@Model.DesdobramentoManifestacaoManifestacaoPai.Count > 0)
+{
+<table>
+    <thead>
+        <tr class="titulo-3">
+            <th colspan="4">Dados de Desdobramento</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var desdobramento in @Model.DesdobramentoManifestacaoManifestacaoPai)
+        {
+            <tr>
+                <th colspan="1">Manifestação Filha</th>
+                <th colspan="1">Responsável</th>
+                <th colspan="1">Órgão</th>
+                <th colspan="1">Data de Desdobramento</th>
+            </tr>
+            <tr>
+                <td colspan="1">@desdobramento.ManifestacaoFilha.NumProtocolo</td>
+                <td colspan="1">
+                    @if (@desdobramento.Usuario != null && @desdobramento.Usuario.Pessoa != null)
+                    {
+                        @desdobramento.Usuario.Pessoa.Nome                    
+                    }
+                </td>   
+                <td colspan="1">@desdobramento.Orgao.SiglaOrgao</td>                      
+                <td colspan="1">@desdobramento.DataDesdobramentoFormat</td>                      
+            </tr>
+            <tr>
+                <th colspan="5">
+                    <hr />
+                </th>
+            </tr>
+        }
+    </tbody>
+</table>
+}
+
+<!--Dados de Diligência-->
+@if (@Model.DiligenciaManifestacao.Count > 0)
+{
+<table>
+    <thead>
+        <tr class="titulo-3">
+            <th colspan="4">Dados de Diligência</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var diligencia in @Model.DiligenciaManifestacao)
+        {
+            <tr>
+                <th colspan="1">Data da Diligência</th>
+                <th colspan="1">Órgão</th>
+                <th colspan="1">Usuário</th>
+                <th colspan="1">Data da Resposta</th>
+            </tr>
+            <tr>
+                <td colspan="1">@diligencia.DataDiligenciaFormat</td>
+                <td colspan="1">@diligencia.Orgao.SiglaOrgao</td>
+                <td colspan="1">
+                    @if (diligencia.Usuario != null && diligencia.Usuario.Pessoa != null)
+                    {
+                        @diligencia.Usuario.Pessoa.Nome                    
+                    }
+                </td>
+                <td colspan="1">@diligencia.DataRespostaDiligenciaFormat</td>
+            </tr>
+            <tr>
+                <th colspan="4">Texto</th>                
+            </tr>
+            <tr>
+                <td colspan="4">@diligencia.TxtDiligencia</td>
+            </tr>
+            <tr>
+                <th colspan="4">Resposta da Diligência</th>                
+            </tr>
+            <tr>
+                <td colspan="4">@diligencia.TxtRespostaDiligencia</td>
+            </tr>
+            <tr>
+                <th colspan="5">
+                    <hr />
+                </th>
+            </tr>
+        }
+    </tbody>
+</table>
+}
+
+<!--Dados de Anotação-->
+@if (@Model.AnotacaoManifestacao.Count > 0)
+{
+<table>
+    <thead>
+        <tr class="titulo-3">
+            <th colspan="2">Dados de Anotação</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var anotacao in @Model.AnotacaoManifestacao)
+        {
+            <tr>
+                <th colspan="1">Usuário</th>
+                <th colspan="1">Data da Anotação</th>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    @if (anotacao.Usuario != null && anotacao.Usuario.Pessoa != null)
+                    {
+                        @anotacao.Usuario.Pessoa.Nome                    
+                    }
+                </td>
+                <td colspan="1">@anotacao.DataAnotacaoFormat</td>
+            </tr>
+            <tr>
+                <th colspan="2">Anotação</th>                
+            </tr>
+            <tr>
+                <td colspan="2">@anotacao.TxtAnotacao</td>
+            </tr>
+            <tr>
+                <th colspan="2">
+                    <hr />
+                </th>
+            </tr>
+        }
+    </tbody>
+</table>
+}
+
+<!--Dados de Notificação-->
+@if (@Model.NotificacaoManifestacao.Count > 0)
+{
+<table>
+    <thead>
+        <tr class="titulo-3">
+            <th colspan="3">Dados de Notificação</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var notificacao in @Model.NotificacaoManifestacao)
+        {
+            <tr>
+                <th colspan="1">Órgão</th>
+                <th colspan="1">Usuário</th>
+                <th colspan="1">Data da Notificação</th>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    @if (notificacao.Orgao != null)
+                    {
+                        @notificacao.Orgao.SiglaOrgao
+                    }
+                </td>
+                <td colspan="1">
+                    @if (notificacao.Usuario != null && notificacao.Usuario.Pessoa != null)
+                    {
+                        @notificacao.Usuario.Pessoa.Nome                    
+                    }
+                </td>
+                <td colspan="1">@notificacao.DataNotificacaoFormat</td>
+            </tr>
+            <tr>
+                <th colspan="3">Notificação</th>                
+            </tr>
+            <tr>
+                <td colspan="3">@notificacao.TxtNotificacao</td>
+            </tr>
+            <tr>
+                <th colspan="3">
+                    <hr />
+                </th>
+            </tr>
+        }
+    </tbody>
+</table>
+}
+
+<!--Dados de Reclamação de Omissão-->
+@if (@Model.ReclamacaoOmissaoManifestacaoPai.Count > 0)
+{
+<table>
+    <thead>
+        <tr class="titulo-3">
+            <th colspan="3">Dados de Reclamação de Omissão</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var reclamacaoOmissao in @Model.ReclamacaoOmissaoManifestacaoPai)
+        {
+            <tr>
+                <th colspan="1">Manifestação Original</th>
+                <th colspan="1">Manifestação de Reclamação de Omissão</th>
+                <th colspan="1">Data da Reclamação de Omissão</th>
+            </tr>
+            <tr>
+                <td colspan="1"> @reclamacaoOmissao.ManifestacaoPai.NumProtocolo </td>
+                <td colspan="1"> @reclamacaoOmissao.ManifestacaoFilha.NumProtocolo </td>
+                <td colspan="1"> @reclamacaoOmissao.DataReclamacaoOmissaoFormat </td>
+            </tr>
+            <tr>
+                <th colspan="3">
+                    <hr />
+                </th>
+            </tr>
+        }
+    </tbody>
+</table>
+}
+
+<!--Dados de Interpelação-->
+@if (@Model.InterpelacaoManifestacao.Count > 0)
+{
+<table>
+    <thead>
+        <tr class="titulo-3">
+            <th colspan="3">Dados de Interpelação</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var interpelacaoManifestacao in @Model.InterpelacaoManifestacao)
+        {
+            <tr>
+                <th colspan="1">Data da Interpelação</th>
+                <th colspan="1">Data da Resposta</th>
+                <th colspan="1">Órgão</th>
+            </tr>
+            <tr>
+                <td colspan="1"> @interpelacaoManifestacao.DataInterpelacaoFormat </td>
+                <td colspan="1"> @interpelacaoManifestacao.DataRespostaInterpelacaoFormat</td>
+                <td colspan="1"> @interpelacaoManifestacao.OrgaoResposta.SiglaOrgao</td>
+            </tr>            
+            <tr>
+                <th colspan="3">Interpelação</th>
+            </tr>
+            <tr>
+                <td colspan="3"> @interpelacaoManifestacao.TxtInterpelacao</td>
+            </tr>
+            <tr>
+                <th colspan="3">Resposta</th>
+            </tr>
+            <tr>
+                <td colspan="3"> @interpelacaoManifestacao.TxtRespostaInterpelacao</td>
+            </tr>
+            <tr>
+                <th colspan="3">
+                    <hr />
+                </th>
+            </tr>
+        }
+    </tbody>
+</table>
+}
+
+<!--Dados de Recursos de Negativa-->
+@if (@Model.RecursoNegativa.Count > 0)
+{
+<table>
+    <thead>
+        <tr class="titulo-3">
+            <th colspan="3">Dados de Recursos de Negativa</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var recursoNegativa in @Model.RecursoNegativa)
+        {
+            <tr>
+                <th colspan="1">Número</th>
+                <th colspan="1">Data do Recurso</th>
+                <th colspan="1">Data da Resposta</th>
+            </tr>
+            <tr>
+                <td colspan="1"> @recursoNegativa.NumeroRecurso </td>
+                <td colspan="1"> @recursoNegativa.DataRecursoNegativaFormat</td>
+                <td colspan="1"> @recursoNegativa.DataRespostaRecursoNegativaFormat</td>
+            </tr>            
+            <tr>
+                <th colspan="3">Recurso de Negativa</th>
+            </tr>
+            <tr>
+                <td colspan="3"> @recursoNegativa.TxtRecursoNegativa</td>
+            </tr>
+            <tr>
+                <th colspan="3">Resposta</th>
+            </tr>
+            <tr>
+                <td colspan="3"> @recursoNegativa.TxtRespostaRecursoNegativa</td>
+            </tr>
+            <tr>
+                <th colspan="3">
+                    <hr />
+                </th>
+            </tr>
+        }
+    </tbody>
+</table>
+}
+
+<!--Histórico de Manifestação-->
+@if (@Model.HistoricoManifestacao.Count > 0)
+{
+<table>
+    <thead>
+        <tr class="titulo-3">
+            <th colspan="4">Histórico de Manifestação</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var historicoManifestacao in @Model.HistoricoManifestacao)
+        {
+            <tr>
+                <th colspan="1">Data/Hora</th>
+                <th colspan="1">Órgão</th>
+                <th colspan="1">Responsável</th>
+                <th colspan="1">Situação</th>
+            </tr>
+            <tr>
+                <td colspan="1"> @historicoManifestacao.DataHistoricoFormat</td>
+                <td colspan="1"> @historicoManifestacao.Orgao.SiglaOrgao</td>
+                <td colspan="1">
+                    @if (historicoManifestacao.Usuario != null && historicoManifestacao.Usuario.Pessoa != null)
+                    {
+                        @historicoManifestacao.Usuario.Pessoa.Nome                    
+                    }
+                </td>
+                <td colspan="1"> @historicoManifestacao.SituacaoManifestacao.DescSituacaoManifestacao</td>
+            </tr>     
+            <tr>
+                <th colspan="4">
+                    <hr />
+                </th>
+            </tr>
+        }
+    </tbody>
+</table>
+}
