@@ -130,6 +130,50 @@ namespace Prodest.EOuv.Dominio.BLL
             }
         }
 
+        public async Task ResponderDespacho(int idDespacho)
+        {
+            //busca Despacho
+            DespachoManifestacaoModel despachoModel = await ObterDespachoEDestinatario(idDespacho);
+
+            //busca se o encaminhamento foi respondido pelo destinatario, retorna quem respondeu
+            EncaminhamentoRastreioDestinoModel responsavel = await _edocsService.ResponsavelPorResponderAoDestinatario(despachoModel.IdEncaminhamento.ToString(), new[] { despachoModel.AgenteDestinatario.GuidUsuario });
+            if (responsavel != null)//encontrado
+            {
+                if (despachoModel.IdSituacaoDespacho == (int)Enums.SituacaoDespacho.Aberto)
+                {
+                    AgenteManifestacaoModel agenteResposta = await _agenteBLL.MontaAgenteUsuario(responsavel.Id);
+
+                    var idAgenteResposta = await _agenteBLL.AdicionarAgente(agenteResposta);
+                    despachoModel.IdSituacaoDespacho = (int)Enums.SituacaoDespacho.Respondido;
+                    despachoModel.IdAgenteResposta = idAgenteResposta;
+                    await _despachoRepository.AtualizarDespacho(despachoModel);
+                }
+            }
+        }
+
+        public async Task<(bool, string)> EncerrarDespachoManualmente(int idDespacho)
+        {
+            //Validar regras de negócio
+            (bool ok, string mensagens) validacoesNegocio = ValidarNegocioEncerrarDespachoManualmente(idDespacho);
+
+            if (validacoesNegocio.ok)
+            {
+                DespachoManifestacaoModel despacho = await ObterDespachoPorId(idDespacho);
+                despacho.IdSituacaoDespacho = (int)Enums.SituacaoDespacho.EncerradoManualmente;
+                despacho.DataRespostaDespacho = DateTime.Now;
+                await _despachoRepository.AtualizarDespacho(despacho);
+
+                return (true, "Despacho encerrado com sucesso!");
+            }
+            else
+            {
+                StringBuilder validationSummary = new StringBuilder();
+                validationSummary.AppendLine(validacoesNegocio.mensagens);
+
+                return (false, validationSummary.ToString());
+            }
+        }
+
         private (bool ok, string mensagens) ValidarNegocioDespachar(DespachoManifestacaoModel despachoModel)
         {
             bool ok = true;
@@ -163,33 +207,14 @@ namespace Prodest.EOuv.Dominio.BLL
             return (ok, validationSummary.ToString());
         }
 
-        public async Task ResponderDespacho(int idDespacho)
+        private (bool ok, string mensagens) ValidarNegocioEncerrarDespachoManualmente(int idDespacho)
         {
-            //busca Despacho
-            DespachoManifestacaoModel despachoModel = await ObterDespachoEDestinatario(idDespacho);
+            bool ok = true;
+            StringBuilder validationSummary = new StringBuilder();
 
-            //busca se o encaminhamento foi respondido pelo destinatario, retorna quem respondeu
-            EncaminhamentoRastreioDestinoModel responsavel = await _edocsService.ResponsavelPorResponderAoDestinatario(despachoModel.IdEncaminhamento.ToString(), new[] { despachoModel.AgenteDestinatario.GuidUsuario });
-            if (responsavel != null)//encontrado
-            {
-                if (despachoModel.IdSituacaoDespacho == (int)Enums.SituacaoDespacho.Aberto)
-                {
-                    AgenteManifestacaoModel agenteResposta = await _agenteBLL.MontaAgenteUsuario(responsavel.Id);
+            //Validar se o despacho pode ser encerrado manualmente
 
-                    var idAgenteResposta = await _agenteBLL.AdicionarAgente(agenteResposta);
-                    despachoModel.IdSituacaoDespacho = (int)Enums.SituacaoDespacho.Respondido;
-                    despachoModel.IdAgenteResposta = idAgenteResposta;
-                    await _despachoRepository.AtualizarDespacho(despachoModel);
-                }
-            }
-        }
-
-        public async Task EncerrarDespachoManualmente(int idDespacho)
-        {
-            DespachoManifestacaoModel despacho = await ObterDespachoPorId(idDespacho);
-            despacho.IdSituacaoDespacho = (int)Enums.SituacaoDespacho.EncerradoManualmente;
-            despacho.DataRespostaDespacho = DateTime.Now;
-            await _despachoRepository.AtualizarDespacho(despacho);
+            return (ok, validationSummary.ToString());
         }
     }
 }

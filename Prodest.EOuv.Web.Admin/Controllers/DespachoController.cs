@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Prodest.EOuv.UI.Apresentacao;
 using Prodest.EOuv.Web.Admin.Filters;
 using System;
@@ -32,11 +33,11 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             return View();
         }
 
-        [AjaxResponseExceptionFilterAttribute]
+        [AjaxResponseExceptionFilter]
         public async Task<IActionResult> ObterDespachosPorManifestacao(int id)
         {
-            var despachoViewModel = await _despachoWorkService.ObterDespachosPorManifestacao(id);
-            return Json(despachoViewModel);
+            JsonReturnViewModel jsonReturn = await _despachoWorkService.ObterDespachosPorManifestacao(id);
+            return Json(jsonReturn);
         }
 
         [AjaxResponseExceptionFilter]
@@ -46,11 +47,11 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             return Json(jsonReturn);
         }
 
-        [AjaxResponseExceptionFilterAttribute]
+        [AjaxResponseExceptionFilter]
         public async Task<IActionResult> EncerrarDespachoManualmente(int id)
         {
-            await _despachoWorkService.EncerrarDespachoManualmente(id);
-            return Json(id);
+            JsonReturnViewModel jsonReturn = await _despachoWorkService.EncerrarDespachoManualmente(id);
+            return Json(jsonReturn);
         }
     }
 }

@@ -11,8 +11,9 @@ namespace Prodest.EOuv.UI.Apresentacao
 {
     public interface IManifestacaoWorkService
     {
-        Task<ManifestacaoViewModel> ObterDadosCompletosManifestacao(int idManifestacao);
-        Task<ManifestacaoViewModel> ObterManifestacaoPorId(int idManifestacao);
+        Task<JsonReturnViewModel> ObterDadosCompletosManifestacao(int idManifestacao);
+
+        Task<JsonReturnViewModel> ObterManifestacaoPorId(int idManifestacao);
     }
 
     public class ManifestacaoWorkService : IManifestacaoWorkService
@@ -26,18 +27,42 @@ namespace Prodest.EOuv.UI.Apresentacao
             _mapper = mapper;
         }
 
-        public async Task<ManifestacaoViewModel> ObterDadosCompletosManifestacao(int idManifestacao)
+        public async Task<JsonReturnViewModel> ObterDadosCompletosManifestacao(int idManifestacao)
         {
-            ManifestacaoModel manifestacaoModel = await _manifestacaoBLL.ObterDadosCompletosManifestacao(idManifestacao);
-            ManifestacaoViewModel manifestacaoViewModel = _mapper.Map<ManifestacaoViewModel>(manifestacaoModel);
-            return manifestacaoViewModel;
+            var jsonRetorno = new JsonReturnViewModel();
+
+            if (idManifestacao > 0)
+            {
+                ManifestacaoModel manifestacaoModel = await _manifestacaoBLL.ObterDadosCompletosManifestacao(idManifestacao);
+                jsonRetorno.Retorno = _mapper.Map<ManifestacaoViewModel>(manifestacaoModel);
+                jsonRetorno.Ok = true;
+            }
+            else
+            {
+                jsonRetorno.Ok = false;
+                jsonRetorno.Mensagem = "Manifestação não encontrada!";
+            }
+
+            return jsonRetorno;
         }
 
-        public async Task<ManifestacaoViewModel> ObterManifestacaoPorId(int idManifestacao)
+        public async Task<JsonReturnViewModel> ObterManifestacaoPorId(int idManifestacao)
         {
-            ManifestacaoModel manifestacaoModel = await _manifestacaoBLL.ObterManifestacaoPorId(idManifestacao);
-            ManifestacaoViewModel manifestacaoViewModel = _mapper.Map<ManifestacaoViewModel>(manifestacaoModel);
-            return manifestacaoViewModel;
+            var jsonRetorno = new JsonReturnViewModel();
+
+            if (idManifestacao > 0)
+            {
+                ManifestacaoModel manifestacaoModel = await _manifestacaoBLL.ObterManifestacaoPorId(idManifestacao);
+                jsonRetorno.Retorno = _mapper.Map<ManifestacaoViewModel>(manifestacaoModel);
+                jsonRetorno.Ok = true;
+            }
+            else
+            {
+                jsonRetorno.Ok = false;
+                jsonRetorno.Mensagem = "Manifestação não encontrada!";
+            }
+
+            return jsonRetorno;
         }
     }
 }
