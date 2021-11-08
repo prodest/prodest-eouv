@@ -43,12 +43,12 @@ const DespachoForm = {
         }
     },
 
-    mounted() {
-        this.CarregarPapeisUsuario();        
+    mounted() {        
+        this.CarregarPapeisUsuario();
     },
 
     methods: {
-        async MontarURLRedirecionamento() {
+        async MontarURLRedirecionamento() {            
             this.urlDespachar = "../Despacho?id=" + this.idManifestacao;
             this.urlCancelar = "../Despacho?id=" + this.idManifestacao;
         },
@@ -80,8 +80,10 @@ const DespachoForm = {
             this.campoAnexo = utils.RemoverItemArray(this.campoAnexo, campo);
         },
         async CarregarPapeisUsuario() {
+            utils.LoadingDefaultOpen();
             let ret = await eOuvApi.PapeisUsuarioEDocs();
             this.papeisUsuario = ret;
+            //utils.LoadingDefaultClose();
         },
         async Despachar(e) {
 
@@ -127,5 +129,13 @@ const DespachoForm = {
             this.destinatarioSelecionado = destinatario.id;
             this.tipoDestinatario = destinatario.tipo;
         }
-    }
+    },
+
+    beforeDestroy() {
+        console.log("beforeDestroy")
+        utils.LoadingDefaultClose();
+    },
+    
+
+
 };

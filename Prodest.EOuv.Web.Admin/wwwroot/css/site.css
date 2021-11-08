@@ -65,6 +65,13 @@ button.accept-policy {
 }
 /*Header*/
 
+/*Forms*/
+/*Form-control Select*/
+.form-control {
+    apppearance: auto !important;
+    -webkit-appearance: auto !important;
+}
+
 /* Sticky footer styles
 -------------------------------------------------- */
 html {

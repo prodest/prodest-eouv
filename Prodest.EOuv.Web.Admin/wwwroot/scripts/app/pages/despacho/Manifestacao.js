@@ -76,9 +76,8 @@
             this.idManifestacao = utils.obterRequestParameter('id')
         },
 
-        async obterManifestacao() {
-            let ret = await eOuvApi.obterDadosCompletosManifestacao(this.idManifestacao);
-            console.log(ret);
+        async obterManifestacao() {            
+            let ret = await eOuvApi.obterDadosCompletosManifestacao(this.idManifestacao);            
             //Dados Basicos da Manifestacao
             this.titulo += ` - ${ret.numProtocolo}`;
             this.dadosBasicos.idManifestacao = ret.idManifestacao;
