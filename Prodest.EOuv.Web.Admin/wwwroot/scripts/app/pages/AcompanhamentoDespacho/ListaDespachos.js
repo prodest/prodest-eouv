@@ -41,13 +41,14 @@
         VerificarLiberarResposta(listaDespachos) {
             console.log(listaDespachos);
 
+            //this.listaDespachos[7].dataRespostaDespachoFormat = "";
+
             let novalista = this.listaDespachos.filter(this.DespachosEncerrados);
             this.liberarResposta = novalista.length > 0 ? false : true;
-
             console.log(this.liberarResposta);
         },
-        DespachosEncerrados(item) {
-            return item.dataSolicitacaoDespachoFormat != '';
+        DespachosEncerrados(item) {            
+            return utils.isNullOrEmpty(item.dataRespostaDespachoFormat);
         },
     }
 };

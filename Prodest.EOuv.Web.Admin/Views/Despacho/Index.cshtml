@@ -72,7 +72,7 @@
             </div>
             <div class="card-footer">
                 <a class="btn btn-success float-end" v-if="liberarResposta" v-bind:href="urlResponderManifestacao"><i class="fas fa-edit"></i> Responder Manifestação</a>
-                <a class="btn btn-success float-end disabled" v-if="!liberarResposta"><i class="fas fa-edit"></i> Responder Manifestação</a>
+                <a class="btn btn-success float-end disabled" v-if="liberarResposta==false"><i class="fas fa-edit"></i> Responder Manifestação</a>
             </div>
         </div>
     </script>
