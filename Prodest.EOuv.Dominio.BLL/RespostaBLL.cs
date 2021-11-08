@@ -1,6 +1,7 @@
 ﻿using Prodest.EOuv.Dominio.Modelo;
 using Prodest.EOuv.Dominio.Modelo.Interfaces.BLL;
 using Prodest.EOuv.Dominio.Modelo.Interfaces.DAL;
+using Prodest.EOuv.Dominio.Modelo.Interfaces.Service;
 using Prodest.EOuv.Dominio.Modelo.Model.Entries;
 using System;
 using System.Collections.Generic;
@@ -13,11 +14,13 @@ namespace Prodest.EOuv.Dominio.BLL
     {
         private readonly IRespostaRepository _respostaRepository;
         private readonly IManifestacaoBLL _manifestacaoBLL;
+        private readonly IUsuarioProvider _usuarioProvider;
 
-        public RespostaBLL(IRespostaRepository respostaRepository, IManifestacaoBLL manifestacaoBLL)
+        public RespostaBLL(IRespostaRepository respostaRepository, IManifestacaoBLL manifestacaoBLL, IUsuarioProvider usuarioProvider)
         {
             _respostaRepository = respostaRepository;
             _manifestacaoBLL = manifestacaoBLL;
+            _usuarioProvider = usuarioProvider;
         }
 
         public async Task<List<ResultadoRespostaModel>> ObterResultadosRespostaPorTipologia(int idTipoManifestacao)
@@ -42,8 +45,8 @@ namespace Prodest.EOuv.Dominio.BLL
                 RespostaManifestacaoModel respostaModel = new RespostaManifestacaoModel();
                 respostaModel.IdManifestacao = respostaEntryModel.IdManifestacao;
                 respostaModel.TxtResposta = respostaEntryModel.TextoResposta;
-                respostaModel.IdUsuario = 29; //TODO: Buscar usuário autenticado
-                respostaModel.IdOrgao = 877; //TODO: Buscar orgão do usuário autenticado
+                respostaModel.IdUsuario = _usuarioProvider.GetCurrent().IdUsuarioEouv;
+                respostaModel.IdOrgao = (int)_usuarioProvider.GetCurrent().IdOrgaoEouv;
                 respostaModel.DataResposta = DateTime.Now;
                 respostaModel.PrazoResposta = manifestacao.PrazoResposta;
 

@@ -34,22 +34,22 @@
                             <th style="width: 10%" scope="col">
                                 E-Docs
                             </th>
-                            <th style="width: 8%" class="text-center" scope="col">
+                            <th style="width: 8%" class="text-left" scope="col">
                                 Data
                             </th>
-                            <th style="width: 8%" class="text-center" scope="col">
+                            <th style="width: 8%" class="text-left" scope="col">
                                 Prazo
                             </th>
-                            <th style="width: 30%" class="text-center" scope="col">
+                            <th style="width: 30%" class="text-left" scope="col">
                                 Destinatário
                             </th>
-                            <th style="width: 8%" class="text-center" scope="col">
+                            <th style="width: 8%" class="text-left" scope="col">
                                 Finalização
                             </th>
-                            <th style="width: 16%" class="text-center" scope="col">
+                            <th style="width: 16%" class="text-left" scope="col">
                                 Situação
                             </th>
-                            <th style="width: 20%" class="text-center" scope="col">
+                            <th style="width: 20%" class="text-left" scope="col">
                                 Ações
                             </th>
                         </tr>
@@ -57,14 +57,14 @@
                     <tbody>
                         <tr v-for="despacho in listaDespachos" :key="despacho.protocoloEdocs">
                             <td>{{despacho.protocoloEdocs}}</td>
-                            <td class="text-center">{{despacho.dataSolicitacaoDespachoFormat}}</td>
-                            <td class="text-center">{{despacho.prazoRespostaFormat}}</td>
-                            <td class="text-right">{{despacho.destinatarioFormat}}</td>
-                            <td class="text-center">{{despacho.dataRespostaDespachoFormat}}</td>
+                            <td class="text-left">{{despacho.dataSolicitacaoDespachoFormat}}</td>
+                            <td class="text-left">{{despacho.prazoRespostaFormat}}</td>
+                            <td class="text-left">{{despacho.destinatarioFormat}}</td>
+                            <td class="text-left">{{despacho.dataRespostaDespachoFormat}}</td>
                             <td>{{despacho.situacaoDespacho.descSituacaoDespacho}}</td>
-                            <td class="text-center">
+                            <td class="text-left">
                                 <a class="btn btn-outline-dark btn-sm m-1" v-on:click="Detalhar()"><i class="fas fa-stream"></i> Detalhar</a>
-                                <a class="btn btn-outline-primary btn-sm m-1" v-if="despacho.dataRespostaDespachoFormat == ''" v-on:click="EncerrarDespachoManualmente(despacho.idDespachoManifestacao)"><i class="fas fa-undo"></i> Encerrar</a>
+                                <a class="btn btn-outline-primary btn-sm m-1" v-if="despacho.dataRespostaDespachoFormat == ''" v-on:click="EncerrarDespachoManualmente(despacho.idDespachoManifestacao)"><i class="fas fa-check"></i> Encerrar</a>
                             </td>
                         </tr>
                     </tbody>

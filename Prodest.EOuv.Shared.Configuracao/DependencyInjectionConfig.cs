@@ -35,6 +35,7 @@ namespace Prodest.EOuv.Shared.Configuracao
             services.AddScoped<IManifestacaoRepository, ManifestacaoRepository>();
             services.AddScoped<IRespostaRepository, RespostaRepository>();
             services.AddScoped<IAgenteRepository, AgenteRepository>();
+            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped<ISetorRepository, SetorRepository>();
 
             services.AddScoped<IUsuarioProvider, UsuarioProvider>();
