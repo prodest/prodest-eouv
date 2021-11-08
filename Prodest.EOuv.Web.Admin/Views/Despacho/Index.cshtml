@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Acompanhar Despachos";
+    ViewData["Title"] = "Despachos Realizados";
 }
 
 @section scripts{
@@ -24,11 +24,11 @@
     <script type="text/html" id="template-lista-despachos">
         <div class="card">
             <div class="card-header">
-                Manifestação: {{idManifestacao}}
+                Manifestação: {{protocoloManifestacao}}
                 <a class="btn btn-primary btn-sm float-end" v-bind:href="urlNovoDespacho"><i class="fas fa-plus"></i> Novo Despacho</a>
             </div>
             <div class="card-body table-responsive">
-                <table class="table table-hover table-striped table-sm table-bordered">
+                <table class="table table-hover table-striped table-sm ">
                     <thead>
                         <tr>
                             <th scope="col">
@@ -57,14 +57,14 @@
                     <tbody>
                         <tr v-for="despacho in listaDespachos" :key="despacho.protocoloEdocs">
                             <td>{{despacho.protocoloEdocs}}</td>
-                            <td>{{despacho.dataSolicitacaoDespachoFormat}}</td>
-                            <td>{{despacho.prazoRespostaFormat}}</td>
-                            <td>{{despacho.destinatarioFormat}}</td>
+                            <td class="text-right">{{despacho.dataSolicitacaoDespachoFormat}}</td>
+                            <td class="text-right">{{despacho.prazoRespostaFormat}}</td>
+                            <td class="text-right">{{despacho.destinatarioFormat}}</td>
                             <td>{{despacho.dataRespostaDespachoFormat}}</td>
                             <td>{{despacho.situacaoDespacho.descSituacaoDespacho}}</td>
                             <td class="text-center">
-                                <a class="btn btn-dark btn-sm" v-on:click="Detalhar()"><i class="fas fa-stream"></i> Detalhar</a>
-                                <a class="btn btn-warning btn-sm" v-if="despacho.dataRespostaDespachoFormat == ''" v-on:click="EncerrarDespachoManualmente(despacho.idDespachoManifestacao)"><i class="fas fa-undo"></i> Encerrar</a>
+                                <a class="btn btn-outline-dark btn-sm m-1" v-on:click="Detalhar()"><i class="fas fa-stream"></i> Detalhar</a>
+                                <a class="btn btn-outline-primary btn-sm m-1" v-if="despacho.dataRespostaDespachoFormat == ''" v-on:click="EncerrarDespachoManualmente(despacho.idDespachoManifestacao)"><i class="fas fa-undo"></i> Encerrar</a>
                             </td>
                         </tr>
                     </tbody>

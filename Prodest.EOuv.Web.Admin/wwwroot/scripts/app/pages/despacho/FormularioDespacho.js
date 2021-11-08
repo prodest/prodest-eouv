@@ -13,6 +13,7 @@ const DespachoForm = {
             prazoResposta: null,
             textoDespacho: '',
             idManifestacao: null,
+            protocoloManifestacao: null,
             tipoDestinatario: null,
             destinatarioSelecionado: null,
             dadosManifestacaoSelecionados: {
@@ -53,7 +54,7 @@ const DespachoForm = {
         },
         CapturarDadosManifestacao(dadosBasicosManifestacao) {
             this.idManifestacao = dadosBasicosManifestacao.idManifestacao;
-            console.log(dadosBasicosManifestacao.prazoResposta);
+            this.protocoloManifestacao = dadosBasicosManifestacao.protocolo;            
             this.prazoAtendimentoManifestacao = dadosBasicosManifestacao.prazoResposta;            
             this.MontarURLRedirecionamento();
 

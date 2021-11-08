@@ -29,7 +29,7 @@
         async CarregarListaDespachos() {
             let ret = await eOuvApi.ObterDespachosPorManifestacao(this.idManifestacao);
             this.listaDespachos = ret;
-            this.VerificarLiberarResposta(this.listaDespachos);                        
+            this.VerificarLiberarResposta(this.listaDespachos);                     
         },
         Detalhar() {
         },
@@ -39,8 +39,12 @@
             //window.location.href = "/Despacho?id=" + this.idManifestacao;
         },
         VerificarLiberarResposta(listaDespachos) {
+            console.log(listaDespachos);
+
             let novalista = this.listaDespachos.filter(this.DespachosEncerrados);
             this.liberarResposta = novalista.length > 0 ? false : true;
+
+            console.log(this.liberarResposta);
         },
         DespachosEncerrados(item) {
             return item.dataSolicitacaoDespachoFormat != '';

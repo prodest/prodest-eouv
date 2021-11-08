@@ -80,7 +80,7 @@
             let ret = await eOuvApi.obterDadosCompletosManifestacao(this.idManifestacao);
             console.log(ret);
             //Dados Basicos da Manifestacao
-            this.titulo += ` (${ret.numProtocolo})`;
+            this.titulo += ` - ${ret.numProtocolo}`;
             this.dadosBasicos.idManifestacao = ret.idManifestacao;
             this.dadosBasicos.numProtocolo = ret.numProtocolo;
             this.dadosBasicos.tipoManifestacao = ret.tipoManifestacao.descTipoManifestacao;
@@ -237,10 +237,11 @@
             this.historicoManifestacao.push(item);
         },
 
-        IncluirDocumento(e) {
+        IncluirDocumento(e) {            
+            e.stopImmediatePropagation();
+
             this.ToggleCheck(e);
-            this.$emit('selecionar-dado-manifestacao', e);
-            console.log(e);
+            this.$emit('selecionar-dado-manifestacao', e);            
 
             if (e.target.classList.contains("fa-check-square")) {
                 console.log('Documento Incluso!');

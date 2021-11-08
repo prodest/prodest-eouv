@@ -51,6 +51,20 @@ button.accept-policy {
   line-height: inherit;
 }
 
+/*Header*/
+.diamond-effect {
+    background-image: url(//cdn.es.gov.br/images/backgrounds/abstract/diamond-effect.png);
+    position: relative;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: bottom center;
+}
+
+.bg-sistemas-es {
+    background-color: #0080a5 !important;
+}
+/*Header*/
+
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
@@ -62,6 +76,7 @@ body {
   /* Margin bottom by footer height */
   margin-bottom: 60px;
 }
+
 .footer {
   position: absolute;
   bottom: 0;
