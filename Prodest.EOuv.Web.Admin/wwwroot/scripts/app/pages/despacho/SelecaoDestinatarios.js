@@ -1,12 +1,12 @@
 ﻿const SelecaoDestinatarios = {
-
     name: 'SelecaoDestinatarios',
+    mixins: [BaseMixin],
     template: '#template-selecao-destinatarios',
     emits: ['selecionar-destinatario', 'get-orgaos'],
 
     data() {
         return {
-            titulo: 'Seleção de Destinatários',            
+            titulo: 'Seleção de Destinatários',
             listaSetores: [],
             listaGrupos: [],
             listaComissoes: [],
@@ -30,10 +30,14 @@
 
     methods: {
         async CarregarDadosEDocs() {
-            await this.GetGrupos();
-            await this.GetSetores();
-            await this.GetComissoes();
             this.VerificaCarregamentoTodos();
+            await this.setLoadingAndExecute(async () => {
+
+                await this.GetGrupos();
+                await this.GetSetores();
+                await this.GetComissoes();
+
+            });
         },
 
         async GetOrgaos() {
@@ -70,7 +74,7 @@
             }
         },
 
-        async GetAgentes() {            
+        async GetAgentes() {
             let ret = await eOuvApi.AgentesDocs(this.agentePesquisa);
             this.listaAgentes = JSON.parse(JSON.stringify(ret));
             console.log(this.listaAgentes);
@@ -85,16 +89,16 @@
         FiltrarComissoes() {
             this.listaComissoes = utils.RemoverItemArrayPesquisa(this.comissoes, this.comissaoPesquisa);
         },
-        
-        
+
+
 
         VerificaCarregamentoTodos() {
-            if ((this.listaGrupos.length > 0) && (this.listaSetores.length > 0)) {
-                console.log('Todos foram carregados!');
-                this.modalDestinatarios = this.$refs.destinatariosModal;
-                console.log(this.modalDestinatarios);
-                this.modal = bootstrapHelper.openModal(this.$refs.destinatariosModal);
-            }
+            //if ((this.listaGrupos.length > 0) && (this.listaSetores.length > 0)) {
+            console.log('Todos foram carregados!');
+            this.modalDestinatarios = this.$refs.destinatariosModal;
+            console.log(this.modalDestinatarios);
+            this.modal = bootstrapHelper.openModal(this.$refs.destinatariosModal);
+            //}
         },
 
         AdicionarDestinatario(id, nome, tipo) {
@@ -116,7 +120,7 @@
             //Utilizar quando estiver trabalhando com múltiplos destinatários
             this.destinatarios = utils.RemoverItemArray(this.destinatarios, id);
             */
-            
+
         },
 
         FecharModal() {

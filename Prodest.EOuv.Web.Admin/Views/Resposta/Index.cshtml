@@ -26,54 +26,60 @@
                 <div class="card-header">
                     Manifestação: {{manifestacao?.numProtocolo}}
                 </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-12 mb-3">
-                            <p class="small m-0">Documentos gerados pelos encaminhamento via E-DOCS:</p>
-                            <ul class="p-0 m-0 list-inline">
-                                <li class="list-unstyled list-inline-item mx-1 mb-1" v-for="(doc, index) in documentosEncaminhamento" :key="index">
-                                    <input type="checkbox" v-on:change="SelecionarDocumento" class="btn-check" v-bind:id="doc.documento.id" autocomplete="off">
-                                    <label class="btn btn-outline-primary" v-bind:for="doc.documento.id"><i class="far fa-file"></i> {{doc.documento.registro}} - {{doc.documento.nome}}.{{doc.documento.extensao}}</label>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-md-12 mb-4">
-                            <label for="slResultadoResposta">Resultado da Resposta:</label>
-                            <select required data-mdb-filter="true" v-model="idResultadosRespostaPorTipologia" id="slResultadoResposta" class="form-control mb-0">
-                                <optgroup label="Resultados Positivos">
-                                    <option v-for="(tipologia) in resultadosRespostaPositiva" :key="tipologia.idResultadoResposta" v-bind:value="tipologia.idResultadoResposta">
-                                        {{tipologia.descResultadoResposta}}
+                <div class="card-body" v-ext-loading="loading">
+                    <div class="row" v-if="loading"><div class="text-center">Carregando dados...</div></div>
+
+                    <template v-else>
+
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <p class="small m-0">Documentos gerados pelos encaminhamento via E-DOCS:</p>
+                                <ul class="p-0 m-0 list-inline">
+                                    <li class="list-unstyled list-inline-item mx-1 mb-1" v-for="(doc, index) in documentosEncaminhamento" :key="index">
+                                        <input type="checkbox" v-on:change="SelecionarDocumento" class="btn-check" v-bind:id="doc.documento.id" autocomplete="off">
+                                        <label class="btn btn-outline-primary" v-bind:for="doc.documento.id"><i class="far fa-file"></i> {{doc.documento.registro}} - {{doc.documento.nome}}.{{doc.documento.extensao}}</label>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-12 mb-4">
+                                <label for="slResultadoResposta">Resultado da Resposta:</label>
+                                <select required data-mdb-filter="true" v-model="idResultadosRespostaPorTipologia" id="slResultadoResposta" class="form-control mb-0">
+                                    <optgroup label="Resultados Positivos">
+                                        <option v-for="(tipologia) in resultadosRespostaPositiva" :key="tipologia.idResultadoResposta" v-bind:value="tipologia.idResultadoResposta">
+                                            {{tipologia.descResultadoResposta}}
+                                        </option>
+                                    </optgroup>
+                                    <optgroup label="Resultados Negativos">
+                                        <option v-for="(tipologia) in resultadosRespostaNegativa" :key="tipologia.idResultadoResposta" v-bind:value="tipologia.idResultadoResposta">
+                                            {{tipologia.descResultadoResposta}}
+                                        </option>
+                                    </optgroup>
+                                </select>
+                                <div class="invalid-feedback mt-1">Resultado da resposta é obrigatório!</div>
+                            </div>
+                            <div class="col-md-12 position-relative mb-4">
+                                <label for="slOrgao">Competência do Fato:</label>
+                                <select required v-model="idOrgaosCompetenciaFato" id="slOrgao" class="form-control mb-0">
+                                    <option v-for="(orgao, index) in orgaosCompetenciaFato" :key="index" v-bind:value="orgao.idOrgao">
+                                        {{orgao.siglaOrgao}} - {{orgao.nomeFantasia}}
                                     </option>
-                                </optgroup>
-                                <optgroup label="Resultados Negativos">
-                                    <option v-for="(tipologia) in resultadosRespostaNegativa" :key="tipologia.idResultadoResposta" v-bind:value="tipologia.idResultadoResposta">
-                                        {{tipologia.descResultadoResposta}}
-                                    </option>
-                                </optgroup>
-                            </select>
-                            <div class="invalid-feedback mt-1">Resultado da resposta é obrigatório!</div>
-                        </div>
-                        <div class="col-md-12 position-relative mb-4">
-                            <label for="slOrgao">Competência do Fato:</label>
-                            <select required v-model="idOrgaosCompetenciaFato" id="slOrgao" class="form-control mb-0">
-                                <option v-for="(orgao, index) in orgaosCompetenciaFato" :key="index" v-bind:value="orgao.idOrgao">
-                                    {{orgao.siglaOrgao}} - {{orgao.nomeFantasia}}
-                                </option>
-                            </select>
-                            <div class="invalid-feedback mt-1">Competência do Fato é obrigatório!</div>
+                                </select>
+                                <div class="invalid-feedback mt-1">Competência do Fato é obrigatório!</div>
+                            </div>
+
+                            <div class="col-md-12 position-relative mb-4">
+                                <label for="flTextoDespacho">Texto de Resposta:</label>
+                                <textarea required class="form-control mb-0" v-model="textoResposta" maxlength="8000" placeholder="Informe aqui o texto de resposta à manifestação." id="flTextoDespacho" rows="5"></textarea>
+                                <div class="invalid-feedback mt-1">Texto de resposta é obrigatório!</div>
+                            </div>
                         </div>
 
-                        <div class="col-md-12 position-relative mb-4">
-                            <label for="flTextoDespacho">Texto de Resposta:</label>
-                            <textarea required class="form-control mb-0" v-model="textoResposta" maxlength="8000" placeholder="Informe aqui o texto de resposta à manifestação." id="flTextoDespacho" rows="5"></textarea>
-                            <div class="invalid-feedback mt-1">Texto de resposta é obrigatório!</div>
-                        </div>
-                    </div>
+                    </template>
                 </div>
                 <div class="card-footer">
                     <button type="button" v-on:click="Responder" class="btn btn-primary m-1 float-end"><i class="fas fa-paper-plane"></i> Despachar</button>
                     <a v-on:click="Cancelar()" class="btn btn-danger m-1 float-end"><i class="fas fa-times"></i> Cancelar</a>
-                </div>                
+                </div>
             </div>
         </section>
     </script>

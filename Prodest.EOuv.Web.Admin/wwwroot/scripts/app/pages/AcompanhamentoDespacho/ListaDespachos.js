@@ -1,5 +1,6 @@
 ﻿const ListaDespachos = {
     name: 'ListaDespachos',
+    mixins: [BaseMixin],
     template: '#template-lista-despachos',
     props: ['manifestacao'],
     data() {
@@ -29,23 +30,39 @@
             this.urlResponderManifestacao = "Resposta?id=" + this.idManifestacao;
         },
         async ObterManifestacaoPorId() {
-            let ret = await eOuvApi.ObterManifestacaoPorId(this.idManifestacao);
-            if (ret.ok) {
-                this.numeroManifestacao = ret.retorno.numProtocolo;
-            }
-            else {
-                window.location.href = "/Error?msg=" + ret.mensagem;
-            }
+            await this.setLoadingAndExecute(async () => {
+
+                let ret = await eOuvApi.ObterManifestacaoPorId(this.idManifestacao);
+                if (ret.ok) {
+                    this.numeroManifestacao = ret.retorno.numProtocolo;
+                }
+                else {
+                    window.location.href = "/Error?msg=" + ret.mensagem;
+                }
+            });
         },
         async CarregarListaDespachos() {
-            let ret = await eOuvApi.ObterDespachosPorManifestacao(this.idManifestacao);
-            if (ret.ok) {
-                this.listaDespachos = ret.retorno;
-                this.VerificarLiberarResposta(this.listaDespachos);
-            }
-            else {
-                window.location.href = "/Error?msg=" + ret.mensagem;
-            }
+
+            await this.setLoadingAndExecute(async () => {
+                try {
+
+                    let ret = await eOuvApi.ObterDespachosPorManifestacao(this.idManifestacao);
+                    if (ret.ok) {
+                        this.listaDespachos = ret.retorno;
+                        this.VerificarLiberarResposta(this.listaDespachos);
+                    }
+                    else {
+                        window.location.href = "/Error?msg=" + ret.mensagem;
+                    }
+
+                    //mensagemSistema.showMensagemErro('teste');
+                }
+                catch (e) {
+                    console.log(e);
+                }
+            });
+
+
         },
         Detalhar() {
         },

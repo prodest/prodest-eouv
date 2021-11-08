@@ -1,5 +1,6 @@
 ﻿const DespachoManifestacao = {
     name: 'DespachoManifestacao',
+    mixins: [BaseMixin],
     template: '#template-despacho-manifestacao',
     emits: ['selecionar-dado-manifestacao', 'capturar-dados-manifestacao'],
 
@@ -77,82 +78,89 @@
         },
 
         async obterManifestacao() {
-            let jsonReturn = await eOuvApi.ObterDadosCompletosManifestacao(this.idManifestacao);
-            console.log(jsonReturn);
 
-            let ret = jsonReturn.retorno;
-            //Dados Basicos da Manifestacao
-            this.titulo += ` - ${ret.numProtocolo}`;
-            this.dadosBasicos.idManifestacao = ret.idManifestacao;
-            this.dadosBasicos.numProtocolo = ret.numProtocolo;
-            this.dadosBasicos.tipoManifestacao = ret.tipoManifestacao.descTipoManifestacao;
-            this.dadosBasicos.situacao = ret.situacaoManifestacao.descSituacaoManifestacao;
-            this.dadosBasicos.orgaoAtual.nomeFantasia = ret.orgaoResponsavel.nomeFantasia;
-            this.dadosBasicos.orgaoAtual.siglaOrgao = ret.orgaoResponsavel.siglaOrgao;
-            this.dadosBasicos.orgaoDestinatario.nomeFantasia = ret.orgaoInteresse.nomeFantasia;
-            this.dadosBasicos.orgaoDestinatario.siglaOrgao = ret.orgaoInteresse.siglaOrgao;
-            this.dadosBasicos.usuarioCadastrador = ret.registradoPorFormat;
-            this.dadosBasicos.canalEntrada = ret.canalEntrada.descCanalEntrada;
-            this.dadosBasicos.modoResposta = ret.modoResposta.descModoResposta;
-            this.dadosBasicos.assunto = ret.assunto.descAssunto;
-            this.dadosBasicos.dataRegistro = ret.dataRegistroFormat;
-            this.dadosBasicos.prazoResposta = ret.prazoRespostaFormat;
-            this.dadosBasicos.tipoManifestante = ret.tipoManifestante != null ? ret.tipoManifestante.descTipoManifestante : "";
+            await this.setLoadingAndExecute(async () => {
 
-            this.$emit('capturar-dados-manifestacao', this.dadosBasicos);
+                let jsonReturn = await eOuvApi.ObterDadosCompletosManifestacao(this.idManifestacao);
+                console.log(jsonReturn);
 
-            //Teor da Manifestacao
-            this.PreencherTeorManifestacao(ret.textoManifestacao, ret.municipioLocalFatoFormat);
+                let ret = jsonReturn.retorno;
+                //Dados Basicos da Manifestacao
+                this.titulo += ` - ${ret.numProtocolo}`;
+                this.dadosBasicos.idManifestacao = ret.idManifestacao;
+                this.dadosBasicos.numProtocolo = ret.numProtocolo;
+                this.dadosBasicos.tipoManifestacao = ret.tipoManifestacao.descTipoManifestacao;
+                this.dadosBasicos.situacao = ret.situacaoManifestacao.descSituacaoManifestacao;
+                this.dadosBasicos.orgaoAtual.nomeFantasia = ret.orgaoResponsavel.nomeFantasia;
+                this.dadosBasicos.orgaoAtual.siglaOrgao = ret.orgaoResponsavel.siglaOrgao;
+                this.dadosBasicos.orgaoDestinatario.nomeFantasia = ret.orgaoInteresse.nomeFantasia;
+                this.dadosBasicos.orgaoDestinatario.siglaOrgao = ret.orgaoInteresse.siglaOrgao;
+                this.dadosBasicos.usuarioCadastrador = ret.registradoPorFormat;
+                this.dadosBasicos.canalEntrada = ret.canalEntrada.descCanalEntrada;
+                this.dadosBasicos.modoResposta = ret.modoResposta.descModoResposta;
+                this.dadosBasicos.assunto = ret.assunto.descAssunto;
+                this.dadosBasicos.dataRegistro = ret.dataRegistroFormat;
+                this.dadosBasicos.prazoResposta = ret.prazoRespostaFormat;
+                this.dadosBasicos.tipoManifestante = ret.tipoManifestante != null ? ret.tipoManifestante.descTipoManifestante : "";
 
-            //Dados do Manifestante
-            if (ret.retorno.tipoManifestante != null) {
-                this.PreencherDadosManifestante(ret.pessoa);
-            }
+                this.$emit('capturar-dados-manifestacao', this.dadosBasicos);
 
-            //Dados Complementos
-            ret.retorno.complementoManifestacao?.forEach(this.PreencherComplementoManifestacao);
+                //Teor da Manifestacao
+                this.PreencherTeorManifestacao(ret.textoManifestacao, ret.municipioLocalFatoFormat);
 
-            //Dados Anexos
-            ret.anexoManifestacao?.forEach(this.PreencherAnexoManifestacao);
+                //Dados do Manifestante
+                if (ret.retorno.tipoManifestante != null) {
+                    this.PreencherDadosManifestante(ret.pessoa);
+                }
 
-            //Dados Prorrogação
-            ret.prorrogacaoManifestacao?.forEach(this.PreencherProrrogacaoManifestacao);
+                //Dados Complementos
+                ret.retorno.complementoManifestacao?.forEach(this.PreencherComplementoManifestacao);
 
-            //Dados Diligência
-            ret.diligenciaManifestacao?.forEach(this.PreencherDiligenciaManifestacao);
+                //Dados Anexos
+                ret.anexoManifestacao?.forEach(this.PreencherAnexoManifestacao);
 
-            //Dados Encaminhamentos
-            ret.encaminhamentoManifestacao?.forEach(this.PreencherEncaminhamentoManifestacao);
+                //Dados Prorrogação
+                ret.prorrogacaoManifestacao?.forEach(this.PreencherProrrogacaoManifestacao);
 
-            //Dados da Resposta
-            ret.respostaManifestacao?.forEach(this.PreencherRespostaManifestacao)
+                //Dados Diligência
+                ret.diligenciaManifestacao?.forEach(this.PreencherDiligenciaManifestacao);
 
-            //Dados Apuração
-            ret.apuracaoManifestacao?.forEach(this.PreencherApuracaoManifestacao);
+                //Dados Encaminhamentos
+                ret.encaminhamentoManifestacao?.forEach(this.PreencherEncaminhamentoManifestacao);
 
-            //Dados Despacho
-            ret.despachoManifestacao?.forEach(this.PreencherDespachoManifestacao);
+                //Dados da Resposta
+                ret.respostaManifestacao?.forEach(this.PreencherRespostaManifestacao)
 
-            //Dados Notificações
-            ret.notificacaoManifestacao?.forEach(this.PreencherNotificacoes);
+                //Dados Apuração
+                ret.apuracaoManifestacao?.forEach(this.PreencherApuracaoManifestacao);
 
-            //Dados Anotações
-            ret.anotacaoManifestacao?.forEach(this.PreencherAnotacaoManifestacao);
+                //Dados Despacho
+                ret.despachoManifestacao?.forEach(this.PreencherDespachoManifestacao);
 
-            //Dados Interpelação
-            ret.interpelacaoManifestacao?.forEach(this.PreencherInterpelacaoManifestacao);
+                //Dados Notificações
+                ret.notificacaoManifestacao?.forEach(this.PreencherNotificacoes);
 
-            //Dados Reclamação de Omissão
-            ret.reclamacaoOmissao?.forEach(this.PreencherReclamacaoOmissao);
+                //Dados Anotações
+                ret.anotacaoManifestacao?.forEach(this.PreencherAnotacaoManifestacao);
 
-            //Dados Recurso Negativa
-            ret.recursoNegativa?.forEach(this.PreencherRecursoNegativa);
+                //Dados Interpelação
+                ret.interpelacaoManifestacao?.forEach(this.PreencherInterpelacaoManifestacao);
 
-            //Dados Desdrobramento
-            ret.desdobramentoManifestacao?.forEach(this.PreencherDesdobramentoManifestacao);
+                //Dados Reclamação de Omissão
+                ret.reclamacaoOmissao?.forEach(this.PreencherReclamacaoOmissao);
 
-            //Dados de Histórico
-            ret.historicoManifestacao?.forEach(this.PreencherHistoricoManifestacao);
+                //Dados Recurso Negativa
+                ret.recursoNegativa?.forEach(this.PreencherRecursoNegativa);
+
+                //Dados Desdrobramento
+                ret.desdobramentoManifestacao?.forEach(this.PreencherDesdobramentoManifestacao);
+
+                //Dados de Histórico
+                ret.historicoManifestacao?.forEach(this.PreencherHistoricoManifestacao);
+
+            });
+
+
         },
 
         async PreencherTeorManifestacao(txtManifestacao, local) {

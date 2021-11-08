@@ -28,47 +28,52 @@
                 <a class="btn btn-primary btn-sm float-end" v-bind:href="urlNovoDespacho"><i class="fas fa-plus"></i> Novo Despacho</a>
             </div>
             <div class="card-body table-responsive">
-                <table class="table table-hover table-striped table-sm ">
-                    <thead>
-                        <tr>
-                            <th style="width: 10%" scope="col">
-                                E-Docs
-                            </th>
-                            <th style="width: 8%" class="text-center" scope="col">
-                                Data
-                            </th>
-                            <th style="width: 8%" class="text-center" scope="col">
-                                Prazo
-                            </th>
-                            <th style="width: 30%" class="text-center" scope="col">
-                                Destinatário
-                            </th>
-                            <th style="width: 8%" class="text-center" scope="col">
-                                Finalização
-                            </th>
-                            <th style="width: 16%" class="text-center" scope="col">
-                                Situação
-                            </th>
-                            <th style="width: 20%" class="text-center" scope="col">
-                                Ações
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="despacho in listaDespachos" :key="despacho.protocoloEdocs">
-                            <td>{{despacho.protocoloEdocs}}</td>
-                            <td class="text-center">{{despacho.dataSolicitacaoDespachoFormat}}</td>
-                            <td class="text-center">{{despacho.prazoRespostaFormat}}</td>
-                            <td class="text-right">{{despacho.destinatarioFormat}}</td>
-                            <td class="text-center">{{despacho.dataRespostaDespachoFormat}}</td>
-                            <td>{{despacho.situacaoDespacho.descSituacaoDespacho}}</td>
-                            <td class="text-center">
-                                <a class="btn btn-outline-dark btn-sm m-1" v-on:click="Detalhar()"><i class="fas fa-stream"></i> Detalhar</a>
-                                <a class="btn btn-outline-primary btn-sm m-1" v-if="despacho.dataRespostaDespachoFormat == ''" v-on:click="EncerrarDespachoManualmente(despacho.idDespachoManifestacao)"><i class="fas fa-undo"></i> Encerrar</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+
+                <div class="row" v-if="loading"><div class="text-center">Carregando...</div></div>
+
+                <template v-else>
+                    <table class="table table-hover table-striped table-sm ">
+                        <thead>
+                            <tr>
+                                <th style="width: 10%" scope="col">
+                                    E-Docs
+                                </th>
+                                <th style="width: 8%" class="text-center" scope="col">
+                                    Data
+                                </th>
+                                <th style="width: 8%" class="text-center" scope="col">
+                                    Prazo
+                                </th>
+                                <th style="width: 30%" class="text-center" scope="col">
+                                    Destinatário
+                                </th>
+                                <th style="width: 8%" class="text-center" scope="col">
+                                    Finalização
+                                </th>
+                                <th style="width: 16%" class="text-center" scope="col">
+                                    Situação
+                                </th>
+                                <th style="width: 20%" class="text-center" scope="col">
+                                    Ações
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="despacho in listaDespachos" :key="despacho.protocoloEdocs">
+                                <td>{{despacho.protocoloEdocs}}</td>
+                                <td class="text-center">{{despacho.dataSolicitacaoDespachoFormat}}</td>
+                                <td class="text-center">{{despacho.prazoRespostaFormat}}</td>
+                                <td class="text-right">{{despacho.destinatarioFormat}}</td>
+                                <td class="text-center">{{despacho.dataRespostaDespachoFormat}}</td>
+                                <td>{{despacho.situacaoDespacho.descSituacaoDespacho}}</td>
+                                <td class="text-center">
+                                    <a class="btn btn-outline-dark btn-sm m-1" v-on:click="Detalhar()"><i class="fas fa-stream"></i> Detalhar</a>
+                                    <a class="btn btn-outline-primary btn-sm m-1" v-if="despacho.dataRespostaDespachoFormat == ''" v-on:click="EncerrarDespachoManualmente(despacho.idDespachoManifestacao)"><i class="fas fa-undo"></i> Encerrar</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </template>
             </div>
             <div class="card-footer">
                 <a class="btn btn-success float-end" v-if="liberarResposta" v-bind:href="urlResponderManifestacao"><i class="fas fa-edit"></i> Responder Manifestação</a>
