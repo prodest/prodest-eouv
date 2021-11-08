@@ -77,8 +77,10 @@
         },
 
         async obterManifestacao() {
-            let ret = await eOuvApi.ObterDadosCompletosManifestacao(this.idManifestacao);
-            console.log(ret);
+            let jsonReturn = await eOuvApi.ObterDadosCompletosManifestacao(this.idManifestacao);
+            console.log(jsonReturn);
+
+            let ret = jsonReturn.retorno;
             //Dados Basicos da Manifestacao
             this.titulo += ` - ${ret.numProtocolo}`;
             this.dadosBasicos.idManifestacao = ret.idManifestacao;
@@ -103,12 +105,12 @@
             this.PreencherTeorManifestacao(ret.textoManifestacao, ret.municipioLocalFatoFormat);
 
             //Dados do Manifestante
-            if (ret.tipoManifestante != null) {
+            if (ret.retorno.tipoManifestante != null) {
                 this.PreencherDadosManifestante(ret.pessoa);
             }
 
             //Dados Complementos
-            ret.complementoManifestacao?.forEach(this.PreencherComplementoManifestacao);
+            ret.retorno.complementoManifestacao?.forEach(this.PreencherComplementoManifestacao);
 
             //Dados Anexos
             ret.anexoManifestacao?.forEach(this.PreencherAnexoManifestacao);
