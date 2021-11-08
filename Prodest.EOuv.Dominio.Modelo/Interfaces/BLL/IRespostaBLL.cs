@@ -9,6 +9,7 @@ namespace Prodest.EOuv.Dominio.Modelo.Interfaces.BLL
         Task<List<ResultadoRespostaModel>> ObterResultadosRespostaPorTipologia(int idTipoManifestacao);
 
         Task<List<OrgaoModel>> ObterOrgaosCompetenciaFato();
-        Task ResponderManifestacao(RespostaManifestacaoEntryModel respostaEntryModel);
+
+        Task<(bool, string)> ResponderManifestacao(RespostaManifestacaoEntryModel respostaEntryModel);
     }
 }

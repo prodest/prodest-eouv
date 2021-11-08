@@ -21,7 +21,7 @@
     async mounted() {
         this.ObterParametrosQueryString();
         await this.ObterManifestacaoPorId();
-        this.CarregarDocumentosEDocs();
+        await this.CarregarDocumentosEDocs();
         this.ObterResultadosRespostaPorTipologia();
         this.ObterOrgaosCompetenciaFato();
     },
@@ -32,13 +32,14 @@
         },
 
         async ObterManifestacaoPorId() {
-            this.manifestacao = await eOuvApi.obterManifestacaoPorId(this.idManifestacao);
+            let ret = await eOuvApi.ObterManifestacaoPorId(this.idManifestacao);
+            this.manifestacao = ret.retorno;
             this.idOrgaosCompetenciaFato = this.manifestacao.idOrgaoResponsavel;
         },
 
         async CarregarDocumentosEDocs() {
             let ret = await eOuvApi.ObterDocumentosEncaminhamentoEDocs(this.idManifestacao);
-            this.documentosEncaminhamento = ret;
+            this.documentosEncaminhamento = ret.retorno;
             console.log(this.documentosEncaminhamento);
         },
 
@@ -52,14 +53,14 @@
 
         async ObterResultadosRespostaPorTipologia() {
             let ret = await eOuvApi.ObterResultadosRespostaPorTipologia(this.manifestacao?.idTipoManifestacao);
-            this.resultadosRespostaPorTipologia = ret;
+            this.resultadosRespostaPorTipologia = ret.retorno;
             this.resultadosRespostaPositiva = this.resultadosRespostaPorTipologia.filter(this.ApenasPositivo);
             this.resultadosRespostaNegativa = this.resultadosRespostaPorTipologia.filter(this.ApenasNegativo);
         },
 
         async ObterOrgaosCompetenciaFato() {
             let ret = await eOuvApi.ObterOrgaosCompetenciaFato();
-            this.orgaosCompetenciaFato = ret;
+            this.orgaosCompetenciaFato = ret.retorno;
             console.log(this.orgaosCompetenciaFato);
         },
 

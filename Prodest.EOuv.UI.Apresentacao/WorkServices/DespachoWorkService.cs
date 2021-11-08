@@ -16,7 +16,7 @@ namespace Prodest.EOuv.UI.Apresentacao
 
         Task<JsonReturnViewModel> EncerrarDespachoManualmente(int idDespacho);
 
-        Task<List<DocumentoControladoModel>> ObterDocumentosEncaminhamentoEDocs(int idManifestacao);
+        Task<JsonReturnViewModel> ObterDocumentosEncaminhamentoEDocs(int idManifestacao);
     }
 
     public class DespachoWorkService : IDespachoWorkService
@@ -49,10 +49,15 @@ namespace Prodest.EOuv.UI.Apresentacao
             return jsonRetorno;
         }
 
-        public async Task<List<DocumentoControladoModel>> ObterDocumentosEncaminhamentoEDocs(int idManifestacao)
+        public async Task<JsonReturnViewModel> ObterDocumentosEncaminhamentoEDocs(int idManifestacao)
         {
+            var jsonRetorno = new JsonReturnViewModel();
+
             var listaDocumentos = await _despachoBLL.ObterDocumentosDespachoPorManifestacao(idManifestacao);
-            return listaDocumentos;
+            jsonRetorno.Retorno = listaDocumentos;
+            jsonRetorno.Ok = true;
+
+            return jsonRetorno;
         }
 
         public async Task<JsonReturnViewModel> Despachar(DespachoManifestacaoEntry despachoEntry)
