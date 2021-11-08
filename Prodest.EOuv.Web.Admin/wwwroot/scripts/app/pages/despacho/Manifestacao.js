@@ -77,7 +77,7 @@
         },
 
         async obterManifestacao() {
-            let ret = await eOuvApi.obterDadosCompletosManifestacao(this.idManifestacao);
+            let ret = await eOuvApi.ObterDadosCompletosManifestacao(this.idManifestacao);
             console.log(ret);
             //Dados Basicos da Manifestacao
             this.titulo += ` - ${ret.numProtocolo}`;
@@ -138,7 +138,7 @@
             ret.anotacaoManifestacao?.forEach(this.PreencherAnotacaoManifestacao);
 
             //Dados Interpelação
-            ret.interpelacaoManifestacao?.forEach(this.PreencherInterpelacaoManifestacao);            
+            ret.interpelacaoManifestacao?.forEach(this.PreencherInterpelacaoManifestacao);
 
             //Dados Reclamação de Omissão
             ret.reclamacaoOmissao?.forEach(this.PreencherReclamacaoOmissao);
@@ -237,11 +237,11 @@
             this.historicoManifestacao.push(item);
         },
 
-        IncluirDocumento(e) {            
+        IncluirDocumento(e) {
             e.stopImmediatePropagation();
 
             this.ToggleCheck(e);
-            this.$emit('selecionar-dado-manifestacao', e);            
+            this.$emit('selecionar-dado-manifestacao', e);
 
             if (e.target.classList.contains("fa-check-square")) {
                 console.log('Documento Incluso!');

@@ -10,11 +10,11 @@ namespace Prodest.EOuv.UI.Apresentacao
 {
     public interface IDespachoWorkService
     {
-        Task<List<DespachoManifestacaoViewModel>> ObterDespachosPorManifestacao(int idManifestacao);
+        Task<JsonReturnViewModel> ObterDespachosPorManifestacao(int idManifestacao);
 
         Task<JsonReturnViewModel> Despachar(DespachoManifestacaoEntry despachoEntry);
 
-        Task EncerrarDespachoManualmente(int idDespacho);
+        Task<JsonReturnViewModel> EncerrarDespachoManualmente(int idDespacho);
 
         Task<List<DocumentoControladoModel>> ObterDocumentosEncaminhamentoEDocs(int idManifestacao);
     }
@@ -30,11 +30,23 @@ namespace Prodest.EOuv.UI.Apresentacao
             _mapper = mapper;
         }
 
-        public async Task<List<DespachoManifestacaoViewModel>> ObterDespachosPorManifestacao(int idManifestacao)
+        public async Task<JsonReturnViewModel> ObterDespachosPorManifestacao(int idManifestacao)
         {
-            var despachoModel = await _despachoBLL.ObterDespachosPorManifestacao(idManifestacao);
-            var despachoViewModel = _mapper.Map<List<DespachoManifestacaoViewModel>>(despachoModel);
-            return despachoViewModel;
+            var jsonRetorno = new JsonReturnViewModel();
+
+            if (idManifestacao > 0)
+            {
+                var despachoModel = await _despachoBLL.ObterDespachosPorManifestacao(idManifestacao);
+                jsonRetorno.Retorno = _mapper.Map<List<DespachoManifestacaoViewModel>>(despachoModel);
+                jsonRetorno.Ok = true;
+            }
+            else
+            {
+                jsonRetorno.Ok = false;
+                jsonRetorno.Mensagem = "Manifestação não encontrada!";
+            }
+
+            return jsonRetorno;
         }
 
         public async Task<List<DocumentoControladoModel>> ObterDocumentosEncaminhamentoEDocs(int idManifestacao)
@@ -83,6 +95,18 @@ namespace Prodest.EOuv.UI.Apresentacao
             return jsonRetorno;
         }
 
+        public async Task<JsonReturnViewModel> EncerrarDespachoManualmente(int idDespacho)
+        {
+            var jsonRetorno = new JsonReturnViewModel();
+
+            (bool okNegocio, string mensagemNegocio) = await _despachoBLL.EncerrarDespachoManualmente(idDespacho);
+
+            jsonRetorno.Ok = okNegocio;
+            jsonRetorno.Mensagem = mensagemNegocio;
+
+            return jsonRetorno;
+        }
+
         private (bool ok, string mensagens) ValidarCamposDespachar(DespachoManifestacaoEntry despachoEntry)
         {
             bool ok = true;
@@ -110,11 +134,6 @@ namespace Prodest.EOuv.UI.Apresentacao
             }
 
             return (ok, validationSummary.ToString());
-        }
-
-        public async Task EncerrarDespachoManualmente(int idDespacho)
-        {
-            await _despachoBLL.EncerrarDespachoManualmente(idDespacho);
         }
     }
 }

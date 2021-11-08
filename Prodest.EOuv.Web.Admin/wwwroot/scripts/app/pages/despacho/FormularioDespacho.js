@@ -44,7 +44,7 @@ const DespachoForm = {
     },
 
     mounted() {
-        this.CarregarPapeisUsuario();        
+        this.CarregarPapeisUsuario();
     },
 
     methods: {
@@ -54,17 +54,17 @@ const DespachoForm = {
         },
         CapturarDadosManifestacao(dadosBasicosManifestacao) {
             this.idManifestacao = dadosBasicosManifestacao.idManifestacao;
-            this.protocoloManifestacao = dadosBasicosManifestacao.protocolo;            
-            this.prazoAtendimentoManifestacao = dadosBasicosManifestacao.prazoResposta;            
+            this.protocoloManifestacao = dadosBasicosManifestacao.protocolo;
+            this.prazoAtendimentoManifestacao = dadosBasicosManifestacao.prazoResposta;
             this.MontarURLRedirecionamento();
 
-            this.GerarDataPrazoResposta();            
+            this.GerarDataPrazoResposta();
         },
         GerarDataPrazoResposta() {
             let data = new Date();
             data.setDate(data.getDate() + PrazoEmDias);
 
-            let fimAtendimento = new Date(utils.ConvertStringToDate(this.prazoAtendimentoManifestacao));            
+            let fimAtendimento = new Date(utils.ConvertStringToDate(this.prazoAtendimentoManifestacao));
 
             this.dataAtual = utils.DataDiaMesAno(new Date());
             utils.CriarDatePickerPorClasse(document.getElementsByClassName('data-eouv'), new Date(), fimAtendimento);
@@ -84,7 +84,6 @@ const DespachoForm = {
             this.papeisUsuario = ret;
         },
         async Despachar(e) {
-
             let form = document.querySelector('.needs-validation');
             form.classList.add('was-validated');
 
@@ -102,8 +101,8 @@ const DespachoForm = {
                 }
                 console.log(entry);
 
-                //await eOuvApi.despachar(entry);
-                //window.location.href = "/Despacho/AcompanharDespachos/" + this.idManifestacao;
+                await eOuvApi.Despachar(entry);
+                window.location.href = "../Despacho?id=" + this.idManifestacao;
             }
         },
         GetDate(e) {

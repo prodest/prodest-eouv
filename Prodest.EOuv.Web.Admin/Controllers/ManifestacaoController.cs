@@ -1,15 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Prodest.EOuv.Dominio.Modelo;
-using Prodest.EOuv.Dominio.Modelo.Interfaces.BLL;
-using Prodest.EOuv.Dominio.Modelo.Interfaces.Service;
-using Prodest.EOuv.Dominio.Modelo.Model;
-using Prodest.EOuv.Shared.Util;
-using Prodest.EOuv.Shared.Utils.Exceptions;
 using Prodest.EOuv.UI.Apresentacao;
-using System;
-using System.Collections.Generic;
-using System.IO;
+using Prodest.EOuv.Web.Admin.Filters;
 using System.Threading.Tasks;
 
 namespace Prodest.EOuv.Web.Admin.Controllers
@@ -24,24 +16,18 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             _manifestacaoWorkService = manifestacaoWorkService;
         }
 
+        [AjaxResponseExceptionFilter]
         public async Task<IActionResult> ObterDadosCompletosManifestacao(int id)
         {
-            try
-            {
-                var dadosManifestacao = await _manifestacaoWorkService.ObterDadosCompletosManifestacao(id);
-
-                return Json(dadosManifestacao);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            JsonReturnViewModel jsonReturn = await _manifestacaoWorkService.ObterDadosCompletosManifestacao(id);
+            return Json(jsonReturn);
         }
 
+        [AjaxResponseExceptionFilter]
         public async Task<IActionResult> ObterManifestacaoPorId(int id)
         {
-            ManifestacaoViewModel manifestacao = await _manifestacaoWorkService.ObterManifestacaoPorId(id);
-            return Json(manifestacao);
+            JsonReturnViewModel jsonReturn = await _manifestacaoWorkService.ObterManifestacaoPorId(id);
+            return Json(jsonReturn);
         }
     }
 }

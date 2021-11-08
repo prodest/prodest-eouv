@@ -5,6 +5,7 @@
     data() {
         return {
             idManifestacao: null,
+            numeroManifestacao: null,
             listaDespachos: null,
             urlNovoDespacho: null,
             urlResponderManifestacao: null,
@@ -12,10 +13,11 @@
         }
     },
 
-    mounted() {
+    async mounted() {
         this.ObterParametrosQueryString();
         this.MontarURLRedirecionamento();
-        this.CarregarListaDespachos();
+        await this.ObterManifestacaoPorId()
+        await this.CarregarListaDespachos();
     },
 
     methods: {
@@ -26,10 +28,24 @@
             this.urlNovoDespacho = "Despacho/NovoDespacho?id=" + this.idManifestacao;
             this.urlResponderManifestacao = "Resposta?id=" + this.idManifestacao;
         },
+        async ObterManifestacaoPorId() {
+            let ret = await eOuvApi.ObterManifestacaoPorId(this.idManifestacao);
+            if (ret.ok) {
+                this.numeroManifestacao = ret.retorno.numProtocolo;
+            }
+            else {
+                window.location.href = "/Error?msg=" + ret.mensagem;
+            }
+        },
         async CarregarListaDespachos() {
             let ret = await eOuvApi.ObterDespachosPorManifestacao(this.idManifestacao);
-            this.listaDespachos = ret;
-            this.VerificarLiberarResposta(this.listaDespachos);                     
+            if (ret.ok) {
+                this.listaDespachos = ret.retorno;
+                this.VerificarLiberarResposta(this.listaDespachos);
+            }
+            else {
+                window.location.href = "/Error?msg=" + ret.mensagem;
+            }
         },
         Detalhar() {
         },
@@ -47,7 +63,7 @@
             this.liberarResposta = novalista.length > 0 ? false : true;
             console.log(this.liberarResposta);
         },
-        DespachosEncerrados(item) {            
+        DespachosEncerrados(item) {
             return utils.isNullOrEmpty(item.dataRespostaDespachoFormat);
         },
     }

@@ -1,27 +1,22 @@
 ﻿const eOuvApi = {
     //Métodos Controller Manifestacao ------------------------------------------------------------
-    async obterDadosCompletosManifestacao(id) {
+    async ObterDadosCompletosManifestacao(id) {
         let ret = await fetchData.fetchGetJson(`/Manifestacao/ObterDadosCompletosManifestacao/` + id);
         return ret;
     },
 
-    async obterManifestacaoPorId(id) {
+    async ObterManifestacaoPorId(id) {
         let ret = await fetchData.fetchGetJson(`/Manifestacao/ObterManifestacaoPorId/` + id);
         return ret;
     },
 
     //Métodos Controller Despacho ----------------------------------------------------------------
-    async obterDespachos() {
-        let ret = await fetchData.fetchGetJson(`/Despacho/index`);
-        return ret;
-    },
-
     async ObterDespachosPorManifestacao(id) {
         let ret = await fetchData.fetchGetJson(`/Despacho/ObterDespachosPorManifestacao/` + id);
         return ret;
     },
 
-    async despachar(entry) {
+    async Despachar(entry) {
         let ret = await fetchData.fetchPostJson(`/Despacho/Despachar`, entry);
         return ret;
     },
