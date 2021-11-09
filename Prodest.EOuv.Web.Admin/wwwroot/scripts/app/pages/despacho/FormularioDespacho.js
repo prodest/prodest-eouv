@@ -81,13 +81,18 @@ const DespachoForm = {
             this.campoAnexo = utils.RemoverItemArray(this.campoAnexo, campo);
         },
         async CarregarPapeisUsuario() {
-            let ret = await eOuvApi.PapeisUsuarioEDocs();
-            this.papeisUsuario = ret;
+            await this.setLoadingAndExecute(async () => {
+                let ret = await eOuvApi.PapeisUsuarioEDocs();
+                this.papeisUsuario = ret;
+            });
         },
         async Despachar(e) {
             let isValido = this.validarForm(this.$refs.form);
 
-            if (isValido) {            
+            if (isValido) {
+
+                utils.LoadingDefaultOpen();
+
                 let entry = {
                     IdManifestacao: this.idManifestacao,
                     IdOrgao: 0,
@@ -103,6 +108,8 @@ const DespachoForm = {
 
                 let ret = await eOuvApi.Despachar(entry);
 
+                utils.LoadingDefaultClose();
+
                 if (ret.ok) {
                     mensagemSistema.showMensagemSucesso(ret.mensagem);
                     window.location.href = "../Despacho?id=" + this.idManifestacao;
@@ -114,9 +121,8 @@ const DespachoForm = {
                     else if (ret.retorno._erroTipoModal) {
                         mensagemSistema.showMensagemErro(ret.mensagem);
                     }
-                }
-  
-            }            
+                }                
+            }
         },
         GetDate(e) {
             this.prazoResposta = e.target.value;

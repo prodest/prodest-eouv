@@ -15,7 +15,8 @@
             resultadosRespostaNegativa: [],
             idResultadosRespostaPorTipologia: null,
             orgaosCompetenciaFato: [],
-            idOrgaosCompetenciaFato: null
+            idOrgaosCompetenciaFato: null,
+            linkCancelar:''
         }
     },
 
@@ -29,7 +30,8 @@
 
     methods: {
         ObterParametrosQueryString() {
-            this.idManifestacao = utils.obterRequestParameter('id')
+            this.idManifestacao = utils.obterRequestParameter('id');
+            linkCancelar = "/Despacho?id=" + this.idManifestacao;
         },
 
         async ObterManifestacaoPorId() {
@@ -77,6 +79,9 @@
             form.classList.add('was-validated');
 
             if (form.checkValidity()) {
+
+                utils.LoadingDefaultOpen();
+
                 let entry = {
                     IdManifestacao: this.manifestacao.idManifestacao,
                     TextoResposta: this.textoResposta,
@@ -86,7 +91,22 @@
                 }
                 console.log(entry);
 
-                await eOuvApi.Responder(entry);
+                try {
+                    let ret = await eOuvApi.Responder(entry);
+
+                    if (ret.ok) {
+                        mensagemSistema.showMensagemSucessoModal(ret.mensagem, linkCancelar);
+                    }
+                    else {
+
+                    }
+                }
+                catch (e)
+                {
+                    console.log(e);
+                }
+
+                utils.LoadingDefaultClose();
             }
 
         },

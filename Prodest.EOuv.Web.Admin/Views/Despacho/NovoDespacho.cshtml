@@ -792,15 +792,21 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-
-                                <div class="col-md-12 position-relative mb-4">
-                                    <label class="form-label" for="customAnexo">Com qual Cargo/Função você irá Encaminhar?</label>
-                                    <div class="form-check px-0" v-for="(papel, index) in papeisUsuario" v-bind:key="index" v-bind:for="papel.id">
-                                        <input type="radio" v-on:change="TogglePapelSelecionado($event)" required class="btn-check" name="papel" v-bind:id="papel.id" autocomplete="off">
-                                        <label class="btn btn-outline-warning btn-sm m-1" v-bind:for="papel.id">{{papel.nome}} - {{papel.siglaUnidadePapel}} - {{papel.siglaOrganizacaoPapel}}</label>
-                                        <div class="invalid-feedback mt-1">Cargo/Função é obrigatório!</div>
+                                <div v-if="loading" class="d-flex justify-content-center">
+                                    <div class="spinner-grow text-primary" role="status">
+                                        <span class="visually-hidden">Loading...</span>
                                     </div>
                                 </div>
+                                <template v-else>
+                                    <div class="col-md-12 position-relative mb-4">
+                                        <label class="form-label" for="customAnexo">Com qual Cargo/Função você irá Encaminhar?</label>                                        
+                                        <div class="form-check px-0" v-for="(papel, index) in papeisUsuario" v-bind:key="index" v-bind:for="papel.id">
+                                            <input type="radio" v-on:change="TogglePapelSelecionado($event)" required class="btn-check" name="papel" v-bind:id="papel.id" autocomplete="off">
+                                            <label class="btn btn-outline-primary btn-sm m-1" v-bind:for="papel.id">{{papel.nome}} - {{papel.siglaUnidadePapel}} - {{papel.siglaOrganizacaoPapel}}</label>
+                                            <div v-if="index == (papeisUsuario.length-1)" class="invalid-feedback mt-1">Cargo/Função é obrigatório!</div>
+                                        </div>
+                                    </div>
+                                </template>
 
                                 <div class="col-md-6 position-relative mb-2">
                                     <label class="form-label">Selecione o Destinatário:</label>
@@ -886,172 +892,172 @@
                             <h5 class="modal-title" id="destinatariosModalLabel">{{titulo}}</h5>
                             <button type="button" class="btn-close" v-on:click="FecharModal"></button>
                         </div>
-                        <div class="modal-body" v-ext-loading="loading">                                                        
+                        <div class="modal-body" v-ext-loading="loading">
 
-                                <!-- Tabs navs -->
-                                <ul class="nav nav-tabs nav-fill mb-3" id="ex1" role="tablist">
-                                    <li class="nav-item" role="presentation">
-                                        <a class="nav-link active"
-                                           id="setor-tab"
-                                           data-bs-toggle="tab"
-                                           href="#setores"
-                                           role="tab"
-                                           aria-controls="setores"
-                                           aria-selected="false">Setor</a>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <a class="nav-link"
-                                           id="grupos-tab"
-                                           data-bs-toggle="tab"
-                                           href="#grupos"
-                                           role="tab"
-                                           aria-controls="grupos"
-                                           aria-selected="false">Grupos</a>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <a class="nav-link"
-                                           id="comissoes-tab"
-                                           data-bs-toggle="tab"
-                                           href="#comissoes"
-                                           role="tab"
-                                           aria-controls="comissoes"
-                                           aria-selected="false">Comissões</a>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <a class="nav-link"
-                                           id="agentes-tab"
-                                           data-bs-toggle="tab"
-                                           href="#agentes"
-                                           role="tab"
-                                           aria-controls="agentes"
-                                           aria-selected="false">Servidores</a>
-                                    </li>
-                                </ul>
-                                <!-- Tabs navs -->
-                                <!-- Tabs content -->
-                                <div class="tab-content" id="ex2-content">
-                                    <div class="tab-pane fade show active"
-                                         id="setores"
-                                         role="tabpanel"
-                                         aria-labelledby="setores" v-ext-loading="loading-1">
+                            <!-- Tabs navs -->
+                            <ul class="nav nav-tabs nav-fill mb-3" id="ex1" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link active"
+                                       id="setor-tab"
+                                       data-bs-toggle="tab"
+                                       href="#setores"
+                                       role="tab"
+                                       aria-controls="setores"
+                                       aria-selected="false">Setores</a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link"
+                                       id="grupos-tab"
+                                       data-bs-toggle="tab"
+                                       href="#grupos"
+                                       role="tab"
+                                       aria-controls="grupos"
+                                       aria-selected="false">Grupos</a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link"
+                                       id="comissoes-tab"
+                                       data-bs-toggle="tab"
+                                       href="#comissoes"
+                                       role="tab"
+                                       aria-controls="comissoes"
+                                       aria-selected="false">Comissões</a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link"
+                                       id="agentes-tab"
+                                       data-bs-toggle="tab"
+                                       href="#agentes"
+                                       role="tab"
+                                       aria-controls="agentes"
+                                       aria-selected="false">Servidores</a>
+                                </li>
+                            </ul>
+                            <!-- Tabs navs -->
+                            <!-- Tabs content -->
+                            <div class="tab-content" id="ex2-content">
+                                <div class="tab-pane fade show active"
+                                     id="setores"
+                                     role="tabpanel"
+                                     aria-labelledby="setores" v-ext-loading="loading-1">
 
-                                        <div class="input-group mb-3">
-                                            <input type="text" v-on:keydown="FiltrarSetores" v-model="setorPesquisa" class="form-control" placeholder="Filtrar setores" aria-describedby="btn-pesquisar-setor">
-                                            <button v-on:click="FiltrarSetores" class="btn btn-primary" type="button" id="btn-pesquisar-setor"><i class="fas fa-search"></i></button>
-                                        </div>
-
-                                        <div v-if="loading" class="d-flex justify-content-center">
-                                            <div class="spinner-grow text-primary" role="status">
-                                                <span class="visually-hidden">Loading...</span>
-                                            </div>
-                                        </div>
-
-                                        <template v-else>
-
-                                            <div class="overflow-auto" style="height:400px">
-                                                <div class="list-group list-group-flush">
-                                                    <a v-for="(setor, index) in listaSetores" :key="index" class="list-group-item cursor-pointer text-uppercase" v-on:click="AdicionarDestinatario(setor.id, setor.nome, 4)"><i class="fas fa-puzzle-piece"></i> {{setor.nome}}</a>
-                                                </div>
-                                            </div>
-
-                                        </template>
+                                    <div class="input-group mb-3">
+                                        <input type="text" v-on:keydown="FiltrarSetores" v-model="setorPesquisa" class="form-control" placeholder="Filtrar setores" aria-describedby="btn-pesquisar-setor">
+                                        <button v-on:click="FiltrarSetores" class="btn btn-primary" type="button" id="btn-pesquisar-setor"><i class="fas fa-search"></i></button>
                                     </div>
 
-                                    <div class="tab-pane fade"
-                                         id="grupos"
-                                         role="tabpanel"
-                                         aria-labelledby="grupos" v-ext-loading="loading-2">
-
-                                        <div class="input-group mb-3">
-                                            <input type="text" v-on:keydown="FiltrarGrupos" v-model="grupoPesquisa" class="form-control" placeholder="Filtrar grupos" aria-describedby="btn-pesquisar-grupos">
-                                            <button v-on:click="FiltrarGrupos" class="btn btn-primary" type="button" id="btn-pesquisar-grupos"><i class="fas fa-search"></i></button>
+                                    <div v-if="loading" class="d-flex justify-content-center">
+                                        <div class="spinner-grow text-primary" role="status">
+                                            <span class="visually-hidden">Loading...</span>
                                         </div>
-
-                                        <div v-if="loading" class="d-flex justify-content-center">
-                                            <div class="spinner-grow text-primary" role="status">
-                                                <span class="visually-hidden">Loading...</span>
-                                            </div>
-                                        </div>
-
-                                        <template v-else>
-
-                                            <div class="overflow-auto" style="height:400px">
-                                                <div class="list-group list-group-flush">
-                                                    <a v-for="(grupo, index) in listaGrupos" :key="index" class="list-group-item cursor-pointer text-uppercase" v-on:click="AdicionarDestinatario(grupo.id, grupo.nome, 3)"><i class="fas fa-users"></i> {{grupo.nome}}</a>
-                                                </div>
-                                            </div>
-
-                                        </template>
-
                                     </div>
 
-                                    <div class="tab-pane fade"
-                                         id="comissoes"
-                                         role="tabpanel"
-                                         aria-labelledby="comissoes" v-ext-loading="loading-3">
+                                    <template v-else>
 
-                                        <div class="input-group mb-3">
-                                            <input type="text" v-on:keydown="FiltrarComissoes" v-model="comissaoPesquisa" class="form-control" placeholder="Filtrar comissões" aria-describedby="btn-pesquisar-comissoes">
-                                            <button v-on:click="FiltrarComissoes" class="btn btn-primary" type="button" id="btn-pesquisar-comissoes"><i class="fas fa-search"></i></button>
-                                        </div>
-
-                                        <div v-if="loading" class="d-flex justify-content-center">
-                                            <div class="spinner-grow text-primary" role="status">
-                                                <span class="visually-hidden">Loading...</span>
+                                        <div class="overflow-auto" style="height:400px">
+                                            <div class="list-group list-group-flush">
+                                                <a v-for="(setor, index) in listaSetores" :key="index" class="list-group-item cursor-pointer text-uppercase" v-on:click="AdicionarDestinatario(setor.id, setor.nome, 4)"><i class="fas fa-puzzle-piece"></i> {{setor.nome}}</a>
                                             </div>
                                         </div>
 
-                                        <template v-else>
+                                    </template>
+                                </div>
 
-                                            <div class="overflow-auto" style="height:400px">
-                                                <div class="list-group list-group-flush">
-                                                    <a v-for="(comissao, index) in listaComissoes" :key="index" class="list-group-item cursor-pointer text-uppercase" v-on:click="AdicionarDestinatario(comissao.id, comissao.nome, 3)"><i class="fas fa-users"></i> {{comissao.nome}}</a>
-                                                </div>
-                                            </div>
+                                <div class="tab-pane fade"
+                                     id="grupos"
+                                     role="tabpanel"
+                                     aria-labelledby="grupos" v-ext-loading="loading-2">
 
-                                        </template>
+                                    <div class="input-group mb-3">
+                                        <input type="text" v-on:keydown="FiltrarGrupos" v-model="grupoPesquisa" class="form-control" placeholder="Filtrar grupos" aria-describedby="btn-pesquisar-grupos">
+                                        <button v-on:click="FiltrarGrupos" class="btn btn-primary" type="button" id="btn-pesquisar-grupos"><i class="fas fa-search"></i></button>
                                     </div>
-                                    <div class="tab-pane fade"
-                                         id="agentes"
-                                         role="tabpanel"
-                                         aria-labelledby="agentes" v-ext-loading="loading-4">
 
-                                        <div class="input-group mb-3">
-                                            <input type="text" v-model="agentePesquisa" class="form-control" placeholder="Pesquisar servidor" aria-describedby="btn-pesquisar-agente">
-                                            <button v-on:click="GetAgentes" class="btn btn-primary" type="button" id="btn-pesquisar-agente"><i class="fas fa-search"></i></button>
+                                    <div v-if="loading" class="d-flex justify-content-center">
+                                        <div class="spinner-grow text-primary" role="status">
+                                            <span class="visually-hidden">Loading...</span>
                                         </div>
+                                    </div>
 
-                                        <div v-if="loading" class="d-flex justify-content-center">
-                                            <div class="spinner-grow text-primary" role="status">
-                                                <span class="visually-hidden">Loading...</span>
+                                    <template v-else>
+
+                                        <div class="overflow-auto" style="height:400px">
+                                            <div class="list-group list-group-flush">
+                                                <a v-for="(grupo, index) in listaGrupos" :key="index" class="list-group-item cursor-pointer text-uppercase" v-on:click="AdicionarDestinatario(grupo.id, grupo.nome, 3)"><i class="fas fa-users"></i> {{grupo.nome}}</a>
                                             </div>
                                         </div>
 
-                                        <template v-else>
+                                    </template>
 
-                                            <div class="overflow-auto" style="height:400px">
-                                                <div class="list-group list-group-flush">
-                                                    <a v-for="(agente, index) in listaAgentes" :key="index" class="list-group-item cursor-pointer text-uppercase" v-on:click="AdicionarDestinatario(agente.guid, agente.agentePublicoNome, 2, agente.nome)">
-                                                        <i class="fas fa-user"></i> {{agente.agentePublicoNome}} <small>({{agente.nome}})</small>
-                                                    </a>
-                                                </div>
+                                </div>
+
+                                <div class="tab-pane fade"
+                                     id="comissoes"
+                                     role="tabpanel"
+                                     aria-labelledby="comissoes" v-ext-loading="loading-3">
+
+                                    <div class="input-group mb-3">
+                                        <input type="text" v-on:keydown="FiltrarComissoes" v-model="comissaoPesquisa" class="form-control" placeholder="Filtrar comissões" aria-describedby="btn-pesquisar-comissoes">
+                                        <button v-on:click="FiltrarComissoes" class="btn btn-primary" type="button" id="btn-pesquisar-comissoes"><i class="fas fa-search"></i></button>
+                                    </div>
+
+                                    <div v-if="loading" class="d-flex justify-content-center">
+                                        <div class="spinner-grow text-primary" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                    </div>
+
+                                    <template v-else>
+
+                                        <div class="overflow-auto" style="height:400px">
+                                            <div class="list-group list-group-flush">
+                                                <a v-for="(comissao, index) in listaComissoes" :key="index" class="list-group-item cursor-pointer text-uppercase" v-on:click="AdicionarDestinatario(comissao.id, comissao.nome, 3)"><i class="fas fa-users"></i> {{comissao.nome}}</a>
                                             </div>
+                                        </div>
 
-                                        </template>
+                                    </template>
+                                </div>
+                                <div class="tab-pane fade"
+                                     id="agentes"
+                                     role="tabpanel"
+                                     aria-labelledby="agentes" v-ext-loading="loading-4">
+
+                                    <div class="input-group mb-3">
+                                        <input type="text" v-model="agentePesquisa" class="form-control" placeholder="Pesquisar servidor" aria-describedby="btn-pesquisar-agente">
+                                        <button v-on:click="GetAgentes" class="btn btn-primary" type="button" id="btn-pesquisar-agente"><i class="fas fa-search"></i></button>
+                                    </div>
+
+                                    <div v-if="loading" class="d-flex justify-content-center">
+                                        <div class="spinner-grow text-primary" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                    </div>
+
+                                    <template v-else>
+
+                                        <div class="overflow-auto" style="height:400px">
+                                            <div class="list-group list-group-flush">
+                                                <a v-for="(agente, index) in listaAgentes" :key="index" class="list-group-item cursor-pointer text-uppercase" v-on:click="AdicionarDestinatario(agente.guid, agente.agentePublicoNome, 2, agente.nome)">
+                                                    <i class="fas fa-user"></i> {{agente.agentePublicoNome}} <small>({{agente.nome}})</small>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                    </template>
+                                </div>
+                            </div>
+                            <!-- Tabs content -->
+                            <div class="card mt-2">
+                                <div class="card-header">
+                                    <span class="fs-6 fw-bold">Selecionados:</span>
+                                </div>
+                                <div class="card-body">
+                                    <div v-if="destinatario != null " class="col-12 mt-2 border-secondary border-1">
+                                        <span class="badge bg-success text-white m-1 text-uppercase">{{destinatario.nomecompleto}} <i class="fas fa-times-circle" v-on:click="RemoverDestinatario()"></i></span>
                                     </div>
                                 </div>
-                                <!-- Tabs content -->
-                                <div class="card mt-2">
-                                    <div class="card-header">
-                                        <span class="fs-6 fw-bold">Selecionados:</span>
-                                    </div>
-                                    <div class="card-body">
-                                        <div v-if="destinatario != null " class="col-12 mt-2 border-secondary border-1">
-                                            <span class="badge bg-success text-white m-1 text-uppercase">{{destinatario.nomecompleto}} <i class="fas fa-times-circle" v-on:click="RemoverDestinatario()"></i></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            
+                            </div>
+
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" v-on:click="FecharModal">
