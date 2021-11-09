@@ -1,6 +1,7 @@
 ﻿const PrazoEmDias = 20;
 const DespachoForm = {
     name: 'DespachoForm',
+    mixins: [BaseMixin],
     template: '#template-despacho-form',
     components: [SelecaoDestinatarios, DespachoManifestacao],
     emits: ['incluir-campo-file'],
@@ -84,10 +85,9 @@ const DespachoForm = {
             this.papeisUsuario = ret;
         },
         async Despachar(e) {
-            let form = document.querySelector('.needs-validation');
-            form.classList.add('was-validated');
+            let isValido = this.validarForm(this.$refs.form);
 
-            if (form.checkValidity()) {
+            if (isValido) {            
                 let entry = {
                     IdManifestacao: this.idManifestacao,
                     IdOrgao: 0,
@@ -101,9 +101,15 @@ const DespachoForm = {
                 }
                 console.log(entry);
 
-                await eOuvApi.Despachar(entry);
+                let ret = await eOuvApi.Despachar(entry);
+
+                if (ret.ok) {
+                    mensagemSistema.showMensagemSucesso(ret.mensagem);
+                }
+
+
                 window.location.href = "../Despacho?id=" + this.idManifestacao;
-            }
+            }            
         },
         GetDate(e) {
             this.prazoResposta = e.target.value;
@@ -121,8 +127,7 @@ const DespachoForm = {
             this.papelSelecionado = e.target.id;
             console.log('Papel Selecionado: ' + this.papelSelecionado);
         },
-        IncluirDestinatarioSelecionado(destinatario) {
-            console.log(destinatario);
+        IncluirDestinatarioSelecionado(destinatario) {            
             this.destinatarioSelecionado = destinatario.id;
             this.tipoDestinatario = destinatario.tipo;
         }

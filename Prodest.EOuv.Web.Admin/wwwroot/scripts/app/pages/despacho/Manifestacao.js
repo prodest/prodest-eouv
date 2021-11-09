@@ -109,12 +109,12 @@
                 this.PreencherTeorManifestacao(ret.textoManifestacao, ret.municipioLocalFatoFormat);
 
                 //Dados do Manifestante
-                if (ret.retorno.tipoManifestante != null) {
+                if (ret.tipoManifestante != null) {
                     this.PreencherDadosManifestante(ret.pessoa);
                 }
 
                 //Dados Complementos
-                ret.retorno.complementoManifestacao?.forEach(this.PreencherComplementoManifestacao);
+                ret.complementoManifestacao?.forEach(this.PreencherComplementoManifestacao);
 
                 //Dados Anexos
                 ret.anexoManifestacao?.forEach(this.PreencherAnexoManifestacao);

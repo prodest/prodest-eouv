@@ -6,7 +6,7 @@
 
     data() {
         return {
-            titulo: 'Seleção de Destinatários',
+            titulo: 'Seleção de Destinatário',
             listaSetores: [],
             listaGrupos: [],
             listaComissoes: [],
@@ -31,12 +31,11 @@
     methods: {
         async CarregarDadosEDocs() {
             this.VerificaCarregamentoTodos();
+
             await this.setLoadingAndExecute(async () => {
-
-                await this.GetGrupos();
-                await this.GetSetores();
-                await this.GetComissoes();
-
+                this.GetGrupos();
+                this.GetSetores();
+                this.GetComissoes();
             });
         },
 
@@ -68,16 +67,15 @@
             if (!this.listaComissoes.length > 0) {
                 let ret = await eOuvApi.ComissoeseDocs();
                 this.comissoes = JSON.parse(JSON.stringify(ret));
-                this.listaComissoes = this.comissoes;
-
-                console.log(this.comissoes);
+                this.listaComissoes = this.comissoes;                
             }
         },
 
         async GetAgentes() {
-            let ret = await eOuvApi.AgentesDocs(this.agentePesquisa);
-            this.listaAgentes = JSON.parse(JSON.stringify(ret));
-            console.log(this.listaAgentes);
+            await this.setLoadingAndExecute(async () => {
+                let ret = await eOuvApi.AgentesDocs(this.agentePesquisa);
+                this.listaAgentes = JSON.parse(JSON.stringify(ret));
+            });
         },
 
         FiltrarSetores() {
@@ -101,8 +99,15 @@
             //}
         },
 
-        AdicionarDestinatario(id, nome, tipo) {
-            this.destinatario = { 'id': id, 'nome': nome, 'tipo': tipo };
+        AdicionarDestinatario(id, nome, tipo, complemento) {
+            this.destinatario = { 'id': id, 'nome': nome, 'tipo': tipo, 'nomecompleto':''};
+
+            if (!utils.isNullOrEmpty(complemento)) {
+                this.destinatario.nomecompleto = nome + ' - ' + complemento;
+            }
+            else {
+                this.destinatario.nomecompleto = nome;
+            }
             /*
             //Adicionar multiplos destinatarios
             if (this.destinatarios.filter(e => e.id === id).length == 0) {
