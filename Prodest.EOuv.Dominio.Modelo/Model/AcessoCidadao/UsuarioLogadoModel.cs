@@ -10,12 +10,20 @@ namespace Prodest.EOuv.Dominio.Modelo.Model.AcessoCidadao
     {
         public Guid? IdExterno { get; set; }
         string Nome { get; }
+        string Login { get; }
+        int IdUsuarioEouv { get; }
+        int IdPerfilEouv { get; }
+        int? IdOrgaoEouv { get; }
     }
 
     public class UsuarioLogadoModel : IUsuarioLogadoModel
     {
         public Guid? IdExterno { get; set; }
         public string Nome { get; set; }
+        public string Login { get; set; }
+        public int IdUsuarioEouv { get; set; }
+        public int IdPerfilEouv { get; set; }
+        public int? IdOrgaoEouv { get; set; }
         public ICollection<PapelLogadoModel> Papeis { get; set; }
 
         private ICollection<KeyValuePair<string, string>> permissoes;
@@ -30,7 +38,6 @@ namespace Prodest.EOuv.Dominio.Modelo.Model.AcessoCidadao
                     permissoes = new List<KeyValuePair<string, string>> {
                        // new KeyValuePair<string, string>("apelido", Apelido),
                         new KeyValuePair<string, string>("nome", Nome),
-
                     };
 
                     permissoes.Add(new KeyValuePair<string, string>("servidor", "true"));
@@ -78,5 +85,4 @@ namespace Prodest.EOuv.Dominio.Modelo.Model.AcessoCidadao
             }
         }
     }
-
 }

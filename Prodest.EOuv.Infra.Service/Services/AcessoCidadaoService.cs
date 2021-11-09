@@ -146,7 +146,6 @@ namespace Prodest.EOuv.Infra.Service
 
             retorno = _mapper.Map<UsuarioLogadoModel>(usuario);
 
-
             return retorno;
         }
 
@@ -156,7 +155,6 @@ namespace Prodest.EOuv.Infra.Service
                 new List<(ICollection<PerfilLogadoModel> perfis, Guid papel)>();
 
             string url = $"{_baseUrlRestrito}/usuario/{idCidadao.ToString()}/permissoes";
-
 
             Permissao permissaoAC = await GetRequest<Permissao>(url);
 
@@ -218,7 +216,7 @@ namespace Prodest.EOuv.Infra.Service
                                                 Nome = recurso.Nome,
                                                 Descricao = recurso.Descricao,
                                                 Acoes = acoes.ToArray()
-                                            }); 
+                                            });
                                         }
                                     }
                                 }
@@ -229,7 +227,7 @@ namespace Prodest.EOuv.Infra.Service
                                     Nome = perfilAC.Nome,
                                     Descricao = perfilAC.Descricao,
                                     //IdsLocalizacoes = localizacoesPerfil,
-                                    Recursos = recursos.ToArray()
+                                    Recursos = recursos?.ToArray()
                                 };
 
                                 perfis.Add(perfil);

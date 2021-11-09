@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Prodest.Cache.Extensions.Caching.Hierarchical;
 using Prodest.EOuv.Dominio.Modelo;
+using Prodest.EOuv.Dominio.Modelo.Interfaces.DAL;
 using Prodest.EOuv.Dominio.Modelo.Interfaces.Service;
 using Prodest.EOuv.Dominio.Modelo.Model;
 using Prodest.EOuv.Dominio.Modelo.Model.AcessoCidadao;
@@ -15,10 +16,10 @@ namespace Prodest.EOuv.Infra.Service
 {
     public class UsuarioProvider : IUsuarioProvider
     {
-
         private readonly IMapper _mapper;
         private readonly IHierarchicalCache _hierarchicalCache;
-        private readonly IAcessoCidadaoService AcessoCidadaoService;
+        private readonly IAcessoCidadaoService _acessoCidadaoService;
+        private readonly IUsuarioRepository _usuarioRepository;
 
         protected IUsuarioLogadoModel Usuario { get; set; }
 
@@ -27,12 +28,14 @@ namespace Prodest.EOuv.Infra.Service
         public UsuarioProvider(
             IHierarchicalCache hierarchicalCache,
             IAcessoCidadaoService acessoCidadaoService,
-            IMapper mapper
+            IMapper mapper,
+            IUsuarioRepository usuarioRepository
         )
         {
             _hierarchicalCache = hierarchicalCache;
-            AcessoCidadaoService = acessoCidadaoService;
+            _acessoCidadaoService = acessoCidadaoService;
             _mapper = mapper;
+            _usuarioRepository = usuarioRepository;
         }
 
         public IUsuarioLogadoModel GetCurrent()
@@ -48,8 +51,16 @@ namespace Prodest.EOuv.Infra.Service
                 var idUsuarioLogado = new Guid(claimSubNovo.Value);
 
                 UsuarioLogadoModel cidadao = await FillCurrentUserAsync(idUsuarioLogado);
+                cidadao.Login = user.FindFirst("cpf").Value;
+                await PreencherUsuarioEouv(cidadao);
                 Usuario = cidadao;
             }
+        }
+
+        private async Task<UsuarioLogadoModel> FillCurrentUserAsync(Guid idUsuarioLogado)
+        {
+            UsuarioLogadoModel cidadao = (UsuarioLogadoModel)await ObterCidadaoPorId(idUsuarioLogado);
+            return cidadao;
         }
 
         public async Task<IUsuarioLogadoModel> ObterCidadaoPorId(Guid idCidadao)
@@ -60,21 +71,23 @@ namespace Prodest.EOuv.Infra.Service
                 //timespan.fromminutes(30),
                 async () =>
                 {
-                    UsuarioLogadoModel cidadao =
-                       await AcessoCidadaoService.GetUsuarioAsync(idCidadao);
+                    UsuarioLogadoModel cidadao = await _acessoCidadaoService.GetUsuarioAsync(idCidadao);
                     await PreencherUsuarioAsync(cidadao);
 
                     return cidadao;
                 }
             );
             return cidadao;
-
         }
 
-        private async Task<UsuarioLogadoModel> FillCurrentUserAsync(Guid idUsuarioLogado)
+        private async Task PreencherUsuarioAsync(UsuarioLogadoModel cidadao)
         {
-            UsuarioLogadoModel cidadao = (UsuarioLogadoModel) await ObterCidadaoPorId(idUsuarioLogado);
-            return cidadao;
+            if (cidadao != null)
+            {
+                await PreencherPapeisByCidadao(cidadao);
+
+                await PreencherPerfisPapeisByCidadao(cidadao);
+            }
         }
 
         private async Task PreencherPapeisByCidadao(UsuarioLogadoModel cidadao)
@@ -82,7 +95,7 @@ namespace Prodest.EOuv.Infra.Service
             if (cidadao == null)
                 return;
 
-            ICollection<PapelLogadoModel> listaPapelLotacao = await montaPapelLogadoModelAsync(cidadao.IdExterno.Value);                
+            ICollection<PapelLogadoModel> listaPapelLotacao = await montaPapelLogadoModelAsync(cidadao.IdExterno.Value);
 
             if (!(listaPapelLotacao?.Count > 0))
             {
@@ -91,7 +104,7 @@ namespace Prodest.EOuv.Infra.Service
             }
 
             List<PapelLogadoModel> papeisComLocalizacao = listaPapelLotacao
-                .Where(x => !String.IsNullOrEmpty(x.LotacaoGuid))            
+                .Where(x => !String.IsNullOrEmpty(x.LotacaoGuid))
                 .OrderBy(p => p.Nome)
                 .ToList();
 
@@ -103,9 +116,31 @@ namespace Prodest.EOuv.Infra.Service
             cidadao.Papeis = papeisComLocalizacao;
         }
 
-        private async Task<ICollection<PapelLogadoModel>> montaPapelLogadoModelAsync(Guid id )
+        private async Task PreencherPerfisPapeisByCidadao(UsuarioLogadoModel cidadao)
         {
-            List<PapelLogado> papeis = await AcessoCidadaoService.GetPapeisPorCidadaoAsync(id);
+            if (cidadao == null)
+                return;
+
+            ICollection<(ICollection<PerfilLogadoModel> perfis, Guid idPapel)> perfisPorPapel = await _acessoCidadaoService.SearchPerfisPorPapelByUsuarioAsync(cidadao.IdExterno.Value);
+
+            if (perfisPorPapel?.Count > 0)
+            {
+                foreach (PapelLogadoModel papeisCidadao in cidadao.Papeis)
+                {
+                    ICollection<PerfilLogadoModel> perfis =
+                        perfisPorPapel.SingleOrDefault(ppp => ppp.idPapel == papeisCidadao.IdExterno)
+                        .perfis;
+
+                    perfis = perfis ?? new List<PerfilLogadoModel>();
+
+                    papeisCidadao.Perfis = perfis;
+                }
+            }
+        }
+
+        private async Task<ICollection<PapelLogadoModel>> montaPapelLogadoModelAsync(Guid id)
+        {
+            List<PapelLogado> papeis = await _acessoCidadaoService.GetPapeisPorCidadaoAsync(id);
 
             List<PapelLogadoModel> papeisModel = null;
             if (papeis != null)
@@ -126,46 +161,13 @@ namespace Prodest.EOuv.Infra.Service
             return papeisModel;
         }
 
-        private async Task PreencherUsuarioAsync(UsuarioLogadoModel cidadao)
+        private async Task PreencherUsuarioEouv(UsuarioLogadoModel cidadao)
         {
-            if (cidadao != null)
-            {
-                await PreencherPapeisByCidadao(cidadao);
+            var usuarioEouv = await _usuarioRepository.BuscarUsuarioPorLogin(cidadao.Login);
 
-                //if (cidadao.IsServidor)
-                //{
-                    await PreencherPerfisPapeisByCidadao(cidadao);
-
-                //    await PreencherGruposPorServidor(cidadao);
-
-                //    await PreencherConjuntoGestorByCidadao(cidadao);
-                //}
-
-                //await PreencherCidadaoEmails(cidadao);
-            }
-        }
-
-        private async Task PreencherPerfisPapeisByCidadao(UsuarioLogadoModel cidadao)
-        {
-            if (cidadao == null)
-                return;
-
-            ICollection<(ICollection<PerfilLogadoModel> perfis, Guid idPapel)> perfisPorPapel =
-                await AcessoCidadaoService.SearchPerfisPorPapelByUsuarioAsync(cidadao.IdExterno.Value);
-
-            if (perfisPorPapel?.Count > 0)
-            {
-                foreach (PapelLogadoModel papeisCidadao in cidadao.Papeis)
-                {
-                    ICollection<PerfilLogadoModel> perfis =
-                        perfisPorPapel.SingleOrDefault(ppp => ppp.idPapel == papeisCidadao.IdExterno)
-                        .perfis;
-
-                    perfis = perfis ?? new List<PerfilLogadoModel>();
-
-                    papeisCidadao.Perfis = perfis;
-                }
-            }
+            cidadao.IdUsuarioEouv = usuarioEouv.IdUsuario;
+            cidadao.IdOrgaoEouv = usuarioEouv.IdOrgao;
+            cidadao.IdPerfilEouv = usuarioEouv.IdPerfil;
         }
     }
 }
