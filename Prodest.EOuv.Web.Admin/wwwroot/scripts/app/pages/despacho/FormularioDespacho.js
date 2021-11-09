@@ -105,10 +105,17 @@ const DespachoForm = {
 
                 if (ret.ok) {
                     mensagemSistema.showMensagemSucesso(ret.mensagem);
+                    window.location.href = "../Despacho?id=" + this.idManifestacao;
                 }
-
-
-                window.location.href = "../Despacho?id=" + this.idManifestacao;
+                else {
+                    if (ret.retorno._erroTipoSumario) {
+                        mensagemSistema.showMensagemErro(ret.mensagem);
+                    }
+                    else if (ret.retorno._erroTipoModal) {
+                        mensagemSistema.showMensagemErro(ret.mensagem);
+                    }
+                }
+  
             }            
         },
         GetDate(e) {

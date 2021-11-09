@@ -78,6 +78,17 @@ namespace Prodest.EOuv.Shared.Util
             NaoIdentificado = 99
         }
 
+        public enum PerfilUsuario
+        {
+            Gestor = 1,
+            OuvidoriaGeral = 2,
+            AtendenteOuvidoria = 3,
+            Cidadao = 4,
+            RepresentanteOuvidoria = 5,
+            ServidorOrgao = 6,
+            RegistradorOrgao = 7
+        }
+
         public enum SituacaoManifestacao
         {
             [Description("Triagem")]
@@ -135,5 +146,8 @@ namespace Prodest.EOuv.Shared.Util
             [Description("Em Apuração Sem Rensponsável")]
             EM_APURACAO_SEM_RESPONSAVEL = 98
         }
+
+
+
     }
 }

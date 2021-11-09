@@ -20,6 +20,13 @@ namespace Prodest.EOuv.Infra.DAL
             _mapper = mapper;
         }
 
+        public async Task<bool> ExisteManifestacao(int idManifestacao)
+        {
+            bool existeManifestacao = await _eouvContext.Manifestacao.AnyAsync(m => m.IdManifestacao == idManifestacao);
+ 
+            return existeManifestacao;
+        }
+
         public async Task<ManifestacaoModel> ObterManifestacaoPorId(int idManifestacao)
         {
             Manifestacao manifestacao = await _eouvContext.Manifestacao.Where(m => m.IdManifestacao == idManifestacao).AsNoTracking().FirstOrDefaultAsync();
@@ -288,5 +295,7 @@ namespace Prodest.EOuv.Infra.DAL
             await _eouvContext.SaveChangesAsync();
             return manifestacao.IdManifestacao;
         }
+
+       
     }
 }

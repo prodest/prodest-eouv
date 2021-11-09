@@ -8,7 +8,7 @@ namespace Prodest.EOuv.Dominio.Modelo.Interfaces.BLL
     {
         Task<List<OrgaoModel>> ObterOrgaosCompetenciaFato();
 
-        Task<bool> VerificarPermissaoOrgaoManifestacao(int idManifestacao, int idOrgao);
+        Task<bool> VerificarPermissaoOrgaoManifestacao(ManifestacaoModel manifestacao, int idOrgao);
 
     }
 }

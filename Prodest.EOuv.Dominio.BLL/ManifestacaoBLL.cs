@@ -18,6 +18,11 @@ namespace Prodest.EOuv.Dominio.BLL
             _manifestacaoRepository = manifestacaoRepository;
         }
 
+        public async Task<bool> ExisteManifestacao(int idManifestacao)
+        {
+            return await _manifestacaoRepository.ExisteManifestacao(idManifestacao);
+        }
+
         public async Task<ManifestacaoModel> ObterManifestacaoPorId(int idManifestacao)
         {
             return await _manifestacaoRepository.ObterManifestacaoPorId(idManifestacao);
@@ -249,5 +254,6 @@ namespace Prodest.EOuv.Dominio.BLL
         {
             return await _manifestacaoRepository.AtualizarManifestacao(manifestacao);
         }
+
     }
 }

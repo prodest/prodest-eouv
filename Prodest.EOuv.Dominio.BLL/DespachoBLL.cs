@@ -13,21 +13,26 @@ namespace Prodest.EOuv.Dominio.BLL
     public class DespachoBLL : IDespachoBLL
     {
         private readonly IDespachoRepository _despachoRepository;
+        private readonly IManifestacaoBLL _manifestacaoBLL;
         private readonly IAgenteBLL _agenteBLL;
+        private readonly IUsuarioBLL _usuarioBLL;
         private readonly IPdfApiService _pdfApiService;
         private readonly IHtmlApiService _htmlApiService;
         private readonly IEDocsService _edocsService;
-        private readonly IManifestacaoBLL _manifestacaoBLL;
+        private readonly IUsuarioProvider _usuarioProvider;
+        
 
-        public DespachoBLL(IDespachoRepository despachoRepository, IAgenteBLL agenteBLL, IPdfApiService pdfApiService,
-                            IHtmlApiService htmlApiService, IEDocsService edocsService, IManifestacaoBLL manifestacaoBLL)
+        public DespachoBLL(IDespachoRepository despachoRepository, IManifestacaoBLL manifestacaoBLL, IAgenteBLL agenteBLL, IUsuarioBLL usuarioBLL, IPdfApiService pdfApiService,
+                            IHtmlApiService htmlApiService, IEDocsService edocsService, IUsuarioProvider usuarioProvider)
         {
             _despachoRepository = despachoRepository;
+            _manifestacaoBLL = manifestacaoBLL;
             _agenteBLL = agenteBLL;
+            _usuarioBLL = usuarioBLL;
             _pdfApiService = pdfApiService;
             _htmlApiService = htmlApiService;
             _edocsService = edocsService;
-            _manifestacaoBLL = manifestacaoBLL;
+            _usuarioProvider = usuarioProvider;
         }
 
         public async Task<List<DespachoManifestacaoModel>> ObterDespachosPorManifestacao(int idManifestacao)
@@ -70,7 +75,7 @@ namespace Prodest.EOuv.Dominio.BLL
         public async Task<(bool, string)> Despachar(DespachoManifestacaoModel despachoModel, string guidDestinatario, int tipoDestinatario, string papelResponsavel, FiltroDadosManifestacaoModel filtroDadosManifestacao)
         {
             //Validar regras de negócio
-            (bool ok, string mensagens) validacoesNegocio = ValidarNegocioDespachar(despachoModel);
+            (bool ok, string mensagem) validacoesNegocio = await ValidarNegocioDespachar(despachoModel);
 
             if (validacoesNegocio.ok)
             {
@@ -123,10 +128,7 @@ namespace Prodest.EOuv.Dominio.BLL
             }
             else
             {
-                StringBuilder validationSummary = new StringBuilder();
-                validationSummary.AppendLine(validacoesNegocio.mensagens);
-
-                return (false, validationSummary.ToString());
+                return (false, validacoesNegocio.mensagem);
             }
         }
 
@@ -168,43 +170,41 @@ namespace Prodest.EOuv.Dominio.BLL
             else
             {
                 StringBuilder validationSummary = new StringBuilder();
-                validationSummary.AppendLine(validacoesNegocio.mensagens);
+                validationSummary.Append(validacoesNegocio.mensagens);
 
                 return (false, validationSummary.ToString());
             }
         }
 
-        private (bool ok, string mensagens) ValidarNegocioDespachar(DespachoManifestacaoModel despachoModel)
+        private async Task<(bool ok, string mensagens)> ValidarNegocioDespachar(DespachoManifestacaoModel despachoModel)
         {
             bool ok = true;
-            StringBuilder validationSummary = new StringBuilder();
+
+            var usuario = _usuarioProvider.GetCurrent();
+
+            UsuarioModel usuarioModel = new UsuarioModel
+            {
+                IdOrgao = usuario.IdOrgaoEouv,
+                IdPerfil = usuario.IdPerfilEouv,
+            };
+
+            //Validar se o usuário responsável possui acesso a manifestação
+            
+            bool usuarioPossuiAcessoManifestacao = await _usuarioBLL.UsuarioPossuiAcessoManifestacao(despachoModel.IdManifestacao, usuarioModel);
+
+            if (!usuarioPossuiAcessoManifestacao)
+            {
+                return (false, "Usuário não possui acesso a esta manifestação!");
+            }
 
             //Validar se o prazo está dentro do prazo máximo da manifestação
-            //Validar se o usuário responsável possui acesso a manifestação
+
+
+
             //Validar se o destinatário é do mesmo órgão da manifestação
 
-            //if (despachoModel.)
-            //{
-            //    validationSummary.AppendLine("O Papel do Responsável deve ser informado!");
-            //    ok = false;
-            //}
-            //if (string.IsNullOrWhiteSpace(despachoEntry.GuidPapelDestinatario))
-            //{
-            //    validationSummary.AppendLine("O Destinatário deve ser informado!");
-            //    ok = false;
-            //}
-            //if (string.IsNullOrWhiteSpace(despachoEntry.PrazoResposta))
-            //{
-            //    validationSummary.AppendLine("O Prazo de Resposta deve ser informado!");
-            //    ok = false;
-            //}
-            //if (string.IsNullOrWhiteSpace(despachoEntry.TextoDespacho))
-            //{
-            //    validationSummary.AppendLine("O Texto de Despacho deve ser informado!");
-            //    ok = false;
-            //}
 
-            return (ok, validationSummary.ToString());
+            return (ok, "");
         }
 
         private (bool ok, string mensagens) ValidarNegocioEncerrarDespachoManualmente(int idDespacho)

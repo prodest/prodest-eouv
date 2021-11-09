@@ -25,29 +25,27 @@ namespace Prodest.EOuv.Dominio.BLL
             return await _orgaoRepository.ObterOrgaosCompetenciaFato();
         }
 
-        public async Task<bool> VerificarPermissaoOrgaoManifestacao(int idManifestacao, int idOrgao)
+        public async Task<bool> VerificarPermissaoOrgaoManifestacao(ManifestacaoModel manifestacao, int idOrgao)
         {
-            ManifestacaoModel manifestacaoModel = await _manifestacaoBLL.ObterManifestacaoPorId(idManifestacao);
-
             bool possuiPermissao = false;
 
-            //List<int> listaIdOrgaosVinculados = await _orgaoRepository.ObterIdOrgaosVinculadosByOrgaoResponsavel(idOrgao);
+            List<int> listaIdOrgaosVinculados = await _orgaoRepository.ObterIdOrgaosVinculadosByOrgaoResponsavel(idOrgao);
 
-            //if (listaIdOrgaosVinculados != null)
-            //{
-            //    if (manifestacaoModel.IdSituacaoManifestacao == (int)Enums.SituacaoManifestacao.ENCERRADA) //Para Manifestações encerradas, o órgão Interesse passa a ter acesso também
-            //    {
-            //        possuiPermissao = listaIdOrgaosVinculados.Contains(manifestacaoModel.IdOrgaoInteresse) || listaIdOrgaosVinculados.Contains(manifestacaoModel.IdOrgaoResponsavel);
-            //    }
-            //    else
-            //    {
-            //        possuiPermissao = listaIdOrgaosVinculados.Contains(manifestacaoModel.IdOrgaoResponsavel);
-            //    }
-            //}
-            //else
-            //{
-            //    possuiPermissao = manifestacaoModel.IdOrgaoResponsavel == idOrgao;
-            //}
+            if (listaIdOrgaosVinculados != null)
+            {
+                if (manifestacao.IdSituacaoManifestacao == (int)Enums.SituacaoManifestacao.ENCERRADA) //Para Manifestações encerradas, o órgão Interesse passa a ter acesso também
+                {
+                    possuiPermissao = listaIdOrgaosVinculados.Contains(manifestacao.IdOrgaoInteresse) || listaIdOrgaosVinculados.Contains(manifestacao.IdOrgaoResponsavel);
+                }
+                else
+                {
+                    possuiPermissao = listaIdOrgaosVinculados.Contains(manifestacao.IdOrgaoResponsavel);
+                }
+            }
+            else
+            {
+                possuiPermissao = manifestacao.IdOrgaoResponsavel == idOrgao;
+            }
 
             return possuiPermissao;
         }

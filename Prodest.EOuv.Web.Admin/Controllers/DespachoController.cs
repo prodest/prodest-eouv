@@ -34,6 +34,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
         }
 
         [AjaxResponseExceptionFilter]
+        [Route("/Despacho/ObterDespachosPorManifestacao/{id}")]
         public async Task<IActionResult> ObterDespachosPorManifestacao(int id)
         {
             JsonReturnViewModel jsonReturn = await _despachoWorkService.ObterDespachosPorManifestacao(id);

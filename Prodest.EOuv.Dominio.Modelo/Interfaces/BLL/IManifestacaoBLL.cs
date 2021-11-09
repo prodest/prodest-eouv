@@ -8,6 +8,7 @@ namespace Prodest.EOuv.Dominio.Modelo.Interfaces.BLL
 {
     public interface IManifestacaoBLL
     {
+        Task<bool> ExisteManifestacao(int idManifestacao);
         Task<ManifestacaoModel> ObterManifestacaoPorId(int idManifestacao);
 
         Task<ManifestacaoModel> ObterDadosCompletosManifestacao(int idManifestacao);
@@ -33,7 +34,7 @@ namespace Prodest.EOuv.Dominio.Modelo.Interfaces.BLL
         Task<List<ApuracaoManifestacaoModel>> ObterDadosApuracao(int idManifestacao);
 
         Task<List<EncaminhamentoManifestacaoModel>> ObterDadosEncaminhamento(int idManifestacao);
-
+        
         Task<List<DespachoManifestacaoModel>> ObterDadosDespacho(int idManifestacao);
 
         Task<List<DesdobramentoManifestacaoModel>> ObterDadosDesdobramento(int idManifestacao);

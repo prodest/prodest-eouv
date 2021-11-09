@@ -7,6 +7,6 @@ namespace Prodest.EOuv.Dominio.Modelo.Interfaces.DAL
     {
         Task<OrgaoModel> ObterOrgaoPorId(int idOrgao);
         Task<List<OrgaoModel>> ObterOrgaosCompetenciaFato();
-        //Task<List<int>> ObterIdOrgaosVinculadosByOrgaoResponsavel(int idOrgao);
+        Task<List<int>> ObterIdOrgaosVinculadosByOrgaoResponsavel(int idOrgao);
     }
 }

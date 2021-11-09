@@ -22,11 +22,13 @@ namespace Prodest.EOuv.UI.Apresentacao
     public class DespachoWorkService : IDespachoWorkService
     {
         private readonly IDespachoBLL _despachoBLL;
+        private readonly IManifestacaoBLL _manifestacaoBLL;
         private readonly IMapper _mapper;
 
-        public DespachoWorkService(IDespachoBLL despachoBLL, IMapper mapper)
+        public DespachoWorkService(IDespachoBLL despachoBLL, IManifestacaoBLL manifestacaoBLL, IMapper mapper)
         {
             _despachoBLL = despachoBLL;
+            _manifestacaoBLL = manifestacaoBLL;
             _mapper = mapper;
         }
 
@@ -34,7 +36,9 @@ namespace Prodest.EOuv.UI.Apresentacao
         {
             var jsonRetorno = new JsonReturnViewModel();
 
-            if (idManifestacao > 0)
+            bool existeManifestacao = await _manifestacaoBLL.ExisteManifestacao(idManifestacao);
+
+            if (existeManifestacao)
             {
                 var despachoModel = await _despachoBLL.ObterDespachosPorManifestacao(idManifestacao);
                 jsonRetorno.Retorno = _mapper.Map<List<DespachoManifestacaoViewModel>>(despachoModel);
@@ -44,6 +48,7 @@ namespace Prodest.EOuv.UI.Apresentacao
             {
                 jsonRetorno.Ok = false;
                 jsonRetorno.Mensagem = "Manifestação não encontrada!";
+                jsonRetorno.Retorno = new { _erroTipoRedirect = true };
             }
 
             return jsonRetorno;
@@ -86,6 +91,12 @@ namespace Prodest.EOuv.UI.Apresentacao
 
                 jsonRetorno.Ok = okNegocio;
                 jsonRetorno.Mensagem = mensagemNegocio;
+
+                if (okNegocio == false)
+                {
+                    jsonRetorno.Retorno = new { _erroTipoModal = true };
+                }
+                
             }
             else
             {
@@ -95,6 +106,7 @@ namespace Prodest.EOuv.UI.Apresentacao
                 validationSummary.AppendLine(validacoesTela.mensagens);
 
                 jsonRetorno.Mensagem = validationSummary.ToString();
+                jsonRetorno.Retorno = new { _erroTipoSumario = true };
             }
 
             return jsonRetorno;

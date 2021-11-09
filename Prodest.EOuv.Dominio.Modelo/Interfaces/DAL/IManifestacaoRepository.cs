@@ -5,6 +5,7 @@ namespace Prodest.EOuv.Dominio.Modelo.Interfaces.DAL
 {
     public interface IManifestacaoRepository
     {
+        Task<bool> ExisteManifestacao(int idManifestacao);
         Task<ManifestacaoModel> ObterManifestacaoPorId(int idManifestacao);
 
         Task<ManifestacaoModel> ObterDadosBasicosManifestacao(int idManifestacao);
@@ -18,7 +19,7 @@ namespace Prodest.EOuv.Dominio.Modelo.Interfaces.DAL
         Task<List<AnexoManifestacaoModel>> ObterAnexosManifestacao(int idManifestacao);
 
         Task<List<ComplementoManifestacaoModel>> ObterDadosComplemento(int idManifestacao);
-
+        
         Task<List<RespostaManifestacaoModel>> ObterDadosResposta(int idManifestacao);
 
         Task<List<ProrrogacaoManifestacaoModel>> ObterDadosProrrogacao(int idManifestacao);

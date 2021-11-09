@@ -38,21 +38,20 @@ namespace Prodest.EOuv.Infra.DAL
             return _mapper.Map<List<OrgaoModel>>(listaOrgaosCompetenciaFato);
         }
 
-        //public async Task<List<int>> ObterIdOrgaosVinculadosByOrgaoResponsavel(int idOrgao)
-        //{
-        //    Ouvidoria ouvidoria = _eouvContext.Ouvidoria.Include(o => o.Ouvi).Where(o => o.Id.IdOrgao == idOrgao).FirstOrDefault();
+        public async Task<List<int>> ObterIdOrgaosVinculadosByOrgaoResponsavel(int idOrgao)
+        {
+            List<int> listaOrgaosOuvidoria = await _eouvContext.OuvidoriaOrgao.Include(o => o.Ouvidoria)
+                                                                                    .Where(o => o.Ouvidoria.IdOrgaoResponsavel == idOrgao)
+                                                                                    .Select(o => o.IdOrgao)
+                                                                                    .ToListAsync();
 
-        //    if (ouvidoria == null)
-        //    {
-        //        return null;
-        //    }
-        //    else if (ouvidoria.OrgaoResponsavel.Count < 1)
-        //    {
-        //        return null;
-        //    }
+            if (listaOrgaosOuvidoria == null)
+            {
+                return null;
+            }
 
-        //    return ouvidoria.Orgaos.Select(o => o.IdOrgao).ToList();
-        //}
+            return listaOrgaosOuvidoria;
+        }
 
 
     }

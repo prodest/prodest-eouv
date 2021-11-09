@@ -77,7 +77,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             return BuscarOrganizacoesPorOrgao(_usuarioProvider.GetCurrent().GuidOrgaoEouv);
         }
 
-        public JsonResult BuscarSetores(Guid idOrgao)
+        public JsonResult BuscarSetoresPorOrgao(Guid idOrgao)
         {
             System.Threading.Tasks.Task<List<PatriarcaSetorModel>> task = _edocsService.GetSetores(idOrgao.ToString());
 
@@ -86,9 +86,10 @@ namespace Prodest.EOuv.Web.Admin.Controllers
             List<PatriarcaSetorModel> setor = task.Result;
             return Json(setor);
         }
+
         public JsonResult BuscarSetores()
         {
-            return BuscarSetores(_usuarioProvider.GetCurrent().GuidOrgaoEouv);
+            return BuscarSetoresPorOrgao(_usuarioProvider.GetCurrent().GuidOrgaoEouv);
         }
 
 
