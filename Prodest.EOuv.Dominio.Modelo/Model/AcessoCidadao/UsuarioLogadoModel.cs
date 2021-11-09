@@ -14,6 +14,7 @@ namespace Prodest.EOuv.Dominio.Modelo.Model.AcessoCidadao
         int IdUsuarioEouv { get; }
         int IdPerfilEouv { get; }
         int? IdOrgaoEouv { get; }
+        Guid GuidOrgaoEouv { get; }
     }
 
     public class UsuarioLogadoModel : IUsuarioLogadoModel
@@ -24,6 +25,7 @@ namespace Prodest.EOuv.Dominio.Modelo.Model.AcessoCidadao
         public int IdUsuarioEouv { get; set; }
         public int IdPerfilEouv { get; set; }
         public int? IdOrgaoEouv { get; set; }
+        public Guid GuidOrgaoEouv { get; set; }
         public ICollection<PapelLogadoModel> Papeis { get; set; }
 
         private ICollection<KeyValuePair<string, string>> permissoes;

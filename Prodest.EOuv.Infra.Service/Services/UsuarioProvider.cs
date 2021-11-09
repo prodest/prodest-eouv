@@ -20,6 +20,7 @@ namespace Prodest.EOuv.Infra.Service
         private readonly IHierarchicalCache _hierarchicalCache;
         private readonly IAcessoCidadaoService _acessoCidadaoService;
         private readonly IUsuarioRepository _usuarioRepository;
+        private readonly IOrgaoRepository _orgaoRepository;
 
         protected IUsuarioLogadoModel Usuario { get; set; }
 
@@ -29,13 +30,15 @@ namespace Prodest.EOuv.Infra.Service
             IHierarchicalCache hierarchicalCache,
             IAcessoCidadaoService acessoCidadaoService,
             IMapper mapper,
-            IUsuarioRepository usuarioRepository
+            IUsuarioRepository usuarioRepository,
+            IOrgaoRepository orgaoRepository
         )
         {
             _hierarchicalCache = hierarchicalCache;
             _acessoCidadaoService = acessoCidadaoService;
             _mapper = mapper;
             _usuarioRepository = usuarioRepository;
+            _orgaoRepository = orgaoRepository;
         }
 
         public IUsuarioLogadoModel GetCurrent()
@@ -163,11 +166,16 @@ namespace Prodest.EOuv.Infra.Service
 
         private async Task PreencherUsuarioEouv(UsuarioLogadoModel cidadao)
         {
-            var usuarioEouv = await _usuarioRepository.BuscarUsuarioPorLogin(cidadao.Login);
+            var usuarioEouv = await _usuarioRepository.ObterUsuarioPorLogin(cidadao.Login);
 
             cidadao.IdUsuarioEouv = usuarioEouv.IdUsuario;
             cidadao.IdOrgaoEouv = usuarioEouv.IdOrgao;
             cidadao.IdPerfilEouv = usuarioEouv.IdPerfil;
+
+            var orgaoEouv = await _orgaoRepository.ObterOrgaoPorId((int)usuarioEouv.IdOrgao);
+
+            cidadao.GuidOrgaoEouv = orgaoEouv.GuidOrgao;
+
         }
     }
 }
