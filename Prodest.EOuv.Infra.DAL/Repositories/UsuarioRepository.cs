@@ -18,7 +18,7 @@ namespace Prodest.EOuv.Infra.DAL
             _mapper = mapper;
         }
 
-        public async Task<UsuarioModel> BuscarUsuarioPorId(int idUsuario)
+        public async Task<UsuarioModel> ObterUsuarioPorId(int idUsuario)
         {
             var usuario = await _eouvContext.Usuario.Where(d => d.IdUsuario == idUsuario)
                                                                   .AsNoTracking().FirstOrDefaultAsync();
@@ -26,7 +26,7 @@ namespace Prodest.EOuv.Infra.DAL
             return retorno;
         }
 
-        public async Task<UsuarioModel> BuscarUsuarioPorLogin(string login)
+        public async Task<UsuarioModel> ObterUsuarioPorLogin(string login)
         {
             var usuario = await _eouvContext.Usuario.Where(d => d.Login == login)
                                                                   .AsNoTracking().FirstOrDefaultAsync();

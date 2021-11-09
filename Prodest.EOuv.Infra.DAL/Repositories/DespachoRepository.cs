@@ -23,46 +23,29 @@ namespace Prodest.EOuv.Infra.DAL
 
         public async Task<DespachoManifestacaoModel> ObterDespachoPorId(int IdDespachoManifestacao)
         {
-            try
-            {
-                var despachoManifestacao = await _eouvContext.DespachoManifestacao.Where(d => d.IdDespachoManifestacao == IdDespachoManifestacao)
-                                                                                  .AsNoTracking().FirstOrDefaultAsync();
-                var retorno = _mapper.Map<DespachoManifestacaoModel>(despachoManifestacao);
-                return retorno;
-            }
-            catch (Exception ex)
-            { return null; }
+            var despachoManifestacao = await _eouvContext.DespachoManifestacao.Where(d => d.IdDespachoManifestacao == IdDespachoManifestacao)
+                                                                                .AsNoTracking().FirstOrDefaultAsync();
+            var retorno = _mapper.Map<DespachoManifestacaoModel>(despachoManifestacao);
+            return retorno;
         }
 
         public async Task<List<DespachoManifestacaoModel>> ObterDespachoPorManifestacao(int idManifestacao)
         {
-            try
-            {
-                List<DespachoManifestacao> despachoManifestacao = await _eouvContext.DespachoManifestacao.Include(d => d.SituacaoDespacho)
-                                                                                  .Include(d => d.AgenteDestinatario)
-                                                                                  .Where(d => d.IdManifestacao == idManifestacao)
-                                                                                  .AsNoTracking().ToListAsync();
-                var retorno = _mapper.Map<List<DespachoManifestacaoModel>>(despachoManifestacao);
-                return retorno;
-            }
-            catch (Exception ex)
-            { }
-            return null;
+            List<DespachoManifestacao> despachoManifestacao = await _eouvContext.DespachoManifestacao.Include(d => d.SituacaoDespacho)
+                                                                                .Include(d => d.AgenteDestinatario)
+                                                                                .Where(d => d.IdManifestacao == idManifestacao)
+                                                                                .AsNoTracking().ToListAsync();
+            var retorno = _mapper.Map<List<DespachoManifestacaoModel>>(despachoManifestacao);
+            return retorno;
         }
 
         public async Task<List<Guid?>> ObterIdEncaminhamentoDespachoPorManifestacao(int idManifestacao)
         {
-            try
-            {
-                List<Guid?> listaIdEncaminhamentoDespachoManifestacao = await _eouvContext.DespachoManifestacao.Where(d => d.IdManifestacao == idManifestacao)
-                                                                                        .Select(d => d.IdEncaminhamento)
-                                                                                        .ToListAsync();
-                var retorno = listaIdEncaminhamentoDespachoManifestacao;
-                return retorno;
-            }
-            catch (Exception ex)
-            { }
-            return null;
+            List<Guid?> listaIdEncaminhamentoDespachoManifestacao = await _eouvContext.DespachoManifestacao.Where(d => d.IdManifestacao == idManifestacao)
+                                                                                    .Select(d => d.IdEncaminhamento)
+                                                                                    .ToListAsync();
+            var retorno = listaIdEncaminhamentoDespachoManifestacao;
+            return retorno;
         }
 
         public async Task<DespachoManifestacaoModel> ObterDespachoEDestinatario(int IdDespachoManifestacao)
@@ -93,14 +76,9 @@ namespace Prodest.EOuv.Infra.DAL
 
         public async Task AtualizarDespacho(DespachoManifestacaoModel despachoManifestacaoModel)
         {
-            try
-            {
-                DespachoManifestacao despachoManifestacao = _mapper.Map<DespachoManifestacao>(despachoManifestacaoModel);
-                _eouvContext.Update(despachoManifestacao);
-                await _eouvContext.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            { }
+            DespachoManifestacao despachoManifestacao = _mapper.Map<DespachoManifestacao>(despachoManifestacaoModel);
+            _eouvContext.Update(despachoManifestacao);
+            await _eouvContext.SaveChangesAsync();
         }
     }
 }

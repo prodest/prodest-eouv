@@ -24,14 +24,129 @@ namespace Prodest.EOuv.Web.Admin.Controllers
         private readonly IAcessoCidadaoService _acessoCidadaoService;
         private readonly IPdfApiService _pdfApiService;
         private readonly IDespachoBLL _despachoBLL;
+        private readonly IUsuarioProvider _usuarioProvider;
 
-        public EdocsController(IDespachoWorkService despachoWorkService, IEDocsService edocsService, IAcessoCidadaoService acessoCidadaoService, IPdfApiService pdfApiService, IDespachoBLL despachoBLL)
+        public EdocsController(IDespachoWorkService despachoWorkService, IEDocsService edocsService, IAcessoCidadaoService acessoCidadaoService, IPdfApiService pdfApiService, IDespachoBLL despachoBLL, IUsuarioProvider usuarioProvider)
         {
             _despachoWorkService = despachoWorkService;
             _edocsService = edocsService;
             _acessoCidadaoService = acessoCidadaoService;
             _pdfApiService = pdfApiService;
             _despachoBLL = despachoBLL;
+            _usuarioProvider = usuarioProvider;
+        }
+
+        public JsonResult BuscarPatriarca()
+        {
+            System.Threading.Tasks.Task<List<PatriarcaModel>> task = _edocsService.GetPatriarca();
+
+            Task.WaitAll(task);
+
+            List<PatriarcaModel> patriarca = task.Result;
+            return Json(patriarca);
+        }
+
+        public JsonResult BuscarAgentesPorOrgao(Guid idOrgao,string nome)
+        {
+            Task<List<AgentePublicoPapelModel>> task = _acessoCidadaoService.GetAgentePublico(idOrgao.ToString(), nome);
+
+            Task.WaitAll(task);
+
+            List<AgentePublicoPapelModel> agente = task.Result;
+
+            agente.Sort((x, y) => x.AgentePublicoNome.CompareTo(y.AgentePublicoNome));
+            return Json(agente);
+        }
+
+        public JsonResult BuscarAgentes( string nome)
+        {
+            return BuscarAgentesPorOrgao(_usuarioProvider.GetCurrent().GuidOrgaoEouv, nome);
+        }
+
+        public JsonResult BuscarOrganizacoesPorOrgao(Guid idOrgao)
+        {
+            System.Threading.Tasks.Task<List<PatriarcaModel>> task = _edocsService.GetOrganizacoes(idOrgao.ToString());
+
+            Task.WaitAll(task);
+
+            List<PatriarcaModel> organizacoes = task.Result;
+            return Json(organizacoes);
+        }
+        public JsonResult BuscarOrganizacoes()
+        {
+            return BuscarOrganizacoesPorOrgao(_usuarioProvider.GetCurrent().GuidOrgaoEouv);
+        }
+
+        public JsonResult BuscarSetores(Guid idOrgao)
+        {
+            System.Threading.Tasks.Task<List<PatriarcaSetorModel>> task = _edocsService.GetSetores(idOrgao.ToString());
+
+            Task.WaitAll(task);
+
+            List<PatriarcaSetorModel> setor = task.Result;
+            return Json(setor);
+        }
+        public JsonResult BuscarSetores()
+        {
+            return BuscarSetores(_usuarioProvider.GetCurrent().GuidOrgaoEouv);
+        }
+
+
+        public JsonResult BuscarGrupoTrabalhoPorOrgao(Guid idOrgao)
+        {
+            System.Threading.Tasks.Task<List<PatriarcaSetorModel>> task = _edocsService.GetGrupoTrabalho(idOrgao.ToString());
+
+            Task.WaitAll(task);
+
+            List<PatriarcaSetorModel> grupo = task.Result;
+            return Json(grupo);
+        }
+        public JsonResult BuscarGrupoTrabalho()
+        {
+            return BuscarGrupoTrabalhoPorOrgao(_usuarioProvider.GetCurrent().GuidOrgaoEouv);
+        }
+
+        public JsonResult BuscarComissoesPorOrgao(Guid idOrgao)
+        {
+            System.Threading.Tasks.Task<List<PatriarcaSetorModel>> task = _edocsService.GetComissoes(idOrgao.ToString());
+
+            Task.WaitAll(task);
+
+            List<PatriarcaSetorModel> comissoes = task.Result;
+            return Json(comissoes);
+        }
+        public JsonResult BuscarComissoes()
+        {
+            return BuscarComissoesPorOrgao(_usuarioProvider.GetCurrent().GuidOrgaoEouv);
+        }
+
+        public JsonResult BuscarPapeis()
+        {
+            Task<List<PapelModel>> task = _edocsService.GetPapeis();
+            Task.WaitAll(task);
+
+            List<PapelModel> papel = task.Result;
+            return Json(papel);
+        }
+
+        public string GetDocumentoDownloadUrl()
+        {
+            System.Threading.Tasks.Task<string> task = _edocsService.GetDocumentoDownloadUrl("38683aef-0613-45ea-bfd0-663783a7bfe0");// Documento
+
+            Task.WaitAll(task);
+
+            string url = task.Result;
+            return url;
+        }
+
+        public JsonResult BuscarRastreio()
+        {
+            System.Threading.Tasks.Task<EncaminhamentoRastreioModel> task = _edocsService.GetRastreio("89565801-9382-4785-94f8-cd35d4ab39d2");// Documento
+
+            Task.WaitAll(task);
+
+            EncaminhamentoRastreioModel rastreio = task.Result;
+            return Json(rastreio);
         }
 
         //public FileContentResult Pdf()
@@ -46,77 +161,6 @@ namespace Prodest.EOuv.Web.Admin.Controllers
 
         //    return File(resultado, "application/pdf");
         //}
-
-        public JsonResult BuscarPatriarca()
-        {
-            System.Threading.Tasks.Task<List<PatriarcaModel>> task = _edocsService.GetPatriarca();
-
-            Task.WaitAll(task);
-
-            List<PatriarcaModel> patriarca = task.Result;
-            return Json(patriarca);
-        }
-
-        public JsonResult BuscarAgentes(string nome)
-        {
-            Task<List<AgentePublicoPapelModel>> task = _acessoCidadaoService.GetAgentePublico("3ca6ea0e-ca14-46fa-a911-22e616303722", nome);// Prodest
-
-            Task.WaitAll(task);
-
-            List<AgentePublicoPapelModel> agente = task.Result;
-
-            agente.Sort((x, y) => x.AgentePublicoNome.CompareTo(y.AgentePublicoNome));
-            return Json(agente);
-        }
-
-        public JsonResult BuscarOrganizacoes()
-        {
-            System.Threading.Tasks.Task<List<PatriarcaModel>> task = _edocsService.GetOrganizacoes("fe88eb2a-a1f3-4cb1-a684-87317baf5a57");// ESGOV
-
-            Task.WaitAll(task);
-
-            List<PatriarcaModel> organizacoes = task.Result;
-            return Json(organizacoes);
-        }
-
-        public JsonResult BuscarSetores()
-        {
-            System.Threading.Tasks.Task<List<PatriarcaSetorModel>> task = _edocsService.GetSetores("3ca6ea0e-ca14-46fa-a911-22e616303722");// Prodest
-
-            Task.WaitAll(task);
-
-            List<PatriarcaSetorModel> setor = task.Result;
-            return Json(setor);
-        }
-
-        public JsonResult BuscarGrupoTrabalho()
-        {
-            System.Threading.Tasks.Task<List<PatriarcaSetorModel>> task = _edocsService.GetGrupoTrabalho("3ca6ea0e-ca14-46fa-a911-22e616303722");// Prodest
-
-            Task.WaitAll(task);
-
-            List<PatriarcaSetorModel> grupo = task.Result;
-            return Json(grupo);
-        }
-
-        public JsonResult BuscarComissoes()
-        {
-            System.Threading.Tasks.Task<List<PatriarcaSetorModel>> task = _edocsService.GetComissoes("3ca6ea0e-ca14-46fa-a911-22e616303722");// Prodest
-
-            Task.WaitAll(task);
-
-            List<PatriarcaSetorModel> comissoes = task.Result;
-            return Json(comissoes);
-        }
-
-        public JsonResult BuscarPapeis()
-        {
-            Task<List<PapelModel>> task = _edocsService.GetPapeis();
-            Task.WaitAll(task);
-
-            List<PapelModel> papel = task.Result;
-            return Json(papel);
-        }
 
         //public JsonResult BuscarPlanosAtivos()
         //{
@@ -191,15 +235,7 @@ namespace Prodest.EOuv.Web.Admin.Controllers
         //    return Json(planos);
         //}
 
-        public string GetDocumentoDownloadUrl()
-        {
-            System.Threading.Tasks.Task<string> task = _edocsService.GetDocumentoDownloadUrl("38683aef-0613-45ea-bfd0-663783a7bfe0");// Documento
 
-            Task.WaitAll(task);
-
-            string url = task.Result;
-            return url;
-        }
 
         //public JsonResult GetEncaminhamentoPorProtocolo()
         //{//Retorna o encaminhamento inicial do protocolo
@@ -237,16 +273,6 @@ namespace Prodest.EOuv.Web.Admin.Controllers
         //    DocumentoControladoModel[] documentos = task.Result;
         //    return Json(documentos);
         //}
-
-        public JsonResult BuscarRastreio()
-        {
-            System.Threading.Tasks.Task<EncaminhamentoRastreioModel> task = _edocsService.GetRastreio("89565801-9382-4785-94f8-cd35d4ab39d2");// Documento
-
-            Task.WaitAll(task);
-
-            EncaminhamentoRastreioModel rastreio = task.Result;
-            return Json(rastreio);
-        }
 
         //public JsonResult EncontraDestinatarioHangFire()
         //{

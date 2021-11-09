@@ -5,8 +5,8 @@ namespace Prodest.EOuv.Dominio.Modelo.Interfaces.DAL
 {
     public interface IUsuarioRepository
     {
-        Task<UsuarioModel> BuscarUsuarioPorId(int idUsuario);
+        Task<UsuarioModel> ObterUsuarioPorId(int idUsuario);
 
-        Task<UsuarioModel> BuscarUsuarioPorLogin(string login);
+        Task<UsuarioModel> ObterUsuarioPorLogin(string login);
     }
 }

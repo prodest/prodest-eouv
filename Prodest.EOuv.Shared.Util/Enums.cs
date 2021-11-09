@@ -77,5 +77,63 @@ namespace Prodest.EOuv.Shared.Util
             Sistema = 6,
             NaoIdentificado = 99
         }
+
+        public enum SituacaoManifestacao
+        {
+            [Description("Triagem")]
+            TRIAGEM = 1,
+
+            [Description("Aberta")]
+            ABERTA = 2,
+
+            [Description("Em Andamento")]
+            EM_ANDAMENTO = 3,
+
+            [Description("Em Diligência")]
+            EM_DILIGENCIA = 4,
+
+            [Description("Resposta de Diligência")]
+            RESPOSTA_DE_DILIGENCIA = 5,
+
+            [Description("Em Apuração")]
+            EM_APURACAO = 6,
+
+            [Description("Apurada")]
+            APURADA = 7,
+
+            [Description("Despachada")]
+            DESPACHADA = 8,
+
+            [Description("Encerrada")]
+            ENCERRADA = 9,
+
+            [Description("Arquivada")]
+            ARQUIVADA = 10,
+
+            [Description("Devolvida")]
+            DEVOLVIDA = 11,
+
+            [Description("Interpelada")]
+            INTERPELADA = 12,
+
+            [Description("Encerrada Automaticamente")]
+            ENCERRADA_AUTOMATICAMENTE = 13,
+
+            [Description("Reaberta por Interpelação")]
+            REABERTA_POR_INTERPELACAO = 14,
+
+            [Description("Reaberta por Recurso")]
+            REABERTA_POR_RECURSO_NEGATIVA = 15,
+
+            [Description("Reclamação de Omissão")]
+            ABERTA_POR_RECLAMACAO_OMISSAO = 16,
+
+            //Situações que não fazem parte do banco ----------------------------------------------------
+            [Description("Complementadas")]
+            COMPLEMENTADA = 99,
+
+            [Description("Em Apuração Sem Rensponsável")]
+            EM_APURACAO_SEM_RESPONSAVEL = 98
+        }
     }
 }
