@@ -6,15 +6,16 @@ const mensagemSistema = {
     showMensagemSucesso(mensagem) {
 
         let html = `
-<div class="toast ext-toast" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="container">
-        <div class="toast-body">
-            <i class="fas fa-check-circle text-success me-1"></i>
-            <span class="me-auto">${mensagem}</span>
-        </div>
-        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-    </div>
+<div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+  <div class="toast-header">    
+    <strong class="me-auto">e-OUV</strong>    
+    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+  </div>
+  <div class="toast-body">
+    <i class="fas fa-check-circle text-success me-1"></i> ${mensagem}
+  </div>
 </div>
+
 `;
 
         let toastEls = bootstrapHelper.htmlToElement(html);

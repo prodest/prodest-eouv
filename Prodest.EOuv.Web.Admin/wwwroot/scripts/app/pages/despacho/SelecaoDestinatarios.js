@@ -33,9 +33,9 @@
             this.VerificaCarregamentoTodos();
 
             await this.setLoadingAndExecute(async () => {
-                this.GetGrupos();
-                this.GetSetores();
-                this.GetComissoes();
+                await this.GetGrupos();
+                await this.GetSetores();
+                await this.GetComissoes();
             });
         },
 
@@ -67,7 +67,7 @@
             if (!this.listaComissoes.length > 0) {
                 let ret = await eOuvApi.ComissoeseDocs();
                 this.comissoes = JSON.parse(JSON.stringify(ret));
-                this.listaComissoes = this.comissoes;                
+                this.listaComissoes = this.comissoes;
             }
         },
 
@@ -100,7 +100,7 @@
         },
 
         AdicionarDestinatario(id, nome, tipo, complemento) {
-            this.destinatario = { 'id': id, 'nome': nome, 'tipo': tipo, 'nomecompleto':''};
+            this.destinatario = { 'id': id, 'nome': nome, 'tipo': tipo, 'nomecompleto': '' };
 
             if (!utils.isNullOrEmpty(complemento)) {
                 this.destinatario.nomecompleto = nome + ' - ' + complemento;

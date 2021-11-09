@@ -29,7 +29,11 @@
             </div>
             <div class="card-body table-responsive">
 
-                <div class="row" v-if="loading"><div class="text-center">Carregando...</div></div>
+                <div v-if="loading" class="d-flex justify-content-center">
+                    <div class="spinner-grow text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
 
                 <template v-else>
                     <table class="table table-hover table-striped table-sm ">

@@ -1,5 +1,6 @@
 ﻿const RespostaForm = {
     name: 'RespostaForm',
+    mixins: [BaseMixin],
     template: '#template-resposta-form',
     props: ['manifestacao'],
     data() {
@@ -38,9 +39,11 @@
         },
 
         async CarregarDocumentosEDocs() {
-            let ret = await eOuvApi.ObterDocumentosEncaminhamentoEDocs(this.idManifestacao);
-            this.documentosEncaminhamento = ret.retorno;
-            console.log(this.documentosEncaminhamento);
+            await this.setLoadingAndExecute(async () => {
+                let ret = await eOuvApi.ObterDocumentosEncaminhamentoEDocs(this.idManifestacao);
+                this.documentosEncaminhamento = ret.retorno;
+                console.log(this.documentosEncaminhamento);
+            });
         },
 
         ApenasPositivo(item) {

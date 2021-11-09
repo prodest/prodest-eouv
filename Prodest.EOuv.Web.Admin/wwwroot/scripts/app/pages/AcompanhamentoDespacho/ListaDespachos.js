@@ -50,9 +50,13 @@
                     if (ret.ok) {
                         this.listaDespachos = ret.retorno;
                         this.VerificarLiberarResposta(this.listaDespachos);
+                        mensagemSistema.showMensagemSucesso('Lista de despacho carregada com sucesso.');
+
+                        console.log('teste')
                     }
                     else {
-                        window.location.href = "/Error?msg=" + ret.mensagem;
+                        mensagemSistema.showMensagemErro(ret.mensagem);
+                        //window.location.href = "/Error?msg=" + ret.mensagem;
                     }
 
                     //mensagemSistema.showMensagemErro('teste');
