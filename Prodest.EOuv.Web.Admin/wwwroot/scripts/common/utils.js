@@ -1,4 +1,6 @@
-﻿const utils = {
+﻿const modalLoading = new bootstrap.Modal(document.getElementById('loading-default'), { 'keyboard': false, 'backdrop': 'static'});
+
+const utils = {
 
     estaContido(dado, termoBusca) {
         return dado.toUpperCase().includes(termoBusca.toUpperCase());
@@ -120,5 +122,11 @@
         });
     },
 
+    LoadingDefaultOpen() {
+        modalLoading.show();
+    },
 
+    LoadingDefaultClose() {
+        setTimeout(() => { modalLoading.hide();}, 500);
+    }
 }

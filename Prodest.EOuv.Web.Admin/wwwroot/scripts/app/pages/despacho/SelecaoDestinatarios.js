@@ -1,12 +1,12 @@
 ﻿const SelecaoDestinatarios = {
-
     name: 'SelecaoDestinatarios',
+    mixins: [BaseMixin],
     template: '#template-selecao-destinatarios',
     emits: ['selecionar-destinatario', 'get-orgaos'],
 
     data() {
         return {
-            titulo: 'Seleção de Destinatários',            
+            titulo: 'Seleção de Destinatário',
             listaSetores: [],
             listaGrupos: [],
             listaComissoes: [],
@@ -30,10 +30,13 @@
 
     methods: {
         async CarregarDadosEDocs() {
-            await this.GetGrupos();
-            await this.GetSetores();
-            await this.GetComissoes();
             this.VerificaCarregamentoTodos();
+
+            await this.setLoadingAndExecute(async () => {
+                this.GetGrupos();
+                this.GetSetores();
+                this.GetComissoes();
+            });
         },
 
         async GetOrgaos() {
@@ -64,16 +67,15 @@
             if (!this.listaComissoes.length > 0) {
                 let ret = await eOuvApi.ComissoeseDocs();
                 this.comissoes = JSON.parse(JSON.stringify(ret));
-                this.listaComissoes = this.comissoes;
-
-                console.log(this.comissoes);
+                this.listaComissoes = this.comissoes;                
             }
         },
 
-        async GetAgentes() {            
-            let ret = await eOuvApi.AgentesDocs(this.agentePesquisa);
-            this.listaAgentes = JSON.parse(JSON.stringify(ret));
-            console.log(this.listaAgentes);
+        async GetAgentes() {
+            await this.setLoadingAndExecute(async () => {
+                let ret = await eOuvApi.AgentesDocs(this.agentePesquisa);
+                this.listaAgentes = JSON.parse(JSON.stringify(ret));
+            });
         },
 
         FiltrarSetores() {
@@ -85,20 +87,27 @@
         FiltrarComissoes() {
             this.listaComissoes = utils.RemoverItemArrayPesquisa(this.comissoes, this.comissaoPesquisa);
         },
-        
-        
+
+
 
         VerificaCarregamentoTodos() {
-            if ((this.listaGrupos.length > 0) && (this.listaSetores.length > 0)) {
-                console.log('Todos foram carregados!');
-                this.modalDestinatarios = this.$refs.destinatariosModal;
-                console.log(this.modalDestinatarios);
-                this.modal = bootstrapHelper.openModal(this.$refs.destinatariosModal);
-            }
+            //if ((this.listaGrupos.length > 0) && (this.listaSetores.length > 0)) {
+            console.log('Todos foram carregados!');
+            this.modalDestinatarios = this.$refs.destinatariosModal;
+            console.log(this.modalDestinatarios);
+            this.modal = bootstrapHelper.openModal(this.$refs.destinatariosModal);
+            //}
         },
 
-        AdicionarDestinatario(id, nome, tipo) {
-            this.destinatario = { 'id': id, 'nome': nome, 'tipo': tipo };
+        AdicionarDestinatario(id, nome, tipo, complemento) {
+            this.destinatario = { 'id': id, 'nome': nome, 'tipo': tipo, 'nomecompleto':''};
+
+            if (!utils.isNullOrEmpty(complemento)) {
+                this.destinatario.nomecompleto = nome + ' - ' + complemento;
+            }
+            else {
+                this.destinatario.nomecompleto = nome;
+            }
             /*
             //Adicionar multiplos destinatarios
             if (this.destinatarios.filter(e => e.id === id).length == 0) {
@@ -116,7 +125,7 @@
             //Utilizar quando estiver trabalhando com múltiplos destinatários
             this.destinatarios = utils.RemoverItemArray(this.destinatarios, id);
             */
-            
+
         },
 
         FecharModal() {

@@ -15,10 +15,7 @@
 <div class="container-fluid p-0">
     <div class="row">
         <div id="app" class="col-12">
-            <form class="needs-validation g-3" method="post" novalidate>
-                <despacho-form></despacho-form>
-                <selecao-papel></selecao-papel>
-            </form>
+            <despacho-form></despacho-form>
         </div>
     </div>
 </div>
@@ -26,825 +23,832 @@
 @section templates{
 
     <script type="text/html" id="template-despacho-manifestacao">
+
         <section class="mb-4">
             <input type="hidden" v-model="dadosBasicos.idManifestacao">
             <div class="card">
                 <div class="card-header py-3">
                     <h5 class="mb-0">{{titulo}}</h5>
                 </div>
-                <div class="card-body">
-                    <div class="accordion accordion-flush" id="accordionPanelsManifestacao">
+                <div class="card-body" v-ext-loading="loading">
+                    <div class="row" v-if="loading"><div class="text-center">Carregando Manifestação...</div></div>
+                    <template v-else>
+                        <div class="accordion accordion-flush" id="accordionPanelsManifestacao">
+                            <!--Dados Básicos da Manifestação-->
+                            <div class="accordion-item">
+                                <h5 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosBasicos"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#panel-DadosBasicos"
+                                    aria-expanded="false"
+                                    aria-controls="panel-DadosBasicos">
+                                    <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
+                                    Dados Básicos da Manifestação
+                                </h5>
+                                <div id="panel-DadosBasicos" class="accordion-collapse collapse hide" aria-labelledby="DadosBasicos">
+                                    <div class="accordion-body">
+                                        <div class="row justify-content-start">
+                                            <div class="col-md-4">
+                                                <span class="fw-bold">Número de Protocolo</span>
+                                                <br />
+                                                <span>{{dadosBasicos.numProtocolo}}</span>
+                                            </div>
 
-                        <!--Dados Básicos da Manifestação-->
-                        <div class="accordion-item">
-                            <h5 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosBasicos"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#panel-DadosBasicos"
-                                aria-expanded="false"
-                                aria-controls="panel-DadosBasicos">
-                                <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                Dados Básicos da Manifestação
-                            </h5>
-                            <div id="panel-DadosBasicos" class="accordion-collapse collapse hide" aria-labelledby="DadosBasicos">
-                                <div class="accordion-body">
-                                    <div class="row justify-content-start">
-                                        <div class="col-md-4">
-                                            <span class="fw-bold">Número de Protocolo</span>
-                                            <br />
-                                            <span>{{dadosBasicos.numProtocolo}}</span>
-                                        </div>
+                                            <div class="col-md-4">
+                                                <span class="fw-bold">Tipo de Manifestação</span>
+                                                <br />
+                                                <span>{{dadosBasicos.tipoManifestacao}}</span>
+                                            </div>
 
-                                        <div class="col-md-4">
-                                            <span class="fw-bold">Tipo de Manifestação</span>
-                                            <br />
-                                            <span>{{dadosBasicos.tipoManifestacao}}</span>
-                                        </div>
+                                            <div class="col-md-4">
+                                                <span class="fw-bold">Situação</span>
+                                                <br />
+                                                <span>{{dadosBasicos.situacao}}</span>
+                                            </div>
 
-                                        <div class="col-md-4">
-                                            <span class="fw-bold">Situação</span>
-                                            <br />
-                                            <span>{{dadosBasicos.situacao}}</span>
-                                        </div>
+                                            <div class="col-md-4">
+                                                <span class="fw-bold">Órgão Atual</span>
+                                                <br />
+                                                <span>{{dadosBasicos.orgaoAtual?.siglaOrgao}}</span>
+                                            </div>
 
-                                        <div class="col-md-4">
-                                            <span class="fw-bold">Órgão Atual</span>
-                                            <br />
-                                            <span>{{dadosBasicos.orgaoAtual?.siglaOrgao}}</span>
-                                        </div>
+                                            <div class="col-md-4">
+                                                <span class="fw-bold">Órgão Destinatário</span>
+                                                <br />
+                                                <span>{{dadosBasicos.orgaoDestinatario?.siglaOrgao}}</span>
+                                            </div>
 
-                                        <div class="col-md-4">
-                                            <span class="fw-bold">Órgão Destinatário</span>
-                                            <br />
-                                            <span>{{dadosBasicos.orgaoDestinatario?.siglaOrgao}}</span>
-                                        </div>
+                                            <div class="col-md-4">
+                                                <span class="fw-bold">Assunto</span>
+                                                <br />
+                                                <span>{{dadosBasicos.assunto}}</span>
+                                            </div>
 
-                                        <div class="col-md-4">
-                                            <span class="fw-bold">Assunto</span>
-                                            <br />
-                                            <span>{{dadosBasicos.assunto}}</span>
-                                        </div>
+                                            <div class="col-md-4">
+                                                <span class="fw-bold">Data de Cadastro</span>
+                                                <br />
+                                                <span>{{dadosBasicos.dataRegistro}}</span>
+                                            </div>
 
-                                        <div class="col-md-4">
-                                            <span class="fw-bold">Data de Cadastro</span>
-                                            <br />
-                                            <span>{{dadosBasicos.dataRegistro}}</span>
-                                        </div>
+                                            <div class="col-md-4">
+                                                <span class="fw-bold">Prazo de Atendimento</span>
+                                                <br />
+                                                <span>{{dadosBasicos.prazoResposta}}</span>
+                                            </div>
 
-                                        <div class="col-md-4">
-                                            <span class="fw-bold">Prazo de Atendimento</span>
-                                            <br />
-                                            <span>{{dadosBasicos.prazoResposta}}</span>
-                                        </div>
+                                            <div class="col-md-4">
+                                                <span class="fw-bold">Registrado Por</span>
+                                                <br />
+                                                <span>{{dadosBasicos.usuarioCadastrador}}</span>
+                                            </div>
 
-                                        <div class="col-md-4">
-                                            <span class="fw-bold">Registrado Por</span>
-                                            <br />
-                                            <span>{{dadosBasicos.usuarioCadastrador}}</span>
-                                        </div>
+                                            <div class="col-md-4">
+                                                <span class="fw-bold">Canal de Entrada</span>
+                                                <br />
+                                                <span>{{dadosBasicos.canalEntrada}}</span>
+                                            </div>
 
-                                        <div class="col-md-4">
-                                            <span class="fw-bold">Canal de Entrada</span>
-                                            <br />
-                                            <span>{{dadosBasicos.canalEntrada}}</span>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <span class="fw-bold">Modo de Resposta</span>
-                                            <br />
-                                            <span>{{dadosBasicos.modoResposta}}</span>
+                                            <div class="col-md-4">
+                                                <span class="fw-bold">Modo de Resposta</span>
+                                                <br />
+                                                <span>{{dadosBasicos.modoResposta}}</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!--Demais Dados da Manifestação-->
-                        <div class="accordion-item">
-                            <h5 class="px-2 accordion-header d-flex accordion-button collapsed" id="DemaisDados"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#panel-demaisDados"
-                                aria-expanded="false"
-                                aria-controls="panel-demaisDados">
-                                <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                Demais Dados da Manifestação
-                            </h5>
-                            <div id="panel-demaisDados" class="accordion-collapse collapse hide" aria-labelledby="demaisDados">
-                                <div class="accordion p-3" id="accordionPanelsDemaisDados">
+                            <!--Demais Dados da Manifestação-->
+                            <div class="accordion-item">
+                                <h5 class="px-2 accordion-header d-flex accordion-button collapsed" id="DemaisDados"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#panel-demaisDados"
+                                    aria-expanded="false"
+                                    aria-controls="panel-demaisDados">
+                                    <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
+                                    Demais Dados da Manifestação
+                                </h5>
+                                <div id="panel-demaisDados" class="accordion-collapse collapse hide" aria-labelledby="demaisDados">
+                                    <div class="accordion p-3" id="accordionPanelsDemaisDados">
 
-                                    <!--Teor da Manifestação-->
-                                    <div class="accordion-item">
-                                        <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosTeor"
-                                            data-bs-toggle="collapse"
-                                            data-bs-target="#panel-Teor"
-                                            aria-expanded="false"
-                                            aria-controls="panel-Teor">
-                                            <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                            Teor da Manifestação
-                                        </h2>
-                                        <div id="panel-Teor" class="accordion-collapse collapse hide" aria-labelledby="Teor">
-                                            <div class="accordion-body">
-                                                <div class="row justify-content-start">
-                                                    <div class="col-md-12">
-                                                        <span class="fw-bold">Município do local do fato</span>
-                                                        <br />
-                                                        <span>{{teorManifestacao.localFato}}</span>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <span class="fw-bold">Texto da Manifestação</span>
-                                                        <br />
-                                                        <span>{{teorManifestacao.textoManifestacao}}</span>
+                                        <!--Teor da Manifestação-->
+                                        <div class="accordion-item">
+                                            <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosTeor"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#panel-Teor"
+                                                aria-expanded="false"
+                                                aria-controls="panel-Teor">
+                                                <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
+                                                Teor da Manifestação
+                                            </h2>
+                                            <div id="panel-Teor" class="accordion-collapse collapse hide" aria-labelledby="Teor">
+                                                <div class="accordion-body">
+                                                    <div class="row justify-content-start">
+                                                        <div class="col-md-12">
+                                                            <span class="fw-bold">Município do local do fato</span>
+                                                            <br />
+                                                            <span>{{teorManifestacao.localFato}}</span>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <span class="fw-bold">Texto da Manifestação</span>
+                                                            <br />
+                                                            <span>{{teorManifestacao.textoManifestacao}}</span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <!--Dados do Manifestante-->
-                                    <div class="accordion-item">
-                                        <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosManifestante"
-                                            data-bs-toggle="collapse"
-                                            data-bs-target="#panel-DadosManifestante"
-                                            aria-expanded="false"
-                                            aria-controls="panel-DadosManifestante">
-                                            <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                            Dados do Manifestante
-                                        </h2>
-                                        <div id="panel-DadosManifestante" class="accordion-collapse collapse hide" aria-labelledby="DadosManifestante">
-                                            <div class="accordion-body">
-                                                <div class="row justify-content-start">
-                                                    <div class="col-md-4">
-                                                        <span class="fw-bold">Nome</span>
-                                                        <br />
-                                                        <span>{{dadosManifestante.nome}}</span>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <span class="fw-bold">CPF</span>
-                                                        <br />
-                                                        <span>{{dadosManifestante.cpf}}</span>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <span class="fw-bold">Gênero</span>
-                                                        <br />
-                                                        <span>{{dadosManifestante.genero}}</span>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <span class="fw-bold">Telefone</span>
-                                                        <br />
-                                                        <span>{{dadosManifestante.telefone}}</span>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <span class="fw-bold">E-mail</span>
-                                                        <br />
-                                                        <span>{{dadosManifestante.email}}</span>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <span class="fw-bold">Tipo de Manifestante</span>
-                                                        <br />
-                                                        <span>{{dadosBasicos.tipoManifestante}}</span>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <span class="fw-bold">CNPJ</span>
-                                                        <br />
-                                                        <span>{{dadosManifestante.cnpj}}</span>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <span class="fw-bold">Órgão/Empresa</span>
-                                                        <br />
-                                                        <span>{{dadosManifestante.orgaoEmpresa}}</span>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <span class="fw-bold">CEP</span>
-                                                        <br />
-                                                        <span>{{dadosManifestante.cep}}</span>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <span class="fw-bold">Municipio</span>
-                                                        <br />
-                                                        <span>{{dadosManifestante.municipio}}</span>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <span class="fw-bold">UF</span>
-                                                        <br />
-                                                        <span>{{dadosManifestante.uf}}</span>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <span class="fw-bold">Logradouro</span>
-                                                        <br />
-                                                        <span>{{dadosManifestante.logradouro}}</span>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <span class="fw-bold">Número</span>
-                                                        <br />
-                                                        <span>{{dadosManifestante.numero}}</span>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <span class="fw-bold">Complemento</span>
-                                                        <br />
-                                                        <span>{{dadosManifestante.complemento}}</span>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <span class="fw-bold">Bairro</span>
-                                                        <br />
-                                                        <span>{{dadosManifestante.bairro}}</span>
+                                        <!--Dados do Manifestante-->
+                                        <div class="accordion-item">
+                                            <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosManifestante"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#panel-DadosManifestante"
+                                                aria-expanded="false"
+                                                aria-controls="panel-DadosManifestante">
+                                                <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
+                                                Dados do Manifestante
+                                            </h2>
+                                            <div id="panel-DadosManifestante" class="accordion-collapse collapse hide" aria-labelledby="DadosManifestante">
+                                                <div class="accordion-body">
+                                                    <div class="row justify-content-start">
+                                                        <div class="col-md-4">
+                                                            <span class="fw-bold">Nome</span>
+                                                            <br />
+                                                            <span>{{dadosManifestante.nome}}</span>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <span class="fw-bold">CPF</span>
+                                                            <br />
+                                                            <span>{{dadosManifestante.cpf}}</span>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <span class="fw-bold">Gênero</span>
+                                                            <br />
+                                                            <span>{{dadosManifestante.genero}}</span>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <span class="fw-bold">Telefone</span>
+                                                            <br />
+                                                            <span>{{dadosManifestante.telefone}}</span>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <span class="fw-bold">E-mail</span>
+                                                            <br />
+                                                            <span>{{dadosManifestante.email}}</span>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <span class="fw-bold">Tipo de Manifestante</span>
+                                                            <br />
+                                                            <span>{{dadosBasicos.tipoManifestante}}</span>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <span class="fw-bold">CNPJ</span>
+                                                            <br />
+                                                            <span>{{dadosManifestante.cnpj}}</span>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <span class="fw-bold">Órgão/Empresa</span>
+                                                            <br />
+                                                            <span>{{dadosManifestante.orgaoEmpresa}}</span>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <span class="fw-bold">CEP</span>
+                                                            <br />
+                                                            <span>{{dadosManifestante.cep}}</span>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <span class="fw-bold">Municipio</span>
+                                                            <br />
+                                                            <span>{{dadosManifestante.municipio}}</span>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <span class="fw-bold">UF</span>
+                                                            <br />
+                                                            <span>{{dadosManifestante.uf}}</span>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <span class="fw-bold">Logradouro</span>
+                                                            <br />
+                                                            <span>{{dadosManifestante.logradouro}}</span>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <span class="fw-bold">Número</span>
+                                                            <br />
+                                                            <span>{{dadosManifestante.numero}}</span>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <span class="fw-bold">Complemento</span>
+                                                            <br />
+                                                            <span>{{dadosManifestante.complemento}}</span>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <span class="fw-bold">Bairro</span>
+                                                            <br />
+                                                            <span>{{dadosManifestante.bairro}}</span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <!--Dados de Análise-->
-                                    <div class="accordion-item">
-                                        <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosAnalise"
-                                            data-bs-toggle="collapse"
-                                            data-bs-target="#panel-DadosAnalise"
-                                            aria-expanded="false"
-                                            aria-controls="panel-DadosAnalise">
-                                            <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                            Dados da Análise
-                                        </h2>
-                                        <div id="panel-DadosAnalise" class="accordion-collapse collapse hide" aria-labelledby="DadosAnalise">
-                                            <div class="accordion p-3" id="accordionPanelsDadosAnalise">
+                                        <!--Dados de Análise-->
+                                        <div class="accordion-item">
+                                            <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosAnalise"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#panel-DadosAnalise"
+                                                aria-expanded="false"
+                                                aria-controls="panel-DadosAnalise">
+                                                <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
+                                                Dados da Análise
+                                            </h2>
+                                            <div id="panel-DadosAnalise" class="accordion-collapse collapse hide" aria-labelledby="DadosAnalise">
+                                                <div class="accordion p-3" id="accordionPanelsDadosAnalise">
 
-                                                <!--Dados de Complementos-->
-                                                <div v-if="complementoManifestacao.length > 0" class="accordion-item">
-                                                    <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosComplemento"
-                                                        data-bs-toggle="collapse"
-                                                        data-bs-target="#panel-DadosComplemento"
-                                                        aria-expanded="true"
-                                                        aria-controls="panel-DadosComplemento">
-                                                        <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                                        Dados de Complementos da Manifestação
-                                                    </h2>
-                                                    <div id="panel-DadosComplemento" class="accordion-collapse collapse hide" aria-labelledby="DadosComplemento">
-                                                        <div class="accordion-body">
-                                                            <table class="table table-striped table-bordered table-sm">
-                                                                <thead class="table-light">
-                                                                    <tr>
-                                                                        <th scope="col">Data Complemento</th>
-                                                                        <th scope="col">Texto Complemento</th>
-                                                                        <th scope="col">Usuário Leitura</th>
-                                                                        <th scope="col">Data Leitura</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr v-for="(dados, index) in complementoManifestacao" :key="index">
-                                                                        <td>{{dados.dtComplementoFormat}}</td>
-                                                                        <td>{{dados.txtComplemento}}</td>
-                                                                        <td>{{dados.usuarioLeitura?.pessoa?.nome}}</td>
-                                                                        <td>{{dados.dtLeituraFormat}}</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
+                                                    <!--Dados de Complementos-->
+                                                    <div v-if="complementoManifestacao.length > 0" class="accordion-item">
+                                                        <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosComplemento"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target="#panel-DadosComplemento"
+                                                            aria-expanded="true"
+                                                            aria-controls="panel-DadosComplemento">
+                                                            <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
+                                                            Dados de Complementos da Manifestação
+                                                        </h2>
+                                                        <div id="panel-DadosComplemento" class="accordion-collapse collapse hide" aria-labelledby="DadosComplemento">
+                                                            <div class="accordion-body">
+                                                                <table class="table table-striped table-bordered table-sm">
+                                                                    <thead class="table-light">
+                                                                        <tr>
+                                                                            <th scope="col">Data Complemento</th>
+                                                                            <th scope="col">Texto Complemento</th>
+                                                                            <th scope="col">Usuário Leitura</th>
+                                                                            <th scope="col">Data Leitura</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr v-for="(dados, index) in complementoManifestacao" :key="index">
+                                                                            <td>{{dados.dtComplementoFormat}}</td>
+                                                                            <td>{{dados.txtComplemento}}</td>
+                                                                            <td>{{dados.usuarioLeitura?.pessoa?.nome}}</td>
+                                                                            <td>{{dados.dtLeituraFormat}}</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
                                                         </div>
                                                     </div>
+
+                                                    <!--Dados de Prorrogação-->
+                                                    <div v-if="prorrogacaoManifestacao.length > 0" class="accordion-item">
+                                                        <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosProrrogacao"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target="#panel-DadosProrrogacao"
+                                                            aria-expanded="false"
+                                                            aria-controls="panel-DadosProrrogacao">
+                                                            <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
+                                                            Dados Prorrogação
+                                                        </h2>
+                                                        <div id="panel-DadosProrrogacao" class="accordion-collapse collapse hide" aria-labelledby="DadosProrrogacao">
+                                                            <div class="accordion-body">
+                                                                <table class="table table-striped table-bordered table-sm">
+                                                                    <thead class="table-light">
+                                                                        <tr>
+                                                                            <th scope="col">Prazo Original</th>
+                                                                            <th scope="col">Novo Prazo</th>
+                                                                            <th scope="col">Órgão</th>
+                                                                            <th scope="col">Justificativa</th>
+                                                                            <th scope="col">Data da Prorrogação</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr v-for="(dados, index) in prorrogacaoManifestacao" :key="index">
+                                                                            <td>{{dados.prazoOriginalFormat}}</td>
+                                                                            <td>{{dados.novoPrazoFormat}}</td>
+                                                                            <td>{{dados.orgao?.siglaOrgao}}</td>
+                                                                            <td>{{dados.txtJustificativaProrrogacao}}</td>
+                                                                            <td>{{dados.dataProrrogacaoFormat}}</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!--Dados de Diligências-->
+                                                    <div v-if="diligenciaManifestacao.length > 0" class="accordion-item">
+                                                        <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosDiligencia"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target="#panel-DadosDiligencia"
+                                                            aria-expanded="true"
+                                                            aria-controls="panel-DadosDiligencia">
+                                                            <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
+                                                            Dados de Diligências
+                                                        </h2>
+                                                        <div id="panel-DadosDiligencia" class="accordion-collapse collapse hide" aria-labelledby="DadosDiligencia">
+                                                            <div class="accordion-body">
+                                                                <table class="table table-striped table-bordered table-sm">
+                                                                    <thead class="table-light">
+                                                                        <tr>
+                                                                            <th scope="col">Órgão</th>
+                                                                            <th scope="col">Data Diligência</th>
+                                                                            <th scope="col">Diligência</th>
+                                                                            <th scope="col">Data Resposta</th>
+                                                                            <th scope="col">Resposta</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr v-for="(dados, index) in diligenciaManifestacao" :key="index">
+                                                                            <td>{{dados.orgao?.siglaOrgao}}</td>
+                                                                            <td>{{dados.dataDiligenciaFormat}}</td>
+                                                                            <td>{{dados.txtDiligencia}}</td>
+                                                                            <td>{{dados.dataRespostaDiligenciaFormat}}</td>
+                                                                            <td>{{dados.txtRespostaDiligencia}}</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!--Dados de Encaminhamento-->
+                                                    <div v-if="encaminhamentoManifestacao.length > 0" class="accordion-item">
+                                                        <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosEncaminhamento"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target="#panel-DadosEncaminhamento"
+                                                            aria-expanded="false"
+                                                            aria-controls="panel-DadosEncaminhamento">
+                                                            <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
+                                                            Dados de Encaminhamento
+                                                        </h2>
+                                                        <div id="panel-DadosEncaminhamento" class="accordion-collapse collapse hide" aria-labelledby="DadosEncaminhamento">
+                                                            <div class="accordion-body">
+                                                                <table class="table table-striped table-bordered table-sm">
+                                                                    <thead class="table-light">
+                                                                        <tr>
+                                                                            <th scope="col">Data</th>
+                                                                            <th scope="col">Órgão Origem</th>
+                                                                            <th scope="col">Órgão Destino</th>
+                                                                            <th scope="col">Encaminhamento</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr v-for="(dados, index) in encaminhamentoManifestacao" :key="index">
+                                                                            <td>{{dados.dataEncaminhamentoFormat}}</td>
+                                                                            <td>{{dados.orgaoOrigem?.siglaOrgao}}</td>
+                                                                            <td>{{dados.orgaoDestino?.siglaOrgao}}</td>
+                                                                            <td>{{dados.txtEncaminhamento}}</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!--Dados de Resposta-->
+                                                    <div v-if="respostaManifestacao.length > 0" class="accordion-item">
+                                                        <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosResposta"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target="#panel-DadosResposta"
+                                                            aria-expanded="true"
+                                                            aria-controls="panel-DadosResposta">
+                                                            <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
+                                                            Dados de Resposta da Manifestação
+                                                        </h2>
+                                                        <div id="panel-DadosResposta" class="accordion-collapse collapse hide" aria-labelledby="DadosResposta">
+                                                            <div class="accordion-body">
+                                                                <table class="table table-striped table-bordered table-sm">
+                                                                    <thead class="table-light">
+                                                                        <tr>
+                                                                            <th scope="col">Data da Resposta</th>
+                                                                            <th scope="col">Órgão</th>
+                                                                            <th scope="col">Resposta</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr v-for="(dados, index) in respostaManifestacao" :key="index">
+                                                                            <td>{{dados.dataRespostaFormat}}</td>
+                                                                            <td>{{dados.orgao?.siglaOrgao}}</td>
+                                                                            <td>{{dados.txtResposta}}</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!--Dados de Apuração-->
+                                                    <div v-if="apuracaoManifestacao.length > 0" class="accordion-item">
+                                                        <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosApuracao"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target="#panel-DadosApuracao"
+                                                            aria-expanded="true"
+                                                            aria-controls="panel-DadosApuracao">
+                                                            <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
+                                                            Dados de Apuração
+                                                        </h2>
+                                                        <div id="panel-DadosApuracao" class="accordion-collapse collapse hide" aria-labelledby="DadosApuracao">
+                                                            <div class="accordion-body">
+                                                                <table class="table table-striped table-bordered table-sm">
+                                                                    <thead class="table-light">
+                                                                        <tr>
+                                                                            <th scope="col">Data Solicitação</th>
+                                                                            <th scope="col">Texto Solicitação</th>
+                                                                            <th scope="col">Data Resposta</th>
+                                                                            <th scope="col">Texto Resposta</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr v-for="(dados, index) in apuracaoManifestacao" :key="index">
+                                                                            <td>{{dados.dataSolicitacaoApuracaoFormat}}</td>
+                                                                            <td>{{dados.txtSolicitacaoApuracao}}</td>
+                                                                            <td>{{dados.dataRespostaApuracaoFormat}}</td>
+                                                                            <td>{{dados.txtRespostaApuracao}}</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!--Dados de Despacho-->
+                                                    <div v-if="despachoManifestacao.length > 0" class="accordion-item">
+                                                        <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosDespacho"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target="#panel-DadosDespacho"
+                                                            aria-expanded="true"
+                                                            aria-controls="panel-DadosDespacho">
+                                                            <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
+                                                            Dados de Despacho
+                                                        </h2>
+                                                        <div id="panel-DadosDespacho" class="accordion-collapse collapse hide" aria-labelledby="DadosDespacho">
+                                                            <div class="accordion-body">
+                                                                <table class="table table-striped table-bordered table-sm">
+                                                                    <thead class="table-light">
+                                                                        <tr>
+                                                                            <th scope="col">Protocolo Edocs</th>
+                                                                            <th scope="col">Data Despacho</th>
+                                                                            <th scope="col">Destinatário</th>
+                                                                            <th scope="col">Texto do Despacho</th>
+                                                                            <th scope="col">Situação</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr v-for="(dados, index) in despachoManifestacao" :key="index">
+                                                                            <td>{{dados.protocoloEdocs}}</td>
+                                                                            <td>{{dados.dataSolicitacaoDespachoFormat}}</td>
+                                                                            <td>{{dados.agenteDestinatarioFormat}}</td>
+                                                                            <td>{{dados.textoSolicitacaoDespacho}}</td>
+                                                                            <td>{{dados.dataRespostaDespachoFormat}}</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!--Dados de Notificações-->
+                                                    <div v-if="notificacaoManifestacao.length > 0" class="accordion-item">
+                                                        <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosNotificacao"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target="#panel-DadosNotificacao"
+                                                            aria-expanded="true"
+                                                            aria-controls="panel-DadosNotificacao">
+                                                            <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
+                                                            Dados de Notificações
+                                                        </h2>
+                                                        <div id="panel-DadosNotificacao" class="accordion-collapse collapse hide" aria-labelledby="DadosNotificacao">
+                                                            <div class="accordion-body">
+                                                                <table class="table table-striped table-bordered table-sm">
+                                                                    <thead class="table-light">
+                                                                        <tr>
+                                                                            <th scope="col">Data</th>
+                                                                            <th scope="col">Notificação</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr v-for="(dados, index) in notificacaoManifestacao" :key="index">
+                                                                            <td>{{dados.dataNotificacaoFormat}}</td>
+                                                                            <td>{{dados.txtNotificacao}}</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!--Dados de Anotações-->
+                                                    <div v-if="anotacaoManifestacao.length > 0" class="accordion-item">
+                                                        <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosAnotacao"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target="#panel-DadosAnotacao"
+                                                            aria-expanded="true"
+                                                            aria-controls="panel-DadosAnotacao">
+                                                            <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
+                                                            Dados de Anotações
+                                                        </h2>
+                                                        <div id="panel-DadosAnotacao" class="accordion-collapse collapse hide" aria-labelledby="DadosAnotacao">
+                                                            <div class="accordion-body">
+                                                                <table class="table table-striped table-bordered table-sm">
+                                                                    <thead class="table-light">
+                                                                        <tr>
+                                                                            <th scope="col">Data</th>
+                                                                            <th scope="col">Anotação</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr v-for="(dados, index) in anotacaoManifestacao" :key="index">
+                                                                            <td>{{dados.dataAnotacaoFormat}}</td>
+                                                                            <td>{{dados.txtAnotacao}}</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!--Dados Interpelação-->
+                                                    <div v-if="interpelacaoManifestacao.length > 0" class="accordion-item">
+                                                        <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosInterpelacao"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target="#panel-DadosInterpelacao"
+                                                            aria-expanded="true"
+                                                            aria-controls="panel-DadosInterpelacao">
+                                                            <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
+                                                            Dados de Interpelação
+                                                        </h2>
+                                                        <div id="panel-DadosInterpelacao" class="accordion-collapse collapse hide" aria-labelledby="DadosInterpelacao">
+                                                            <div class="accordion-body">
+                                                                <table class="table table-striped table-bordered table-sm">
+                                                                    <thead class="table-light">
+                                                                        <tr>
+                                                                            <th scope="col">Data</th>
+                                                                            <th scope="col">Texto Interpelação</th>
+                                                                            <th scope="col">Orgão Resposta</th>
+                                                                            <th scope="col">Data Resposta</th>
+                                                                            <th scope="col">Texto Resposta</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr v-for="(dados, index) in interpelacaoManifestacao" :key="index">
+                                                                            <td>{{dados.dataInterpelacaoFormat}}</td>
+                                                                            <td>{{dados.txtInterpelacao}}</td>
+                                                                            <td>{{dados.orgaoResposta?.siglaOrgao}}</td>
+                                                                            <td>{{dados.dataRespostaInterpelacaoFormat}}</td>
+                                                                            <td>{{dados.txtRespostaInterpelacao}}</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!--Dados de Reclamação de Omissão-->
+                                                    <div v-if="reclamacaoOmissao.length > 0" class="accordion-item">
+                                                        <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosReclamacaoOmissao"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target="#panel-DadosReclamacaoOmissao"
+                                                            aria-expanded="true"
+                                                            aria-controls="panel-DadosReclamacaoOmissao">
+                                                            <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
+                                                            Dados de Reclamação de Omissão
+                                                        </h2>
+                                                        <div id="panel-DadosReclamacaoOmissao" class="accordion-collapse collapse hide" aria-labelledby="DadosReclamacaoOmissao">
+                                                            <div class="accordion-body">
+                                                                <table class="table table-striped table-bordered table-sm">
+                                                                    <thead class="table-light">
+                                                                        <tr>
+                                                                            <th scope="col">ManifestacaoFilha.NumProtocolo</th>
+                                                                            <th scope="col">Data do Reclamação de Omissão</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr v-for="(dados, index) in reclamacaoOmissao" :key="index">
+                                                                            <td>{{dados.manifestacaoFilha?.numProtocolo}}</td>
+                                                                            <td>{{dados.dataReclamacaoOmissaoFormat}}</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!--Dados Recurso Negativa-->
+                                                    <div v-if="recursoNegativa.length > 0" class="accordion-item">
+                                                        <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosRecursoNegativa"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target="#panel-DadosRecursoNegativa"
+                                                            aria-expanded="true"
+                                                            aria-controls="panel-DadosRecursoNegativa">
+                                                            <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
+                                                            Dados de Recurso de Negativa
+                                                        </h2>
+                                                        <div id="panel-DadosRecursoNegativa" class="accordion-collapse collapse hide" aria-labelledby="DadosRecursoNegativa">
+                                                            <div class="accordion-body">
+                                                                <table class="table table-striped table-bordered table-sm">
+                                                                    <thead class="table-light">
+                                                                        <tr>
+                                                                            <th scope="col">Número Recurso</th>
+                                                                            <th scope="col">Data Recurso</th>
+                                                                            <th scope="col">Texto Recurso</th>
+                                                                            <th scope="col">Data Resposta Recurso</th>
+                                                                            <th scope="col">Texto Resposta Recurso</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr v-for="(dados, index) in recursoNegativa" :key="index">
+                                                                            <td>{{dados.numeroRecurso}}</td>
+                                                                            <td>{{dados.dataRecursoNegativaFormat}}</td>
+                                                                            <td>{{dados.txtRecursoNegativa}}</td>
+                                                                            <td>{{dados.dataRespostaRecursoNegativaFormat}}</td>
+                                                                            <td>{{dados.txtRespostaRecursoNegativa}}</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!--Dados de Desdobramentos-->
+                                                    <div v-if="desdobramentoManifestacao.length > 0" class="accordion-item">
+                                                        <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosDesdobramento"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target="#panel-DadosDesdobramento"
+                                                            aria-expanded="true"
+                                                            aria-controls="panel-DadosDesdobramento">
+                                                            <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
+                                                            Dados de Desdobramentos
+                                                        </h2>
+                                                        <div id="panel-DadosDesdobramento" class="accordion-collapse collapse hide" aria-labelledby="DadosDesdobramento">
+                                                            <div class="accordion-body">
+                                                                <table class="table table-striped table-bordered table-sm">
+                                                                    <thead class="table-light">
+                                                                        <tr>
+                                                                            <th scope="col">Manifestação Filha</th>
+                                                                            <th scope="col">Órgão</th>
+                                                                            <th scope="col">Data do Desdobramento</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr v-for="(dados, index) in desdobramentoManifestacao" :key="index">
+                                                                            <td>{{dados.manifestacaoFilha?.numProtocolo}}</td>
+                                                                            <td>{{dados.orgao?.siglaOrgao}}</td>
+                                                                            <td>{{dados.dataDesdobramentoFormat}}</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!--Dados Anexos-->
+                                                    <!--<div v-if="anexoManifestacao.length > 0" class="accordion-item">
+                                                        <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosAnexo">
+                                                            <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
+                                                            <button class="flex-fill accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                                                    data-bs-target="#panel-DadosAnexo" aria-expanded="true" aria-controls="panel-DadosAnexo">
+                                                                Dados de Anexos
+                                                            </button>
+                                                        </h2>
+                                                        <div id="panel-DadosAnexo" class="accordion-collapse collapse hide" aria-labelledby="DadosAnexo">
+                                                            <div class="accordion-body">
+                                                                <table class="table table-striped table-bordered table-sm">
+                                                                    <thead class="table-light">
+                                                                        <tr>
+                                                                            <th scope="col">Data</th>
+                                                                            <th scope="col">Notificação</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr v-for="(dados, index) in anexoManifestacao" :key="index">
+                                                                            <td>{{dados.dtComplemento}}</td>
+                                                                            <td>{{dados.txtComplemento}}</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>-->
+
                                                 </div>
-
-                                                <!--Dados de Prorrogação-->
-                                                <div v-if="prorrogacaoManifestacao.length > 0" class="accordion-item">
-                                                    <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosProrrogacao"
-                                                        data-bs-toggle="collapse"
-                                                        data-bs-target="#panel-DadosProrrogacao"
-                                                        aria-expanded="false"
-                                                        aria-controls="panel-DadosProrrogacao">
-                                                        <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                                        Dados Prorrogação
-                                                    </h2>
-                                                    <div id="panel-DadosProrrogacao" class="accordion-collapse collapse hide" aria-labelledby="DadosProrrogacao">
-                                                        <div class="accordion-body">
-                                                            <table class="table table-striped table-bordered table-sm">
-                                                                <thead class="table-light">
-                                                                    <tr>
-                                                                        <th scope="col">Prazo Original</th>
-                                                                        <th scope="col">Novo Prazo</th>
-                                                                        <th scope="col">Órgão</th>
-                                                                        <th scope="col">Justificativa</th>
-                                                                        <th scope="col">Data da Prorrogação</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr v-for="(dados, index) in prorrogacaoManifestacao" :key="index">
-                                                                        <td>{{dados.prazoOriginalFormat}}</td>
-                                                                        <td>{{dados.novoPrazoFormat}}</td>
-                                                                        <td>{{dados.orgao?.siglaOrgao}}</td>
-                                                                        <td>{{dados.txtJustificativaProrrogacao}}</td>
-                                                                        <td>{{dados.dataProrrogacaoFormat}}</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <!--Dados de Diligências-->
-                                                <div v-if="diligenciaManifestacao.length > 0" class="accordion-item">
-                                                    <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosDiligencia"
-                                                        data-bs-toggle="collapse"
-                                                        data-bs-target="#panel-DadosDiligencia"
-                                                        aria-expanded="true"
-                                                        aria-controls="panel-DadosDiligencia">
-                                                        <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                                        Dados de Diligências
-                                                    </h2>
-                                                    <div id="panel-DadosDiligencia" class="accordion-collapse collapse hide" aria-labelledby="DadosDiligencia">
-                                                        <div class="accordion-body">
-                                                            <table class="table table-striped table-bordered table-sm">
-                                                                <thead class="table-light">
-                                                                    <tr>
-                                                                        <th scope="col">Órgão</th>
-                                                                        <th scope="col">Data Diligência</th>
-                                                                        <th scope="col">Diligência</th>
-                                                                        <th scope="col">Data Resposta</th>
-                                                                        <th scope="col">Resposta</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr v-for="(dados, index) in diligenciaManifestacao" :key="index">
-                                                                        <td>{{dados.orgao?.siglaOrgao}}</td>
-                                                                        <td>{{dados.dataDiligenciaFormat}}</td>
-                                                                        <td>{{dados.txtDiligencia}}</td>
-                                                                        <td>{{dados.dataRespostaDiligenciaFormat}}</td>
-                                                                        <td>{{dados.txtRespostaDiligencia}}</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <!--Dados de Encaminhamento-->
-                                                <div v-if="encaminhamentoManifestacao.length > 0" class="accordion-item">
-                                                    <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosEncaminhamento"
-                                                        data-bs-toggle="collapse"
-                                                        data-bs-target="#panel-DadosEncaminhamento"
-                                                        aria-expanded="false"
-                                                        aria-controls="panel-DadosEncaminhamento">
-                                                        <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                                        Dados de Encaminhamento
-                                                    </h2>
-                                                    <div id="panel-DadosEncaminhamento" class="accordion-collapse collapse hide" aria-labelledby="DadosEncaminhamento">
-                                                        <div class="accordion-body">
-                                                            <table class="table table-striped table-bordered table-sm">
-                                                                <thead class="table-light">
-                                                                    <tr>
-                                                                        <th scope="col">Data</th>
-                                                                        <th scope="col">Órgão Origem</th>
-                                                                        <th scope="col">Órgão Destino</th>
-                                                                        <th scope="col">Encaminhamento</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr v-for="(dados, index) in encaminhamentoManifestacao" :key="index">
-                                                                        <td>{{dados.dataEncaminhamentoFormat}}</td>
-                                                                        <td>{{dados.orgaoOrigem?.siglaOrgao}}</td>
-                                                                        <td>{{dados.orgaoDestino?.siglaOrgao}}</td>
-                                                                        <td>{{dados.txtEncaminhamento}}</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <!--Dados de Resposta-->
-                                                <div v-if="respostaManifestacao.length > 0" class="accordion-item">
-                                                    <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosResposta"
-                                                        data-bs-toggle="collapse"
-                                                        data-bs-target="#panel-DadosResposta"
-                                                        aria-expanded="true"
-                                                        aria-controls="panel-DadosResposta">
-                                                        <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                                        Dados de Resposta da Manifestação
-                                                    </h2>
-                                                    <div id="panel-DadosResposta" class="accordion-collapse collapse hide" aria-labelledby="DadosResposta">
-                                                        <div class="accordion-body">
-                                                            <table class="table table-striped table-bordered table-sm">
-                                                                <thead class="table-light">
-                                                                    <tr>
-                                                                        <th scope="col">Data da Resposta</th>
-                                                                        <th scope="col">Órgão</th>
-                                                                        <th scope="col">Resposta</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr v-for="(dados, index) in respostaManifestacao" :key="index">
-                                                                        <td>{{dados.dataRespostaFormat}}</td>
-                                                                        <td>{{dados.orgao?.siglaOrgao}}</td>
-                                                                        <td>{{dados.txtResposta}}</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <!--Dados de Apuração-->
-                                                <div v-if="apuracaoManifestacao.length > 0" class="accordion-item">
-                                                    <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosApuracao"
-                                                        data-bs-toggle="collapse"
-                                                        data-bs-target="#panel-DadosApuracao"
-                                                        aria-expanded="true"
-                                                        aria-controls="panel-DadosApuracao">
-                                                        <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                                        Dados de Apuração
-                                                    </h2>
-                                                    <div id="panel-DadosApuracao" class="accordion-collapse collapse hide" aria-labelledby="DadosApuracao">
-                                                        <div class="accordion-body">
-                                                            <table class="table table-striped table-bordered table-sm">
-                                                                <thead class="table-light">
-                                                                    <tr>
-                                                                        <th scope="col">Data Solicitação</th>
-                                                                        <th scope="col">Texto Solicitação</th>
-                                                                        <th scope="col">Data Resposta</th>
-                                                                        <th scope="col">Texto Resposta</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr v-for="(dados, index) in apuracaoManifestacao" :key="index">
-                                                                        <td>{{dados.dataSolicitacaoApuracaoFormat}}</td>
-                                                                        <td>{{dados.txtSolicitacaoApuracao}}</td>
-                                                                        <td>{{dados.dataRespostaApuracaoFormat}}</td>
-                                                                        <td>{{dados.txtRespostaApuracao}}</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <!--Dados de Despacho-->
-                                                <div v-if="despachoManifestacao.length > 0" class="accordion-item">
-                                                    <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosDespacho"
-                                                        data-bs-toggle="collapse"
-                                                        data-bs-target="#panel-DadosDespacho"
-                                                        aria-expanded="true"
-                                                        aria-controls="panel-DadosDespacho">
-                                                        <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                                        Dados de Despacho
-                                                    </h2>
-                                                    <div id="panel-DadosDespacho" class="accordion-collapse collapse hide" aria-labelledby="DadosDespacho">
-                                                        <div class="accordion-body">
-                                                            <table class="table table-striped table-bordered table-sm">
-                                                                <thead class="table-light">
-                                                                    <tr>
-                                                                        <th scope="col">Protocolo Edocs</th>
-                                                                        <th scope="col">Data Despacho</th>
-                                                                        <th scope="col">Destinatário</th>
-                                                                        <th scope="col">Texto do Despacho</th>
-                                                                        <th scope="col">Situação</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr v-for="(dados, index) in despachoManifestacao" :key="index">
-                                                                        <td>{{dados.protocoloEdocs}}</td>
-                                                                        <td>{{dados.dataSolicitacaoDespachoFormat}}</td>
-                                                                        <td>{{dados.agenteDestinatarioFormat}}</td>
-                                                                        <td>{{dados.textoSolicitacaoDespacho}}</td>
-                                                                        <td>{{dados.dataRespostaDespachoFormat}}</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <!--Dados de Notificações-->
-                                                <div v-if="notificacaoManifestacao.length > 0" class="accordion-item">
-                                                    <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosNotificacao"
-                                                        data-bs-toggle="collapse"
-                                                        data-bs-target="#panel-DadosNotificacao"
-                                                        aria-expanded="true"
-                                                        aria-controls="panel-DadosNotificacao">
-                                                        <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                                        Dados de Notificações
-                                                    </h2>
-                                                    <div id="panel-DadosNotificacao" class="accordion-collapse collapse hide" aria-labelledby="DadosNotificacao">
-                                                        <div class="accordion-body">
-                                                            <table class="table table-striped table-bordered table-sm">
-                                                                <thead class="table-light">
-                                                                    <tr>
-                                                                        <th scope="col">Data</th>
-                                                                        <th scope="col">Notificação</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr v-for="(dados, index) in notificacaoManifestacao" :key="index">
-                                                                        <td>{{dados.dataNotificacaoFormat}}</td>
-                                                                        <td>{{dados.txtNotificacao}}</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <!--Dados de Anotações-->
-                                                <div v-if="anotacaoManifestacao.length > 0" class="accordion-item">
-                                                    <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosAnotacao"
-                                                        data-bs-toggle="collapse"
-                                                        data-bs-target="#panel-DadosAnotacao"
-                                                        aria-expanded="true"
-                                                        aria-controls="panel-DadosAnotacao">
-                                                        <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                                        Dados de Anotações
-                                                    </h2>
-                                                    <div id="panel-DadosAnotacao" class="accordion-collapse collapse hide" aria-labelledby="DadosAnotacao">
-                                                        <div class="accordion-body">
-                                                            <table class="table table-striped table-bordered table-sm">
-                                                                <thead class="table-light">
-                                                                    <tr>
-                                                                        <th scope="col">Data</th>
-                                                                        <th scope="col">Anotação</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr v-for="(dados, index) in anotacaoManifestacao" :key="index">
-                                                                        <td>{{dados.dataAnotacaoFormat}}</td>
-                                                                        <td>{{dados.txtAnotacao}}</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <!--Dados Interpelação-->
-                                                <div v-if="interpelacaoManifestacao.length > 0" class="accordion-item">
-                                                    <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosInterpelacao"
-                                                        data-bs-toggle="collapse"
-                                                        data-bs-target="#panel-DadosInterpelacao"
-                                                        aria-expanded="true"
-                                                        aria-controls="panel-DadosInterpelacao">
-                                                        <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                                        Dados de Interpelação
-                                                    </h2>
-                                                    <div id="panel-DadosInterpelacao" class="accordion-collapse collapse hide" aria-labelledby="DadosInterpelacao">
-                                                        <div class="accordion-body">
-                                                            <table class="table table-striped table-bordered table-sm">
-                                                                <thead class="table-light">
-                                                                    <tr>
-                                                                        <th scope="col">Data</th>
-                                                                        <th scope="col">Texto Interpelação</th>
-                                                                        <th scope="col">Orgão Resposta</th>
-                                                                        <th scope="col">Data Resposta</th>
-                                                                        <th scope="col">Texto Resposta</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr v-for="(dados, index) in interpelacaoManifestacao" :key="index">
-                                                                        <td>{{dados.dataInterpelacaoFormat}}</td>
-                                                                        <td>{{dados.txtInterpelacao}}</td>
-                                                                        <td>{{dados.orgaoResposta?.siglaOrgao}}</td>
-                                                                        <td>{{dados.dataRespostaInterpelacaoFormat}}</td>
-                                                                        <td>{{dados.txtRespostaInterpelacao}}</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <!--Dados de Reclamação de Omissão-->
-                                                <div v-if="reclamacaoOmissao.length > 0" class="accordion-item">
-                                                    <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosReclamacaoOmissao"
-                                                        data-bs-toggle="collapse"
-                                                        data-bs-target="#panel-DadosReclamacaoOmissao"
-                                                        aria-expanded="true"
-                                                        aria-controls="panel-DadosReclamacaoOmissao">
-                                                        <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                                        Dados de Reclamação de Omissão
-                                                    </h2>
-                                                    <div id="panel-DadosReclamacaoOmissao" class="accordion-collapse collapse hide" aria-labelledby="DadosReclamacaoOmissao">
-                                                        <div class="accordion-body">
-                                                            <table class="table table-striped table-bordered table-sm">
-                                                                <thead class="table-light">
-                                                                    <tr>
-                                                                        <th scope="col">ManifestacaoFilha.NumProtocolo</th>
-                                                                        <th scope="col">Data do Reclamação de Omissão</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr v-for="(dados, index) in reclamacaoOmissao" :key="index">
-                                                                        <td>{{dados.manifestacaoFilha?.numProtocolo}}</td>
-                                                                        <td>{{dados.dataReclamacaoOmissaoFormat}}</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <!--Dados Recurso Negativa-->
-                                                <div v-if="recursoNegativa.length > 0" class="accordion-item">
-                                                    <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosRecursoNegativa"
-                                                        data-bs-toggle="collapse"
-                                                        data-bs-target="#panel-DadosRecursoNegativa"
-                                                        aria-expanded="true"
-                                                        aria-controls="panel-DadosRecursoNegativa">
-                                                        <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                                        Dados de Recurso de Negativa
-                                                    </h2>
-                                                    <div id="panel-DadosRecursoNegativa" class="accordion-collapse collapse hide" aria-labelledby="DadosRecursoNegativa">
-                                                        <div class="accordion-body">
-                                                            <table class="table table-striped table-bordered table-sm">
-                                                                <thead class="table-light">
-                                                                    <tr>
-                                                                        <th scope="col">Número Recurso</th>
-                                                                        <th scope="col">Data Recurso</th>
-                                                                        <th scope="col">Texto Recurso</th>
-                                                                        <th scope="col">Data Resposta Recurso</th>
-                                                                        <th scope="col">Texto Resposta Recurso</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr v-for="(dados, index) in recursoNegativa" :key="index">
-                                                                        <td>{{dados.numeroRecurso}}</td>
-                                                                        <td>{{dados.dataRecursoNegativaFormat}}</td>
-                                                                        <td>{{dados.txtRecursoNegativa}}</td>
-                                                                        <td>{{dados.dataRespostaRecursoNegativaFormat}}</td>
-                                                                        <td>{{dados.txtRespostaRecursoNegativa}}</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <!--Dados de Desdobramentos-->
-                                                <div v-if="desdobramentoManifestacao.length > 0" class="accordion-item">
-                                                    <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosDesdobramento"
-                                                        data-bs-toggle="collapse"
-                                                                data-bs-target="#panel-DadosDesdobramento"
-                                                                aria-expanded="true"
-                                                                aria-controls="panel-DadosDesdobramento"
-                                                        >
-                                                        <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>                                                        
-                                                            Dados de Desdobramentos                                                        
-                                                    </h2>
-                                                    <div id="panel-DadosDesdobramento" class="accordion-collapse collapse hide" aria-labelledby="DadosDesdobramento">
-                                                        <div class="accordion-body">
-                                                            <table class="table table-striped table-bordered table-sm">
-                                                                <thead class="table-light">
-                                                                    <tr>
-                                                                        <th scope="col">Manifestação Filha</th>
-                                                                        <th scope="col">Órgão</th>
-                                                                        <th scope="col">Data do Desdobramento</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr v-for="(dados, index) in desdobramentoManifestacao" :key="index">
-                                                                        <td>{{dados.manifestacaoFilha?.numProtocolo}}</td>
-                                                                        <td>{{dados.orgao?.siglaOrgao}}</td>
-                                                                        <td>{{dados.dataDesdobramentoFormat}}</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <!--Dados Anexos-->
-                                                <!--<div v-if="anexoManifestacao.length > 0" class="accordion-item">
-                                                    <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosAnexo">
-                                                        <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                                        <button class="flex-fill accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                                                data-bs-target="#panel-DadosAnexo" aria-expanded="true" aria-controls="panel-DadosAnexo">
-                                                            Dados de Anexos
-                                                        </button>
-                                                    </h2>
-                                                    <div id="panel-DadosAnexo" class="accordion-collapse collapse hide" aria-labelledby="DadosAnexo">
-                                                        <div class="accordion-body">
-                                                            <table class="table table-striped table-bordered table-sm">
-                                                                <thead class="table-light">
-                                                                    <tr>
-                                                                        <th scope="col">Data</th>
-                                                                        <th scope="col">Notificação</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr v-for="(dados, index) in anexoManifestacao" :key="index">
-                                                                        <td>{{dados.dtComplemento}}</td>
-                                                                        <td>{{dados.txtComplemento}}</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>-->
 
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!--Histórico da Manifestação-->
-                        <div class="accordion-item">
-                            <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosHistorico"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#panel-DadosHistorico"
-                                aria-expanded="false"
-                                aria-controls="panel-DadosHistorico">
-                                <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                Histórico da Manifestação
-                            </h2>
-                            <div id="panel-DadosHistorico" class="accordion-collapse collapse hide" aria-labelledby="DadosHistorico">
-                                <div class="accordion-body">
-                                    <table class="table table-striped table-bordered table-sm">
-                                        <thead class="table-light">
-                                            <tr>
-                                                <th scope="col">Data/Hora</th>
-                                                <th scope="col">Órgão</th>
-                                                <th scope="col">Situação</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr v-for="(dados, index) in historicoManifestacao" :key="index">
-                                                <td>{{dados.dataHistoricoFormat}}</td>
-                                                <td>{{dados.orgao?.siglaOrgao}}</td>
-                                                <td>{{dados.situacaoManifestacao.descSituacaoManifestacao}}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                            <!--Histórico da Manifestação-->
+                            <div class="accordion-item">
+                                <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosHistorico"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#panel-DadosHistorico"
+                                    aria-expanded="false"
+                                    aria-controls="panel-DadosHistorico">
+                                    <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
+                                    Histórico da Manifestação
+                                </h2>
+                                <div id="panel-DadosHistorico" class="accordion-collapse collapse hide" aria-labelledby="DadosHistorico">
+                                    <div class="accordion-body">
+                                        <table class="table table-striped table-bordered table-sm">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th scope="col">Data/Hora</th>
+                                                    <th scope="col">Órgão</th>
+                                                    <th scope="col">Situação</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-for="(dados, index) in historicoManifestacao" :key="index">
+                                                    <td>{{dados.dataHistoricoFormat}}</td>
+                                                    <td>{{dados.orgao?.siglaOrgao}}</td>
+                                                    <td>{{dados.situacaoManifestacao.descSituacaoManifestacao}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </template>
                 </div>
             </div>
         </section>
+
     </script>
 
     <script type="text/html" id="template-despacho-form">
         <div>
-            <despacho-manifestacao v-on:capturar-dados-manifestacao="CapturarDadosManifestacao" v-on:selecionar-dado-manifestacao="ToggleDadosManifestacaoSelecionados($event)"></despacho-manifestacao>
-            <section class="mb-4">
-                <div class="card">
-                    <div class="card-header py-3">
-                        <h5 class="mb-0">Formulário de Despacho</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
+            <form ref="form">
 
-                            <div class="col-md-12 position-relative mb-4">
-                                <label class="form-label" for="customAnexo">Com qual Cargo/Função você irá Encaminhar?</label>
-                                <div class="form-check px-0" v-for="(papel, index) in papeisUsuario" v-bind:key="index" v-bind:for="papel.id">
-                                    <input type="radio" v-on:change="TogglePapelSelecionado($event)" required class="btn-check" name="papel" v-bind:id="papel.id" autocomplete="off">
-                                    <label class="btn btn-outline-warning btn-sm m-1" v-bind:for="papel.id">{{papel.nome}} - {{papel.siglaUnidadePapel}} - {{papel.siglaOrganizacaoPapel}}</label>
-                                    <div class="invalid-feedback mt-1">Cargo/Função é obrigatório!</div>
+                <despacho-manifestacao v-on:capturar-dados-manifestacao="CapturarDadosManifestacao" v-on:selecionar-dado-manifestacao="ToggleDadosManifestacaoSelecionados($event)"></despacho-manifestacao>
+                <section class="mb-4">
+                    <div class="card">
+                        <div class="card-header py-3">
+                            <h5 class="mb-0">Formulário de Despacho</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+
+                                <div class="col-md-12 position-relative mb-4">
+                                    <label class="form-label" for="customAnexo">Com qual Cargo/Função você irá Encaminhar?</label>
+                                    <div class="form-check px-0" v-for="(papel, index) in papeisUsuario" v-bind:key="index" v-bind:for="papel.id">
+                                        <input type="radio" v-on:change="TogglePapelSelecionado($event)" required class="btn-check" name="papel" v-bind:id="papel.id" autocomplete="off">
+                                        <label class="btn btn-outline-warning btn-sm m-1" v-bind:for="papel.id">{{papel.nome}} - {{papel.siglaUnidadePapel}} - {{papel.siglaOrganizacaoPapel}}</label>
+                                        <div class="invalid-feedback mt-1">Cargo/Função é obrigatório!</div>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="col-md-6 position-relative mb-2">
-                                <label class="form-label">Selecione o Destinatário:</label>
-                                <selecao-destinatarios v-on:selecionar-destinatario="IncluirDestinatarioSelecionado"></selecao-destinatarios>
-                            </div>
-
-                            <div class="col-md-4 position-relative">
-                                <label class="form-label" for="flPrazoResposta">Prazo de Resposta:</label>
-                                <div class="input-group has-validation">
-                                    <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
-                                    <input required v-on:blur="GetDate" v-model="prazoResposta" type="text" id="flPrazoResposta" class="form-control data-eouv mb-0">
-                                    <div class="invalid-feedback mt-5">Prazo de resposta é obrigatório!</div>
+                                <div class="col-md-6 position-relative mb-2">
+                                    <label class="form-label">Selecione o Destinatário:</label>
+                                    <selecao-destinatarios v-on:selecionar-destinatario="IncluirDestinatarioSelecionado"></selecao-destinatarios>
                                 </div>
-                            </div>
 
-                            <div class="col-md-12 position-relative mb-3">
-                                <label class="form-label" for="flTextoDespacho">Texto do Despacho:</label>
-                                <textarea class="form-control" required maxlength="8000" rows="5" placeholder="Informe o texto do despacho aqui." v-model="textoDespacho" id="flTextoDespacho"></textarea>
-                                <div class="invalid-feedback">Texto do despacho é obrigatório!</div>
-                            </div>
+                                <div class="col-md-4 position-relative">
+                                    <label class="form-label" for="flPrazoResposta">Prazo de Resposta:</label>
+                                    <div class="input-group has-validation">
+                                        <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                        <input required v-on:blur="GetDate" v-model="prazoResposta" type="text" id="flPrazoResposta" class="form-control data-eouv mb-0">
+                                        <div class="invalid-feedback mt-5">Prazo de resposta é obrigatório!</div>
+                                    </div>
+                                </div>
 
-                            @*<div class="form-outline mb-3">
-                                        <button class="btn btn-block btn-info" v-on:click="IncluirCampoAnexo"><i class="fas fa-plus"></i> Incluir novo arquivo</button>
-                                        <div class="border-1 mt-3" v-if="campoAnexo.length > 0">
-                                            <div class="input-group mb-3" v-for="(campo, index) in campoAnexo" v-bind:key="index">
-                                                <input type="file" class="form-control" id="{{campo}}" aria-describedby="addon-{{campo}}" />
-                                                <span v-on:click="RemoverCampoAnexo(campo)" class="input-group-text border-0 btn btn-danger shadow-0" id="addon-{{campo}}"><i class="fas fa-times"></i></span>
+                                <div class="col-md-12 position-relative mb-3">
+                                    <label class="form-label" for="flTextoDespacho">Texto do Despacho:</label>
+                                    <textarea class="form-control" required maxlength="8000" rows="5" placeholder="Informe o texto do despacho aqui." v-model="textoDespacho" id="flTextoDespacho"></textarea>
+                                    <div class="invalid-feedback">Texto do despacho é obrigatório!</div>
+                                </div>
+
+                                @*<div class="form-outline mb-3">
+                                            <button class="btn btn-block btn-info" v-on:click="IncluirCampoAnexo"><i class="fas fa-plus"></i> Incluir novo arquivo</button>
+                                            <div class="border-1 mt-3" v-if="campoAnexo.length > 0">
+                                                <div class="input-group mb-3" v-for="(campo, index) in campoAnexo" v-bind:key="index">
+                                                    <input type="file" class="form-control" id="{{campo}}" aria-describedby="addon-{{campo}}" />
+                                                    <span v-on:click="RemoverCampoAnexo(campo)" class="input-group-text border-0 btn btn-danger shadow-0" id="addon-{{campo}}"><i class="fas fa-times"></i></span>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                <hr />*@
+                                    <hr />*@
 
-                            @*<div class="form-outline mb-3">
-                                        <button class="btn btn-block btn-info" v-on:click="IncluirCampoAnexo"><i class="fas fa-plus"></i> Incluir novo arquivo</button>
-                                        <div class="border-1 mt-3" v-if="campoAnexo.length > 0">
-                                            <div class="input-group mb-3" v-for="(campo, index) in campoAnexo" v-bind:key="index">
-                                                <input type="file" class="form-control" id="{{campo}}" aria-describedby="addon-{{campo}}" />
-                                                <span v-on:click="RemoverCampoAnexo(campo)" class="input-group-text border-0 btn btn-danger shadow-0" id="addon-{{campo}}"><i class="fas fa-times"></i></span>
+                                @*<div class="form-outline mb-3">
+                                            <button class="btn btn-block btn-info" v-on:click="IncluirCampoAnexo"><i class="fas fa-plus"></i> Incluir novo arquivo</button>
+                                            <div class="border-1 mt-3" v-if="campoAnexo.length > 0">
+                                                <div class="input-group mb-3" v-for="(campo, index) in campoAnexo" v-bind:key="index">
+                                                    <input type="file" class="form-control" id="{{campo}}" aria-describedby="addon-{{campo}}" />
+                                                    <span v-on:click="RemoverCampoAnexo(campo)" class="input-group-text border-0 btn btn-danger shadow-0" id="addon-{{campo}}"><i class="fas fa-times"></i></span>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                <hr />*@
+                                    <hr />*@
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button type="button" v-on:click="Despachar($event)" class="btn btn-primary m-1 float-end"><i class="fas fa-share"></i> Despachar</button>
+                            <a v-bind:href="urlCancelar" class="btn btn-danger m-1 float-end"><i class="fas fa-times"></i> Cancelar</a>
                         </div>
                     </div>
-                    <div class="card-footer">
-                        <button type="button" v-on:click="Despachar($event)" class="btn btn-primary m-1 float-end"><i class="fas fa-share"></i> Despachar</button>
-                        <a v-bind:href="urlCancelar" class="btn btn-danger m-1 float-end"><i class="fas fa-times"></i> Cancelar</a>
-                    </div>
-                </div>
-            </section>
+                </section>
+
+            </form>
         </div>
     </script>
 
@@ -854,7 +858,7 @@
 
             <div class="input-group mb-3 has-validation">
                 <span class="input-group-text" v-on:click="CarregarDadosEDocs"><i class="fas fa-search"></i></span>
-                <input required v-if="destinatario != null" onkeydown="return false;" v-model="destinatario.nome" v-bind:value="destinatario.nome" v-on:click="CarregarDadosEDocs" type="text" id="" class="form-control mb-0">
+                <input required v-if="destinatario != null" onkeydown="return false;" v-model="destinatario.nomecompleto" v-bind:value="destinatario.nomecompleto" v-on:click="CarregarDadosEDocs" type="text" id="" class="form-control mb-0">
                 <input required v-if="destinatario == null" onkeydown="return false;" v-on:click="CarregarDadosEDocs" type="text" id="" class="form-control mb-0">
                 <div class="invalid-feedback">Destinatário é obrigatório!</div>
             </div>
@@ -879,6 +883,7 @@
                             <button type="button" class="btn-close" v-on:click="FecharModal"></button>
                         </div>
                         <div class="modal-body">
+
                             <!-- Tabs navs -->
                             <ul class="nav nav-tabs nav-fill mb-3" id="ex1" role="tablist">
                                 <li class="nav-item" role="presentation">
@@ -920,69 +925,100 @@
                             </ul>
                             <!-- Tabs navs -->
                             <!-- Tabs content -->
-                            <div class="tab-content overflow-auto" style="max-height:400px" id="ex2-content">
+                            <div class="tab-content" id="ex2-content">
                                 <div class="tab-pane fade show active"
                                      id="setores"
                                      role="tabpanel"
-                                     aria-labelledby="setores">
-                                    <div class="input-group mb-3">
-                                        <input type="text" v-on:keydown="FiltrarSetores" v-model="setorPesquisa" class="form-control" placeholder="Filtrar setores" aria-describedby="btn-pesquisar-setor">
-                                        <button v-on:click="FiltrarSetores" class="btn btn-primary" type="button" id="btn-pesquisar-setor"><i class="fas fa-search"></i></button>
-                                    </div>
-                                    <ul class="list-unstyled">
-                                        <li v-for="(setor, index) in listaSetores" :key="index" class="cursor-pointer text-uppercase" v-on:click="AdicionarDestinatario(setor.id, setor.nome, 4)"><i class="fas fa-puzzle-piece"></i> {{setor.nome}}</li>
-                                    </ul>
+                                     aria-labelledby="setores"
+                                     v-ext-loading="loading-1">
+                                    <div v-if="loading"><div class="text-center">Carregando...</div></div>
+
+                                    <template v-else>
+                                        <div class="input-group mb-3">
+                                            <input type="text" v-on:keydown="FiltrarSetores" v-model="setorPesquisa" class="form-control" placeholder="Filtrar setores" aria-describedby="btn-pesquisar-setor">
+                                            <button v-on:click="FiltrarSetores" class="btn btn-primary" type="button" id="btn-pesquisar-setor"><i class="fas fa-search"></i></button>
+                                        </div>
+                                        <div class="overflow-auto" style="height:400px">
+                                            <div class="list-group list-group-flush">
+                                                <a v-for="(setor, index) in listaSetores" :key="index" class="list-group-item cursor-pointer text-uppercase" v-on:click="AdicionarDestinatario(setor.id, setor.nome, 4)"><i class="fas fa-puzzle-piece"></i> {{setor.nome}}</a>
+                                            </div>
+                                        </div>
+                                    </template>
                                 </div>
                                 <div class="tab-pane fade overflow-auto"
                                      id="grupos"
                                      role="tabpanel"
                                      aria-labelledby="grupos">
-                                    <div class="input-group mb-3">
-                                        <input type="text" v-on:keydown="FiltrarGrupos" v-model="grupoPesquisa" class="form-control" placeholder="Filtrar grupos" aria-describedby="btn-pesquisar-grupos">
-                                        <button v-on:click="FiltrarGrupos" class="btn btn-primary" type="button" id="btn-pesquisar-grupos"><i class="fas fa-search"></i></button>
-                                    </div>
-                                    <ul class="list-unstyled">
-                                        <li v-for="(grupo, index) in listaGrupos" :key="index" class="cursor-pointer text-uppercase" v-on:click="AdicionarDestinatario(grupo.id, grupo.nome, 3)"><i class="fas fa-users"></i> {{grupo.nome}}</li>
-                                    </ul>
+
+                                    <div v-if="loading"><div class="text-center">Carregando...</div></div>
+
+                                    <template v-else>
+                                        <div class="input-group mb-3">
+                                            <input type="text" v-on:keydown="FiltrarGrupos" v-model="grupoPesquisa" class="form-control" placeholder="Filtrar grupos" aria-describedby="btn-pesquisar-grupos">
+                                            <button v-on:click="FiltrarGrupos" class="btn btn-primary" type="button" id="btn-pesquisar-grupos"><i class="fas fa-search"></i></button>
+                                        </div>
+                                        <div class="overflow-auto" style="height:400px">
+                                            <div class="list-group list-group-flush">
+                                                <a v-for="(grupo, index) in listaGrupos" :key="index" class="list-group-item cursor-pointer text-uppercase" v-on:click="AdicionarDestinatario(grupo.id, grupo.nome, 3)"><i class="fas fa-users"></i> {{grupo.nome}}</a>
+                                            </div>
+                                        </div>
+                                    </template>
                                 </div>
                                 <div class="tab-pane fade overflow-auto"
                                      id="comissoes"
                                      role="tabpanel"
                                      aria-labelledby="comissoes">
-                                    <div class="input-group mb-3">
-                                        <input type="text" v-on:keydown="FiltrarComissoes" v-model="comissaoPesquisa" class="form-control" placeholder="Filtrar comissões" aria-describedby="btn-pesquisar-comissoes">
-                                        <button v-on:click="FiltrarComissoes" class="btn btn-primary" type="button" id="btn-pesquisar-comissoes"><i class="fas fa-search"></i></button>
-                                    </div>
-                                    <ul class="list-unstyled">
-                                        <li v-for="(comissao, index) in listaComissoes" :key="index" class="cursor-pointer text-uppercase" v-on:click="AdicionarDestinatario(comissao.id, comissao.nome, 3)"><i class="fas fa-users"></i> {{comissao.nome}}</li>
-                                    </ul>
+
+                                    <div v-if="loading"><div class="text-center">Carregando...</div></div>
+
+                                    <template v-else>
+
+                                        <div class="input-group mb-3">
+                                            <input type="text" v-on:keydown="FiltrarComissoes" v-model="comissaoPesquisa" class="form-control" placeholder="Filtrar comissões" aria-describedby="btn-pesquisar-comissoes">
+                                            <button v-on:click="FiltrarComissoes" class="btn btn-primary" type="button" id="btn-pesquisar-comissoes"><i class="fas fa-search"></i></button>
+                                        </div>
+                                        <div class="overflow-auto" style="height:400px">
+                                            <div class="list-group list-group-flush">
+                                                <a v-for="(comissao, index) in listaComissoes" :key="index" class="list-group-item cursor-pointer text-uppercase" v-on:click="AdicionarDestinatario(comissao.id, comissao.nome, 3)"><i class="fas fa-users"></i> {{comissao.nome}}</a>
+                                            </div>
+                                        </div>
+                                    </template>
                                 </div>
                                 <div class="tab-pane fade overflow-auto"
                                      id="agentes"
                                      role="tabpanel"
                                      aria-labelledby="agentes">
+
                                     <div class="input-group mb-3">
                                         <input type="text" v-model="agentePesquisa" class="form-control" placeholder="Pesquisar servidor" aria-describedby="btn-pesquisar-agente">
                                         <button v-on:click="GetAgentes" class="btn btn-primary" type="button" id="btn-pesquisar-agente"><i class="fas fa-search"></i></button>
                                     </div>
-                                    <ul class="list-unstyled">
-                                        <li v-for="(agente, index) in listaAgentes" :key="index" class="cursor-pointer text-uppercase" v-on:click="AdicionarDestinatario(agente.guid, agente.agentePublicoNome, 2)">
-                                            <i class="fas fa-user"></i> {{agente.agentePublicoNome}} <small>({{agente.nome}})</small>
-                                        </li>
-                                    </ul>
+
+                                    <div v-if="loading"><div class="text-center">Carregando dados...</div></div>
+
+                                    <template v-else>
+                                        <div class="overflow-auto" style="height:400px">
+                                            <div class="list-group list-group-flush">
+                                                <a v-for="(agente, index) in listaAgentes" :key="index" class="list-group-item cursor-pointer text-uppercase" v-on:click="AdicionarDestinatario(agente.guid, agente.agentePublicoNome, 2, agente.nome)">
+                                                    <i class="fas fa-user"></i> {{agente.agentePublicoNome}} <small>({{agente.nome}})</small>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </template>
                                 </div>
                             </div>
                             <!-- Tabs content -->
-                            <div class="card">
+                            <div class="card mt-2">
                                 <div class="card-header">
                                     <span class="fs-6 fw-bold">Selecionados:</span>
                                 </div>
                                 <div class="card-body">
                                     <div v-if="destinatario != null " class="col-12 mt-2 border-secondary border-1">
-                                        <span class="badge bg-success text-white m-1 text-uppercase">{{destinatario.nome}} <i class="fas fa-times-circle" v-on:click="RemoverDestinatario()"></i></span>
+                                        <span class="badge bg-success text-white m-1 text-uppercase">{{destinatario.nomecompleto}} <i class="fas fa-times-circle" v-on:click="RemoverDestinatario()"></i></span>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" v-on:click="FecharModal">
