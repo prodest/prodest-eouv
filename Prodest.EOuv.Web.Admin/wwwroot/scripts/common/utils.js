@@ -1,4 +1,15 @@
-﻿const modalLoading = new bootstrap.Modal(document.getElementById('loading-default'), { 'keyboard': false, 'backdrop': 'static'});
+﻿const urlEOUV = 'https://sistemaouvidoria.es.gov.br/';
+
+const modalLoading = new bootstrap.Modal(document.getElementById('loading-default'), { 'keyboard': false, 'backdrop': 'static' });
+
+const teste = document.querySelectorAll('.accordion-header-manifestacao').forEach(addEvento);
+
+function addEvento(item) {
+    item.addEventListener('click', () => {
+        console.log('teste');
+    });
+}
+
 
 const utils = {
 

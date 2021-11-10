@@ -1,8 +1,6 @@
-﻿@{ViewBag.Title = "Erro";}
-
-
-<div class="alert alert-error">
-    <span>
+﻿<div class="bg-light p-5 rounded mt-3">
+    <h1><i class="far fa-sad-tear fa-2x"></i> Ocorreu um erro inexperado!</h1>
+    <p class="lead my-5">
         @if (ViewBag.Message != null)
         {
             @ViewBag.Message
@@ -11,11 +9,8 @@
         {
             <span>Algo de errado aconteceu enquanto processávamos a operação. Se o problema persistir, entre em contato conosco.</span>
         }
-    </span>
+    </p>
+    <div class="text-right">
+        <a class="btn btn-lg btn-outline-primary" href="https://sistema.ouvidoria.es.gov.br/" role="button">« Retornar ao E-Ouv</a>
+    </div>
 </div>
-<div>
-    <a href="https://sistema.ouvidoria.es.gov.br/">
-        Voltar para o E-Ouv
-    </a>
-</div>
-

@@ -31,13 +31,18 @@
         },
         async ObterManifestacaoPorId() {
             await this.setLoadingAndExecute(async () => {
+                try {
 
-                let ret = await eOuvApi.ObterManifestacaoPorId(this.idManifestacao);
-                if (ret.ok) {
-                    this.numeroManifestacao = ret.retorno.numProtocolo;
+                    let ret = await eOuvApi.ObterManifestacaoPorId(this.idManifestacao);
+                    if (ret.ok) {
+                        this.numeroManifestacao = ret.retorno.numProtocolo;
+                    }
+                    else {
+                        
+                    }
                 }
-                else {
-                    window.location.href = "/Error?msg=" + ret.mensagem;
+                catch (e) {
+                    window.location.href = "/Error?msg=" + e;
                 }
             });
         },
@@ -49,20 +54,14 @@
                     let ret = await eOuvApi.ObterDespachosPorManifestacao(this.idManifestacao);
                     if (ret.ok) {
                         this.listaDespachos = ret.retorno;
-                        this.VerificarLiberarResposta(this.listaDespachos);
-                        mensagemSistema.showMensagemSucesso('Lista de despacho carregada com sucesso.');
-
-                        console.log('teste')
+                        this.VerificarLiberarResposta(this.listaDespachos);                        
                     }
                     else {
                         mensagemSistema.showMensagemErro(ret.mensagem);
-                        //window.location.href = "/Error?msg=" + ret.mensagem;
-                    }
-
-                    //mensagemSistema.showMensagemErro('teste');
+                    }                    
                 }
                 catch (e) {
-                    console.log(e);
+                    mensagemSistema.showMensagemErro(e);
                 }
             });
 

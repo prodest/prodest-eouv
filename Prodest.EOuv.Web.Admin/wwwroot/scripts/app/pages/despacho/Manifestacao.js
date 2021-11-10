@@ -70,6 +70,9 @@
     async mounted() {
         this.ObterParametrosQueryString();
         await this.obterManifestacao();
+        let incluir = document.querySelector('.incluir').addEventListener('click', (e) => {
+            e.delegateTarget = e.target;
+        });
     },
 
     methods: {
@@ -248,6 +251,23 @@
         },
 
         IncluirDocumento(e) {
+            console.log(e);
+
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+
+            this.ToggleCheck(e);
+            this.$emit('selecionar-dado-manifestacao', e);
+
+            if (e.target.classList.contains("fa-check-square")) {
+                console.log('Documento Incluso!');
+            } else {
+                console.log('Documento Removido!');
+            }
+        },
+
+        IncluirTodos(e) {
+            e.stopPropagation();
             e.stopImmediatePropagation();
 
             this.ToggleCheck(e);

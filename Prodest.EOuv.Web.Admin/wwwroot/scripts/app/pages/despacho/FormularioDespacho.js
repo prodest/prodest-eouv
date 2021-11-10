@@ -69,7 +69,7 @@ const DespachoForm = {
 
             this.dataAtual = utils.DataDiaMesAno(new Date());
             utils.CriarDatePickerPorClasse(document.getElementsByClassName('data-eouv'), new Date(), fimAtendimento);
-            this.prazoResposta = this.dataAtual;
+            //this.prazoResposta = this.dataAtual;
         },
 
         IncluirCampoAnexo() {
@@ -129,7 +129,7 @@ const DespachoForm = {
         },
         ToggleDadosManifestacaoSelecionados(e) {
             console.log(e)
-            let item = e.target.parentNode.id;
+            let item = e.target.id;
             this.dadosManifestacaoSelecionados[item] = !this.dadosManifestacaoSelecionados[item];
 
             for (var i in this.dadosManifestacaoSelecionados) {

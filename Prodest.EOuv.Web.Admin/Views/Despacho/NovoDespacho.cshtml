@@ -23,7 +23,6 @@
 @section templates{
 
     <script type="text/html" id="template-despacho-manifestacao">
-
         <section class="mb-4">
             <input type="hidden" v-model="dadosBasicos.idManifestacao">
             <div class="card">
@@ -40,14 +39,19 @@
                         <div class="accordion accordion-flush" id="accordionPanelsManifestacao">
                             <!--Dados Básicos da Manifestação-->
                             <div class="accordion-item">
-                                <h5 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosBasicos"
-                                    data-bs-toggle="collapse"
-                                    data-bs-target="#panel-DadosBasicos"
-                                    aria-expanded="false"
-                                    aria-controls="panel-DadosBasicos">
-                                    <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                    Dados Básicos da Manifestação
-                                </h5>
+                                <div class="d-flex">
+                                    <div class="align-self-center">
+                                        <i class="py-4 px-3 check-document far fa-square incluir" id="DadosBasicos" v-on:click="IncluirDocumento($event)"></i>
+                                    </div>
+                                    <div class="h5 ps-1 cursor-pointer g-col-11 accordion-header-manifestacao accordion-header d-flex accordion-button collapsed"
+                                         data-bs-toggle="collapse"
+                                         data-bs-target="#panel-DadosBasicos"
+                                         aria-expanded="false"
+                                         aria-controls="panel-DadosBasicos">
+                                        Dados Básicos da Manifestação
+                                    </div>
+                                </div>
+
                                 <div id="panel-DadosBasicos" class="accordion-collapse collapse hide" aria-labelledby="DadosBasicos">
                                     <div class="accordion-body">
                                         <div class="row justify-content-start">
@@ -123,27 +127,37 @@
 
                             <!--Demais Dados da Manifestação-->
                             <div class="accordion-item">
-                                <h5 class="px-2 accordion-header d-flex accordion-button collapsed" id="DemaisDados"
-                                    data-bs-toggle="collapse"
-                                    data-bs-target="#panel-demaisDados"
-                                    aria-expanded="false"
-                                    aria-controls="panel-demaisDados">
-                                    <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                    Demais Dados da Manifestação
-                                </h5>
+                                <div class="d-flex">
+                                    <div class="align-self-center">
+                                        <i class="py-4 px-3 check-document far fa-square incluir" id="DemaisDados" v-on:click="IncluirDocumento($event)"></i>
+                                    </div>
+                                    <div class="h5 ps-1 cursor-pointer g-col-11 accordion-header-manifestacao accordion-header d-flex accordion-button collapsed"
+                                         data-bs-toggle="collapse"
+                                         data-bs-target="#panel-demaisDados"
+                                         aria-expanded="false"
+                                         aria-controls="panel-demaisDados">
+                                        Demais Dados da Manifestação
+                                    </div>
+                                </div>
+
                                 <div id="panel-demaisDados" class="accordion-collapse collapse hide" aria-labelledby="demaisDados">
                                     <div class="accordion p-3" id="accordionPanelsDemaisDados">
 
                                         <!--Teor da Manifestação-->
                                         <div class="accordion-item">
-                                            <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosTeor"
-                                                data-bs-toggle="collapse"
-                                                data-bs-target="#panel-Teor"
-                                                aria-expanded="false"
-                                                aria-controls="panel-Teor">
-                                                <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                                Teor da Manifestação
-                                            </h2>
+                                            <div class="d-flex">
+                                                <div class="align-self-center">
+                                                    <i class="py-4 px-3 check-document far fa-square incluir" id="DadosTeor" v-on:click="IncluirDocumento($event)"></i>
+                                                </div>
+                                                <div class="h5 ps-1 cursor-pointer g-col-11 accordion-header-manifestacao accordion-header d-flex accordion-button collapsed"
+                                                     data-bs-toggle="collapse"
+                                                     data-bs-target="#panel-Teor"
+                                                     aria-expanded="false"
+                                                     aria-controls="panel-Teor">
+                                                    Teor da Manifestação
+                                                </div>
+                                            </div>
+
                                             <div id="panel-Teor" class="accordion-collapse collapse hide" aria-labelledby="Teor">
                                                 <div class="accordion-body">
                                                     <div class="row justify-content-start">
@@ -163,15 +177,20 @@
                                         </div>
 
                                         <!--Dados do Manifestante-->
-                                        <div class="accordion-item">
-                                            <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosManifestante"
-                                                data-bs-toggle="collapse"
-                                                data-bs-target="#panel-DadosManifestante"
-                                                aria-expanded="false"
-                                                aria-controls="panel-DadosManifestante">
-                                                <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                                Dados do Manifestante
-                                            </h2>
+                                        <div class="accordion-item">                                            
+                                            <div class="d-flex">
+                                                <div class="align-self-center">
+                                                    <i class="py-4 px-3 check-document far fa-square incluir" id="DadosManifestante" v-on:click="IncluirDocumento($event)"></i>
+                                                </div>
+                                                <div class="h5 ps-1 cursor-pointer g-col-11 accordion-header-manifestacao accordion-header d-flex accordion-button collapsed"
+                                                     data-bs-toggle="collapse"
+                                                     data-bs-target="#panel-DadosManifestante"
+                                                     aria-expanded="false"
+                                                     aria-controls="panel-DadosManifestante">
+                                                    Dados do Manifestante
+                                                </div>
+                                            </div>
+
                                             <div id="panel-DadosManifestante" class="accordion-collapse collapse hide" aria-labelledby="DadosManifestante">
                                                 <div class="accordion-body">
                                                     <div class="row justify-content-start">
@@ -257,27 +276,35 @@
 
                                         <!--Dados de Análise-->
                                         <div class="accordion-item">
-                                            <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosAnalise"
-                                                data-bs-toggle="collapse"
-                                                data-bs-target="#panel-DadosAnalise"
-                                                aria-expanded="false"
-                                                aria-controls="panel-DadosAnalise">
-                                                <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                                Dados da Análise
-                                            </h2>
+                                            <div class="d-flex">
+                                                <div class="align-self-center">
+                                                    <i class="py-4 px-3 check-document far fa-square incluir" id="DadosAnalise" v-on:click="IncluirDocumento($event)"></i>
+                                                </div>
+                                                <div class="h5 ps-1 cursor-pointer g-col-11 accordion-header-manifestacao accordion-header d-flex accordion-button collapsed"
+                                                     data-bs-toggle="collapse"
+                                                     data-bs-target="#panel-DadosAnalise"
+                                                     aria-expanded="false"
+                                                     aria-controls="panel-DadosAnalise">
+                                                    Dados da Análise
+                                                </div>
+                                            </div>
                                             <div id="panel-DadosAnalise" class="accordion-collapse collapse hide" aria-labelledby="DadosAnalise">
                                                 <div class="accordion p-3" id="accordionPanelsDadosAnalise">
 
                                                     <!--Dados de Complementos-->
                                                     <div v-if="complementoManifestacao.length > 0" class="accordion-item">
-                                                        <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosComplemento"
-                                                            data-bs-toggle="collapse"
-                                                            data-bs-target="#panel-DadosComplemento"
-                                                            aria-expanded="true"
-                                                            aria-controls="panel-DadosComplemento">
-                                                            <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                                            Dados de Complementos da Manifestação
-                                                        </h2>
+                                                        <div class="d-flex">
+                                                            <div class="align-self-center">
+                                                                <i class="py-4 px-3 check-document far fa-square incluir" id="DadosComplemento" v-on:click="IncluirDocumento($event)"></i>
+                                                            </div>
+                                                            <div class="h5 ps-1 cursor-pointer g-col-11 accordion-header-manifestacao accordion-header d-flex accordion-button collapsed"
+                                                                 data-bs-toggle="collapse"
+                                                                 data-bs-target="#panel-DadosComplemento"
+                                                                 aria-expanded="false"
+                                                                 aria-controls="panel-DadosComplemento">
+                                                                Dados de Complementos da Manifestação
+                                                            </div>
+                                                        </div>
                                                         <div id="panel-DadosComplemento" class="accordion-collapse collapse hide" aria-labelledby="DadosComplemento">
                                                             <div class="accordion-body">
                                                                 <table class="table table-striped table-bordered table-sm">
@@ -303,15 +330,19 @@
                                                     </div>
 
                                                     <!--Dados de Prorrogação-->
-                                                    <div v-if="prorrogacaoManifestacao.length > 0" class="accordion-item">
-                                                        <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosProrrogacao"
-                                                            data-bs-toggle="collapse"
-                                                            data-bs-target="#panel-DadosProrrogacao"
-                                                            aria-expanded="false"
-                                                            aria-controls="panel-DadosProrrogacao">
-                                                            <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                                            Dados Prorrogação
-                                                        </h2>
+                                                    <div v-if="prorrogacaoManifestacao.length > 0" class="accordion-item">                                                        
+                                                        <div class="d-flex">
+                                                            <div class="align-self-center">
+                                                                <i class="py-4 px-3 check-document far fa-square incluir" id="DadosProrrogacao" v-on:click="IncluirDocumento($event)"></i>
+                                                            </div>
+                                                            <div class="h5 ps-1 cursor-pointer g-col-11 accordion-header-manifestacao accordion-header d-flex accordion-button collapsed"
+                                                                 data-bs-toggle="collapse"
+                                                                 data-bs-target="#panel-DadosProrrogacao"
+                                                                 aria-expanded="false"
+                                                                 aria-controls="panel-DadosProrrogacao">
+                                                                Dados de Prorrogação
+                                                            </div>
+                                                        </div>
                                                         <div id="panel-DadosProrrogacao" class="accordion-collapse collapse hide" aria-labelledby="DadosProrrogacao">
                                                             <div class="accordion-body">
                                                                 <table class="table table-striped table-bordered table-sm">
@@ -339,15 +370,19 @@
                                                     </div>
 
                                                     <!--Dados de Diligências-->
-                                                    <div v-if="diligenciaManifestacao.length > 0" class="accordion-item">
-                                                        <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosDiligencia"
-                                                            data-bs-toggle="collapse"
-                                                            data-bs-target="#panel-DadosDiligencia"
-                                                            aria-expanded="true"
-                                                            aria-controls="panel-DadosDiligencia">
-                                                            <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                                            Dados de Diligências
-                                                        </h2>
+                                                    <div v-if="diligenciaManifestacao.length > 0" class="accordion-item">                                                        
+                                                        <div class="d-flex">
+                                                            <div class="align-self-center">
+                                                                <i class="py-4 px-3 check-document far fa-square incluir" id="DadosDiligencia" v-on:click="IncluirDocumento($event)"></i>
+                                                            </div>
+                                                            <div class="h5 ps-1 cursor-pointer g-col-11 accordion-header-manifestacao accordion-header d-flex accordion-button collapsed"
+                                                                 data-bs-toggle="collapse"
+                                                                 data-bs-target="#panel-DadosDiligencia"
+                                                                 aria-expanded="false"
+                                                                 aria-controls="panel-DadosDiligencia">
+                                                                Dados de Diligências
+                                                            </div>
+                                                        </div>
                                                         <div id="panel-DadosDiligencia" class="accordion-collapse collapse hide" aria-labelledby="DadosDiligencia">
                                                             <div class="accordion-body">
                                                                 <table class="table table-striped table-bordered table-sm">
@@ -376,14 +411,18 @@
 
                                                     <!--Dados de Encaminhamento-->
                                                     <div v-if="encaminhamentoManifestacao.length > 0" class="accordion-item">
-                                                        <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosEncaminhamento"
-                                                            data-bs-toggle="collapse"
-                                                            data-bs-target="#panel-DadosEncaminhamento"
-                                                            aria-expanded="false"
-                                                            aria-controls="panel-DadosEncaminhamento">
-                                                            <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                                            Dados de Encaminhamento
-                                                        </h2>
+                                                        <div class="d-flex">
+                                                            <div class="align-self-center">
+                                                                <i class="py-4 px-3 check-document far fa-square incluir" id="DadosEncaminhamento" v-on:click="IncluirDocumento($event)"></i>
+                                                            </div>
+                                                            <div class="h5 ps-1 cursor-pointer g-col-11 accordion-header-manifestacao accordion-header d-flex accordion-button collapsed"
+                                                                 data-bs-toggle="collapse"
+                                                                 data-bs-target="#panel-DadosEncaminhamento"
+                                                                 aria-expanded="false"
+                                                                 aria-controls="panel-DadosEncaminhamento">
+                                                                Dados de Encaminhamento
+                                                            </div>
+                                                        </div>
                                                         <div id="panel-DadosEncaminhamento" class="accordion-collapse collapse hide" aria-labelledby="DadosEncaminhamento">
                                                             <div class="accordion-body">
                                                                 <table class="table table-striped table-bordered table-sm">
@@ -410,14 +449,18 @@
 
                                                     <!--Dados de Resposta-->
                                                     <div v-if="respostaManifestacao.length > 0" class="accordion-item">
-                                                        <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosResposta"
-                                                            data-bs-toggle="collapse"
-                                                            data-bs-target="#panel-DadosResposta"
-                                                            aria-expanded="true"
-                                                            aria-controls="panel-DadosResposta">
-                                                            <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                                            Dados de Resposta da Manifestação
-                                                        </h2>
+                                                        <div class="d-flex">
+                                                            <div class="align-self-center">
+                                                                <i class="py-4 px-3 check-document far fa-square incluir" id="DadosResposta" v-on:click="IncluirDocumento($event)"></i>
+                                                            </div>
+                                                            <div class="h5 ps-1 cursor-pointer g-col-11 accordion-header-manifestacao accordion-header d-flex accordion-button collapsed"
+                                                                 data-bs-toggle="collapse"
+                                                                 data-bs-target="#panel-DadosResposta"
+                                                                 aria-expanded="false"
+                                                                 aria-controls="panel-DadosResposta">
+                                                                Dados de Resposta da Manifestação
+                                                            </div>
+                                                        </div>
                                                         <div id="panel-DadosResposta" class="accordion-collapse collapse hide" aria-labelledby="DadosResposta">
                                                             <div class="accordion-body">
                                                                 <table class="table table-striped table-bordered table-sm">
@@ -442,32 +485,36 @@
 
                                                     <!--Dados de Apuração-->
                                                     <div v-if="apuracaoManifestacao.length > 0" class="accordion-item">
-                                                        <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosApuracao"
-                                                            data-bs-toggle="collapse"
-                                                            data-bs-target="#panel-DadosApuracao"
-                                                            aria-expanded="true"
-                                                            aria-controls="panel-DadosApuracao">
-                                                            <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                                            Dados de Apuração
-                                                        </h2>
+                                                        <div class="d-flex">
+                                                            <div class="align-self-center">
+                                                                <i class="py-4 px-3 check-document far fa-square incluir" id="DadosApuracao" v-on:click="IncluirDocumento($event)"></i>
+                                                            </div>
+                                                            <div class="h5 ps-1 cursor-pointer g-col-11 accordion-header-manifestacao accordion-header d-flex accordion-button collapsed"
+                                                                 data-bs-toggle="collapse"
+                                                                 data-bs-target="#panel-DadosApuracao"
+                                                                 aria-expanded="false"
+                                                                 aria-controls="panel-DadosApuracao">
+                                                                Dados de Apuração
+                                                            </div>
+                                                        </div>
                                                         <div id="panel-DadosApuracao" class="accordion-collapse collapse hide" aria-labelledby="DadosApuracao">
                                                             <div class="accordion-body">
-                                                                <table class="table table-striped table-bordered table-sm">
-                                                                    <thead class="table-light">
-                                                                        <tr>
-                                                                            <th scope="col">Data Solicitação</th>
-                                                                            <th scope="col">Texto Solicitação</th>
-                                                                            <th scope="col">Data Resposta</th>
-                                                                            <th scope="col">Texto Resposta</th>
-                                                                        </tr>
-                                                                    </thead>
+                                                                <table class="table table-striped table-bordered table-sm">                                                                                                                                            
                                                                     <tbody>
-                                                                        <tr v-for="(dados, index) in apuracaoManifestacao" :key="index">
-                                                                            <td>{{dados.dataSolicitacaoApuracaoFormat}}</td>
-                                                                            <td>{{dados.txtSolicitacaoApuracao}}</td>
-                                                                            <td>{{dados.dataRespostaApuracaoFormat}}</td>
-                                                                            <td>{{dados.txtRespostaApuracao}}</td>
-                                                                        </tr>
+                                                                        <template v-for="(dados, index) in apuracaoManifestacao" :key="index">
+                                                                            <tr>
+                                                                                <th scope="col">Data Solicitação</th>
+                                                                                <td>{{dados.dataSolicitacaoApuracaoFormat}}</td>
+                                                                                <th scope="col">Texto Solicitação</th>
+                                                                                <td>{{dados.txtSolicitacaoApuracao}}</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <th scope="col">Data Resposta</th>
+                                                                                <td>{{dados.dataRespostaApuracaoFormat}}</td>
+                                                                                <th scope="col">Texto Resposta</th>
+                                                                                <td>{{dados.txtRespostaApuracao}}</td>
+                                                                            </tr>
+                                                                        </template>
                                                                     </tbody>
                                                                 </table>
                                                             </div>
@@ -476,14 +523,18 @@
 
                                                     <!--Dados de Despacho-->
                                                     <div v-if="despachoManifestacao.length > 0" class="accordion-item">
-                                                        <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosDespacho"
-                                                            data-bs-toggle="collapse"
-                                                            data-bs-target="#panel-DadosDespacho"
-                                                            aria-expanded="true"
-                                                            aria-controls="panel-DadosDespacho">
-                                                            <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                                            Dados de Despacho
-                                                        </h2>
+                                                        <div class="d-flex">
+                                                            <div class="align-self-center">
+                                                                <i class="py-4 px-3 check-document far fa-square incluir" id="DadosDespacho" v-on:click="IncluirDocumento($event)"></i>
+                                                            </div>
+                                                            <div class="h5 ps-1 cursor-pointer g-col-11 accordion-header-manifestacao accordion-header d-flex accordion-button collapsed"
+                                                                 data-bs-toggle="collapse"
+                                                                 data-bs-target="#panel-DadosDespacho"
+                                                                 aria-expanded="false"
+                                                                 aria-controls="panel-DadosDespacho">
+                                                                Dados de Despacho
+                                                            </div>
+                                                        </div>
                                                         <div id="panel-DadosDespacho" class="accordion-collapse collapse hide" aria-labelledby="DadosDespacho">
                                                             <div class="accordion-body">
                                                                 <table class="table table-striped table-bordered table-sm">
@@ -512,14 +563,18 @@
 
                                                     <!--Dados de Notificações-->
                                                     <div v-if="notificacaoManifestacao.length > 0" class="accordion-item">
-                                                        <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosNotificacao"
-                                                            data-bs-toggle="collapse"
-                                                            data-bs-target="#panel-DadosNotificacao"
-                                                            aria-expanded="true"
-                                                            aria-controls="panel-DadosNotificacao">
-                                                            <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                                            Dados de Notificações
-                                                        </h2>
+                                                        <div class="d-flex">
+                                                            <div class="align-self-center">
+                                                                <i class="py-4 px-3 check-document far fa-square incluir" id="DadosNotificacao" v-on:click="IncluirDocumento($event)"></i>
+                                                            </div>
+                                                            <div class="h5 ps-1 cursor-pointer g-col-11 accordion-header-manifestacao accordion-header d-flex accordion-button collapsed"
+                                                                 data-bs-toggle="collapse"
+                                                                 data-bs-target="#panel-DadosNotificacao"
+                                                                 aria-expanded="false"
+                                                                 aria-controls="panel-DadosNotificacao">
+                                                                Dados de Notificações
+                                                            </div>
+                                                        </div>
                                                         <div id="panel-DadosNotificacao" class="accordion-collapse collapse hide" aria-labelledby="DadosNotificacao">
                                                             <div class="accordion-body">
                                                                 <table class="table table-striped table-bordered table-sm">
@@ -542,14 +597,18 @@
 
                                                     <!--Dados de Anotações-->
                                                     <div v-if="anotacaoManifestacao.length > 0" class="accordion-item">
-                                                        <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosAnotacao"
-                                                            data-bs-toggle="collapse"
-                                                            data-bs-target="#panel-DadosAnotacao"
-                                                            aria-expanded="true"
-                                                            aria-controls="panel-DadosAnotacao">
-                                                            <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                                            Dados de Anotações
-                                                        </h2>
+                                                        <div class="d-flex">
+                                                            <div class="align-self-center">
+                                                                <i class="py-4 px-3 check-document far fa-square incluir" id="DadosAnotacao" v-on:click="IncluirDocumento($event)"></i>
+                                                            </div>
+                                                            <div class="h5 ps-1 cursor-pointer g-col-11 accordion-header-manifestacao accordion-header d-flex accordion-button collapsed"
+                                                                 data-bs-toggle="collapse"
+                                                                 data-bs-target="#panel-DadosAnotacao"
+                                                                 aria-expanded="false"
+                                                                 aria-controls="panel-DadosAnotacao">
+                                                                Dados de Anotações
+                                                            </div>
+                                                        </div>
                                                         <div id="panel-DadosAnotacao" class="accordion-collapse collapse hide" aria-labelledby="DadosAnotacao">
                                                             <div class="accordion-body">
                                                                 <table class="table table-striped table-bordered table-sm">
@@ -572,14 +631,18 @@
 
                                                     <!--Dados Interpelação-->
                                                     <div v-if="interpelacaoManifestacao.length > 0" class="accordion-item">
-                                                        <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosInterpelacao"
-                                                            data-bs-toggle="collapse"
-                                                            data-bs-target="#panel-DadosInterpelacao"
-                                                            aria-expanded="true"
-                                                            aria-controls="panel-DadosInterpelacao">
-                                                            <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                                            Dados de Interpelação
-                                                        </h2>
+                                                        <div class="d-flex">
+                                                            <div class="align-self-center">
+                                                                <i class="py-4 px-3 check-document far fa-square incluir" id="DadosInterpelacao" v-on:click="IncluirDocumento($event)"></i>
+                                                            </div>
+                                                            <div class="h5 ps-1 cursor-pointer g-col-11 accordion-header-manifestacao accordion-header d-flex accordion-button collapsed"
+                                                                 data-bs-toggle="collapse"
+                                                                 data-bs-target="#panel-DadosInterpelacao"
+                                                                 aria-expanded="false"
+                                                                 aria-controls="panel-DadosInterpelacao">
+                                                                Dados de Interpelação
+                                                            </div>
+                                                        </div>
                                                         <div id="panel-DadosInterpelacao" class="accordion-collapse collapse hide" aria-labelledby="DadosInterpelacao">
                                                             <div class="accordion-body">
                                                                 <table class="table table-striped table-bordered table-sm">
@@ -608,14 +671,18 @@
 
                                                     <!--Dados de Reclamação de Omissão-->
                                                     <div v-if="reclamacaoOmissao.length > 0" class="accordion-item">
-                                                        <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosReclamacaoOmissao"
-                                                            data-bs-toggle="collapse"
-                                                            data-bs-target="#panel-DadosReclamacaoOmissao"
-                                                            aria-expanded="true"
-                                                            aria-controls="panel-DadosReclamacaoOmissao">
-                                                            <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                                            Dados de Reclamação de Omissão
-                                                        </h2>
+                                                        <div class="d-flex">
+                                                            <div class="align-self-center">
+                                                                <i class="py-4 px-3 check-document far fa-square incluir" id="DadosReclamacaoOmissao" v-on:click="IncluirDocumento($event)"></i>
+                                                            </div>
+                                                            <div class="h5 ps-1 cursor-pointer g-col-11 accordion-header-manifestacao accordion-header d-flex accordion-button collapsed"
+                                                                 data-bs-toggle="collapse"
+                                                                 data-bs-target="#panel-DadosReclamacaoOmissao"
+                                                                 aria-expanded="false"
+                                                                 aria-controls="panel-DadosReclamacaoOmissao">
+                                                                Dados de Reclamação de Omissão
+                                                            </div>
+                                                        </div>
                                                         <div id="panel-DadosReclamacaoOmissao" class="accordion-collapse collapse hide" aria-labelledby="DadosReclamacaoOmissao">
                                                             <div class="accordion-body">
                                                                 <table class="table table-striped table-bordered table-sm">
@@ -638,14 +705,18 @@
 
                                                     <!--Dados Recurso Negativa-->
                                                     <div v-if="recursoNegativa.length > 0" class="accordion-item">
-                                                        <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosRecursoNegativa"
-                                                            data-bs-toggle="collapse"
-                                                            data-bs-target="#panel-DadosRecursoNegativa"
-                                                            aria-expanded="true"
-                                                            aria-controls="panel-DadosRecursoNegativa">
-                                                            <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                                            Dados de Recurso de Negativa
-                                                        </h2>
+                                                        <div class="d-flex">
+                                                            <div class="align-self-center">
+                                                                <i class="py-4 px-3 check-document far fa-square incluir" id="DadosRecursoNegativa" v-on:click="IncluirDocumento($event)"></i>
+                                                            </div>
+                                                            <div class="h5 ps-1 cursor-pointer g-col-11 accordion-header-manifestacao accordion-header d-flex accordion-button collapsed"
+                                                                 data-bs-toggle="collapse"
+                                                                 data-bs-target="#panel-DadosRecursoNegativa"
+                                                                 aria-expanded="false"
+                                                                 aria-controls="panel-DadosRecursoNegativa">
+                                                                Dados de Recurso de Negativa
+                                                            </div>
+                                                        </div>
                                                         <div id="panel-DadosRecursoNegativa" class="accordion-collapse collapse hide" aria-labelledby="DadosRecursoNegativa">
                                                             <div class="accordion-body">
                                                                 <table class="table table-striped table-bordered table-sm">
@@ -674,14 +745,18 @@
 
                                                     <!--Dados de Desdobramentos-->
                                                     <div v-if="desdobramentoManifestacao.length > 0" class="accordion-item">
-                                                        <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosDesdobramento"
-                                                            data-bs-toggle="collapse"
-                                                            data-bs-target="#panel-DadosDesdobramento"
-                                                            aria-expanded="true"
-                                                            aria-controls="panel-DadosDesdobramento">
-                                                            <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                                            Dados de Desdobramentos
-                                                        </h2>
+                                                        <div class="d-flex">
+                                                            <div class="align-self-center">
+                                                                <i class="py-4 px-3 check-document far fa-square incluir" id="DadosDesdobramento" v-on:click="IncluirDocumento($event)"></i>
+                                                            </div>
+                                                            <div class="h5 ps-1 cursor-pointer g-col-11 accordion-header-manifestacao accordion-header d-flex accordion-button collapsed"
+                                                                 data-bs-toggle="collapse"
+                                                                 data-bs-target="#panel-DadosDesdobramento"
+                                                                 aria-expanded="false"
+                                                                 aria-controls="panel-DadosDesdobramento">
+                                                                Dados de Desdobramentos
+                                                            </div>
+                                                        </div>
                                                         <div id="panel-DadosDesdobramento" class="accordion-collapse collapse hide" aria-labelledby="DadosDesdobramento">
                                                             <div class="accordion-body">
                                                                 <table class="table table-striped table-bordered table-sm">
@@ -706,32 +781,32 @@
 
                                                     <!--Dados Anexos-->
                                                     <!--<div v-if="anexoManifestacao.length > 0" class="accordion-item">
-                                                        <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosAnexo">
-                                                            <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                                            <button class="flex-fill accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                                                    data-bs-target="#panel-DadosAnexo" aria-expanded="true" aria-controls="panel-DadosAnexo">
-                                                                Dados de Anexos
-                                                            </button>
-                                                        </h2>
-                                                        <div id="panel-DadosAnexo" class="accordion-collapse collapse hide" aria-labelledby="DadosAnexo">
-                                                            <div class="accordion-body">
-                                                                <table class="table table-striped table-bordered table-sm">
-                                                                    <thead class="table-light">
-                                                                        <tr>
-                                                                            <th scope="col">Data</th>
-                                                                            <th scope="col">Notificação</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        <tr v-for="(dados, index) in anexoManifestacao" :key="index">
-                                                                            <td>{{dados.dtComplemento}}</td>
-                                                                            <td>{{dados.txtComplemento}}</td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                    </div>-->
+                <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosAnexo">
+                    <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
+                    <button class="flex-fill accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#panel-DadosAnexo" aria-expanded="true" aria-controls="panel-DadosAnexo">
+                        Dados de Anexos
+                    </button>
+                </h2>
+                <div id="panel-DadosAnexo" class="accordion-collapse collapse hide" aria-labelledby="DadosAnexo">
+                    <div class="accordion-body">
+                        <table class="table table-striped table-bordered table-sm">
+                            <thead class="table-light">
+                                <tr>
+                                    <th scope="col">Data</th>
+                                    <th scope="col">Notificação</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(dados, index) in anexoManifestacao" :key="index">
+                                    <td>{{dados.dtComplemento}}</td>
+                                    <td>{{dados.txtComplemento}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>-->
 
                                                 </div>
 
@@ -743,14 +818,18 @@
 
                             <!--Histórico da Manifestação-->
                             <div class="accordion-item">
-                                <h2 class="px-2 accordion-header d-flex accordion-button collapsed" id="DadosHistorico"
-                                    data-bs-toggle="collapse"
-                                    data-bs-target="#panel-DadosHistorico"
-                                    aria-expanded="false"
-                                    aria-controls="panel-DadosHistorico">
-                                    <i class="me-3 check-document far fa-square incluir" v-on:click="IncluirDocumento($event)"></i>
-                                    Histórico da Manifestação
-                                </h2>
+                                <div class="d-flex">
+                                    <div class="align-self-center">
+                                        <i class="py-4 px-3 check-document far fa-square incluir" id="DadosHistorico" v-on:click="IncluirDocumento($event)"></i>
+                                    </div>
+                                    <div class="h5 ps-1 cursor-pointer g-col-11 accordion-header-manifestacao accordion-header d-flex accordion-button collapsed"
+                                         data-bs-toggle="collapse"
+                                         data-bs-target="#panel-DadosHistorico"
+                                         aria-expanded="false"
+                                         aria-controls="panel-DadosHistorico">
+                                        Histórico da Manifestação
+                                    </div>
+                                </div>
                                 <div id="panel-DadosHistorico" class="accordion-collapse collapse hide" aria-labelledby="DadosHistorico">
                                     <div class="accordion-body">
                                         <table class="table table-striped table-bordered table-sm">
@@ -799,7 +878,7 @@
                                 </div>
                                 <template v-else>
                                     <div class="col-md-12 position-relative mb-4">
-                                        <label class="form-label" for="customAnexo">Com qual Cargo/Função você irá Encaminhar?</label>                                        
+                                        <label class="form-label" for="customAnexo">Com qual Cargo/Função você irá Encaminhar?</label>
                                         <div class="form-check px-0" v-for="(papel, index) in papeisUsuario" v-bind:key="index" v-bind:for="papel.id">
                                             <input type="radio" v-on:change="TogglePapelSelecionado($event)" required class="btn-check" name="papel" v-bind:id="papel.id" autocomplete="off">
                                             <label class="btn btn-outline-primary btn-sm m-1" v-bind:for="papel.id">{{papel.nome}} - {{papel.siglaUnidadePapel}} - {{papel.siglaOrganizacaoPapel}}</label>
