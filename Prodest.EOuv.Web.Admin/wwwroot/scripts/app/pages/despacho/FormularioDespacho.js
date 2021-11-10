@@ -18,7 +18,7 @@ const DespachoForm = {
             tipoDestinatario: null,
             destinatarioSelecionado: null,
             dadosManifestacaoSelecionados: {
-                DadosBasicos: true,
+                DadosBasicos: false,
                 DadosTeor: false,
                 DadosManifestante: false,
                 DadosProrrogacao: false,
