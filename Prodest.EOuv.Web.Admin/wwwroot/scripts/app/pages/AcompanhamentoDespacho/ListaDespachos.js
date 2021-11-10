@@ -17,7 +17,6 @@
     async mounted() {
         this.ObterParametrosQueryString();
         this.MontarURLRedirecionamento();
-        await this.ObterManifestacaoPorId()
         await this.CarregarListaDespachos();
     },
 
@@ -31,18 +30,13 @@
         },
         async ObterManifestacaoPorId() {
             await this.setLoadingAndExecute(async () => {
-                try {
 
-                    let ret = await eOuvApi.ObterManifestacaoPorId(this.idManifestacao);
-                    if (ret.ok) {
-                        this.numeroManifestacao = ret.retorno.numProtocolo;
-                    }
-                    else {
-                        
-                    }
+                let ret = await eOuvApi.ObterManifestacaoPorId(this.idManifestacao);
+                if (ret.ok) {
+                    this.numeroManifestacao = ret.retorno.numProtocolo;
                 }
-                catch (e) {
-                    window.location.href = "/Error?msg=" + e;
+                else {
+                    window.location.href = "/Error?msg=" + ret.mensagem;
                 }
             });
         },
@@ -50,18 +44,26 @@
 
             await this.setLoadingAndExecute(async () => {
                 try {
-
-                    let ret = await eOuvApi.ObterDespachosPorManifestacao(this.idManifestacao);
+                    let ret = await eOuvApi.ObterManifestacaoPorId(this.idManifestacao);
                     if (ret.ok) {
-                        this.listaDespachos = ret.retorno;
-                        this.VerificarLiberarResposta(this.listaDespachos);                        
+                        this.numeroManifestacao = ret.retorno.numProtocolo;
+
+                        let ret2 = await eOuvApi.ObterDespachosPorManifestacao(this.idManifestacao);
+                        if (ret2.ok) {
+                            this.listaDespachos = ret2.retorno;
+                            this.VerificarLiberarResposta(this.listaDespachos);
+                        }
+                        else {
+                            mensagemSistema.showMensagemErro(ret2.mensagem);
+                        }
                     }
                     else {
-                        mensagemSistema.showMensagemErro(ret.mensagem);
-                    }                    
+                        window.location.href = "/Error?msg=" + ret.mensagem;
+                    }
+
                 }
                 catch (e) {
-                    mensagemSistema.showMensagemErro(e);
+                    //window.location.href = "/Error?msg=" + ret.mensagem;
                 }
             });
 

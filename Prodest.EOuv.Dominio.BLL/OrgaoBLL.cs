@@ -25,30 +25,7 @@ namespace Prodest.EOuv.Dominio.BLL
             return await _orgaoRepository.ObterOrgaosCompetenciaFato();
         }
 
-        public async Task<bool> VerificarPermissaoOrgaoManifestacao(ManifestacaoModel manifestacao, int idOrgao)
-        {
-            bool possuiPermissao = false;
 
-            List<int> listaIdOrgaosVinculados = await _orgaoRepository.ObterIdOrgaosVinculadosByOrgaoResponsavel(idOrgao);
-
-            if (listaIdOrgaosVinculados != null)
-            {
-                if (manifestacao.IdSituacaoManifestacao == (int)Enums.SituacaoManifestacao.ENCERRADA) //Para Manifestações encerradas, o órgão Interesse passa a ter acesso também
-                {
-                    possuiPermissao = listaIdOrgaosVinculados.Contains(manifestacao.IdOrgaoInteresse) || listaIdOrgaosVinculados.Contains(manifestacao.IdOrgaoResponsavel);
-                }
-                else
-                {
-                    possuiPermissao = listaIdOrgaosVinculados.Contains(manifestacao.IdOrgaoResponsavel);
-                }
-            }
-            else
-            {
-                possuiPermissao = manifestacao.IdOrgaoResponsavel == idOrgao;
-            }
-
-            return possuiPermissao;
-        }
 
 
     }

@@ -19,11 +19,13 @@ namespace Prodest.EOuv.UI.Apresentacao
     public class ManifestacaoWorkService : IManifestacaoWorkService
     {
         private readonly IManifestacaoBLL _manifestacaoBLL;
+        private readonly ISharedBLL _sharedBLL;
         private readonly IMapper _mapper;
 
-        public ManifestacaoWorkService(IManifestacaoBLL manifestacaoBLL, IMapper mapper)
+        public ManifestacaoWorkService(IManifestacaoBLL manifestacaoBLL, ISharedBLL sharedBLL, IMapper mapper)
         {
             _manifestacaoBLL = manifestacaoBLL;
+            _sharedBLL = sharedBLL;
             _mapper = mapper;
         }
 
@@ -31,16 +33,17 @@ namespace Prodest.EOuv.UI.Apresentacao
         {
             var jsonRetorno = new JsonReturnViewModel();
 
-            if (idManifestacao > 0)
+            ManifestacaoModel manifestacaoModel = await _sharedBLL.ObterDadosCompletosManifestacao(idManifestacao);
+
+            if (manifestacaoModel != null)
             {
-                ManifestacaoModel manifestacaoModel = await _manifestacaoBLL.ObterDadosCompletosManifestacao(idManifestacao);
-                jsonRetorno.Retorno = _mapper.Map<ManifestacaoViewModel>(manifestacaoModel);
                 jsonRetorno.Ok = true;
+                jsonRetorno.Retorno = _mapper.Map<ManifestacaoViewModel>(manifestacaoModel);
             }
             else
             {
                 jsonRetorno.Ok = false;
-                jsonRetorno.Mensagem = "Manifestação não encontrada!";
+                jsonRetorno.Mensagem = "Manifestação não encontrada ou Usuário não possui acesso!";
             }
 
             return jsonRetorno;
@@ -50,16 +53,17 @@ namespace Prodest.EOuv.UI.Apresentacao
         {
             var jsonRetorno = new JsonReturnViewModel();
 
-            if (idManifestacao > 0)
+            ManifestacaoModel manifestacaoModel = await _manifestacaoBLL.ObterManifestacaoPorId(idManifestacao);
+
+            if (manifestacaoModel != null)
             {
-                ManifestacaoModel manifestacaoModel = await _manifestacaoBLL.ObterManifestacaoPorId(idManifestacao);
-                jsonRetorno.Retorno = _mapper.Map<ManifestacaoViewModel>(manifestacaoModel);
                 jsonRetorno.Ok = true;
+                jsonRetorno.Retorno = _mapper.Map<ManifestacaoViewModel>(manifestacaoModel);
             }
             else
             {
                 jsonRetorno.Ok = false;
-                jsonRetorno.Mensagem = "Manifestação não encontrada!";
+                jsonRetorno.Mensagem = "Manifestação não encontrada ou Usuário não possui acesso!";
             }
 
             return jsonRetorno;

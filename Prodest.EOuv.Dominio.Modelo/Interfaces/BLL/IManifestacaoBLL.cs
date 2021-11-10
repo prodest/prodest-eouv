@@ -11,10 +11,6 @@ namespace Prodest.EOuv.Dominio.Modelo.Interfaces.BLL
         Task<bool> ExisteManifestacao(int idManifestacao);
         Task<ManifestacaoModel> ObterManifestacaoPorId(int idManifestacao);
 
-        Task<ManifestacaoModel> ObterDadosCompletosManifestacao(int idManifestacao);
-
-        Task<ManifestacaoModel> ObterDadosFiltradosManifestacao(int idManifestacao, FiltroDadosManifestacaoModel filtroDadosManifestacao);
-
         Task<ManifestacaoModel> ObterDadosBasicosManifestacao(int idManifestacao);
 
         Task<List<AnexoManifestacaoModel>> ObterAnexosManifestacao(int idManifestacao);
