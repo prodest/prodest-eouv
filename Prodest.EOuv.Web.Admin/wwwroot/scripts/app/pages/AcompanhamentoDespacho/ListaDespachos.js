@@ -17,7 +17,6 @@
     async mounted() {
         this.ObterParametrosQueryString();
         this.MontarURLRedirecionamento();
-        await this.ObterManifestacaoPorId()
         await this.CarregarListaDespachos();
     },
 
@@ -45,24 +44,26 @@
 
             await this.setLoadingAndExecute(async () => {
                 try {
-
-                    let ret = await eOuvApi.ObterDespachosPorManifestacao(this.idManifestacao);
+                    let ret = await eOuvApi.ObterManifestacaoPorId(this.idManifestacao);
                     if (ret.ok) {
-                        this.listaDespachos = ret.retorno;
-                        this.VerificarLiberarResposta(this.listaDespachos);
-                        mensagemSistema.showMensagemSucesso('Lista de despacho carregada com sucesso.');
+                        this.numeroManifestacao = ret.retorno.numProtocolo;
 
-                        console.log('teste')
+                        let ret2 = await eOuvApi.ObterDespachosPorManifestacao(this.idManifestacao);
+                        if (ret2.ok) {
+                            this.listaDespachos = ret2.retorno;
+                            this.VerificarLiberarResposta(this.listaDespachos);
+                        }
+                        else {
+                            mensagemSistema.showMensagemErro(ret2.mensagem);
+                        }
                     }
                     else {
-                        mensagemSistema.showMensagemErro(ret.mensagem);
-                        //window.location.href = "/Error?msg=" + ret.mensagem;
+                        window.location.href = "/Error?msg=" + ret.mensagem;
                     }
 
-                    //mensagemSistema.showMensagemErro('teste');
                 }
                 catch (e) {
-                    console.log(e);
+                    //window.location.href = "/Error?msg=" + ret.mensagem;
                 }
             });
 

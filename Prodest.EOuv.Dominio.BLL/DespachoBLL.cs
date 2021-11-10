@@ -3,6 +3,7 @@ using Prodest.EOuv.Dominio.Modelo.Interfaces.BLL;
 using Prodest.EOuv.Dominio.Modelo.Interfaces.DAL;
 using Prodest.EOuv.Dominio.Modelo.Interfaces.Service;
 using Prodest.EOuv.Shared.Util;
+using Prodest.EOuv.Shared.Utils;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,34 +14,43 @@ namespace Prodest.EOuv.Dominio.BLL
     public class DespachoBLL : IDespachoBLL
     {
         private readonly IDespachoRepository _despachoRepository;
-        private readonly IManifestacaoBLL _manifestacaoBLL;
-        private readonly IAgenteBLL _agenteBLL;
-        private readonly IUsuarioBLL _usuarioBLL;
+        private readonly IManifestacaoRepository _manifestacaoRepository;
+        private readonly IAgenteRepository _agenteRepository;
+        private readonly ISharedBLL _sharedBLL;
         private readonly IPdfApiService _pdfApiService;
         private readonly IHtmlApiService _htmlApiService;
         private readonly IEDocsService _edocsService;
-        private readonly IUsuarioProvider _usuarioProvider;
+        
         
 
-        public DespachoBLL(IDespachoRepository despachoRepository, IManifestacaoBLL manifestacaoBLL, IAgenteBLL agenteBLL, IUsuarioBLL usuarioBLL, IPdfApiService pdfApiService,
-                            IHtmlApiService htmlApiService, IEDocsService edocsService, IUsuarioProvider usuarioProvider)
+        public DespachoBLL(IDespachoRepository despachoRepository, IManifestacaoRepository manifestacaoRepository, IAgenteRepository agenteRepository, ISharedBLL sharedBLL, IPdfApiService pdfApiService,
+                            IHtmlApiService htmlApiService, IEDocsService edocsService)
         {
             _despachoRepository = despachoRepository;
-            _manifestacaoBLL = manifestacaoBLL;
-            _agenteBLL = agenteBLL;
-            _usuarioBLL = usuarioBLL;
+            _manifestacaoRepository = manifestacaoRepository;
+            _agenteRepository = agenteRepository;
+            _sharedBLL = sharedBLL;
             _pdfApiService = pdfApiService;
             _htmlApiService = htmlApiService;
             _edocsService = edocsService;
-            _usuarioProvider = usuarioProvider;
         }
 
         public async Task<List<DespachoManifestacaoModel>> ObterDespachosPorManifestacao(int idManifestacao)
         {
-            return await _despachoRepository.ObterDespachoPorManifestacao(idManifestacao);
+            bool existeManifestacao = await _manifestacaoRepository.ExisteManifestacao(idManifestacao);
+
+            if (existeManifestacao) //Verifica se a manifestação existe
+            {
+                return await _despachoRepository.ObterDespachoPorManifestacao(idManifestacao);
+            }
+            else
+            {
+                throw new EouvPaginaNaoEncontradaException("Página não encontrada!");
+            }
+
         }
 
-        public async Task<List<int>> ObterDespachosEmAberto()
+            public async Task<List<int>> ObterDespachosEmAberto()
         {
             return await _despachoRepository.ObterDespachosEmAberto();
         }
@@ -80,7 +90,7 @@ namespace Prodest.EOuv.Dominio.BLL
             if (validacoesNegocio.ok)
             {
                 //Buscar Dados filtrados da Manifestação
-                ManifestacaoModel manifestacao = await _manifestacaoBLL.ObterDadosFiltradosManifestacao(despachoModel.IdManifestacao, filtroDadosManifestacao);
+                ManifestacaoModel manifestacao = await _sharedBLL.ObterDadosFiltradosManifestacao(despachoModel.IdManifestacao, filtroDadosManifestacao);
 
                 string nomeArquivo = "Manifestação " + manifestacao.NumProtocolo;
 
@@ -107,20 +117,20 @@ namespace Prodest.EOuv.Dominio.BLL
                 //Se Agente = Papel
                 if (tipoDestinatario == (int)Enums.TipoAgente.Papel)
                 {
-                    agenteDestinatario = await _agenteBLL.MontaAgenteUsuario(guidDestinatario);
+                    agenteDestinatario = await _sharedBLL.MontaAgenteUsuario(guidDestinatario);
                 }
                 //Se Agente = Grupo
                 else if (tipoDestinatario == (int)Enums.TipoAgente.Grupo)
                 {
-                    agenteDestinatario = await _agenteBLL.MontaAgenteGrupoComissao(guidDestinatario);
+                    agenteDestinatario = await _sharedBLL.MontaAgenteGrupoComissao(guidDestinatario);
                 }
                 //Se Agente = Setor
                 else
                 {
-                    agenteDestinatario = await _agenteBLL.MontaAgenteSetor(guidDestinatario);
+                    agenteDestinatario = await _sharedBLL.MontaAgenteSetor(guidDestinatario);
                 }
 
-                var idAgenteDestinatario = await _agenteBLL.AdicionarAgente(agenteDestinatario);
+                var idAgenteDestinatario = await _agenteRepository.AdicionarAgente(agenteDestinatario);
                 despachoModel.IdAgenteDestinatario = idAgenteDestinatario;
                 await _despachoRepository.AdicionarDespacho(despachoModel);
 
@@ -128,7 +138,8 @@ namespace Prodest.EOuv.Dominio.BLL
             }
             else
             {
-                return (false, validacoesNegocio.mensagem);
+                throw new OrganogramaApiException("teste");
+                //return (false, validacoesNegocio.mensagem);
             }
         }
 
@@ -143,9 +154,9 @@ namespace Prodest.EOuv.Dominio.BLL
             {
                 if (despachoModel.IdSituacaoDespacho == (int)Enums.SituacaoDespacho.Aberto)
                 {
-                    AgenteManifestacaoModel agenteResposta = await _agenteBLL.MontaAgenteUsuario(responsavel.Id);
+                    AgenteManifestacaoModel agenteResposta = await _sharedBLL.MontaAgenteUsuario(responsavel.Id);
 
-                    var idAgenteResposta = await _agenteBLL.AdicionarAgente(agenteResposta);
+                    var idAgenteResposta = await _agenteRepository.AdicionarAgente(agenteResposta);
                     despachoModel.IdSituacaoDespacho = (int)Enums.SituacaoDespacho.Respondido;
                     despachoModel.IdAgenteResposta = idAgenteResposta;
                     await _despachoRepository.AtualizarDespacho(despachoModel);
@@ -180,17 +191,9 @@ namespace Prodest.EOuv.Dominio.BLL
         {
             bool ok = true;
 
-            var usuario = _usuarioProvider.GetCurrent();
-
-            UsuarioModel usuarioModel = new UsuarioModel
-            {
-                IdOrgao = usuario.IdOrgaoEouv,
-                IdPerfil = usuario.IdPerfilEouv,
-            };
-
             //Validar se o usuário responsável possui acesso a manifestação
             
-            bool usuarioPossuiAcessoManifestacao = await _usuarioBLL.UsuarioPossuiAcessoManifestacao(despachoModel.IdManifestacao, usuarioModel);
+            bool usuarioPossuiAcessoManifestacao = await _sharedBLL.UsuarioPossuiAcessoManifestacao(despachoModel.IdManifestacao);
 
             if (!usuarioPossuiAcessoManifestacao)
             {

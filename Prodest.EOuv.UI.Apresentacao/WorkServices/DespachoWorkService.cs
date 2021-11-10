@@ -22,13 +22,11 @@ namespace Prodest.EOuv.UI.Apresentacao
     public class DespachoWorkService : IDespachoWorkService
     {
         private readonly IDespachoBLL _despachoBLL;
-        private readonly IManifestacaoBLL _manifestacaoBLL;
         private readonly IMapper _mapper;
 
-        public DespachoWorkService(IDespachoBLL despachoBLL, IManifestacaoBLL manifestacaoBLL, IMapper mapper)
+        public DespachoWorkService(IDespachoBLL despachoBLL, IMapper mapper)
         {
             _despachoBLL = despachoBLL;
-            _manifestacaoBLL = manifestacaoBLL;
             _mapper = mapper;
         }
 
@@ -36,20 +34,9 @@ namespace Prodest.EOuv.UI.Apresentacao
         {
             var jsonRetorno = new JsonReturnViewModel();
 
-            bool existeManifestacao = await _manifestacaoBLL.ExisteManifestacao(idManifestacao);
-
-            if (existeManifestacao)
-            {
-                var despachoModel = await _despachoBLL.ObterDespachosPorManifestacao(idManifestacao);
-                jsonRetorno.Retorno = _mapper.Map<List<DespachoManifestacaoViewModel>>(despachoModel);
-                jsonRetorno.Ok = true;
-            }
-            else
-            {
-                jsonRetorno.Ok = false;
-                jsonRetorno.Mensagem = "Manifestação não encontrada!";
-                jsonRetorno.Retorno = new { _erroTipoRedirect = true };
-            }
+            var despachoModel = await _despachoBLL.ObterDespachosPorManifestacao(idManifestacao);
+            jsonRetorno.Retorno = _mapper.Map<List<DespachoManifestacaoViewModel>>(despachoModel);
+            jsonRetorno.Ok = true;
 
             return jsonRetorno;
         }

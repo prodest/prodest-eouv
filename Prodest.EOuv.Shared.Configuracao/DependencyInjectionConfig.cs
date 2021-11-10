@@ -8,6 +8,7 @@ using Prodest.EOuv.Infra.Service;
 using Prodest.EOuv.Dominio.Modelo.Interfaces.Service;
 using Prodest.EOuv.Dominio.Modelo.Interfaces.BLL;
 using Prodest.EOuv.Dominio.Modelo.Interfaces.DAL;
+using Prodest.EOuv.Dominio.BLL.Shared;
 
 namespace Prodest.EOuv.Shared.Configuracao
 {
@@ -26,13 +27,13 @@ namespace Prodest.EOuv.Shared.Configuracao
             services.AddScoped<IManifestacaoWorkService, ManifestacaoWorkService>();
             services.AddScoped<IRespostaWorkService, RespostaWorkService>();
 
+            services.AddScoped<ISharedBLL, SharedBLL>();
             services.AddScoped<IDespachoBLL, DespachoBLL>();
             services.AddScoped<IManifestacaoBLL, ManifestacaoBLL>();
             services.AddScoped<IRespostaBLL, RespostaBLL>();
             services.AddScoped<IAgenteBLL, AgenteBLL>();
             services.AddScoped<IOrgaoBLL, OrgaoBLL>();
-            services.AddScoped<IUsuarioBLL, UsuarioBLL>();
-
+            
             services.AddScoped<IDespachoRepository, DespachoRepository>();
             services.AddScoped<IManifestacaoRepository, ManifestacaoRepository>();
             services.AddScoped<IRespostaRepository, RespostaRepository>();
