@@ -107,5 +107,22 @@ body {
 }
 
 .accordion-header-manifestacao {
-    
+    background-color: #4692b7 !important;
+    font-size: 1.1rem !important;
+    color: #fff;
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+    max-height: 43px !important;
+}
+    .accordion-header-manifestacao:not(.collapsed) {
+        background-color: #4692b7 !important;
+        color: #fff;
+    }
+
+/*Conteudo manifetacao*/
+.manifestacao-conteudo {
+    background-color: #f0f6fb !important;
+    border: 1px solid #e9ecef !important;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
 }

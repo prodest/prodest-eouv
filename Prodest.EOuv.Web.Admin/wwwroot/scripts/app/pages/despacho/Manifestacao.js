@@ -69,7 +69,7 @@
 
     async mounted() {
         this.ObterParametrosQueryString();
-        await this.obterManifestacao();
+        //await this.obterManifestacao();
         let incluir = document.querySelector('.incluir').addEventListener('click', (e) => {
             e.delegateTarget = e.target;
         });
@@ -89,6 +89,7 @@
 
                 if (jsonReturn.ok) {
                     let ret = jsonReturn.retorno;
+                    console.log(jsonReturn.retorno);
                     //Dados Basicos da Manifestacao
                     this.titulo += ` - ${ret.numProtocolo}`;
                     this.dadosBasicos.idManifestacao = ret.idManifestacao;
